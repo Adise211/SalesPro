@@ -1,5 +1,8 @@
 <template>
-  <div class="about">New Component</div>
+  <div class="about">
+    New Component
+    <v-btn>Click me</v-btn>
+  </div>
 </template>
 
 <script>
