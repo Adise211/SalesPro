@@ -1,7 +1,26 @@
 <template>
   <div class="default-layout">
     <v-layout class="rounded rounded-md">
-      <v-navigation-drawer color="grey-darken-2" v-model="isMenuOpen"></v-navigation-drawer>
+      <v-navigation-drawer color="blue-grey-darken-4" v-model="isMenuOpen">
+        <v-list>
+          <v-list-item
+            class="py-5"
+            title="Sara Smith"
+            subtitle="Developer"
+            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+          ></v-list-item>
+          <v-divider></v-divider>
+          <v-list-item link title="List Item 1"></v-list-item>
+          <v-list-item link title="List Item 2"></v-list-item>
+          <v-list-item link title="List Item 3"></v-list-item>
+        </v-list>
+
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-btn block color="primary"> Logout </v-btn>
+          </div>
+        </template>
+      </v-navigation-drawer>
       <v-app-bar :order="order" color="grey-lighten-2" flat title="SalesPro">
         <!-- <template v-slot:append>
           <v-btn @click="onMenuOpen">Close menu</v-btn>
