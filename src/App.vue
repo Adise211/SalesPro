@@ -1,12 +1,20 @@
-<script>
-// import { RouterLink, RouterView } from "vue-router";
-</script>
-
 <template>
-  <!-- <RouterLink></RouterLink>
-  <RouterLink></RouterLink> -->
-
-  <RouterView />
+  <DefaultLayout></DefaultLayout>
 </template>
+
+<script>
+import DefaultLayout from "./views/layouts/DefaultLayout.vue";
+export default {
+  name: "App",
+  components: { DefaultLayout },
+  props: {},
+  data: () => ({}),
+  created() {},
+  mounted() {},
+  methods: {},
+  computed: {},
+  watch: {}
+};
+</script>
 
 <style scoped></style>
