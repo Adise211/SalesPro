@@ -1,12 +1,16 @@
 <template>
-  <DefaultLayout></DefaultLayout>
+  <DefaultLayout>
+    <RouterView></RouterView>
+  </DefaultLayout>
 </template>
 
 <script>
+import { RouterView } from "vue-router";
+// @ts-ignore
 import DefaultLayout from "./views/layouts/DefaultLayout.vue";
 export default {
   name: "App",
-  components: { DefaultLayout },
+  components: { DefaultLayout, RouterView },
   props: {},
   data: () => ({}),
   created() {},
