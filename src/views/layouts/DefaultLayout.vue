@@ -10,9 +10,35 @@
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
           ></v-list-item>
           <v-divider></v-divider>
-          <v-list-item link title="List Item 1"></v-list-item>
-          <v-list-item link title="List Item 2"></v-list-item>
-          <v-list-item link title="List Item 3"></v-list-item>
+          <v-list-group value="Mettings" fluid>
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" title="Mettings"></v-list-item>
+            </template>
+            <v-list-item link title="Calendar" variant="tonal" append-icon="mdi-calendar">
+            </v-list-item>
+            <v-list-item
+              link
+              title="Create Event"
+              variant="tonal"
+              append-icon="mdi-calendar-edit"
+            ></v-list-item>
+          </v-list-group>
+          <v-list-item link title="Notes"></v-list-item>
+          <v-list-group value="Tracking" fluid>
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" title="Tracking"></v-list-item>
+            </template>
+            <v-list-item link title="Follow ups" variant="tonal"></v-list-item>
+            <v-list-item link title="Lids" variant="tonal"></v-list-item>
+            <v-list-item
+              link
+              title="Closed"
+              variant="tonal"
+              append-icon="mdi-handshake"
+            ></v-list-item>
+          </v-list-group>
+          <v-list-item link title="Settings"></v-list-item>
+          <v-list-item link title="Extract From Files"></v-list-item>
         </v-list>
 
         <template v-slot:append>
@@ -21,7 +47,7 @@
           </div>
         </template>
       </v-navigation-drawer>
-      <v-app-bar :order="order" color="grey-lighten-2" flat title="SalesPro">
+      <v-app-bar :order="order" color="blue-grey-lighten-4" flat title="SalesPro">
         <!-- <template v-slot:append>
           <v-btn @click="onMenuOpen">Close menu</v-btn>
         </template> -->
