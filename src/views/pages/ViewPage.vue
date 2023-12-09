@@ -1,11 +1,14 @@
 <template>
-  <div>View Page!</div>
+  <div class="view-page mx-10">
+    <ViewCards></ViewCards>
+  </div>
 </template>
 
 <script>
+import ViewCards from "@/components/ViewCards.vue";
 export default {
   name: "ViewPage",
-  components: {},
+  components: { ViewCards },
   props: {},
   data: () => ({}),
   created() {},
