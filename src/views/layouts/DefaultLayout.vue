@@ -28,8 +28,18 @@
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" title="Tracking"></v-list-item>
             </template>
-            <v-list-item link title="Follow ups" variant="tonal"></v-list-item>
-            <v-list-item link title="Lids" variant="tonal"></v-list-item>
+            <v-list-item
+              link
+              title="Follow ups"
+              variant="tonal"
+              append-icon="mdi-run"
+            ></v-list-item>
+            <v-list-item
+              link
+              title="Leads"
+              variant="tonal"
+              append-icon="mdi-briefcase"
+            ></v-list-item>
             <v-list-item
               link
               title="Closed"
@@ -37,8 +47,8 @@
               append-icon="mdi-handshake"
             ></v-list-item>
           </v-list-group>
-          <v-list-item link title="Settings"></v-list-item>
           <v-list-item link title="Extract From Files"></v-list-item>
+          <v-list-item link title="Settings"></v-list-item>
         </v-list>
 
         <template v-slot:append>
