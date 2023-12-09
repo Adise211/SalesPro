@@ -14,16 +14,23 @@
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" title="Mettings"></v-list-item>
             </template>
-            <v-list-item link title="Calendar" variant="tonal" append-icon="mdi-calendar">
+            <v-list-item
+              link
+              title="Calendar"
+              variant="tonal"
+              append-icon="mdi-calendar"
+              @click="onNavItemClick('Calendar')"
+            >
             </v-list-item>
             <v-list-item
               link
               title="Create Event"
               variant="tonal"
               append-icon="mdi-calendar-edit"
+              @click="onNavItemClick('CreateEvent')"
             ></v-list-item>
           </v-list-group>
-          <v-list-item link title="Notes"></v-list-item>
+          <v-list-item link title="Notes" @click="onNavItemClick('Notes')"></v-list-item>
           <v-list-group value="Tracking" fluid>
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" title="Tracking"></v-list-item>
@@ -33,27 +40,34 @@
               title="Follow ups"
               variant="tonal"
               append-icon="mdi-run"
+              @click="onNavItemClick('FolllowUps')"
             ></v-list-item>
             <v-list-item
               link
               title="Leads"
               variant="tonal"
               append-icon="mdi-briefcase"
+              @click="onNavItemClick('Leads')"
             ></v-list-item>
             <v-list-item
               link
               title="Closed"
               variant="tonal"
               append-icon="mdi-handshake"
+              @click="onNavItemClick('Closed')"
             ></v-list-item>
           </v-list-group>
-          <v-list-item link title="Extract From Files"></v-list-item>
-          <v-list-item link title="Settings"></v-list-item>
+          <v-list-item
+            link
+            title="Extract From Files"
+            @click="onNavItemClick('ExtractFiles')"
+          ></v-list-item>
+          <v-list-item link title="Settings" @click="onNavItemClick('Settings')"></v-list-item>
         </v-list>
 
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn block color="primary"> Logout </v-btn>
+            <v-btn block color="primary" @click="onNavItemClick('Logout')"> Logout </v-btn>
           </div>
         </template>
       </v-navigation-drawer>
@@ -74,6 +88,7 @@
 </template>
 
 <script>
+import { NavigationItems } from "../../utilities/consts";
 export default {
   name: "DefaultLayout",
   components: {},
@@ -83,7 +98,9 @@ export default {
     order: 0
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("aa", NavigationItems);
+  },
   methods: {
     onMenuOpen() {
       if (this.order === 0) {
@@ -93,6 +110,34 @@ export default {
         this.order = 0;
         this.isMenuOpen = true;
       }
+    },
+    onNavItemClick(itemName) {
+      let pageName;
+      switch (itemName) {
+        case NavigationItems.Calendar:
+          pageName = "CalendarPage";
+          break;
+        case NavigationItems.CreateEvent:
+          break;
+        case NavigationItems.Notes:
+          break;
+        case NavigationItems.FolllowUps:
+          break;
+        case NavigationItems.Leads:
+          break;
+        case NavigationItems.Closed:
+          break;
+        case NavigationItems.Settings:
+          break;
+        case NavigationItems.Logout:
+          break;
+        default:
+          break;
+      }
+
+      this.$router.push({
+        name: pageName
+      });
     }
   },
   computed: {},
