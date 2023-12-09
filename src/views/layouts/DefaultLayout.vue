@@ -10,7 +10,7 @@
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
           ></v-list-item>
           <v-divider></v-divider>
-          <v-list-group value="Mettings" fluid>
+          <v-list-group value="Meetings" fluid>
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" title="Mettings"></v-list-item>
             </template>
@@ -67,7 +67,6 @@
       </v-app-bar>
 
       <v-main class="d-flex align-center justify-center" style="min-height: 300px">
-        Main Content
         <slot></slot>
       </v-main>
     </v-layout>
