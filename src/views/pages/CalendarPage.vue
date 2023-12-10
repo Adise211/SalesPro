@@ -1,15 +1,16 @@
 <template>
-  <v-container fluid class="calendar-page">
-    <v-row>
-      <v-col md="4">
+  <c-container fluid class="calendar-page">
+    <v-row class="fill-height">
+      <v-spacer></v-spacer>
+      <v-col md="6">
         <ViewCards>
           <template v-slot:card-text>
-            <Calendar />
+            <Calendar borderless transparent :attributes="calendarAttrs" expanded />
           </template>
         </ViewCards>
       </v-col>
     </v-row>
-  </v-container>
+  </c-container>
 </template>
 
 <script>
@@ -21,7 +22,17 @@ export default {
   name: "CalendarPage",
   components: { ViewCards, Calendar },
   props: {},
-  data: () => ({}),
+  data: () => ({
+    calendarAttrs: [
+      {
+        highlight: {
+          color: "purple",
+          fillMode: "light"
+        },
+        dates: new Date()
+      }
+    ]
+  }),
   created() {},
   mounted() {},
   methods: {},

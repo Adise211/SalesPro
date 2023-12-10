@@ -71,7 +71,7 @@
           </div>
         </template>
       </v-navigation-drawer>
-      <v-app-bar :order="order" color="blue-grey-lighten-4" flat title="SalesPro">
+      <v-app-bar :order="drawerOrder" color="blue-grey-lighten-4" flat title="SalesPro">
         <!-- <template v-slot:append>
           <v-btn @click="onMenuOpen">Close menu</v-btn>
         </template> -->
@@ -80,7 +80,7 @@
         </template>
       </v-app-bar>
 
-      <v-main class="ma-5">
+      <v-main class="main-content mx-5 mt-5">
         <slot></slot>
       </v-main>
     </v-layout>
@@ -95,7 +95,7 @@ export default {
   props: {},
   data: () => ({
     isMenuOpen: false,
-    order: 0
+    drawerOrder: 0
   }),
   created() {},
   mounted() {},
@@ -145,6 +145,6 @@ export default {
 
 <style scoped>
 .main-content {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 30px);
 }
 </style>

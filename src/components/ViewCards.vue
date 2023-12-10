@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-card elevation="5">
+  <div class="view-card fill-height">
+    <v-card elevation="5" :max-width="cardMaxWidth" height="100%">
       <v-card-title>
         <slot name="card-title"></slot>
       </v-card-title>
@@ -23,7 +23,7 @@ export default {
   props: {
     cardMaxWidth: {
       type: [Number, String],
-      default: 500
+      default: "100%"
     }
   },
   data: () => ({}),
