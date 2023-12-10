@@ -2,3 +2,11 @@ Vuetify-Vite plugin for treeshaking and SASS Variables:
 plugin - https://www.npmjs.com/package/vite-plugin-vuetify
 about treeshaking - https://vuetifyjs.com/en/features/treeshaking/#automatic-treeshaking 
 about SASS Variables - https://vuetifyjs.com/en/features/sass-variables/#component-specific-variables
+
+-------------
+
+Vcalendar:
+https://vcalendar.io/ 
+Popper for Vcalendar: 
+https://popper.js.org/docs/v2/
+

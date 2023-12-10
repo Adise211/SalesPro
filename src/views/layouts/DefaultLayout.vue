@@ -80,7 +80,7 @@
         </template>
       </v-app-bar>
 
-      <v-main class="d-flex align-center justify-center" style="min-height: 300px">
+      <v-main class="ma-5">
         <slot></slot>
       </v-main>
     </v-layout>
@@ -98,9 +98,7 @@ export default {
     order: 0
   }),
   created() {},
-  mounted() {
-    console.log("aa", NavigationItems);
-  },
+  mounted() {},
   methods: {
     onMenuOpen() {
       if (this.order === 0) {
@@ -145,4 +143,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.main-content {
+  height: calc(100vh - 64px);
+}
+</style>

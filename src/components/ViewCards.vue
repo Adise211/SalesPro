@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-card elevation="5" class="my-8" :max-width="cardMaxWidth">
+    <v-card elevation="5">
       <v-card-title>
         <slot name="card-title"></slot>
       </v-card-title>
-      <v-card-sub-title>
+      <v-card-subtitle>
         <slot name="card-sub-title"></slot>
-      </v-card-sub-title>
+      </v-card-subtitle>
       <v-card-text>
         <slot name="card-text"></slot>
       </v-card-text>
