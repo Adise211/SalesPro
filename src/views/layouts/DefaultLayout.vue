@@ -46,7 +46,7 @@
               link
               title="Leads"
               variant="tonal"
-              append-icon="mdi-briefcase"
+              append-icon="mdi-fire"
               @click="onNavItemClick('Leads')"
             ></v-list-item>
             <v-list-item
