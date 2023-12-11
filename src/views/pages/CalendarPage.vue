@@ -1,7 +1,14 @@
 <template>
   <c-container fluid class="calendar-page">
-    <v-row class="fill-height">
-      <v-spacer></v-spacer>
+    <v-row>
+      <v-col md="6">
+        <ViewCards>
+          <template v-slot:card-title>Events: </template>
+          <template v-slot:card-sub-title>date </template>
+          <template v-slot:card-text>description </template>
+        </ViewCards>
+      </v-col>
+
       <v-col md="6">
         <ViewCards>
           <template v-slot:card-text>
