@@ -15,10 +15,15 @@ body {
 // SASS variables from here:
 // https://github.com/nathanreyes/v-calendar/blob/v3/src/styles/theme.css
 
-.vc-container .vc-week {
-  height: 78px;
-  font-family: var(--app-font-family);
-  .vc-day-content {
-    font-size: var(--vc-text-base);
+.vc-container {
+  .vc-week {
+    height: 78px;
+    font-family: var(--app-font-family);
+    .vc-day-content {
+      font-size: var(--vc-text-base);
+    }
+  }
+  .vc-weekday {
+    color: #f4511e;
   }
 }
