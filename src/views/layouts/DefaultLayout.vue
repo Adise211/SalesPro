@@ -1,7 +1,7 @@
 <template>
   <div class="default-layout">
     <v-layout class="rounded rounded-md">
-      <v-navigation-drawer color="blue-grey-darken-4" v-model="isMenuOpen">
+      <v-navigation-drawer color="blue-grey-darken-4" persistent>
         <v-list>
           <v-list-item
             class="py-5"
@@ -75,12 +75,12 @@
         <!-- <template v-slot:append>
           <v-btn @click="onMenuOpen">Close menu</v-btn>
         </template> -->
-        <template v-slot:prepend>
+        <!-- <template v-slot:prepend>
           <v-app-bar-nav-icon @click="onMenuOpen"></v-app-bar-nav-icon>
-        </template>
+        </template> -->
       </v-app-bar>
 
-      <v-main class="main-content mx-5 mt-5">
+      <v-main class="main-content">
         <slot></slot>
       </v-main>
     </v-layout>
@@ -94,21 +94,21 @@ export default {
   components: {},
   props: {},
   data: () => ({
-    isMenuOpen: false,
-    drawerOrder: 0
+    // isMenuOpen: false,
+    // drawerOrder: 0
   }),
   created() {},
   mounted() {},
   methods: {
-    onMenuOpen() {
-      if (this.order === 0) {
-        this.order = -1;
-        this.isMenuOpen = false;
-      } else {
-        this.order = 0;
-        this.isMenuOpen = true;
-      }
-    },
+    // onMenuOpen() {
+    //   if (this.order === 0) {
+    //     this.order = -1;
+    //     this.isMenuOpen = false;
+    //   } else {
+    //     this.order = 0;
+    //     this.isMenuOpen = true;
+    //   }
+    // },
     onNavItemClick(itemName) {
       let pageName;
       switch (itemName) {

@@ -1,23 +1,56 @@
 <template>
-  <c-container fluid class="calendar-page">
+  <v-container fluid class="calendar-page">
     <v-row>
-      <v-col md="6">
+      <v-col md="6" v-if="!editCalendar">
         <ViewCards>
           <template v-slot:card-title>Events: </template>
           <template v-slot:card-sub-title>date </template>
           <template v-slot:card-text>description </template>
         </ViewCards>
       </v-col>
-
+      <v-col md="6" v-if="editCalendar">
+        <ViewCards>
+          <template v-slot:card-title>Create New Event </template>
+          <!-- <template v-slot:card-sub-title>date </template> -->
+          <template v-slot:card-text>
+            <v-form>
+              <v-text-field
+                v-model="editCalendar"
+                label="Date"
+                variant="outlined"
+                readonly
+                disabled
+                density="compact"
+                style="width: 50%"
+              ></v-text-field>
+              <v-select variant="outlined" density="compact" style="width: 50%"></v-select>
+              <v-text-field
+                label="Participants"
+                variant="outlined"
+                density="compact"
+                style="width: 50%"
+              ></v-text-field>
+              <v-textarea label="Description" variant="outlined"></v-textarea>
+            </v-form>
+          </template>
+        </ViewCards>
+      </v-col>
+      <v-spacer></v-spacer>
       <v-col md="6">
         <ViewCards>
           <template v-slot:card-text>
-            <Calendar borderless transparent :attributes="calendarAttrs" expanded />
+            <Calendar
+              borderless
+              transparent
+              :attributes="calendarAttrs"
+              expanded
+              @dayclick="dayClickHandler"
+            />
           </template>
         </ViewCards>
       </v-col>
     </v-row>
-  </c-container>
+  </v-container>
 </template>
 
 <script>
@@ -38,11 +71,16 @@ export default {
         },
         dates: new Date()
       }
-    ]
+    ],
+    editCalendar: true
   }),
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    dayClickHandler() {
+      console.log("clicked on day...");
+    }
+  },
   computed: {},
   watch: {}
 };
