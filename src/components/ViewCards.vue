@@ -1,6 +1,6 @@
 <template>
   <div class="view-card fill-height">
-    <v-card elevation="5" :max-width="cardMaxWidth" height="100%">
+    <v-card elevation="5" :max-width="cardMaxWidth" max-height="100%" class="fill-height">
       <v-card-title>
         <slot name="card-title"></slot>
       </v-card-title>
@@ -10,9 +10,9 @@
       <v-card-text>
         <slot name="card-text"></slot>
       </v-card-text>
-      <v-card-actions>
+      <!-- <v-card-actions>
         <slot name="card-actions"></slot>
-      </v-card-actions>
+      </v-card-actions> -->
     </v-card>
   </div>
 </template>

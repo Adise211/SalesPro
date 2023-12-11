@@ -145,6 +145,6 @@ export default {
 
 <style scoped>
 .main-content {
-  height: calc(100vh - 30px);
+  height: calc(100vh - 20px);
 }
 </style>
