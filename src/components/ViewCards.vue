@@ -10,9 +10,9 @@
       <v-card-text>
         <slot name="card-text"></slot>
       </v-card-text>
-      <!-- <v-card-actions>
+      <v-card-actions v-if="withActions">
         <slot name="card-actions"></slot>
-      </v-card-actions> -->
+      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -24,6 +24,10 @@ export default {
     cardMaxWidth: {
       type: [Number, String],
       default: "100%"
+    },
+    withActions: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({}),

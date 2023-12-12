@@ -9,8 +9,8 @@
         </ViewCards>
       </v-col>
       <v-col md="6" v-if="isOnEditCalendarMode">
-        <ViewCards>
-          <template v-slot:card-title>Create New Event </template>
+        <ViewCards withActions>
+          <template v-slot:card-title>Create New Event</template>
           <!-- <template v-slot:card-sub-title>date </template> -->
           <template v-slot:card-text>
             <v-form>
@@ -63,6 +63,10 @@
               <!-- Event description -->
               <v-textarea label="Description" variant="outlined" color="primary"></v-textarea>
             </v-form>
+          </template>
+          <template v-slot:card-actions>
+            <v-btn color="primary">Save</v-btn>
+            <v-btn color="error">Reset</v-btn>
           </template>
         </ViewCards>
       </v-col>
