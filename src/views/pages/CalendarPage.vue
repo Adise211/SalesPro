@@ -65,8 +65,8 @@
             </v-form>
           </template>
           <template v-slot:card-actions>
-            <v-btn color="primary">Save</v-btn>
-            <v-btn color="error">Reset</v-btn>
+            <v-btn color="primary" variant="flat">Save</v-btn>
+            <v-btn color="error" variant="outlined">Reset</v-btn>
           </template>
         </ViewCards>
       </v-col>
