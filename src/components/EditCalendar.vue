@@ -2,7 +2,7 @@
   <ViewCards withActions>
     <template v-slot:card-title>Create New Event</template>
     <template v-slot:card-text>
-      <v-form>
+      <v-form ref="eventForm">
         <!-- Selected date -->
         <v-text-field
           :model-value="selectedDate"
@@ -10,7 +10,7 @@
           variant="outlined"
           readonly
           disabled
-          density="compact"
+          density="comfortable"
           style="width: 50%"
           color="primary"
         ></v-text-field>
@@ -18,7 +18,7 @@
         <v-text-field
           label="Company"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           style="width: 50%"
           color="primary"
         ></v-text-field>
@@ -43,22 +43,30 @@
         <v-text-field
           label="Participants"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           style="width: 50%"
           color="primary"
         ></v-text-field>
         <!-- Event description -->
-        <v-textarea label="Description" variant="outlined" color="primary"></v-textarea>
+        <v-textarea
+          label="Description"
+          variant="outlined"
+          color="primary"
+          :rules="[formRules.required]"
+        ></v-textarea>
       </v-form>
     </template>
     <template v-slot:card-actions>
-      <v-btn color="primary" variant="flat">Save</v-btn>
-      <v-btn color="error" variant="outlined">Reset</v-btn>
+      <div class="pb-1">
+        <v-btn color="primary" variant="flat" @click="onSave">Save</v-btn>
+        <v-btn color="error" variant="outlined">Reset</v-btn>
+      </div>
     </template>
   </ViewCards>
 </template>
 
 <script>
+// @ts-ignore
 import ViewCards from "./ViewCards.vue";
 
 export default {
@@ -74,7 +82,13 @@ export default {
   }),
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    async onSave() {
+      const { valid } = await this.$refs.eventForm.validate();
+
+      if (valid) alert("Form is valid");
+    }
+  },
   computed: {
     eventColors() {
       return [
@@ -102,6 +116,11 @@ export default {
       }
 
       return currentColor;
+    },
+    formRules() {
+      return {
+        required: (value) => !!value || "Field is required"
+      };
     }
   },
   watch: {}
