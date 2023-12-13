@@ -71,7 +71,7 @@
           </div>
         </template>
       </v-navigation-drawer>
-      <v-app-bar :order="drawerOrder" color="blue-grey-darken-4" flat title="SalesPro">
+      <v-app-bar color="blue-grey-darken-4" flat title="SalesPro">
         <!-- <template v-slot:append>
           <v-btn @click="onMenuOpen">Close menu</v-btn>
         </template> -->
