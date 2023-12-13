@@ -8,3 +8,16 @@ export const NavigationItems = {
   Settings: "Settings",
   Logout: "Logout"
 };
+
+export const CalendarEventColors = {
+  Grey: "grey",
+  Red: "red",
+  Orange: "orange",
+  Yellow: "yellow",
+  Green: "green",
+  Teal: "teal",
+  Blue: "blue",
+  Indigo: "indigo",
+  Purple: "purple",
+  Pink: "pink"
+};
