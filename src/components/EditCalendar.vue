@@ -59,7 +59,7 @@
     <template v-slot:card-actions>
       <div class="pb-1">
         <v-btn color="primary" variant="flat" @click="onSave">Save</v-btn>
-        <v-btn color="error" variant="outlined">Reset</v-btn>
+        <v-btn color="error" variant="outlined" @click="onReset">Reset</v-btn>
       </div>
     </template>
   </ViewCards>
@@ -87,6 +87,9 @@ export default {
       const { valid } = await this.$refs.eventForm.validate();
 
       if (valid) alert("Form is valid");
+    },
+    onReset() {
+      this.$refs.eventForm.reset();
     }
   },
   computed: {
