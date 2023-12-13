@@ -7,6 +7,7 @@
 </template>
 
 <script>
+// @ts-ignore
 import ViewCards from "./ViewCards.vue";
 export default {
   components: { ViewCards },
