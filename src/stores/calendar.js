@@ -5,16 +5,59 @@ export const useCalendarStore = defineStore("calendar", {
     return {
       eventsList: [
         {
-          colorGroup: "", // events groups by color id : "red" / "blue" etc.
-          dot: "picked color", // "red" / "blue" etc.
-          dates: [], // new Date (year, month, day)
+          eventId: null,
+          eventDate: null, // new Date (year, month, day)
+          eventColor: "", // "red" || "blue" etc.
           company: "", // the name of the company
-          description: "", // event details
+          description: "", // event description
           participants: [] // who will be on the call
+        }
+      ],
+      eventsAttrGropus: [
+        // ** This array keeps all the events with the same event color in one group **
+        // ** in order to keep the data organized **
+        {
+          groupColor: "", // events groups by color id : "red" / "blue" etc.
+          dot: "picked color", // "red" || "blue" etc.
+          dates: [{ eventId: null, eventDate: "" }] // list of dates with the same color
         }
       ]
     };
   },
   getters: {},
-  actions: {}
+  actions: {
+    createNewEvent(data) {
+      // 1. generates random id
+      const rendonId = Math.floor(Math.random() * 1000);
+      // 2. the new event object
+      const newEventObj = {
+        eventId: rendonId,
+        eventDate: data.date,
+        eventColor: data.color,
+        company: data.company,
+        description: data.description,
+        participants: data.participants
+      };
+      // 3. add the new event in the events list
+      this.eventsList.push(newEventObj);
+
+      // 4. find the group by color
+      const groupByColor = this.eventsAttrGropus.find((group) => {
+        return group.groupColor === data.color;
+      });
+
+      if (groupByColor) {
+        // 5.1 if the group exist: add the new event in the group
+        groupByColor.dates.push({ eventId: newEventObj.eventId, eventDate: newEventObj.eventDate });
+      } else {
+        // 5.2 if the group is NOT exist: create new group + add the new event
+        const newGroup = {
+          groupColor: data.color,
+          dot: data.color,
+          dates: [{ eventId: newEventObj.eventId, eventDate: newEventObj.eventDate }]
+        };
+        this.eventsAttrGropus.push(newGroup);
+      }
+    }
+  }
 });

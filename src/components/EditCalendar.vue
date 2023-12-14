@@ -16,6 +16,7 @@
         ></v-text-field>
         <!-- Company's name -->
         <v-text-field
+          v-model="companyName"
           label="Company"
           variant="outlined"
           density="comfortable"
@@ -41,6 +42,7 @@
         </v-select>
         <!-- Participants -->
         <v-text-field
+          v-model="participants"
           label="Participants"
           variant="outlined"
           density="comfortable"
@@ -49,6 +51,7 @@
         ></v-text-field>
         <!-- Event description -->
         <v-textarea
+          v-model="description"
           label="Description"
           variant="outlined"
           color="primary"
@@ -68,6 +71,9 @@
 <script>
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
+import { CalendarEventColors } from "../utilities/consts";
+import { useCalendarStore } from "../stores/calendar";
+import { mapState, mapActions } from "pinia";
 
 export default {
   components: { ViewCards },
@@ -78,33 +84,46 @@ export default {
     }
   },
   data: () => ({
-    pickedColor: ""
+    pickedColor: "",
+    companyName: "",
+    participants: "",
+    description: ""
   }),
   created() {},
   mounted() {},
   methods: {
+    ...mapActions(useCalendarStore, ["createNewEvent"]),
     async onSave() {
       const { valid } = await this.$refs.eventForm.validate();
 
-      if (valid) alert("Form is valid");
+      if (valid) {
+        this.createNewEvent({
+          date: this.selectedDate,
+          color: this.pickedColor,
+          company: this.companyName,
+          participants: this.participants,
+          description: this.description
+        });
+      }
     },
     onReset() {
       this.$refs.eventForm.reset();
     }
   },
   computed: {
+    ...mapState(useCalendarStore, ["eventsList"]),
     eventColors() {
       return [
-        { title: "grey", color: "#475569" },
-        { title: "red", color: "#dc2626" },
-        { title: "orange", color: "#ea580c" },
-        { title: "yellow", color: "#ca8a04" },
-        { title: "green", color: "#16a34a" },
-        { title: "teal", color: "#0d9488" },
-        { title: "blue", color: "#2563eb" },
-        { title: "indigo", color: "#4f46e5" },
-        { title: "purple", color: "#9333ea" },
-        { title: "pink", color: "#db2777" }
+        { title: CalendarEventColors.Grey, color: "#475569" },
+        { title: CalendarEventColors.Red, color: "#dc2626" },
+        { title: CalendarEventColors.Orange, color: "#ea580c" },
+        { title: CalendarEventColors.Yellow, color: "#ca8a04" },
+        { title: CalendarEventColors.Green, color: "#16a34a" },
+        { title: CalendarEventColors.Teal, color: "#0d9488" },
+        { title: CalendarEventColors.Blue, color: "#2563eb" },
+        { title: CalendarEventColors.Indigo, color: "#4f46e5" },
+        { title: CalendarEventColors.Purple, color: "#9333ea" },
+        { title: CalendarEventColors.Pink, color: "#db2777" }
       ];
     },
     showPickedColor() {
