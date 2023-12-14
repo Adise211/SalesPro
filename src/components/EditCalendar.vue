@@ -74,6 +74,7 @@ import ViewCards from "./ViewCards.vue";
 import { CalendarEventColors } from "../utilities/consts";
 import { useCalendarStore } from "../stores/calendar";
 import { mapState, mapActions } from "pinia";
+import { getToDos } from "../firebase/services/get";
 
 export default {
   components: { ViewCards },
@@ -90,7 +91,11 @@ export default {
     description: ""
   }),
   created() {},
-  mounted() {},
+  async mounted() {
+    console.log("about to get the todos...");
+    const response = await getToDos();
+    console.log("response of todos:", response);
+  },
   methods: {
     ...mapActions(useCalendarStore, ["createNewEvent"]),
     async onSave() {
