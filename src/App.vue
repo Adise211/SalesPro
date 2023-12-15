@@ -1,22 +1,30 @@
 <template>
-  <DefaultLayout>
+  <component :is="currentLayout">
     <RouterView></RouterView>
-  </DefaultLayout>
+  </component>
 </template>
 
 <script>
 import { RouterView } from "vue-router";
 // @ts-ignore
 import DefaultLayout from "./views/layouts/DefaultLayout.vue";
+import MinimalLayout from "./views/layouts/MinimalLayout.vue";
+const DEFAULT_LAYOUT = "MinimalLayout";
+
 export default {
   name: "App",
-  components: { DefaultLayout, RouterView },
+  components: { DefaultLayout, RouterView, MinimalLayout },
   props: {},
   data: () => ({}),
   created() {},
   mounted() {},
+  updated() {},
   methods: {},
-  computed: {},
+  computed: {
+    currentLayout() {
+      return this.$route.meta?.layout || DEFAULT_LAYOUT;
+    }
+  },
   watch: {}
 };
 </script>

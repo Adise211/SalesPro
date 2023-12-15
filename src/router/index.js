@@ -11,7 +11,11 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home"
+      name: "home",
+      redirect: () => {
+        return { name: "LoginPage" };
+      },
+      meta: { layout: "MinimalLayout" }
     },
     {
       path: "/login",
