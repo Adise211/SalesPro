@@ -1,5 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+/**
+ *
+ * meta.layout --> type of layout ("DefaultLayout" or "MinimalLayout")
+ *
+ */
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -10,17 +16,20 @@ const router = createRouter({
     {
       path: "/login",
       name: "LoginPage",
-      component: () => import("../views/pages/LoginPage.vue")
+      component: () => import("../views/pages/LoginPage.vue"),
+      meta: { layout: "MinimalLayout" }
     },
     {
       path: "/view-page",
       name: "ViewPage",
-      component: () => import("../views/pages/ViewPage.vue")
+      component: () => import("../views/pages/ViewPage.vue"),
+      meta: { layout: "DefaultLayout" }
     },
     {
       path: "/calendar-page",
       name: "CalendarPage",
-      component: () => import("../views/pages/CalendarPage.vue")
+      component: () => import("../views/pages/CalendarPage.vue"),
+      meta: { layout: "DefaultLayout" }
     }
   ]
 });
