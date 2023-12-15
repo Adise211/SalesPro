@@ -143,8 +143,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.main-content {
-  height: calc(100vh - 20px);
-}
-</style>
+<style scoped></style>

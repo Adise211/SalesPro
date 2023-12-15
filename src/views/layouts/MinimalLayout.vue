@@ -1,5 +1,11 @@
 <template>
-  <div>MinimalLayout</div>
+  <div class="minimal-layout">
+    <v-layout class="rounded rounded-md">
+      <v-main class="main-content">
+        <slot></slot>
+      </v-main>
+    </v-layout>
+  </div>
 </template>
 
 <script>
