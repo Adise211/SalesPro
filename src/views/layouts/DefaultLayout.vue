@@ -12,7 +12,7 @@
           <v-divider></v-divider>
           <v-list-group value="Meetings" fluid>
             <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" title="Mettings"></v-list-item>
+              <v-list-item v-bind="props" title="Meetings"></v-list-item>
             </template>
             <v-list-item
               link
