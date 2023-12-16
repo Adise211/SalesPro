@@ -10,11 +10,11 @@
             <!-- Email -->
             <v-form ref="loginForm">
               <v-text-field
-                :model-value="userEmail"
+                v-model="userEmail"
                 class="mx-auto"
                 placeholder="Email"
                 append-inner-icon="mdi-email"
-                :rules="[loginRules.required, loginRules.emailMatch]"
+                :rules="[loginRules.required]"
                 validate-on="blur"
                 variant="outlined"
                 density="comfortable"
@@ -23,7 +23,7 @@
               ></v-text-field>
               <!-- Password -->
               <v-text-field
-                :model-value="userPassword"
+                v-model="userPassword"
                 class="mx-auto mt-1"
                 placeholder="Password"
                 :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -39,7 +39,7 @@
             </v-form>
           </div>
           <div class="login-actions d-flex flex-column align-center justify-center mt-5">
-            <v-btn color="primary" variant="flat">Login</v-btn>
+            <v-btn color="primary" variant="flat" @click="onSigninClick">Login</v-btn>
             <a
               class="text-primary text-decoration-none mt-5 ml-4"
               rel="noopener noreferrer"
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { loginUser } from "../../firebase/services/user";
 export default {
   name: "LoginPage",
   components: {},
@@ -73,6 +74,17 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    async onSigninClick() {
+      const { valid } = await this.$refs.loginForm.validate();
+      console.log(`before sending: email: ${this.userEmail}, password: ${this.userPassword}`);
+      if (valid) {
+        const response = await loginUser({
+          Email: this.userEmail,
+          Password: this.userPassword
+        });
+        console.log("client: signin response -", response);
+      }
+    },
     signupAnchorHandler() {
       this.$router.push({
         name: "SignupPage"

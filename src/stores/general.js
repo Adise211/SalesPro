@@ -19,10 +19,11 @@ export const useGeneralStore = defineStore("general", {
       this.sessionToken = token;
     },
     setUserFullName(fullName) {
-      console.log("store token:", fullName);
+      console.log("store fullName:", fullName);
       this.userFullName = fullName;
     },
     setUserEmail(email) {
+      console.log("store fullName:", email);
       this.userEmail = email;
     }
   },
