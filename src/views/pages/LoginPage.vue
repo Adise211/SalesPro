@@ -42,10 +42,9 @@
             <v-btn color="primary" variant="flat">Login</v-btn>
             <a
               class="text-primary text-decoration-none mt-5 ml-4"
-              href="#"
               rel="noopener noreferrer"
-              target="_blank"
-              @click="onRegisterClick"
+              target="_self"
+              @click="signupAnchorHandler"
             >
               Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
             </a>
@@ -74,8 +73,10 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    onRegisterClick() {
-      console.log("register...");
+    signupAnchorHandler() {
+      this.$router.push({
+        name: "SignupPage"
+      });
     }
   },
   computed: {
