@@ -21,7 +21,7 @@
             v-model="userPassword1"
             class="mt-1"
             placeholder="Password"
-            :rules="[signupRules.required]"
+            :rules="[signupRules.required, signupRules.passwordLength]"
             :type="showPassword1 ? 'text' : 'password'"
             :append-inner-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
             validate-on="blur"
@@ -36,7 +36,7 @@
             v-model="userPassword2"
             class="mt-1"
             placeholder="Verify password"
-            :rules="[signupRules.required, signupRules.verifyPassword]"
+            :rules="[signupRules.required, signupRules.verifyPassword, signupRules.passwordLength]"
             :type="showPassword2 ? 'text' : 'password'"
             :append-inner-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
             validate-on="blur"
@@ -137,8 +137,10 @@ export default {
       const emailRegex = new RegExp(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/, "g");
       return {
         required: (value) => !!value || "Required.",
+        // TO DO: make the email regex work (not in use right now!)
         emailMatch: (value) => emailRegex.test(value) || "Invalid e-mail.",
-        verifyPassword: (value) => value === this.userPassword1 || "Not the same password"
+        verifyPassword: (value) => value === this.userPassword1 || "Not the same password",
+        passwordLength: (value) => value >= 6 || "insert ore than 6 cha..."
       };
     }
   },
