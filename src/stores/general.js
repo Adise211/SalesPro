@@ -5,7 +5,8 @@ export const useGeneralStore = defineStore("general", {
     return {
       userId: "",
       sessionToken: "",
-      userFullName: ""
+      userFullName: "",
+      userEmail: ""
     };
   },
   getters: {},
@@ -20,11 +21,14 @@ export const useGeneralStore = defineStore("general", {
     setUserFullName(fullName) {
       console.log("store token:", fullName);
       this.userFullName = fullName;
+    },
+    setUserEmail(email) {
+      this.userEmail = email;
     }
   },
   persist: [
     {
-      paths: ["userId", "userFullName"],
+      paths: ["userId", "userFullName", "userEmail"],
       storage: localStorage
     },
     {

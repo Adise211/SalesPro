@@ -125,7 +125,12 @@ export default {
         };
         const response = await createNewUser(newUserData);
         console.log("response in client:", response);
-        if (response) this.isLoading = false;
+        if (response) {
+          this.isLoading = false;
+          this.$router.push({
+            name: "LoginPage"
+          });
+        }
       }
     },
     signinAnchorHandler() {
