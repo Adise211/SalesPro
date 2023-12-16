@@ -14,7 +14,7 @@ export async function createNewUser(data) {
     const { generalStore } = initStores();
     generalStore.setUserId(user.uid);
     generalStore.setSessionToken(user.accessToken);
-    generalStore.setUserFullName = user.displayName;
+    generalStore.setUserFullName = `${data.FirstName} ${data.LastName}`;
 
     return user;
   } catch (error) {
