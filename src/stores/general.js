@@ -2,8 +2,18 @@ import { defineStore } from "pinia";
 
 export const useGeneralStore = defineStore("general", {
   state: () => {
-    return {};
+    return {
+      userId: "",
+      sessionToken: ""
+    };
   },
   getters: {},
-  actions: {}
+  actions: {
+    setUserId(data) {
+      this.userId = data;
+    },
+    setSessionToken(token) {
+      this.sessionToken = token;
+    }
+  }
 });

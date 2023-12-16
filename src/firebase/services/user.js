@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../connection";
+import { initStores } from "../../stores";
 
 export async function createNewUser(data) {
   try {
@@ -8,10 +9,11 @@ export async function createNewUser(data) {
     const response = await createUserWithEmailAndPassword(auth, email, password);
     const user = response.user;
     user.displayName = `${data.FirstName} ${data.LastName}`;
+    // save the userId and sessionToken
+    const { generalStore } = initStores();
+    generalStore.setUserId(user.uid);
+    generalStore.setSessionToken(user.accessToken);
 
-    // TO DO: Token and UserId -
-    // const userId = user.uid;
-    // const sessionToken = user.accessToken
     return user;
   } catch (error) {
     console.log("error creating new user", error);
