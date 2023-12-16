@@ -70,7 +70,9 @@
           ></v-text-field>
         </v-form>
         <div class="signup-actions d-flex flex-column align-center justify-center mt-5">
-          <v-btn color="primary" variant="flat" @click="onSignupClick">Signup</v-btn>
+          <v-btn color="primary" variant="flat" @click="onSignupClick" :loading="isLoading"
+            >Signup</v-btn
+          >
           <a
             class="text-primary text-decoration-none mt-5 ml-4"
             rel="noopener noreferrer"
@@ -105,12 +107,14 @@ export default {
     userPassword1: "",
     userPassword2: "",
     userFirstName: "",
-    userLastName: ""
+    userLastName: "",
+    isLoading: false
   }),
   created() {},
   mounted() {},
   methods: {
     async onSignupClick() {
+      this.isLoading = true;
       const { valid } = await this.$refs.signupForm.validate();
       if (valid) {
         const newUserData = {
@@ -121,6 +125,7 @@ export default {
         };
         const response = await createNewUser(newUserData);
         console.log("response in client:", response);
+        if (response) this.isLoading = false;
       }
     },
     signinAnchorHandler() {
