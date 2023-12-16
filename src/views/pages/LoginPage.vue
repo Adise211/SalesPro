@@ -6,37 +6,49 @@
         <div class="login-container px-10">
           <!-- Logo -->
           <v-img :src="logoURL" class="mb-10" />
-          <div class="login-form">
+          <div class="login-form-wrapper">
             <!-- Email -->
-            <v-text-field
-              :model-value="userEmail"
-              class="mx-auto"
-              label="Email"
-              append-inner-icon="mdi-email"
-              variant="outlined"
-              density="comfortable"
-              style="width: 100%"
-              color="primary"
-            ></v-text-field>
-            <!-- Password -->
-            <v-text-field
-              :model-value="userPassword"
-              class="mx-auto"
-              label="Password"
-              :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-              variant="outlined"
-              density="comfortable"
-              style="width: 100%"
-              color="primary"
-              @click:appendInner="showPassword = !showPassword"
-            ></v-text-field>
+            <v-form ref="loginForm">
+              <v-text-field
+                :model-value="userEmail"
+                class="mx-auto"
+                placeholder="Email"
+                append-inner-icon="mdi-email"
+                :rules="[loginRules.required, loginRules.emailMatch]"
+                validate-on="blur"
+                variant="outlined"
+                density="comfortable"
+                style="width: 100%"
+                color="primary"
+              ></v-text-field>
+              <!-- Password -->
+              <v-text-field
+                :model-value="userPassword"
+                class="mx-auto mt-1"
+                placeholder="Password"
+                :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"
+                :rules="[loginRules.required]"
+                validate-on="blur"
+                variant="outlined"
+                density="comfortable"
+                style="width: 100%"
+                color="primary"
+                @click:appendInner="showPassword = !showPassword"
+              ></v-text-field>
+            </v-form>
           </div>
           <div class="login-actions d-flex flex-column align-center justify-center mt-5">
             <v-btn color="primary" variant="flat">Login</v-btn>
-            <v-btn @click="onRegisterClick" variant="text" flat color="primary" class="mt-2"
-              >New here? register now</v-btn
+            <a
+              class="text-primary text-decoration-none mt-5 ml-4"
+              href="#"
+              rel="noopener noreferrer"
+              target="_blank"
+              @click="onRegisterClick"
             >
+              Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
+            </a>
           </div>
         </div>
       </v-col>
@@ -72,6 +84,13 @@ export default {
     },
     logoURL() {
       return "images/logo.png";
+    },
+    loginRules() {
+      const emailRegex = new RegExp(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/, "g");
+      return {
+        required: (value) => !!value || "Required.",
+        emailMatch: (value) => emailRegex.test(value) || "Invalid e-mail."
+      };
     }
   },
   watch: {}
