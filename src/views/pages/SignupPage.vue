@@ -1,5 +1,5 @@
 <template>
-  <v-conainer fluid class="fill-height">
+  <v-container fluid class="fill-height">
     <v-row class="fill-height">
       <v-spacer></v-spacer>
       <v-col md="3" class="my-auto">
@@ -7,8 +7,9 @@
           <!-- Email -->
           <v-text-field
             v-model="userEmail"
+            append-inner-icon="mdi-email"
             placeholder="Email"
-            :rules="[signupRules.required, signupRules.emailMatch]"
+            :rules="[signupRules.required]"
             validate-on="blur"
             variant="outlined"
             density="comfortable"
@@ -21,11 +22,14 @@
             class="mt-1"
             placeholder="Password"
             :rules="[signupRules.required]"
+            :type="showPassword1 ? 'text' : 'password'"
+            :append-inner-icon="showPassword1 ? 'mdi-eye' : 'mdi-eye-off'"
             validate-on="blur"
             variant="outlined"
             density="comfortable"
             style="width: 100%"
             color="primary"
+            @click:appendInner="showPassword1 = !showPassword1"
           ></v-text-field>
           <!-- Verify password -->
           <v-text-field
@@ -33,11 +37,14 @@
             class="mt-1"
             placeholder="Verify password"
             :rules="[signupRules.required, signupRules.verifyPassword]"
+            :type="showPassword2 ? 'text' : 'password'"
+            :append-inner-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
             validate-on="blur"
             variant="outlined"
             density="comfortable"
             style="width: 100%"
             color="primary"
+            @click:appendInner="showPassword2 = !showPassword2"
           ></v-text-field>
           <!-- Fisrt name -->
           <v-text-field
@@ -63,13 +70,12 @@
           ></v-text-field>
         </v-form>
         <div class="signup-actions d-flex flex-column align-center justify-center mt-5">
-          <v-btn color="primary" variant="flat">Signup</v-btn>
+          <v-btn color="primary" variant="flat" @click="onSignupClick">Signup</v-btn>
           <a
             class="text-primary text-decoration-none mt-5 ml-4"
-            href="#"
             rel="noopener noreferrer"
-            target="_blank"
-            @click="onRegisterClick"
+            target="_self"
+            @click="signinAnchorHandler"
           >
             Have account? Signin
           </a>
@@ -83,15 +89,18 @@
       </v-col>
       <v-spacer></v-spacer>
     </v-row>
-  </v-conainer>
+  </v-container>
 </template>
 
 <script>
+import { createNewUser } from "../../firebase/services/user";
 export default {
   name: "SignupPage",
   components: {},
   props: {},
   data: () => ({
+    showPassword1: false,
+    showPassword2: false,
     userEmail: "",
     userPassword1: "",
     userPassword2: "",
@@ -100,7 +109,26 @@ export default {
   }),
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    async onSignupClick() {
+      const { valid } = await this.$refs.signupForm.validate();
+      if (valid) {
+        const newUserData = {
+          Email: this.userEmail,
+          Password: this.userPassword1,
+          FirstName: this.userFirstName,
+          LastName: this.userLastName
+        };
+        const response = await createNewUser(newUserData);
+        console.log("response in client:", response);
+      }
+    },
+    signinAnchorHandler() {
+      this.$router.push({
+        name: "LoginPage"
+      });
+    }
+  },
   computed: {
     logoURL() {
       return "images/logo.png";
