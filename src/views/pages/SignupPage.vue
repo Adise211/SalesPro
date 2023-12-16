@@ -64,6 +64,15 @@
         </v-form>
         <div class="signup-actions d-flex flex-column align-center justify-center mt-5">
           <v-btn color="primary" variant="flat">Signup</v-btn>
+          <a
+            class="text-primary text-decoration-none mt-5 ml-4"
+            href="#"
+            rel="noopener noreferrer"
+            target="_blank"
+            @click="onRegisterClick"
+          >
+            Have account? Signin
+          </a>
         </div>
       </v-col>
       <v-spacer></v-spacer>
@@ -112,6 +121,6 @@ export default {
 <style scoped>
 .logo-img {
   position: relative;
-  bottom: 10vh;
+  bottom: 14vh;
 }
 </style>
