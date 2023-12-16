@@ -10,3 +10,7 @@ library - https://vcalendar.io/
 Popper for VCalendar - https://popper.js.org/docs/v2/
 SASS Variables for VCalendar - https://github.com/nathanreyes/v-calendar/blob/v3/src/styles/theme.css 
 
+-------------
+
+Pinia pesistedState plugin:
+https://prazdevs.github.io/pinia-plugin-persistedstate/ 
