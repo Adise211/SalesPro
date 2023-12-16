@@ -36,9 +36,16 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/calendar-page",
+      path: "/calendar-page/:calendarMode",
+      // calendarStatus: "edit" || "view"
       name: "CalendarPage",
       component: () => import("../views/pages/CalendarPage.vue"),
+      props: (route) => {
+        return {
+          ...route.params,
+          calendarMode: route.params.calendarMode
+        };
+      },
       meta: { layout: "DefaultLayout" }
     }
   ]

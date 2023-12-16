@@ -89,6 +89,7 @@
 
 <script>
 import { NavigationItems } from "../../utilities/consts";
+import { CalendarPageMode } from "../../utilities/consts";
 export default {
   name: "DefaultLayout",
   components: {},
@@ -100,22 +101,17 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    // onMenuOpen() {
-    //   if (this.order === 0) {
-    //     this.order = -1;
-    //     this.isMenuOpen = false;
-    //   } else {
-    //     this.order = 0;
-    //     this.isMenuOpen = true;
-    //   }
-    // },
     onNavItemClick(itemName) {
       let pageName;
+      let paramsObj;
       switch (itemName) {
         case NavigationItems.Calendar:
           pageName = "CalendarPage";
+          paramsObj = { calendarMode: CalendarPageMode.View };
           break;
         case NavigationItems.CreateEvent:
+          pageName = "CalendarPage";
+          paramsObj = { calendarMode: CalendarPageMode.Edit };
           break;
         case NavigationItems.Notes:
           break;
@@ -134,7 +130,8 @@ export default {
       }
 
       this.$router.push({
-        name: pageName
+        name: pageName,
+        params: paramsObj
       });
     }
   },

@@ -30,12 +30,18 @@ import ViewCards from "@/components/ViewCards.vue";
 import DisplayCalendar from "../../components/DisplayCalendar.vue";
 import EditCalendar from "../../components/EditCalendar.vue";
 import { Calendar } from "v-calendar";
+import { CalendarPageMode } from "../../utilities/consts";
 import "v-calendar/style.css";
 
 export default {
   name: "CalendarPage",
   components: { ViewCards, Calendar, DisplayCalendar, EditCalendar },
-  props: {},
+  props: {
+    calendarMode: {
+      type: String,
+      default: ""
+    }
+  },
   data: () => ({
     isOnEditCalendarMode: true,
     selectedDate: "",
@@ -51,7 +57,9 @@ export default {
     ]
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("current:", this.$route);
+  },
   methods: {
     dayClickHandler(calendar) {
       this.selectedDate = calendar.id;
@@ -59,7 +67,18 @@ export default {
     }
   },
   computed: {},
-  watch: {}
+  watch: {
+    calendarMode: {
+      handler(newVal) {
+        if (newVal === CalendarPageMode.View) {
+          this.isOnEditCalendarMode = false;
+        } else if (newVal === CalendarPageMode.Edit) {
+          this.isOnEditCalendarMode = true;
+        }
+      },
+      immediate: true
+    }
+  }
 };
 </script>
 

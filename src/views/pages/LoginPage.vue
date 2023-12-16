@@ -62,6 +62,7 @@
 
 <script>
 import { loginUser } from "../../firebase/services/user";
+import { CalendarPageMode } from "../../utilities/consts";
 export default {
   name: "LoginPage",
   components: {},
@@ -76,12 +77,17 @@ export default {
   methods: {
     async onSigninClick() {
       const { valid } = await this.$refs.loginForm.validate();
-      console.log(`before sending: email: ${this.userEmail}, password: ${this.userPassword}`);
       if (valid) {
         const response = await loginUser({
           Email: this.userEmail,
           Password: this.userPassword
         });
+        if (response) {
+          this.$router.push({
+            name: "CalendarPage",
+            calendarMode: CalendarPageMode.View
+          });
+        }
         console.log("client: signin response -", response);
       }
     },

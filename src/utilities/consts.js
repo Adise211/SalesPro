@@ -21,3 +21,8 @@ export const CalendarEventColors = {
   Purple: "purple",
   Pink: "pink"
 };
+
+export const CalendarPageMode = {
+  View: "view",
+  Edit: "edit"
+};

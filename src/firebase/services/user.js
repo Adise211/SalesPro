@@ -36,12 +36,10 @@ export async function updateUserProfile(data) {
 
 export async function loginUser(data) {
   try {
-    console.log("server data:", data);
     const email = data.Email;
     const password = data.Password;
     const response = await signInWithEmailAndPassword(auth, email, password);
     if (response) {
-      console.log("signin response:", response);
       const user = response.user;
       const { generalStore } = initStores();
       generalStore.setUserFullName(user.displayName);
