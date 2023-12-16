@@ -2,9 +2,10 @@
   <v-container fluid class="fill-height">
     <v-row class="fill-height">
       <v-spacer></v-spacer>
-      <v-col md="3" class="my-auto">
-        <!-- testt -->
-        <div class="login-container pa-10">
+      <v-col md="3" class="mt-16">
+        <div class="login-container px-10">
+          <!-- Logo -->
+          <v-img :src="logoURL" class="mb-10" />
           <div class="login-form">
             <!-- Email -->
             <v-text-field
@@ -41,6 +42,7 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col md="6" class="login-background-image">
+        <!-- BG Image -->
         <v-img :src="loginBackgroundURL"></v-img>
       </v-col>
     </v-row>
@@ -67,6 +69,9 @@ export default {
   computed: {
     loginBackgroundURL() {
       return "images/login-image2.jpg";
+    },
+    logoURL() {
+      return "images/logo.png";
     }
   },
   watch: {}
