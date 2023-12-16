@@ -24,6 +24,12 @@ const router = createRouter({
       meta: { layout: "MinimalLayout" }
     },
     {
+      path: "/signup",
+      name: "SignupPage",
+      component: () => import("../views/pages/SignupPage.vue"),
+      meta: { layout: "MinimalLayout" }
+    },
+    {
       path: "/view-page",
       name: "ViewPage",
       component: () => import("../views/pages/ViewPage.vue"),
