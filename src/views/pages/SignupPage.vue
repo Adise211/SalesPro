@@ -127,9 +127,15 @@ export default {
         console.log("response in client:", response);
         if (response) {
           this.isLoading = false;
-          this.$router.push({
-            name: "LoginPage"
+          this.$toast.open({
+            type: "success",
+            message: "Signed up successfully!"
           });
+          setTimeout(() => {
+            this.$router.push({
+              name: "LoginPage"
+            });
+          }, 500);
         }
       }
     },
@@ -144,7 +150,9 @@ export default {
       return "images/logo.png";
     },
     signupRules() {
-      const emailRegex = new RegExp(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/, "g");
+      const emailRegex = new RegExp(
+        /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/g
+      );
       return {
         required: (value) => !!value || "Required.",
         // TO DO: make the email regex work (not in use right now!)
