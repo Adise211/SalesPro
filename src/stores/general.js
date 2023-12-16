@@ -4,7 +4,8 @@ export const useGeneralStore = defineStore("general", {
   state: () => {
     return {
       userId: "",
-      sessionToken: ""
+      sessionToken: "",
+      userFullName: ""
     };
   },
   getters: {},
@@ -14,6 +15,9 @@ export const useGeneralStore = defineStore("general", {
     },
     setSessionToken(token) {
       this.sessionToken = token;
+    },
+    setUserFullName(fullName) {
+      this.userFullName = fullName;
     }
   }
 });

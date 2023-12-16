@@ -9,10 +9,12 @@ export async function createNewUser(data) {
     const response = await createUserWithEmailAndPassword(auth, email, password);
     const user = response.user;
     user.displayName = `${data.FirstName} ${data.LastName}`;
+
     // save the userId and sessionToken
     const { generalStore } = initStores();
     generalStore.setUserId(user.uid);
     generalStore.setSessionToken(user.accessToken);
+    generalStore.setUserFullName = user.displayName;
 
     return user;
   } catch (error) {
