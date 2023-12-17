@@ -36,6 +36,7 @@ export async function updateUserProfile(data) {
 
 export async function loginUser(data) {
   try {
+    console.log("cu user:", auth);
     const email = data.Email;
     const password = data.Password;
     const response = await signInWithEmailAndPassword(auth, email, password);

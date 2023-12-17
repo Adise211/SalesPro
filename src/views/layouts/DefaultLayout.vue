@@ -5,8 +5,8 @@
         <v-list>
           <v-list-item
             class="py-5"
-            title="Sara Smith"
-            subtitle="Developer"
+            :title="userFullName"
+            :subtitle="userEmail"
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
           ></v-list-item>
           <v-divider></v-divider>
@@ -71,14 +71,7 @@
           </div>
         </template>
       </v-navigation-drawer>
-      <v-app-bar color="blue-grey-darken-4" flat title="SalesPro">
-        <!-- <template v-slot:append>
-          <v-btn @click="onMenuOpen">Close menu</v-btn>
-        </template> -->
-        <!-- <template v-slot:prepend>
-          <v-app-bar-nav-icon @click="onMenuOpen"></v-app-bar-nav-icon>
-        </template> -->
-      </v-app-bar>
+      <v-app-bar color="blue-grey-darken-4" flat title="SalesPro"> </v-app-bar>
 
       <v-main class="main-content">
         <slot></slot>
@@ -90,14 +83,14 @@
 <script>
 import { NavigationItems } from "../../utilities/consts";
 import { CalendarPageMode } from "../../utilities/consts";
+import { mapState } from "pinia";
+import { useGeneralStore } from "../../stores/general";
+
 export default {
   name: "DefaultLayout",
   components: {},
   props: {},
-  data: () => ({
-    // isMenuOpen: false,
-    // drawerOrder: 0
-  }),
+  data: () => ({}),
   created() {},
   mounted() {},
   methods: {
@@ -135,7 +128,9 @@ export default {
       });
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(useGeneralStore, ["userEmail", "userFullName"])
+  },
   watch: {}
 };
 </script>

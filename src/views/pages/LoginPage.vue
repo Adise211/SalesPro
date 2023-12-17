@@ -39,7 +39,9 @@
             </v-form>
           </div>
           <div class="login-actions d-flex flex-column align-center justify-center mt-5">
-            <v-btn color="primary" variant="flat" @click="onSigninClick">Login</v-btn>
+            <v-btn color="primary" variant="flat" @click="onSigninClick" :loading="isLoading"
+              >Login</v-btn
+            >
             <a
               class="text-primary text-decoration-none mt-5 ml-4"
               rel="noopener noreferrer"
@@ -70,7 +72,8 @@ export default {
   data: () => ({
     userEmail: "",
     userPassword: "",
-    showPassword: false
+    showPassword: false,
+    isLoading: false
   }),
   created() {},
   mounted() {},
@@ -78,17 +81,20 @@ export default {
     async onSigninClick() {
       const { valid } = await this.$refs.loginForm.validate();
       if (valid) {
+        this.isLoading = true;
         const response = await loginUser({
           Email: this.userEmail,
           Password: this.userPassword
         });
+        console.log("client: signin response -", response);
+
         if (response) {
+          this.isLoading = false;
           this.$router.push({
             name: "CalendarPage",
-            calendarMode: CalendarPageMode.View
+            params: { calendarMode: CalendarPageMode.View }
           });
         }
-        console.log("client: signin response -", response);
       }
     },
     signupAnchorHandler() {
