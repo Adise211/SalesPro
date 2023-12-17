@@ -67,7 +67,7 @@
 
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn block color="primary" @click="onNavItemClick('Logout')"> Logout </v-btn>
+            <v-btn block color="primary" @click="onLogoutClick"> Logout </v-btn>
           </div>
         </template>
       </v-navigation-drawer>
@@ -85,6 +85,7 @@ import { NavigationItems } from "../../utilities/consts";
 import { CalendarPageMode } from "../../utilities/consts";
 import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
+import { logoutUser } from "../../firebase/services/user";
 
 export default {
   name: "DefaultLayout",
@@ -116,16 +117,24 @@ export default {
           break;
         case NavigationItems.Settings:
           break;
-        case NavigationItems.Logout:
-          break;
         default:
           break;
       }
-
       this.$router.push({
         name: pageName,
         params: paramsObj
       });
+    },
+    async onLogoutClick() {
+      const response = await logoutUser();
+      if (response?.isUserLogedout) {
+        // Reset store (user info)
+        useGeneralStore().$reset();
+        // Redirect to login page
+        this.$router.push({
+          name: "LoginPage"
+        });
+      }
     }
   },
   computed: {

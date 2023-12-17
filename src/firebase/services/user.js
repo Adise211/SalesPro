@@ -16,10 +16,6 @@ export async function createNewUser(data) {
       const userFullName = `${data.FirstName} ${data.LastName}`;
       updateUserProfile({ userFullName, userPhotoUrl: "" });
       // save the userId and sessionToken
-      const { generalStore } = initStores();
-      generalStore.setUserId(user.uid);
-      generalStore.setSessionToken(user.accessToken);
-
       return user;
     }
   } catch (error) {
@@ -43,11 +39,22 @@ export async function loginUser(data) {
     if (response) {
       const user = response.user;
       const { generalStore } = initStores();
+      generalStore.setUserId(user?.uid);
+      generalStore.setSessionToken(user?.accessToken);
       generalStore.setUserFullName(user.displayName);
       generalStore.setUserEmail(user.email);
       return user;
     }
   } catch (error) {
     console.log("error trying signin", error);
+  }
+}
+
+export async function logoutUser() {
+  try {
+    await auth.signOut();
+    return { isUserLogedout: true };
+  } catch (error) {
+    console.log("error trying to logout", error);
   }
 }

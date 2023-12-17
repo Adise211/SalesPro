@@ -57,9 +57,7 @@ export default {
     ]
   }),
   created() {},
-  mounted() {
-    console.log("current:", this.$route);
-  },
+  mounted() {},
   methods: {
     dayClickHandler(calendar) {
       this.selectedDate = calendar.id;
