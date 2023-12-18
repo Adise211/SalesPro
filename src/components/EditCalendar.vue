@@ -6,7 +6,7 @@
         <!-- Selected date -->
         <v-text-field
           :model-value="selectedDate"
-          label="Date"
+          placeholder="Date"
           variant="outlined"
           readonly
           disabled
@@ -17,9 +17,10 @@
         <!-- Company's name -->
         <v-text-field
           v-model="companyName"
-          label="Company"
+          placeholder="Company"
           variant="outlined"
           density="comfortable"
+          :rules="[formRules.required]"
           style="width: 50%"
           color="primary"
         ></v-text-field>
@@ -28,9 +29,10 @@
           v-model="pickedColor"
           variant="outlined"
           density="comfortable"
-          label="Event Color"
+          placeholder="Event Color"
           style="width: 50%"
           color="primary"
+          :rules="[formRules.required]"
           :items="eventColors"
           chips
         >
@@ -43,7 +45,7 @@
         <!-- Participants -->
         <v-text-field
           v-model="participants"
-          label="Participants"
+          placeholder="Participants"
           variant="outlined"
           density="comfortable"
           style="width: 50%"
@@ -52,7 +54,7 @@
         <!-- Event description -->
         <v-textarea
           v-model="description"
-          label="Description"
+          placeholder="Description"
           variant="outlined"
           color="primary"
           :rules="[formRules.required]"
