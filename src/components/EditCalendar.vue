@@ -63,7 +63,7 @@
     </template>
     <template v-slot:card-actions>
       <div class="pb-1">
-        <v-btn color="primary" variant="flat" @click="onSave">Save</v-btn>
+        <v-btn color="primary" variant="flat" @click="onSave" :loading="isLoading">Save</v-btn>
         <v-btn color="error" variant="outlined" @click="onReset">Reset</v-btn>
       </div>
     </template>
@@ -73,10 +73,11 @@
 <script>
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
-import { CalendarEventColors } from "../utilities/consts";
+import { CalendarEventColors, ToastMessages } from "../utilities/consts";
 import { useCalendarStore } from "../stores/calendar";
 import { mapState, mapActions } from "pinia";
 import { getToDos } from "../firebase/services/get";
+import { createCalendarEvent } from "../firebase/services/data";
 
 export default {
   components: { ViewCards },
@@ -90,7 +91,8 @@ export default {
     pickedColor: "",
     companyName: "",
     participants: "",
-    description: ""
+    description: "",
+    isLoading: false
   }),
   created() {},
   async mounted() {
@@ -104,13 +106,25 @@ export default {
       const { valid } = await this.$refs.eventForm.validate();
 
       if (valid) {
-        this.createNewEvent({
+        this.isLoading = true;
+        const response = await createCalendarEvent({
           date: this.selectedDate,
           color: this.pickedColor,
           company: this.companyName,
           participants: this.participants,
           description: this.description
         });
+        if (response?.createdEvent) {
+          // stop loading
+          this.isLoading = false;
+          // show success toast
+          this.$toast.open({
+            type: "success",
+            message: ToastMessages.SuccessMessages.Created
+          });
+          // reset form
+          this.$refs.eventForm.reset();
+        }
       }
     },
     onReset() {
