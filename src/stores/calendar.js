@@ -4,23 +4,27 @@ export const useCalendarStore = defineStore("calendar", {
   state: () => {
     return {
       eventsList: [
-        {
-          eventId: null,
-          eventDate: null, // new Date (year, month, day)
-          eventColor: "", // "red" || "blue" etc.
-          company: "", // the name of the company
-          description: "", // event description
-          participants: [] // who will be on the call
-        }
+        /**
+            {
+              eventId: null,
+              eventDate: null, --> new Date (year, month, day)
+              eventColor: String, --> "red" || "blue" etc.
+              company: String, --> the name of the company
+              description: String, --> event description
+              participants: String[] --> who will be on the call
+            }
+         */
       ],
       eventsAttrGropus: [
-        // ** This array keeps all the events with the same event color in one group **
-        // ** in order to keep the data organized **
-        {
-          groupColor: "", // events groups by color id : "red" / "blue" etc.
-          dot: "picked color", // "red" || "blue" etc.
-          dates: [{ eventId: null, eventDate: "" }] // list of dates with the same color
-        }
+        /**
+            ** This array keeps all the events with the same event color in one group **
+            ** in order to keep the data organized **
+            {
+              groupColor: String, --> events groups by color id : "red" / "blue" etc.
+              dot: "picked color", --> "red" || "blue" etc.
+              dates: [{ eventId: null, eventDate: "" }] --> list of dates with the same color
+            }
+         */
       ]
     };
   },
