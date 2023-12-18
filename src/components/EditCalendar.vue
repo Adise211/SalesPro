@@ -75,7 +75,7 @@
 import ViewCards from "./ViewCards.vue";
 import { CalendarEventColors, ToastMessages } from "../utilities/consts";
 import { useCalendarStore } from "../stores/calendar";
-import { mapState, mapActions } from "pinia";
+import { mapState } from "pinia";
 import { getToDos } from "../firebase/services/get";
 import { createCalendarEvent } from "../firebase/services/data";
 
@@ -101,7 +101,6 @@ export default {
     console.log("response of todos:", response);
   },
   methods: {
-    ...mapActions(useCalendarStore, ["createNewEvent"]),
     async onSave() {
       const { valid } = await this.$refs.eventForm.validate();
 

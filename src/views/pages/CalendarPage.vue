@@ -29,6 +29,8 @@
 import ViewCards from "@/components/ViewCards.vue";
 import DisplayCalendar from "../../components/DisplayCalendar.vue";
 import EditCalendar from "../../components/EditCalendar.vue";
+import { mapState } from "pinia";
+import { useCalendarStore } from "../../stores/calendar";
 import { Calendar } from "v-calendar";
 import { CalendarPageMode } from "../../utilities/consts";
 import "v-calendar/style.css";
@@ -64,6 +66,7 @@ export default {
       console.log("clicked on day...", this.selectedDate);
     }
   },
+  ...mapState(useCalendarStore, ["userEventsList"]),
   computed: {},
   watch: {
     calendarMode: {
