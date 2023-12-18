@@ -3,8 +3,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile
 } from "firebase/auth";
-import { auth } from "../connection";
+import { auth, db } from "../connection";
 import { initStores } from "../../stores";
+import { doc, setDoc } from "firebase/firestore";
 
 export async function createNewUser(data) {
   try {
@@ -15,8 +16,8 @@ export async function createNewUser(data) {
       const user = response.user;
       const userFullName = `${data.FirstName} ${data.LastName}`;
       updateUserProfile({ userFullName, userPhotoUrl: "" });
-      // save the userId and sessionToken
-      return user;
+      await setDoc(doc(db, "users", user.uid), { test: true });
+      return { createdNewUser: true };
     }
   } catch (error) {
     console.log("error creating new user", error);
@@ -32,7 +33,6 @@ export async function updateUserProfile(data) {
 
 export async function loginUser(data) {
   try {
-    console.log("cu user:", auth);
     const email = data.Email;
     const password = data.Password;
     const response = await signInWithEmailAndPassword(auth, email, password);

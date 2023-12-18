@@ -125,7 +125,7 @@ export default {
         };
         const response = await createNewUser(newUserData);
         console.log("response in client:", response);
-        if (response) {
+        if (response?.createdNewUser) {
           this.isLoading = false;
           this.$toast.open({
             type: "success",
