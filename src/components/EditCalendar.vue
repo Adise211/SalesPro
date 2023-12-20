@@ -76,8 +76,7 @@ import ViewCards from "./ViewCards.vue";
 import { CalendarEventColors, ToastMessages } from "../utilities/consts";
 import { useCalendarStore } from "../stores/calendar";
 import { mapState } from "pinia";
-import { getToDos } from "../firebase/services/get";
-import { createCalendarEvent } from "../firebase/services/data";
+import { createCalendarEvent, getCalendarEvents } from "../firebase/services/data";
 
 export default {
   components: { ViewCards },
@@ -95,11 +94,7 @@ export default {
     isLoading: false
   }),
   created() {},
-  async mounted() {
-    console.log("about to get the todos...");
-    const response = await getToDos();
-    console.log("response of todos:", response);
-  },
+  mounted() {},
   methods: {
     async onSave() {
       const { valid } = await this.$refs.eventForm.validate();
@@ -121,6 +116,7 @@ export default {
             type: "success",
             message: ToastMessages.SuccessMessages.Created
           });
+          getCalendarEvents();
           // reset form
           this.$refs.eventForm.reset();
         }

@@ -27,24 +27,7 @@ export const useCalendarStore = defineStore("calendar", {
       ]
     };
   },
-  getters: {
-    userEventsForDisplay() {
-      if (this.eventsAttrGropus.length > 0) {
-        const displayData = this.eventsAttrGropus.map((group) => {
-          // get dot (string) and dates (array of objects) props
-          const { dot, dates } = group;
-          // take the date value only from "dates" prop
-          const arrOfDates = dates.map((date) => {
-            return new Date(date.EventDate);
-          });
-          // create new obj
-          return { dot, dates: arrOfDates };
-        });
-
-        return displayData;
-      }
-    }
-  },
+  getters: {},
   actions: {
     setUserEventsList(data) {
       // add the new event in the events list
@@ -72,5 +55,8 @@ export const useCalendarStore = defineStore("calendar", {
         });
       }
     }
+  },
+  persist: {
+    storage: localStorage
   }
 });

@@ -28,6 +28,7 @@
 <script>
 import ViewCards from "@/components/ViewCards.vue";
 import DisplayCalendar from "../../components/DisplayCalendar.vue";
+// @ts-ignore
 import EditCalendar from "../../components/EditCalendar.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "../../stores/calendar";
@@ -62,11 +63,10 @@ export default {
   methods: {
     dayClickHandler(calendar) {
       this.selectedDate = calendar.id;
-      console.log("display this:", this.userEventsForDisplay);
     }
   },
   computed: {
-    ...mapState(useCalendarStore, ["userEventsForDisplay"])
+    ...mapState(useCalendarStore, ["eventsAttrGropus"])
   },
   watch: {
     calendarMode: {
@@ -79,12 +79,17 @@ export default {
       },
       immediate: true
     },
-    userEventsForDisplay: {
+    eventsAttrGropus: {
       handler(newData) {
-        console.log("new data?", newData);
-        newData.map((item) => {
-          this.calendarAttrs.push(item);
-        });
+        if (newData?.length) {
+          newData.map((group) => {
+            const eventsForDisplay = {
+              dot: group.dot,
+              dates: group.dates.map((date) => new Date(date.EventDate))
+            };
+            this.calendarAttrs.push(eventsForDisplay);
+          });
+        }
       },
       immediate: true
     }
