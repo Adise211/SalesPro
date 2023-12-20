@@ -18,9 +18,8 @@ export const useCalendarStore = defineStore("calendar", {
       eventsAttrGropus: [
         /**
             ** This array keeps all the events with the same event color in one group **
-            ** in order to keep the data organized **
+            ** in order to keep the data organized and easy to display**
             {
-              groupColor: String, --> events groups by color id : "red" / "blue" etc.
               dot: "picked color", --> "red" || "blue" etc.
               dates: [{ eventId: null, eventDate: "" }] --> list of dates with the same color
             }
@@ -28,7 +27,24 @@ export const useCalendarStore = defineStore("calendar", {
       ]
     };
   },
-  getters: {},
+  getters: {
+    userEventsForDisplay() {
+      if (this.eventsAttrGropus.length > 0) {
+        const displayData = this.eventsAttrGropus.map((group) => {
+          // get dot (string) and dates (array of objects) props
+          const { dot, dates } = group;
+          // take the date value only from "dates" prop
+          const arrOfDates = dates.map((date) => {
+            return new Date(date.EventDate);
+          });
+          // create new obj
+          return { dot, dates: arrOfDates };
+        });
+
+        return displayData;
+      }
+    }
+  },
   actions: {
     setUserEventsList(data) {
       // add the new event in the events list
@@ -40,7 +56,7 @@ export const useCalendarStore = defineStore("calendar", {
           const { EventId, EventDate, EventColor } = eventObj;
           // find the group by color
           const groupByColor = this.eventsAttrGropus.find((group) => {
-            return group.groupColor === EventColor;
+            return group.dot === EventColor;
           });
           if (groupByColor) {
             // if the group exist: push the event into this group
@@ -48,7 +64,6 @@ export const useCalendarStore = defineStore("calendar", {
           } else {
             // otherwise: cretae new group and add the event into it
             const newGroup = {
-              groupColor: EventColor,
               dot: EventColor,
               dates: [{ EventId, EventDate }]
             };

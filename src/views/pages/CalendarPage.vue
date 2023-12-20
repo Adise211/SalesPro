@@ -53,7 +53,6 @@ export default {
           color: "purple",
           fillMode: "light"
         },
-        // dot: "red",
         dates: new Date()
       }
     ]
@@ -63,11 +62,12 @@ export default {
   methods: {
     dayClickHandler(calendar) {
       this.selectedDate = calendar.id;
-      console.log("clicked on day...", this.selectedDate);
+      console.log("display this:", this.userEventsForDisplay);
     }
   },
-  ...mapState(useCalendarStore, ["userEventsList"]),
-  computed: {},
+  computed: {
+    ...mapState(useCalendarStore, ["userEventsForDisplay"])
+  },
   watch: {
     calendarMode: {
       handler(newVal) {
@@ -76,6 +76,15 @@ export default {
         } else if (newVal === CalendarPageMode.Edit) {
           this.isOnEditCalendarMode = true;
         }
+      },
+      immediate: true
+    },
+    userEventsForDisplay: {
+      handler(newData) {
+        console.log("new data?", newData);
+        newData.map((item) => {
+          this.calendarAttrs.push(item);
+        });
       },
       immediate: true
     }
