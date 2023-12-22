@@ -85,7 +85,9 @@ import { NavigationItems } from "../../utilities/consts";
 import { CalendarPageMode } from "../../utilities/consts";
 import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
+import { useCalendarStore } from "../../stores/calendar";
 import { logoutUser } from "../../firebase/services/user";
+import { getCalendarEvents } from "../../firebase/services/data";
 
 export default {
   name: "DefaultLayout",
@@ -93,7 +95,9 @@ export default {
   props: {},
   data: () => ({}),
   created() {},
-  mounted() {},
+  mounted() {
+    getCalendarEvents();
+  },
   methods: {
     onNavItemClick(itemName) {
       let pageName;
@@ -130,6 +134,7 @@ export default {
       if (response?.isUserLogedout) {
         // Reset store (user info)
         useGeneralStore().$reset();
+        useCalendarStore().$reset();
         // Redirect to login page
         this.$router.push({
           name: "LoginPage"

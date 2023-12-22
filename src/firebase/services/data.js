@@ -1,5 +1,6 @@
 import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { initStores } from "../../stores";
 
 export async function createCalendarEvent(data) {
   try {
@@ -33,10 +34,14 @@ export async function getCalendarEvents() {
 
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
+      const { calendarStore } = initStores();
       const documentData = docSnap.data();
-      return {
+      const result = {
         userEvents: documentData.userEvents || []
       };
+      // save user data to store
+      calendarStore.setUserEventsList(result.userEvents);
+      return result;
     } else {
       // docSnap.data() will be undefined in this case
       console.log("No such document!");
