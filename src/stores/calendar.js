@@ -15,7 +15,7 @@ export const useCalendarStore = defineStore("calendar", {
             }
          */
       ],
-      eventsAttrGropus: [
+      eventsGroupsAttr: [
         /**
             ** This array keeps all the events with the same event color in one group **
             ** in order to keep the data organized and easy to display**
@@ -29,16 +29,16 @@ export const useCalendarStore = defineStore("calendar", {
   },
   getters: {},
   actions: {
-    setUserEventsList(data) {
+    setUserEventsList(arr) {
       // add the new event in the events list
-      this.userEventsList = data;
+      this.userEventsList = arr;
 
       if (this.userEventsList.length > 0) {
         this.userEventsList.map((eventObj) => {
           // get event id, date and color
           const { EventId, EventDate, EventColor } = eventObj;
           // find the group by color
-          const groupByColor = this.eventsAttrGropus.find((group) => {
+          const groupByColor = this.eventsGroupsAttr.find((group) => {
             return group.dot === EventColor;
           });
           if (groupByColor) {
@@ -50,9 +50,35 @@ export const useCalendarStore = defineStore("calendar", {
               dot: EventColor,
               dates: [{ EventId, EventDate }]
             };
-            this.eventsAttrGropus.push(newGroup);
+            this.eventsGroupsAttr.push(newGroup);
           }
         });
+      }
+    },
+    addEventToListInStore(data) {
+      // for local changes (before updating the server)
+      const isEventAlreadyExist = this.userEventsList.find((item) => {
+        item.EventId === data.EventId;
+      });
+
+      if (!isEventAlreadyExist) {
+        const { EventId, EventDate, EventColor } = data;
+
+        this.userEventsList.push(data);
+        const groupByColor = this.eventsGroupsAttr.find((group) => {
+          return group.dot === EventColor;
+        });
+        if (groupByColor) {
+          // if the group exist: push the event into this group
+          groupByColor.dates.push({ EventId, EventDate });
+        } else {
+          // otherwise: cretae new group and add the event into it
+          const newGroup = {
+            dot: EventColor,
+            dates: [{ EventId, EventDate }]
+          };
+          this.eventsGroupsAttr.push(newGroup);
+        }
       }
     }
   },

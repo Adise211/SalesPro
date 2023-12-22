@@ -87,7 +87,6 @@ import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
 import { useCalendarStore } from "../../stores/calendar";
 import { logoutUser } from "../../firebase/services/user";
-import { getCalendarEvents } from "../../firebase/services/data";
 
 export default {
   name: "DefaultLayout",
@@ -95,9 +94,7 @@ export default {
   props: {},
   data: () => ({}),
   created() {},
-  mounted() {
-    getCalendarEvents();
-  },
+  mounted() {},
   methods: {
     onNavItemClick(itemName) {
       let pageName;

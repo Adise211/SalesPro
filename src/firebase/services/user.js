@@ -6,6 +6,7 @@ import {
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc } from "firebase/firestore";
+import { getCalendarEvents } from "./data";
 
 export async function createNewUser(data) {
   try {
@@ -38,12 +39,15 @@ export async function loginUser(data) {
     const signInResponse = await signInWithEmailAndPassword(auth, email, password);
     if (signInResponse) {
       const user = signInResponse.user;
-      const { generalStore } = initStores();
+      const { generalStore, calendarStore } = initStores();
       // save user auth info
       generalStore.setUserId(user?.uid);
       generalStore.setSessionToken(user?.accessToken);
       generalStore.setUserFullName(user.displayName);
       generalStore.setUserEmail(user.email);
+      // get user info and add it to the store
+      const calendarResponse = await getCalendarEvents();
+      calendarStore.setUserEventsList(calendarResponse.userEvents);
 
       return user;
     }

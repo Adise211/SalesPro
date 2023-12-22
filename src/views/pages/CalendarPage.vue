@@ -66,7 +66,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(useCalendarStore, ["eventsAttrGropus"])
+    ...mapState(useCalendarStore, ["eventsGroupsAttr"])
   },
   watch: {
     calendarMode: {
@@ -79,7 +79,7 @@ export default {
       },
       immediate: true
     },
-    eventsAttrGropus: {
+    eventsGroupsAttr: {
       handler(newData) {
         if (newData?.length) {
           newData.map((group) => {

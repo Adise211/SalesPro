@@ -75,8 +75,8 @@
 import ViewCards from "./ViewCards.vue";
 import { CalendarEventColors, ToastMessages } from "../utilities/consts";
 import { useCalendarStore } from "../stores/calendar";
-import { mapState } from "pinia";
-import { createCalendarEvent, getCalendarEvents } from "../firebase/services/data";
+import { mapState, mapActions } from "pinia";
+import { createCalendarEvent } from "../firebase/services/data";
 
 export default {
   components: { ViewCards },
@@ -96,6 +96,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapActions(useCalendarStore, ["addEventToListInStore"]),
     async onSave() {
       const { valid } = await this.$refs.eventForm.validate();
 
@@ -109,6 +110,8 @@ export default {
           description: this.description
         });
         if (response?.createdEvent) {
+          // save the event in store
+          this.addEventToListInStore(response.eventObject);
           // stop loading
           this.isLoading = false;
           // show success toast
@@ -116,7 +119,6 @@ export default {
             type: "success",
             message: ToastMessages.SuccessMessages.Created
           });
-          getCalendarEvents();
           // reset form
           this.$refs.eventForm.reset();
         }
