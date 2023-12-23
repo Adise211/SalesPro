@@ -41,7 +41,13 @@
   <ViewCards class="view-events-list mt-3" :cardHeight="290">
     <template v-slot:card-title>Week list:</template>
     <template v-slot:card-text>
-      <v-data-table :headers="tableHeaders" :items="tableItems">
+      <v-data-table
+        :headers="tableHeaders"
+        :items="tableItems"
+        height="160px"
+        :items-per-page="itemsPerPage"
+      >
+        <!-- table body (items) -->
         <template v-slot:item="{ item }">
           <tr>
             <td class="text-medium-emphasis">{{ item.EventDate }}</td>
@@ -52,6 +58,12 @@
               </v-chip>
             </td>
           </tr>
+        </template>
+        <!-- table footer (paging) -->
+        <template v-slot:bottom>
+          <div class="text-center pt-2">
+            <v-pagination v-model="page" :length="pageCount"></v-pagination>
+          </div>
         </template>
       </v-data-table>
     </template>
@@ -74,7 +86,9 @@ export default {
     }
   },
   data: () => ({
-    currentIndex: 0
+    currentIndex: 0,
+    page: 1,
+    itemsPerPage: 5
   }),
   created() {},
   mounted() {},
@@ -140,6 +154,9 @@ export default {
         });
       }
       return result;
+    },
+    pageCount() {
+      return Math.ceil(this.tableItems.length / this.itemsPerPage);
     },
     weekRange: function () {
       return {
