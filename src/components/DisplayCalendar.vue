@@ -39,9 +39,17 @@
     </template>
   </ViewCards>
   <ViewCards class="view-events-list mt-3">
-    <template v-slot:card-title>List:</template>
+    <template v-slot:card-title>Week list:</template>
     <template v-slot:card-text>
-      <v-data-table :headers="tableHeaders"> </v-data-table>
+      <v-data-table :headers="tableHeaders" :items="tableItems">
+        <template v-slot:item="{ item }">
+          <tr>
+            <td class="text-medium-emphasis">{{ item.EventDate }}</td>
+            <td class="text-medium-emphasis">{{ item.Company }}</td>
+            <td>{{ item.Status }}</td>
+          </tr>
+        </template>
+      </v-data-table>
     </template>
   </ViewCards>
 </template>
@@ -51,6 +59,7 @@
 import ViewCards from "./ViewCards.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "../stores/calendar";
+import moment from "moment";
 
 export default {
   components: { ViewCards },
@@ -103,6 +112,31 @@ export default {
           key: "status"
         }
       ];
+    },
+    tableItems: function () {
+      let result;
+      // get current week events
+      const currentWeekEvents = this.userEventsList.filter((item) => {
+        if (this.weekRange.dayFirst <= item.EventDate && item.EventDate <= this.weekRange.dayLast) {
+          return item;
+        }
+      });
+      if (currentWeekEvents.length > 0) {
+        result = currentWeekEvents.map((cwe) => {
+          const { EventDate, Company } = cwe;
+          return {
+            EventDate,
+            Company
+          };
+        });
+      }
+      return result;
+    },
+    weekRange: function () {
+      return {
+        dayFirst: moment(new Date()).startOf("week").format("YYYY-MM-DD"),
+        dayLast: moment(new Date()).endOf("week").format("YYYY-MM-DD")
+      };
     }
   },
   watch: {
