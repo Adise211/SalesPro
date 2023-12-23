@@ -2,7 +2,7 @@
   <v-container fluid class="calendar-page">
     <v-row>
       <v-col md="6" v-if="!isOnEditCalendarMode">
-        <DisplayCalendar></DisplayCalendar>
+        <DisplayCalendar :selectedDate="selectedDate"></DisplayCalendar>
       </v-col>
       <v-col md="6" v-if="isOnEditCalendarMode">
         <EditCalendar :selectedDate="selectedDate"></EditCalendar>

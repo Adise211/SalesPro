@@ -16,6 +16,7 @@ a {
   --app-font-size: 16px;
   --app-font-family: "Rubik", sans-serif;
   --app-main-bg-color: #f5f5f5;
+  --app-orange: #f4511e;
 }
 
 .main-content {
@@ -35,6 +36,10 @@ a {
     }
   }
   .vc-weekday {
-    color: #f4511e;
+    color: var(--app-orange);
   }
+}
+
+.app-orange-color {
+  color: var(--app-orange);
 }
