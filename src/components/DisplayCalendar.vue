@@ -46,7 +46,11 @@
           <tr>
             <td class="text-medium-emphasis">{{ item.EventDate }}</td>
             <td class="text-medium-emphasis">{{ item.Company }}</td>
-            <td>{{ item.Status }}</td>
+            <td>
+              <v-chip :color="item.Status === weekListStatus.Done ? 'green' : 'gray'">
+                {{ item.Status }}
+              </v-chip>
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -123,10 +127,15 @@ export default {
       });
       if (currentWeekEvents.length > 0) {
         result = currentWeekEvents.map((cwe) => {
+          const today = moment(new Date()).format("YYYY-MM-DD");
+          console.log("today:", today);
           const { EventDate, Company } = cwe;
+          const eventStatus =
+            today < EventDate ? this.weekListStatus.Soon : this.weekListStatus.Done;
           return {
             EventDate,
-            Company
+            Company,
+            Status: eventStatus
           };
         });
       }
@@ -136,6 +145,12 @@ export default {
       return {
         dayFirst: moment(new Date()).startOf("week").format("YYYY-MM-DD"),
         dayLast: moment(new Date()).endOf("week").format("YYYY-MM-DD")
+      };
+    },
+    weekListStatus: function () {
+      return {
+        Done: "Done",
+        Soon: "Soon"
       };
     }
   },
