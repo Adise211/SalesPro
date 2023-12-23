@@ -22,11 +22,17 @@
     </template>
     <template v-slot:card-actions v-if="currentEvents.length > 0">
       <div class="pb-1 d-flex flex-row justify-space-between" style="width: 100%">
-        <v-btn color="primary" class="font-weight-bold">Previous</v-btn>
+        <v-btn
+          color="primary"
+          class="font-weight-bold"
+          @click="onPreviousBtnClick"
+          :disabled="currentEvents.length < 2 || currentIndex === 0"
+          >Previous</v-btn
+        >
         <v-btn
           class="app-orange-color font-weight-bold"
           @click="onNextBtnClick"
-          :disabled="isNextBtnDisabled || currentEvents.length < 2"
+          :disabled="currentEvents.length < 2 || currentIndex === currentEvents.length - 1"
           >Next</v-btn
         >
       </div>
@@ -49,18 +55,22 @@ export default {
     }
   },
   data: () => ({
-    currentIndex: 0,
-    isNextBtnDisabled: false
+    currentIndex: 0
   }),
   created() {},
   mounted() {},
   methods: {
     onNextBtnClick() {
-      const isThelastEventInList = this.currentIndex < this.currentEvents.length;
-      if (!isThelastEventInList) {
+      if (this.currentIndex < this.currentEvents.length) {
+        // not the last index - move to the next event
         this.currentIndex = this.currentIndex + 1;
-      } else {
-        this.isNextBtnDisabled = true;
+      }
+    },
+    onPreviousBtnClick() {
+      const isTheFisrtIndex = this.currentIndex === 0;
+      if (!isTheFisrtIndex) {
+        // not the first index - back to previous event
+        this.currentIndex = this.currentIndex - 1;
       }
     }
   },
@@ -77,7 +87,7 @@ export default {
     selectedDate: {
       handler(newVal, oldVal) {
         if (newVal != oldVal) {
-          this.isNextBtnDisabled = false;
+          // different date - reset current index
           this.currentIndex = 0;
         }
       },
