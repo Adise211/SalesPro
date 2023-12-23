@@ -1,5 +1,5 @@
 <template>
-  <ViewCards withActions>
+  <ViewCards withActions class="view-events-details">
     <template v-slot:card-title>Events:</template>
     <template v-slot:card-text>
       <div v-if="currentEvents.length > 0">
@@ -36,6 +36,12 @@
           >Next</v-btn
         >
       </div>
+    </template>
+  </ViewCards>
+  <ViewCards class="view-events-list mt-3">
+    <template v-slot:card-title>List:</template>
+    <template v-slot:card-text>
+      <v-data-table :headers="tableHeaders"> </v-data-table>
     </template>
   </ViewCards>
 </template>
@@ -81,6 +87,22 @@ export default {
         return item.EventDate === this.selectedDate;
       });
       return eventsList || [];
+    },
+    tableHeaders: function () {
+      return [
+        {
+          title: "Date",
+          key: "EventDate"
+        },
+        {
+          title: "Company",
+          key: "Company"
+        },
+        {
+          title: "Status",
+          key: "status"
+        }
+      ];
     }
   },
   watch: {
