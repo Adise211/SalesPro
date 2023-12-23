@@ -1,6 +1,6 @@
 <template>
   <div class="view-card">
-    <v-card elevation="5" :max-width="cardMaxWidth" max-height="100%" class="">
+    <v-card elevation="5" :max-width="cardMaxWidth" max-height="100%" :height="cardHeight">
       <v-card-title>
         <slot name="card-title"></slot>
       </v-card-title>
@@ -28,6 +28,10 @@ export default {
     withActions: {
       type: Boolean,
       default: false
+    },
+    cardHeight: {
+      type: [Number, String],
+      default: ""
     }
   },
   data: () => ({}),

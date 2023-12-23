@@ -1,5 +1,5 @@
 <template>
-  <ViewCards withActions class="view-events-details">
+  <ViewCards withActions class="view-events-details" :cardHeight="290">
     <template v-slot:card-title>Events:</template>
     <template v-slot:card-text>
       <div v-if="currentEvents.length > 0">
@@ -38,7 +38,7 @@
       </div>
     </template>
   </ViewCards>
-  <ViewCards class="view-events-list mt-3">
+  <ViewCards class="view-events-list mt-3" :cardHeight="290">
     <template v-slot:card-title>Week list:</template>
     <template v-slot:card-text>
       <v-data-table :headers="tableHeaders" :items="tableItems">
