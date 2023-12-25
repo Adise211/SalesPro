@@ -33,6 +33,8 @@ export const TrackingPageLevels = {
   Closed: "closed"
 };
 
+export const TrackingStatusTypes = ["Folllow Ups", "Leads", "Closed"];
+
 export const ToastMessages = {
   SuccessMessages: {
     Created: "Created Successfully!",

@@ -25,9 +25,20 @@
                   <td class="text-medium-emphasis">{{ item.Company }}</td>
                   <td class="text-medium-emphasis">{{ item.LastUpdate }}</td>
                   <td>
-                    <!-- <v-chip :color="item.Status === weekListStatus.Done ? 'green' : 'gray'">
-                {{ item.Status }}
-              </v-chip> -->
+                    <v-btn color="primary" density="compact">
+                      Change Status
+                      <v-menu activator="parent">
+                        <v-list>
+                          <v-list-item
+                            v-for="(item, index) in statusTypes"
+                            :key="index"
+                            :value="index"
+                          >
+                            <v-list-item-title>{{ item }}</v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                    </v-btn>
                   </td>
                 </tr>
               </template>
@@ -49,6 +60,7 @@
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
 import moment from "moment";
+import { TrackingStatusTypes } from "../utilities/consts";
 
 export default {
   name: "FollowUps",
@@ -74,7 +86,7 @@ export default {
         },
         {
           title: "",
-          key: "ChangeLevel"
+          key: "ChangeStatus"
         }
       ];
     },
@@ -88,6 +100,11 @@ export default {
     },
     pageCount() {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
+    },
+    statusTypes() {
+      return TrackingStatusTypes.filter((_, index) => {
+        return index != 0;
+      });
     }
   },
   watch: {}
