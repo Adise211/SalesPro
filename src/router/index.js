@@ -49,9 +49,16 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/tracking",
+      path: "/tracking/:trackingLevel",
+      // trackingLevel: "follow" || "leads" || "closed"
       name: "TrackingPage",
       component: () => import("../views/pages/TrackingPage.vue"),
+      props: (route) => {
+        return {
+          ...route.params,
+          trackingLevel: route.params.trackingLevel
+        };
+      },
       meta: { layout: "DefaultLayout" }
     }
   ]

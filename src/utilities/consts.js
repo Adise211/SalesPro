@@ -27,6 +27,12 @@ export const CalendarPageMode = {
   Edit: "edit"
 };
 
+export const TrackingPageLevels = {
+  Follow: "follow",
+  Leads: "leads",
+  Closed: "closed"
+};
+
 export const ToastMessages = {
   SuccessMessages: {
     Created: "Created Successfully!",
