@@ -47,6 +47,12 @@ const router = createRouter({
         };
       },
       meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/tracking",
+      name: "TrackingPage",
+      component: () => import("../views/pages/TrackingPage.vue"),
+      meta: { layout: "DefaultLayout" }
     }
   ]
 });
