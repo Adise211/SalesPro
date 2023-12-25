@@ -13,11 +13,21 @@
         <!-- List -->
         <ViewCards :cardHeight="580">
           <template v-slot:card-text>
+            <div class="d-flex flex-row">
+              <v-text-field
+                placeholder="Add new follow up"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
+              >
+              </v-text-field>
+              <v-btn color="success">Add</v-btn>
+            </div>
             <v-data-table
               :headers="tableHeaders"
               :items="tableItems"
               :items-per-page="itemsPerPage"
-              :height="450"
+              :height="400"
             >
               <!-- table body (items) -->
               <template v-slot:item="{ item }">
