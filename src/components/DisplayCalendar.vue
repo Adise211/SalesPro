@@ -142,7 +142,6 @@ export default {
       if (currentWeekEvents.length > 0) {
         result = currentWeekEvents.map((cwe) => {
           const today = moment(new Date()).format("YYYY-MM-DD");
-          console.log("today:", today);
           const { EventDate, Company } = cwe;
           const eventStatus =
             today < EventDate ? this.weekListStatus.Soon : this.weekListStatus.Done;

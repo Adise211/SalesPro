@@ -1,5 +1,5 @@
 <template>
-  <div class="tracking-page">
+  <div class="tracking-page fill-height">
     <component :is="currentComponent"></component>
   </div>
 </template>
