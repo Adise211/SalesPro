@@ -43,12 +43,12 @@
               >Login</v-btn
             >
             <a
-              class="text-primary text-decoration-none mt-5 ml-4"
+              class="text-primary text-decoration-none mt-3"
               rel="noopener noreferrer"
               target="_self"
               @click="signupAnchorHandler"
             >
-              Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
+              Sign up now
             </a>
           </div>
         </div>

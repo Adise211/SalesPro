@@ -74,7 +74,7 @@
             >Signup</v-btn
           >
           <a
-            class="text-primary text-decoration-none mt-5 ml-4"
+            class="text-primary text-decoration-none mt-3 ml-4"
             rel="noopener noreferrer"
             target="_self"
             @click="signinAnchorHandler"
