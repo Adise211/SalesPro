@@ -51,6 +51,11 @@
                       </v-menu>
                     </v-btn>
                   </td>
+                  <td>
+                    <v-icon size="small" @click="deleteItem(item)" class="ml-5">
+                      mdi-delete
+                    </v-icon>
+                  </td>
                 </tr>
               </template>
               <!-- table footer (paging) -->
@@ -83,7 +88,11 @@ export default {
   }),
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    deleteItem(item) {
+      console.log("delete this item =>", item);
+    }
+  },
   computed: {
     tableHeaders() {
       return [
@@ -96,8 +105,14 @@ export default {
           key: "LastUpdate"
         },
         {
-          title: "",
-          key: "ChangeStatus"
+          title: "Status",
+          key: "ChangeStatus",
+          align: "center"
+        },
+        {
+          title: "Delete",
+          key: "DeleteItem",
+          align: "center"
         }
       ];
     },
