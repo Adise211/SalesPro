@@ -16,7 +16,7 @@
             </template>
             <v-list-item
               link
-              title="View Calendar"
+              title="Calendar"
               variant="tonal"
               append-icon="mdi-calendar"
               @click="onNavItemClick('Calendar')"

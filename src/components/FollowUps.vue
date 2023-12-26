@@ -13,15 +13,16 @@
         <!-- List -->
         <ViewCards :cardHeight="580">
           <template v-slot:card-text>
-            <div class="d-flex flex-row">
+            <div class="d-flex flex-row align-start">
               <v-text-field
                 placeholder="Add new follow up"
                 variant="outlined"
-                density="comfortable"
+                density="compact"
                 color="primary"
+                style="max-width: 50%"
               >
               </v-text-field>
-              <v-btn color="success">Add</v-btn>
+              <v-btn color="success" class="ml-2" height="37">Add</v-btn>
             </div>
             <v-data-table
               :headers="tableHeaders"
