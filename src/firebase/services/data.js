@@ -12,6 +12,7 @@ export async function createCalendarEvent(data) {
       EventDate: data.date,
       EventColor: data.color,
       Company: data.company,
+      Prodact: data.prodact,
       Description: data.description,
       Participants: data.participants
     };

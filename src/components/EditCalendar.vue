@@ -24,6 +24,17 @@
           style="width: 50%"
           color="primary"
         ></v-text-field>
+        <!-- Prodact to sale -->
+        <v-select
+          v-model="prodactName"
+          variant="outlined"
+          density="comfortable"
+          placeholder="Prodact"
+          style="width: 50%"
+          color="primary"
+          :rules="[formRules.required]"
+          :items="['K-99', 'q-10']"
+        ></v-select>
         <!-- Color pick -->
         <v-select
           v-model="pickedColor"
@@ -89,6 +100,7 @@ export default {
   data: () => ({
     pickedColor: "",
     companyName: "",
+    prodactName: "",
     participants: "",
     description: "",
     isLoading: false
@@ -106,6 +118,7 @@ export default {
           date: this.selectedDate,
           color: this.pickedColor,
           company: this.companyName,
+          prodact: this.prodactName,
           participants: this.participants,
           description: this.description
         });
