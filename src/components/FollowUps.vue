@@ -2,7 +2,7 @@
   <v-container fluid class="fill-height">
     <v-row class="fill-height">
       <v-col md="6">
-        <!-- Charts -->
+        <!-- 1) Charts -->
         <ViewCards>
           <template v-slot:card-text>
             <!-- <AppCharts></AppCharts> -->
@@ -10,8 +10,8 @@
         </ViewCards>
       </v-col>
       <v-col md="6">
-        <!-- List -->
-        <ViewCards :cardHeight="580">
+        <!-- 2) List -->
+        <ViewCards>
           <template v-slot:card-text>
             <div class="d-flex flex-row align-start">
               <v-text-field
@@ -52,9 +52,7 @@
                     </v-btn>
                   </td>
                   <td>
-                    <v-icon size="small" @click="deleteItem(item)" class="ml-5">
-                      mdi-delete
-                    </v-icon>
+                    <v-icon @click="deleteItem(item)" color="error"> mdi-delete </v-icon>
                   </td>
                 </tr>
               </template>
