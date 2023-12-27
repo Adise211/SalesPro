@@ -10,7 +10,7 @@ export const NavigationItems = {
 };
 
 export const CalendarEventColors = {
-  Grey: "grey",
+  Gray: "gray",
   Red: "red",
   Orange: "orange",
   Yellow: "yellow",

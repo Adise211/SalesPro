@@ -145,7 +145,7 @@ export default {
     ...mapState(useCalendarStore, ["eventsList"]),
     eventColors() {
       return [
-        { title: CalendarEventColors.Grey, color: "#475569" },
+        { title: CalendarEventColors.Gray, color: "#475569" },
         { title: CalendarEventColors.Red, color: "#dc2626" },
         { title: CalendarEventColors.Orange, color: "#ea580c" },
         { title: CalendarEventColors.Yellow, color: "#ca8a04" },
