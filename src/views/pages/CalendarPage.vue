@@ -26,6 +26,7 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
+// @ts-ignore
 import DisplayCalendar from "../../components/DisplayCalendar.vue";
 // @ts-ignore
 import EditCalendar from "../../components/EditCalendar.vue";
