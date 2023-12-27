@@ -1,73 +1,79 @@
 <template>
-  <ViewCards withActions class="view-events-details" :cardHeight="290">
-    <template v-slot:card-title>Events:</template>
-    <template v-slot:card-text>
-      <div v-if="currentEvents.length > 0">
-        <v-row>
-          <v-col>
-            <div>Date</div>
-            <span class="text-medium-emphasis">{{ selectedDate }}</span>
-            <div class="mt-4">Company</div>
-            <span class="text-medium-emphasis">{{ currentEvents[currentIndex].Company }}</span>
-            <div class="mt-4">Participants</div>
-            <span class="text-medium-emphasis">{{ currentEvents[currentIndex].Participants }}</span>
-          </v-col>
-          <v-col>
-            <div class="mt-4">Description</div>
-            <span class="text-medium-emphasis">{{ currentEvents[currentIndex].Description }}</span>
-          </v-col>
-        </v-row>
-      </div>
-      <div v-else>No events</div>
-    </template>
-    <template v-slot:card-actions v-if="currentEvents.length > 0">
-      <div class="pb-1 d-flex flex-row justify-space-between" style="width: 100%">
-        <v-btn
-          color="primary"
-          class="font-weight-bold"
-          @click="onPreviousBtnClick"
-          :disabled="currentEvents.length < 2 || currentIndex === 0"
-          >Previous</v-btn
+  <div class="d-flex flex-column fill-height">
+    <ViewCards withActions class="view-events-details">
+      <template v-slot:card-title>Events:</template>
+      <template v-slot:card-text>
+        <div v-if="currentEvents.length > 0">
+          <v-row>
+            <v-col>
+              <div>Date</div>
+              <span class="text-medium-emphasis">{{ selectedDate }}</span>
+              <div class="mt-4">Company</div>
+              <span class="text-medium-emphasis">{{ currentEvents[currentIndex].Company }}</span>
+              <div class="mt-4">Participants</div>
+              <span class="text-medium-emphasis">{{
+                currentEvents[currentIndex].Participants
+              }}</span>
+            </v-col>
+            <v-col>
+              <div class="mt-4">Description</div>
+              <span class="text-medium-emphasis">{{
+                currentEvents[currentIndex].Description
+              }}</span>
+            </v-col>
+          </v-row>
+        </div>
+        <div v-else>No events</div>
+      </template>
+      <template v-slot:card-actions v-if="currentEvents.length > 0">
+        <div class="pb-1 d-flex flex-row justify-space-between" style="width: 100%">
+          <v-btn
+            color="primary"
+            class="font-weight-bold"
+            @click="onPreviousBtnClick"
+            :disabled="currentEvents.length < 2 || currentIndex === 0"
+            >Previous</v-btn
+          >
+          <v-btn
+            class="app-orange-color font-weight-bold"
+            @click="onNextBtnClick"
+            :disabled="currentEvents.length < 2 || currentIndex === currentEvents.length - 1"
+            >Next</v-btn
+          >
+        </div>
+      </template>
+    </ViewCards>
+    <ViewCards class="view-events-list mt-3">
+      <template v-slot:card-title>Week list:</template>
+      <template v-slot:card-text>
+        <v-data-table
+          :headers="tableHeaders"
+          :items="tableItems"
+          height="160px"
+          :items-per-page="itemsPerPage"
         >
-        <v-btn
-          class="app-orange-color font-weight-bold"
-          @click="onNextBtnClick"
-          :disabled="currentEvents.length < 2 || currentIndex === currentEvents.length - 1"
-          >Next</v-btn
-        >
-      </div>
-    </template>
-  </ViewCards>
-  <ViewCards class="view-events-list mt-3" :cardHeight="290">
-    <template v-slot:card-title>Week list:</template>
-    <template v-slot:card-text>
-      <v-data-table
-        :headers="tableHeaders"
-        :items="tableItems"
-        height="160px"
-        :items-per-page="itemsPerPage"
-      >
-        <!-- table body (items) -->
-        <template v-slot:item="{ item }">
-          <tr>
-            <td class="text-medium-emphasis">{{ item.EventDate }}</td>
-            <td class="text-medium-emphasis">{{ item.Company }}</td>
-            <td>
-              <v-chip :color="item.Status === weekListStatus.Done ? 'green' : 'gray'">
-                {{ item.Status }}
-              </v-chip>
-            </td>
-          </tr>
-        </template>
-        <!-- table footer (paging) -->
-        <template v-slot:bottom>
-          <div class="text-center pt-2">
-            <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>
-        </template>
-      </v-data-table>
-    </template>
-  </ViewCards>
+          <!-- table body (items) -->
+          <template v-slot:item="{ item }">
+            <tr>
+              <td class="text-medium-emphasis">{{ item.EventDate }}</td>
+              <td class="text-medium-emphasis">{{ item.Company }}</td>
+              <td>
+                <v-chip :color="item.Status === weekListStatus.Done ? 'green' : 'gray'">
+                  {{ item.Status }}
+                </v-chip>
+              </td>
+            </tr>
+          </template>
+          <!-- table footer (paging) -->
+          <template v-slot:bottom>
+            <div class="text-center pt-2">
+              <v-pagination v-model="page" :length="pageCount"></v-pagination>
+            </div>
+          </template>
+        </v-data-table>
+      </template>
+    </ViewCards>
+  </div>
 </template>
 
 <script>

@@ -1,0 +1,18 @@
+Layouts:
+--------
+- MinimalLayout
+- DefaultLayout
+
+
+Parent pages:
+-------------
+- ClendarPage
+- TrackingPage
+
+
+
+SubPages/SubComponents:
+-----------------------
+- DispalyCalendar
+- EditCalendar
+- FollowUps

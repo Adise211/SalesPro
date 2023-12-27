@@ -1,13 +1,12 @@
 <template>
-  <v-container fluid class="calendar-page">
-    <v-row>
+  <v-container fluid class="calendar-page fill-height py-0">
+    <v-row class="fill-height">
       <v-col md="6" v-if="!isOnEditCalendarMode">
         <DisplayCalendar :selectedDate="selectedDate"></DisplayCalendar>
       </v-col>
       <v-col md="6" v-if="isOnEditCalendarMode">
         <EditCalendar :selectedDate="selectedDate"></EditCalendar>
       </v-col>
-      <v-spacer></v-spacer>
       <v-col md="6">
         <ViewCards>
           <template v-slot:card-text>
