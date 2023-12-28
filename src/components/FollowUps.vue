@@ -34,7 +34,7 @@
               <template v-slot:item="{ item }">
                 <tr>
                   <td class="text-medium-emphasis">{{ item.Company }}</td>
-                  <td class="text-medium-emphasis">{{ item.LastUpdate }}</td>
+                  <td class="text-medium-emphasis">{{ item.LastUpdated }}</td>
                   <td>
                     <v-btn color="primary" density="compact">
                       Change Status
@@ -73,8 +73,9 @@
 <script>
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
-import moment from "moment";
 import { TrackingStatusTypes } from "../utilities/consts";
+import { mapState } from "pinia";
+import { useGeneralStore } from "../stores/general";
 
 export default {
   name: "FollowUps",
@@ -92,6 +93,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(useGeneralStore, ["companiesList"]),
     tableHeaders() {
       return [
         {
@@ -100,33 +102,30 @@ export default {
         },
         {
           title: "Last update",
-          key: "LastUpdate"
+          key: "LastUpdated"
         },
         {
           title: "Status",
-          key: "ChangeStatus",
           align: "center",
           sortable: false
         },
         {
           title: "Delete",
-          key: "DeleteItem",
           align: "center",
           sortable: false
         }
       ];
     },
     tableItems() {
-      return [
-        {
-          Company: "Amazon",
-          LastUpdate: `${moment(new Date()).format("YYYY-MM-DD")}`
-        },
-        {
-          Company: "Netflix",
-          LastUpdate: `${moment(new Date()).format("YYYY-MM-DD")}`
-        }
-      ];
+      let result;
+      if (this.companiesList.length > 0) {
+        result = this.companiesList.filter((company) => {
+          if (company.Status === "followups") return company;
+        });
+      } else {
+        result = [];
+      }
+      return result;
     },
     pageCount() {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
