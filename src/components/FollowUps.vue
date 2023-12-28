@@ -121,6 +121,10 @@ export default {
         {
           Company: "Amazon",
           LastUpdate: `${moment(new Date()).format("YYYY-MM-DD")}`
+        },
+        {
+          Company: "Netflix",
+          LastUpdate: `${moment(new Date()).format("YYYY-MM-DD")}`
         }
       ];
     },
