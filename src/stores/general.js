@@ -27,20 +27,20 @@ export const useGeneralStore = defineStore("general", {
     setCompaniesList(list) {
       this.companiesList = list;
     },
-    addNewCompany(companyName) {
+    addNewCompanyInStore(newCompanyObj) {
       // 1. If list is not empty
       if (this.companiesList.length > 0) {
         // Check if the company's name exist in the list
         const isCompanyExist = this.companiesList.find((com) => {
-          if (com === companyName) return com;
+          if (com.Company === newCompanyObj.Company) return com;
         });
         // If not exist - add it
         if (!isCompanyExist) {
-          this.companiesList.push(companyName);
+          this.companiesList.push(newCompanyObj);
         }
       } else {
         // 2. If the list is empty - add it
-        this.companiesList.push(companyName);
+        this.companiesList.push(newCompanyObj);
       }
     }
   },

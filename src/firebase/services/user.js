@@ -6,7 +6,7 @@ import {
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc } from "firebase/firestore";
-import { getCalendarEvents } from "./data";
+import { getUserData } from "./data";
 
 export async function createNewUser(data) {
   try {
@@ -36,7 +36,6 @@ export async function loginUser(data) {
   try {
     const email = data.Email;
     const password = data.Password;
-    let companiesList;
     const signInResponse = await signInWithEmailAndPassword(auth, email, password);
     if (signInResponse) {
       const user = signInResponse.user;
@@ -47,16 +46,9 @@ export async function loginUser(data) {
       generalStore.setUserFullName(user.displayName);
       generalStore.setUserEmail(user.email);
       // get user info and add it to the store
-      const calendarResponse = await getCalendarEvents();
-      calendarStore.setUserEventsList(calendarResponse.userEvents);
-      if (calendarResponse.userEvents.length > 0) {
-        companiesList = calendarResponse.userEvents.map((item) => {
-          return item.Company;
-        });
-      } else {
-        companiesList = [];
-      }
-      generalStore.setCompaniesList(companiesList);
+      const userDataResponse = await getUserData();
+      calendarStore.setUserEventsList(userDataResponse.userEvents);
+      generalStore.setCompaniesList(userDataResponse.userListedCompanies);
 
       return user;
     }

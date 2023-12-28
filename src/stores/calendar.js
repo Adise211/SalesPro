@@ -84,7 +84,12 @@ export const useCalendarStore = defineStore("calendar", {
       }
       // add to user's companies list
       const { generalStore } = initStores();
-      generalStore.addNewCompany(Company);
+      const newCompanyObj = {
+        Company: Company,
+        LastUpdated: EventDate,
+        Status: "followups"
+      };
+      generalStore.addNewCompanyInStore(newCompanyObj);
     }
   },
   persist: {

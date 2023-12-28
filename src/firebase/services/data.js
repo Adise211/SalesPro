@@ -10,7 +10,7 @@ export async function getUserData() {
       const documentData = docSnap.data();
       return {
         userEvents: documentData.userEvents || [],
-        userListedCompanies: documentData.userListedCompanies
+        userListedCompanies: documentData.userListedCompanies || []
       };
     } else {
       // docSnap.data() will be undefined in this case
@@ -47,6 +47,7 @@ export async function createCalendarEvent(data) {
       LastUpdated: data.date,
       Status: "followups"
     };
+    // also add or create company info
     await createNewCompany(newCompanyObj);
 
     return { createdEvent: true, eventObject: newEventObj };
@@ -77,6 +78,13 @@ export async function getCalendarEvents() {
 
 export async function createNewCompany(newCompanyObj) {
   try {
+    /**
+     newCompanyObj = {
+      Company: String (name),
+      LastUpdated: String (ISO date),
+      Status: Strign
+     }
+     */
     const userRef = doc(db, "users", auth.currentUser.uid);
     const response = await getUserData();
     // 1. If list is not empty
