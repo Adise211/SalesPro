@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="fill-height">
+  <v-container fluid class="fill-height py-0">
     <v-row class="fill-height">
       <v-col md="6">
         <!-- 1) Charts -->
@@ -51,7 +51,7 @@
                       </v-menu>
                     </v-btn>
                   </td>
-                  <td>
+                  <td class="text-center">
                     <v-icon @click="deleteItem(item)" color="error"> mdi-delete </v-icon>
                   </td>
                 </tr>
@@ -105,12 +105,14 @@ export default {
         {
           title: "Status",
           key: "ChangeStatus",
-          align: "center"
+          align: "center",
+          sortable: false
         },
         {
           title: "Delete",
           key: "DeleteItem",
-          align: "center"
+          align: "center",
+          sortable: false
         }
       ];
     },
