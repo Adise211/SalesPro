@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { initStores } from "./index";
 
 export const useCalendarStore = defineStore("calendar", {
   state: () => {
@@ -10,6 +11,7 @@ export const useCalendarStore = defineStore("calendar", {
               eventDate: null, --> new Date (year, month, day)
               eventColor: String, --> "red" || "blue" etc.
               company: String, --> the name of the company
+              prodact: String --> the prodact for sale
               description: String, --> event description
               participants: String[] --> who will be on the call
             }
@@ -57,13 +59,13 @@ export const useCalendarStore = defineStore("calendar", {
     },
     addEventToListInStore(data) {
       // for local changes (before updating the server)
+      const { EventId, EventDate, EventColor, Company } = data;
+
       const isEventAlreadyExist = this.userEventsList.find((item) => {
         item.EventId === data.EventId;
       });
 
       if (!isEventAlreadyExist) {
-        const { EventId, EventDate, EventColor } = data;
-
         this.userEventsList.push(data);
         const groupByColor = this.eventsGroupsAttr.find((group) => {
           return group.dot === EventColor;
@@ -80,6 +82,9 @@ export const useCalendarStore = defineStore("calendar", {
           this.eventsGroupsAttr.push(newGroup);
         }
       }
+      // add to user's companies list
+      const { generalStore } = initStores();
+      generalStore.addNewCompany(Company);
     }
   },
   persist: {

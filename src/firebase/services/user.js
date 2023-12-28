@@ -36,6 +36,7 @@ export async function loginUser(data) {
   try {
     const email = data.Email;
     const password = data.Password;
+    let companiesList;
     const signInResponse = await signInWithEmailAndPassword(auth, email, password);
     if (signInResponse) {
       const user = signInResponse.user;
@@ -48,6 +49,14 @@ export async function loginUser(data) {
       // get user info and add it to the store
       const calendarResponse = await getCalendarEvents();
       calendarStore.setUserEventsList(calendarResponse.userEvents);
+      if (calendarResponse.userEvents.length > 0) {
+        companiesList = calendarResponse.userEvents.map((item) => {
+          return item.Company;
+        });
+      } else {
+        companiesList = [];
+      }
+      generalStore.setCompaniesList(companiesList);
 
       return user;
     }

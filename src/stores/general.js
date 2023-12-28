@@ -6,7 +6,8 @@ export const useGeneralStore = defineStore("general", {
       userId: "",
       sessionToken: "",
       userFullName: "",
-      userEmail: ""
+      userEmail: "",
+      companiesList: []
     };
   },
   getters: {},
@@ -22,11 +23,30 @@ export const useGeneralStore = defineStore("general", {
     },
     setUserEmail(email) {
       this.userEmail = email;
+    },
+    setCompaniesList(list) {
+      this.companiesList = list;
+    },
+    addNewCompany(companyName) {
+      // 1. If list is not empty
+      if (this.companiesList.length > 0) {
+        // Check if the company's name exist in the list
+        const isCompanyExist = this.companiesList.find((com) => {
+          if (com === companyName) return com;
+        });
+        // If not exist - add it
+        if (!isCompanyExist) {
+          this.companiesList.push(companyName);
+        }
+      } else {
+        // 2. If the list is empty - add it
+        this.companiesList.push(companyName);
+      }
     }
   },
   persist: [
     {
-      paths: ["userId", "userFullName", "userEmail"],
+      paths: ["userId", "userFullName", "userEmail", "companiesList"],
       storage: localStorage
     },
     {

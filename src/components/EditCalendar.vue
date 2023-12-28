@@ -123,7 +123,7 @@ export default {
           description: this.description
         });
         if (response?.createdEvent) {
-          // save the event in store
+          // save the event + company in store
           this.addEventToListInStore(response.eventObject);
           // stop loading
           this.isLoading = false;
