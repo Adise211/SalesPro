@@ -40,12 +40,8 @@
                       Change Status
                       <v-menu activator="parent">
                         <v-list>
-                          <v-list-item
-                            v-for="(item, index) in statusTypes"
-                            :key="index"
-                            :value="index"
-                          >
-                            <v-list-item-title>{{ item }}</v-list-item-title>
+                          <v-list-item v-for="item in statusTypes" :key="item.Id" :value="item.Id">
+                            <v-list-item-title>{{ item.Status }}</v-list-item-title>
                           </v-list-item>
                         </v-list>
                       </v-menu>
@@ -86,7 +82,9 @@ export default {
     page: 1
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("???", TrackingStatusTypes);
+  },
   methods: {
     deleteItem(item) {
       console.log("delete this item =>", item);
@@ -131,8 +129,8 @@ export default {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
     },
     statusTypes() {
-      return TrackingStatusTypes.filter((_, index) => {
-        return index != 0;
+      return TrackingStatusTypes.filter((type) => {
+        return type.Id !== 0;
       });
     }
   },

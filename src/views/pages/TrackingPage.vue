@@ -6,14 +6,14 @@
 
 <script>
 import FollowUps from "../../components/FollowUps.vue";
-import { TrackingPageLevels } from "../../utilities/consts";
+import { TrackingPageLabels } from "../../utilities/consts";
 const DEFAULT_COMPONENT = "FollowUps";
 
 export default {
   name: "TrackingPage",
   components: { FollowUps },
   props: {
-    trackingLevel: {
+    trackingLabel: {
       type: String,
       default: ""
     }
@@ -27,7 +27,7 @@ export default {
   computed: {
     currentComponent() {
       let result;
-      if (this.currentLevel === TrackingPageLevels.Follow) {
+      if (this.currentLevel === TrackingPageLabels.FollowUps) {
         result = "FollowUps";
       } else {
         result = DEFAULT_COMPONENT;
@@ -36,7 +36,7 @@ export default {
     }
   },
   watch: {
-    trackingLevel: {
+    trackingLabel: {
       handler(newVal) {
         this.currentLevel = newVal;
       },

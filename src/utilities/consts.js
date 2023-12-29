@@ -27,13 +27,17 @@ export const CalendarPageMode = {
   Edit: "edit"
 };
 
-export const TrackingPageLevels = {
-  Follow: "follow",
+export const TrackingPageLabels = {
+  FollowUps: "followUps",
   Leads: "leads",
   Closed: "closed"
 };
 
-export const TrackingStatusTypes = ["Folllow Ups", "Leads", "Closed"];
+export const TrackingStatusTypes = [
+  { Id: 0, Status: "Folllow Ups" },
+  { Id: 1, Status: "Leads" },
+  { Id: 2, Status: "Closed" }
+];
 
 export const ToastMessages = {
   SuccessMessages: {

@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { NavigationItems, CalendarPageMode, TrackingPageLevels } from "../../utilities/consts";
+import { NavigationItems, CalendarPageMode, TrackingPageLabels } from "../../utilities/consts";
 import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
 import { useCalendarStore } from "../../stores/calendar";
@@ -111,7 +111,7 @@ export default {
           break;
         case NavigationItems.FolllowUps:
           pageName = "TrackingPage";
-          paramsObj = { trackingLevel: TrackingPageLevels.Follow };
+          paramsObj = { trackingLabel: TrackingPageLabels.FollowUps };
           break;
         case NavigationItems.Leads:
           break;
