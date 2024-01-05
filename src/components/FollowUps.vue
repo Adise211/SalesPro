@@ -108,7 +108,7 @@ export default {
         Status: "followups"
       };
       const response = await createNewCompany(newCompanyObj);
-      if (response.createdCompany) {
+      if (response.success) {
         this.addNewCompanyInStore(newCompanyObj);
         toastMessage = ToastMessages.SuccessMessages.Created;
         toastType = "success";

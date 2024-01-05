@@ -122,7 +122,7 @@ export default {
           participants: this.participants,
           description: this.description
         });
-        if (response?.createdEvent) {
+        if (response?.success) {
           // save the event + company in store
           this.addEventToListInStore(response.eventObject);
           // stop loading

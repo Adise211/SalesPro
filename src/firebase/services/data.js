@@ -51,7 +51,7 @@ export async function createCalendarEvent(data) {
     // also add or create company info
     await createNewCompany(newCompanyObj);
 
-    return { createdEvent: true, eventObject: newEventObj };
+    return { success: true, eventObject: newEventObj };
   } catch (error) {
     console.log("error when creating new event:", error);
   }
@@ -104,17 +104,17 @@ export async function createNewCompany(newCompanyObj) {
         await updateDoc(userRef, {
           userListedCompanies: arrayUnion(newCompanyObj)
         });
-        return { createdCompany: true };
+        return { success: true };
       } else {
         // If exist - do nothing
-        return { createdCompany: false, message: "Company exist" };
+        return { success: false, message: "Company exist" };
       }
     } else {
       // 2. If the list is empty - add it
       await updateDoc(userRef, {
         userListedCompanies: arrayUnion(newCompanyObj)
       });
-      return { createdCompany: true };
+      return { success: true };
     }
   } catch (error) {
     console.log("error when creating new company:", error);
