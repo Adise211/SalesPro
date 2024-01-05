@@ -50,7 +50,7 @@ const router = createRouter({
     },
     {
       path: "/tracking/:trackingLabel",
-      // trackingLabel: "followUps" || "leads" || "closed"
+      // trackingLabel: "followups" || "leads" || "closed"
       name: "TrackingPage",
       component: () => import("../views/pages/TrackingPage.vue"),
       props: (route) => {

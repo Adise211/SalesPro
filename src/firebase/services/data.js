@@ -1,5 +1,6 @@
 import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { generatedId } from "@/utilities/consts";
 
 export async function getUserData() {
   try {
@@ -85,6 +86,10 @@ export async function createNewCompany(newCompanyObj) {
       Status: Strign ["followups" | "leads" | "closed"]
      }
      */
+
+    // add an id
+    newCompanyObj.Id = generatedId();
+
     const userRef = doc(db, "users", auth.currentUser.uid);
     const response = await getUserData();
     // 1. If list is not empty
