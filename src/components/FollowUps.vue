@@ -80,7 +80,7 @@ import ViewCards from "./ViewCards.vue";
 import { TrackingStatusTypes, ToastMessages } from "../utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "../stores/general";
-import { createNewCompany } from "../firebase/services/data";
+import { createNewCompany, removeComapny } from "../firebase/services/data";
 import moment from "moment";
 
 export default {
@@ -96,7 +96,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["addNewCompanyInStore"]),
+    ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
     async addNewItem() {
       let toastMessage;
       let toastType;
@@ -123,8 +123,15 @@ export default {
         message: toastMessage
       });
     },
-    deleteItem(item) {
-      console.log("delete this item =>", item);
+    async deleteItem(item) {
+      const response = await removeComapny(item);
+      if (response.success) {
+        this.removeCompanyFromStore(item);
+      }
+      this.$toast.open({
+        type: "success",
+        message: ToastMessages.SuccessMessages.Removed
+      });
     }
   },
   computed: {

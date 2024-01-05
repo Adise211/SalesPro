@@ -1,6 +1,6 @@
 import { auth, db } from "../connection";
-import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
-import { generatedId } from "@/utilities/consts";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+// import { generatedId } from "@/utilities/consts";
 
 export async function getUserData() {
   try {
@@ -88,7 +88,7 @@ export async function createNewCompany(newCompanyObj) {
      */
 
     // add an id
-    newCompanyObj.Id = generatedId();
+    // newCompanyObj.Id = generatedId();
 
     const userRef = doc(db, "users", auth.currentUser.uid);
     const response = await getUserData();
@@ -118,5 +118,17 @@ export async function createNewCompany(newCompanyObj) {
     }
   } catch (error) {
     console.log("error when creating new company:", error);
+  }
+}
+
+export async function removeComapny(companyObj) {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(userRef, {
+      userListedCompanies: arrayRemove(companyObj)
+    });
+    return { success: true };
+  } catch (error) {
+    console.log("error when removing an item:", error);
   }
 }

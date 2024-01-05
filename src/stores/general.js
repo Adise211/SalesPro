@@ -42,6 +42,14 @@ export const useGeneralStore = defineStore("general", {
         // 2. If the list is empty - add it
         this.companiesList.push(newCompanyObj);
       }
+    },
+    removeCompanyFromStore(companyObj) {
+      const objIndex = this.companiesList.indexOf(companyObj);
+
+      // only splice array when item is found
+      if (objIndex > -1) {
+        this.companiesList.splice(objIndex, 1); // 2nd parameter means remove one item only
+      }
     }
   },
   persist: [

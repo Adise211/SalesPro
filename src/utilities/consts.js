@@ -43,7 +43,8 @@ export const ToastMessages = {
   SuccessMessages: {
     Created: "Created Successfully!",
     Updated: "Updated Successfully!",
-    Delete: "Deleted Successfully!"
+    Delete: "Deleted Successfully!",
+    Removed: "Removed Successfully!"
   },
   ErrorMessages: {
     General: "General Error"
