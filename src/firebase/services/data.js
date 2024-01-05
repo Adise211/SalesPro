@@ -82,7 +82,7 @@ export async function createNewCompany(newCompanyObj) {
      newCompanyObj = {
       Company: String (name),
       LastUpdated: String (ISO date),
-      Status: Strign
+      Status: Strign ["followups" | "leads" | "closed"]
      }
      */
     const userRef = doc(db, "users", auth.currentUser.uid);

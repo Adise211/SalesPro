@@ -15,6 +15,7 @@
           <template v-slot:card-text>
             <div class="d-flex flex-row align-start">
               <v-text-field
+                v-model="companyName"
                 placeholder="Add new follow up"
                 variant="outlined"
                 density="compact"
@@ -22,7 +23,14 @@
                 style="max-width: 50%"
               >
               </v-text-field>
-              <v-btn color="success" class="ml-2" height="37">Add</v-btn>
+              <v-btn
+                color="success"
+                class="ml-2"
+                height="37"
+                @click="addNewItem"
+                :loading="isAddBtnLoading"
+                >Add</v-btn
+              >
             </div>
             <v-data-table
               :headers="tableHeaders"
@@ -69,9 +77,11 @@
 <script>
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
-import { TrackingStatusTypes } from "../utilities/consts";
-import { mapState } from "pinia";
+import { TrackingStatusTypes, ToastMessages } from "../utilities/consts";
+import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "../stores/general";
+import { createNewCompany } from "../firebase/services/data";
+import moment from "moment";
 
 export default {
   name: "FollowUps",
@@ -79,13 +89,40 @@ export default {
   props: {},
   data: () => ({
     itemsPerPage: "5",
-    page: 1
+    page: 1,
+    companyName: "",
+    isAddBtnLoading: false
   }),
   created() {},
-  mounted() {
-    console.log("???", TrackingStatusTypes);
-  },
+  mounted() {},
   methods: {
+    ...mapActions(useGeneralStore, ["addNewCompanyInStore"]),
+    async addNewItem() {
+      let toastMessage;
+      let toastType;
+      this.isAddBtnLoading = true;
+      const today = moment(new Date()).format("YYYY-MM-DD");
+      const newCompanyObj = {
+        Company: this.companyName,
+        LastUpdated: today,
+        Status: "followups"
+      };
+      const response = await createNewCompany(newCompanyObj);
+      if (response.createdCompany) {
+        this.addNewCompanyInStore(newCompanyObj);
+        toastMessage = ToastMessages.SuccessMessages.Created;
+        toastType = "success";
+      } else {
+        toastMessage = response.message;
+        toastType = "error";
+      }
+
+      this.isAddBtnLoading = false;
+      this.$toast.open({
+        type: toastType,
+        message: toastMessage
+      });
+    },
     deleteItem(item) {
       console.log("delete this item =>", item);
     }
