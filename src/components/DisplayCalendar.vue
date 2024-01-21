@@ -66,7 +66,7 @@
           </template>
           <!-- table footer (paging) -->
           <template v-slot:bottom>
-            <div class="text-center pt-2">
+            <div class="text-center pt-2" v-if="tableItems?.length">
               <v-pagination v-model="page" :length="pageCount"></v-pagination>
             </div>
           </template>

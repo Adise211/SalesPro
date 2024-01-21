@@ -121,7 +121,7 @@ export async function createNewCompany(newCompanyObj) {
   }
 }
 
-export async function removeComapny(companyObj) {
+export async function removeCompany(companyObj) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
     await updateDoc(userRef, {

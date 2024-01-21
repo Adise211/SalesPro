@@ -3,9 +3,9 @@
     <v-row class="fill-height">
       <v-col md="6">
         <!-- 1) Charts -->
-        <ViewCards>
+        <ViewCards cardTextFillHeight>
           <template v-slot:card-text>
-            <!-- <AppCharts></AppCharts> -->
+            <AppCharts :chartXData="currentChartXData"></AppCharts>
           </template>
         </ViewCards>
       </v-col>
@@ -77,15 +77,16 @@
 <script>
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
+import AppCharts from "../components/AppCharts.vue";
 import { TrackingStatusTypes, ToastMessages } from "../utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "../stores/general";
-import { createNewCompany, removeComapny } from "../firebase/services/data";
+import { createNewCompany, removeCompany } from "../firebase/services/data";
 import moment from "moment";
 
 export default {
   name: "FollowUps",
-  components: { ViewCards },
+  components: { ViewCards, AppCharts },
   props: {},
   data: () => ({
     itemsPerPage: "5",
@@ -94,7 +95,9 @@ export default {
     isAddBtnLoading: false
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("aaa:", moment(this.companiesList[0].LastUpdated).month());
+  },
   methods: {
     ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
     async addNewItem() {
@@ -124,7 +127,7 @@ export default {
       });
     },
     async deleteItem(item) {
-      const response = await removeComapny(item);
+      const response = await removeCompany(item);
       if (response.success) {
         this.removeCompanyFromStore(item);
       }
@@ -176,6 +179,15 @@ export default {
       return TrackingStatusTypes.filter((type) => {
         return type.Id !== 0;
       });
+    },
+    currentChartXData() {
+      return moment.monthsShort();
+    },
+    followupsChartData() {
+      // length of companies in this month
+      const data = [];
+
+      return data;
     }
   },
   watch: {}

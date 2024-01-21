@@ -7,7 +7,7 @@
     <v-card-subtitle>
       <slot name="card-sub-title"></slot>
     </v-card-subtitle>
-    <v-card-text>
+    <v-card-text :class="{ 'fill-height': cardTextFillHeight }">
       <slot name="card-text"></slot>
     </v-card-text>
     <v-card-actions v-if="withActions">
@@ -32,6 +32,10 @@ export default {
     cardHeight: {
       type: [Number, String],
       default: "100%"
+    },
+    cardTextFillHeight: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({}),
