@@ -76,7 +76,7 @@ router.beforeEach(async (to) => {
     isUserAuthorized = false;
   }
 
-  if (isUserAuthorized || to.name === "LoginPage") {
+  if (isUserAuthorized || to.name === "LoginPage" || to.name === "SignupPage") {
     navigationGuardResult = true;
   } else {
     navigationGuardResult = {
