@@ -5,7 +5,10 @@
         <!-- 1) Charts -->
         <ViewCards cardTextFillHeight>
           <template v-slot:card-text>
-            <AppCharts :chartXData="currentChartXData"></AppCharts>
+            <AppCharts
+              :chartXData="currentChartXData"
+              :chartSeriesData="followupsChartData"
+            ></AppCharts>
           </template>
         </ViewCards>
       </v-col>
@@ -95,9 +98,7 @@ export default {
     isAddBtnLoading: false
   }),
   created() {},
-  mounted() {
-    console.log("aaa:", moment(this.companiesList[0].LastUpdated).month());
-  },
+  mounted() {},
   methods: {
     ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
     async addNewItem() {
@@ -184,10 +185,34 @@ export default {
       return moment.monthsShort();
     },
     followupsChartData() {
-      // length of companies in this month
-      const data = [];
+      // create shallow copy
+      const monthsShortCopy = [...this.currentChartXData];
+      const itemsDatesByMonth = {};
+      // divide item dates by months
+      // and insert into "itemsDatesByMonth" object
+      this.tableItems.map((item) => {
+        const itemMonth = moment(item.LastUpdated).month();
+        if (itemsDatesByMonth[itemMonth]) {
+          itemsDatesByMonth[itemMonth].push(item.LastUpdated);
+        } else {
+          itemsDatesByMonth[itemMonth] = [];
+          itemsDatesByMonth[itemMonth].push(item.LastUpdated);
+        }
+      });
 
-      return data;
+      const objKeys = Object.keys(itemsDatesByMonth);
+      // take the 12 months of the year
+      this.currentChartXData.map((_, index) => {
+        // if a month of a year has dates from "itemsDatesByMonth" - replace it with
+        // the amount of dates
+        if (objKeys.includes(`${index}`)) {
+          monthsShortCopy.splice(index, 1, itemsDatesByMonth[index].length);
+        } else {
+          // otherwise - replace it with 0 amount of dates
+          monthsShortCopy.splice(index, 1, 0);
+        }
+      });
+      return monthsShortCopy;
     }
   },
   watch: {}
