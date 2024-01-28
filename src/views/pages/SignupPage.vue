@@ -1,11 +1,11 @@
 <template>
-  <v-container fluid class="fill-height">
+  <v-container fluid class="fill-height pa-0">
     <v-row class="fill-height">
       <v-spacer></v-spacer>
       <v-col md="3" class="my-auto">
         <div class="text-h3 text-primary text-center font-italic mb-5">SalesPro</div>
 
-        <v-form ref="signupForm">
+        <v-form ref="signupForm" class="d-flex flex-column justify-center align-center">
           <!-- Email -->
           <v-text-field
             v-model="userEmail"
@@ -15,7 +15,7 @@
             validate-on="blur"
             variant="outlined"
             density="comfortable"
-            style="width: 100%"
+            style="width: 80%"
             color="primary"
           ></v-text-field>
           <!-- Password -->
@@ -29,7 +29,7 @@
             validate-on="blur"
             variant="outlined"
             density="comfortable"
-            style="width: 100%"
+            style="width: 80%"
             color="primary"
             @click:appendInner="showPassword1 = !showPassword1"
           ></v-text-field>
@@ -44,7 +44,7 @@
             validate-on="blur"
             variant="outlined"
             density="comfortable"
-            style="width: 100%"
+            style="width: 80%"
             color="primary"
             @click:appendInner="showPassword2 = !showPassword2"
           ></v-text-field>
@@ -57,7 +57,7 @@
             validate-on="blur"
             variant="outlined"
             density="comfortable"
-            style="width: 100%"
+            style="width: 80%"
             color="primary"
           ></v-text-field>
           <!-- Last name -->
@@ -67,7 +67,7 @@
             placeholder="Last name (optinal)"
             variant="outlined"
             density="comfortable"
-            style="width: 100%"
+            style="width: 80%"
             color="primary"
           ></v-text-field>
         </v-form>
@@ -86,11 +86,12 @@
         </div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col md="7">
+      <v-col md="4" class="pa-0">
         <!-- BG Image -->
-        <div class="logo-img">
-          <v-img :src="logoURL" max-height="80vh"></v-img>
-        </div>
+        <!-- <div class="logo-img">
+          <v-img :src="logoURL" max-height="90vh"></v-img>
+        </div> -->
+        <div class="side-line"></div>
       </v-col>
     </v-row>
   </v-container>
@@ -173,4 +174,10 @@ export default {
   position: relative;
   bottom: 14vh;
 } */
+.side-line {
+  border: 1px solid black;
+  background-color: rgb(38, 50, 56);
+  height: 100%;
+  width: 100%;
+}
 </style>
