@@ -6,7 +6,9 @@
         <div class="login-container">
           <!-- Logo -->
           <!-- <v-img :src="logoURL" class="mb-10" /> -->
-          <div class="text-h3 text-primary text-center font-italic mb-5">SalesPro</div>
+          <div class="text-h3 text-primary text-center font-italic mb-5 font-weight-medium">
+            SalesPro
+          </div>
           <div class="login-form-wrapper">
             <!-- Email -->
             <v-form ref="loginForm">
@@ -19,7 +21,7 @@
                 validate-on="blur"
                 variant="outlined"
                 density="comfortable"
-                style="width: 100%"
+                style="width: 80%"
                 color="primary"
               ></v-text-field>
               <!-- Password -->
@@ -33,7 +35,7 @@
                 validate-on="blur"
                 variant="outlined"
                 density="comfortable"
-                style="width: 100%"
+                style="width: 80%"
                 color="primary"
                 @click:appendInner="showPassword = !showPassword"
               ></v-text-field>
@@ -44,12 +46,12 @@
               >Login</v-btn
             >
             <a
-              class="text-primary text-decoration-none mt-3"
+              class="text-decoration-none mt-3"
               rel="noopener noreferrer"
               target="_self"
               @click="signupAnchorHandler"
             >
-              Sign Up
+              New here? <span class="text-primary">Sign Up</span>
             </a>
           </div>
         </div>
