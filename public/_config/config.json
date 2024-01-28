@@ -1,0 +1,6 @@
+{
+  "session": {
+    "userActivityThreshold": 10800,
+    "userActivityCheckInterval": 900
+  }
+}

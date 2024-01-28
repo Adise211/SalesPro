@@ -1,22 +1,41 @@
 import { defineStore } from "pinia";
+import moment from "moment";
+import Config from "../utilities/config";
+import { convertTime } from "../utilities/utilsFuncs";
 
 export const useGeneralStore = defineStore("general", {
   state: () => {
     return {
       userId: "",
       sessionToken: "",
+      userLastLoggedInTime: 0,
       userFullName: "",
       userEmail: "",
       companiesList: []
     };
   },
-  getters: {},
+  getters: {
+    isSessionUserActive(state) {
+      let currentTime = moment(new Date());
+      let lastLoggedInTime = moment(state.userLastLoggedInTime);
+
+      return (
+        // how much time passed since user logged in until now in hours
+        currentTime.diff(lastLoggedInTime, "hours") <
+        // the limited time user could be active in the system (from second to hours)
+        convertTime(Config.session.userActivityThreshold).hours
+      );
+    }
+  },
   actions: {
     setUserId(data) {
       this.userId = data;
     },
     setSessionToken(token) {
       this.sessionToken = token;
+    },
+    setUserLastLoggedInTime(time) {
+      this.userLastLoggedInTime = time;
     },
     setUserFullName(fullName) {
       this.userFullName = fullName;
@@ -54,7 +73,7 @@ export const useGeneralStore = defineStore("general", {
   },
   persist: [
     {
-      paths: ["userId", "userFullName", "userEmail", "companiesList"],
+      paths: ["userId", "userLastLoggedInTime", "userFullName", "userEmail", "companiesList"],
       storage: localStorage
     },
     {

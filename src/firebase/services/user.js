@@ -42,6 +42,7 @@ export async function loginUser(data) {
       const { generalStore, calendarStore } = initStores();
       // save user auth info
       generalStore.setUserId(user?.uid);
+      generalStore.setUserLastLoggedInTime(new Date());
       generalStore.setSessionToken(user?.accessToken);
       generalStore.setUserFullName(user.displayName);
       generalStore.setUserEmail(user.email);
@@ -59,7 +60,10 @@ export async function loginUser(data) {
 
 export async function logoutUser() {
   try {
+    const { generalStore } = initStores();
+    generalStore.setUserLastLoggedInTime(0);
     await auth.signOut();
+
     return { isUserLogedout: true };
   } catch (error) {
     console.log("error trying to logout", error);

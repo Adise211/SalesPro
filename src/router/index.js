@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { initStores } from "../stores";
 
 /**
  *
@@ -62,6 +63,28 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     }
   ]
+});
+
+router.beforeEach(async (to) => {
+  let navigationGuardResult;
+  let isUserAuthorized;
+
+  const { generalStore } = initStores();
+  if (generalStore.userId) {
+    isUserAuthorized = true;
+  } else {
+    isUserAuthorized = false;
+  }
+
+  if (isUserAuthorized || to.name === "LoginPage") {
+    navigationGuardResult = true;
+  } else {
+    navigationGuardResult = {
+      name: "LoginPage"
+    };
+  }
+
+  return navigationGuardResult;
 });
 
 export default router;

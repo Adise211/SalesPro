@@ -86,6 +86,10 @@ import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
 import { useCalendarStore } from "../../stores/calendar";
 import { logoutUser } from "../../firebase/services/user";
+import Config from "../../utilities/config";
+import { convertTime } from "../../utilities/utilsFuncs";
+
+let checkUserActivityInterval;
 
 export default {
   name: "DefaultLayout",
@@ -93,7 +97,17 @@ export default {
   props: {},
   data: () => ({}),
   created() {},
-  mounted() {},
+  mounted() {
+    checkUserActivityInterval = setInterval(() => {
+      if (!this.isSessionUserActive) {
+        console.log("logged out auto!!!");
+        this.onLogoutClick();
+      }
+    }, convertTime(Config.session.userActivityCheckInterval).miliseconds);
+  },
+  unmounted() {
+    clearInterval(checkUserActivityInterval);
+  },
   methods: {
     onNavItemClick(itemName) {
       let pageName;
@@ -141,7 +155,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["userEmail", "userFullName"])
+    ...mapState(useGeneralStore, ["userEmail", "userFullName", "isSessionUserActive"])
   },
   watch: {}
 };
