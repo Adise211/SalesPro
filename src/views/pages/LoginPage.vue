@@ -6,6 +6,7 @@
         <div class="login-container">
           <!-- Logo -->
           <!-- <v-img :src="logoURL" class="mb-10" /> -->
+          <div class="text-h3 text-primary text-center font-italic mb-5">SalesPro</div>
           <div class="login-form-wrapper">
             <!-- Email -->
             <v-form ref="loginForm">
@@ -48,7 +49,7 @@
               target="_self"
               @click="signupAnchorHandler"
             >
-              Sign up now
+              Sign Up
             </a>
           </div>
         </div>
