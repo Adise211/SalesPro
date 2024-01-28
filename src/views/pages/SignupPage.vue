@@ -3,7 +3,11 @@
     <v-row class="fill-height">
       <v-spacer></v-spacer>
       <v-col md="3" class="my-auto">
-        <div class="text-h3 text-primary text-center font-italic mb-5">SalesPro</div>
+        <div class="text-h5 text-center mb-5 font-weight-bold">
+          Start closing
+          <span class="text-success">more deals</span>
+        </div>
+        <div class="subtitle-1 text-center mb-5">It's for free!</div>
 
         <v-form ref="signupForm" class="d-flex flex-column justify-center align-center">
           <!-- Email -->
@@ -76,12 +80,12 @@
             >Signup</v-btn
           >
           <a
-            class="text-primary text-decoration-none mt-3 ml-4"
+            class="text-decoration-none mt-3 ml-4"
             rel="noopener noreferrer"
             target="_self"
             @click="signinAnchorHandler"
           >
-            Have an account already? click here
+            Have an account already? <span class="text-primary">click here</span>
           </a>
         </div>
       </v-col>
@@ -91,7 +95,9 @@
         <!-- <div class="logo-img">
           <v-img :src="logoURL" max-height="90vh"></v-img>
         </div> -->
-        <div class="side-line"></div>
+        <div class="side-line d-flex flex-column justify-center">
+          <div class="text-h3 text-white text-center font-italic mb-5">SalesPro</div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
