@@ -3,6 +3,8 @@
     <v-row class="fill-height">
       <v-spacer></v-spacer>
       <v-col md="3" class="my-auto">
+        <div class="text-h3 text-primary text-center font-italic mb-5">SalesPro</div>
+
         <v-form ref="signupForm">
           <!-- Email -->
           <v-text-field
@@ -79,17 +81,17 @@
             target="_self"
             @click="signinAnchorHandler"
           >
-            Have account? Signin
+            Have an account already? click here
           </a>
         </div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col md="4" class="my-auto">
-        <div class="logo-img px-12">
-          <v-img :src="logoURL" />
+      <v-col md="7">
+        <!-- BG Image -->
+        <div class="logo-img">
+          <v-img :src="logoURL" max-height="80vh"></v-img>
         </div>
       </v-col>
-      <v-spacer></v-spacer>
     </v-row>
   </v-container>
 </template>
@@ -147,7 +149,7 @@ export default {
   },
   computed: {
     logoURL() {
-      return "images/logo.png";
+      return "/images/login-image2.jpg";
     },
     signupRules() {
       const emailRegex = new RegExp(
@@ -167,8 +169,8 @@ export default {
 </script>
 
 <style scoped>
-.logo-img {
+/* .logo-img {
   position: relative;
   bottom: 14vh;
-}
+} */
 </style>
