@@ -1,11 +1,11 @@
 <template>
-  <v-container fluid class="fill-height">
+  <v-container fluid class="fill-height pb-0">
     <v-row class="fill-height">
       <v-spacer></v-spacer>
-      <v-col md="3" class="mt-16">
-        <div class="login-container px-10">
+      <v-col md="3 my-auto">
+        <div class="login-container">
           <!-- Logo -->
-          <v-img :src="logoURL" class="mb-10" />
+          <!-- <v-img :src="logoURL" class="mb-10" /> -->
           <div class="login-form-wrapper">
             <!-- Email -->
             <v-form ref="loginForm">
@@ -54,9 +54,9 @@
         </div>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col md="6" class="login-background-image">
+      <v-col md="7" class="login-background-image pa-0">
         <!-- BG Image -->
-        <v-img :src="loginBackgroundURL"></v-img>
+        <v-img :src="loginBackgroundURL" width="300%" height="300%" cover></v-img>
       </v-col>
     </v-row>
   </v-container>
@@ -105,7 +105,7 @@ export default {
   },
   computed: {
     loginBackgroundURL() {
-      return "images/login-image2.jpg";
+      return "images/logo-image3.jpg";
     },
     logoURL() {
       return "images/logo.png";
