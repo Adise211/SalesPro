@@ -67,7 +67,7 @@
 
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn block color="primary" @click="onLogoutClick"> Logout </v-btn>
+            <v-btn block color="primary" @click="onLogout"> Logout </v-btn>
           </div>
         </template>
       </v-navigation-drawer>
@@ -98,12 +98,10 @@ export default {
   data: () => ({}),
   created() {},
   mounted() {
-    checkUserActivityInterval = setInterval(() => {
-      if (!this.isSessionUserActive) {
-        console.log("logged out auto!!!");
-        this.onLogoutClick();
-      }
-    }, convertTime(Config.session.userActivityCheckInterval).miliseconds);
+    checkUserActivityInterval = setInterval(
+      this.sessionExparationHandler(),
+      convertTime(Config.session.userActivityCheckInterval).miliseconds
+    );
   },
   unmounted() {
     clearInterval(checkUserActivityInterval);
@@ -141,7 +139,7 @@ export default {
         params: paramsObj
       });
     },
-    async onLogoutClick() {
+    async onLogout() {
       const response = await logoutUser();
       if (response?.isUserLogedout) {
         // Reset store (user info)
@@ -151,6 +149,12 @@ export default {
         this.$router.push({
           name: "LoginPage"
         });
+      }
+    },
+    sessionExparationHandler() {
+      if (!this.isSessionUserActive) {
+        console.log("logged out auto!!!");
+        this.onLogout();
       }
     }
   },
