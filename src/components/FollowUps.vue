@@ -60,7 +60,7 @@
                     </v-btn>
                   </td>
                   <td class="text-center">
-                    <v-icon @click="deleteItem(item)" color="error"> mdi-delete </v-icon>
+                    <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
                   </td>
                 </tr>
               </template>
@@ -75,6 +75,19 @@
         </ViewCards>
       </v-col>
     </v-row>
+    <v-dialog v-model="isDeleteDialogOpen" width="500">
+      <v-card height="120px">
+        <v-card-text>Are you sure you want to delete this item?</v-card-text>
+        <v-card-actions>
+          <div class="d-flex flex-row justify-start ml-auto">
+            <v-btn color="primary" variant="flat" @click="deleteItem(currentItem)">I am sure</v-btn>
+            <v-btn color="primary" variant="outlined" @click="isDeleteDialogOpen = false"
+              >Never mind</v-btn
+            >
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -96,7 +109,9 @@ export default {
     itemsPerPage: "5",
     page: 1,
     companyName: "",
-    isAddBtnLoading: false
+    isAddBtnLoading: false,
+    isDeleteDialogOpen: false,
+    currentItem: {}
   }),
   created() {},
   mounted() {},
@@ -128,6 +143,10 @@ export default {
         message: toastMessage
       });
     },
+    onDeleteIconClick(item) {
+      this.currentItem = item;
+      this.isDeleteDialogOpen = true;
+    },
     async deleteItem(item) {
       const response = await removeCompany(item);
       if (response.success) {
@@ -137,6 +156,9 @@ export default {
         type: "success",
         message: ToastMessages.SuccessMessages.Removed
       });
+      // Reset current item and close dialog
+      this.currentItem = {};
+      this.isDeleteDialogOpen = false;
     }
   },
   computed: {
