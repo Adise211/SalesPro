@@ -138,6 +138,7 @@ export default {
       }
 
       this.isAddBtnLoading = false;
+      this.companyName = "";
       this.$toast.open({
         type: toastType,
         message: toastMessage
