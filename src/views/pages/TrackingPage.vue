@@ -1,17 +1,15 @@
 <template>
-  <div class="tracking-page fill-height">
-    <component :is="currentComponent"></component>
-  </div>
+  <TrackingBoard :currentStage="currentStageName" :statusId="currentStatus"></TrackingBoard>
 </template>
 
 <script>
-import FollowUps from "../../components/FollowUps.vue";
-import { TrackingStagesId } from "../../utilities/consts";
-const DEFAULT_COMPONENT = "FollowUps";
+import TrackingBoard from "@/components/TrackingBoard.vue";
+import { TrackingStagesId } from "@/utilities/consts";
+const DEFAULT_COMPONENT = 0;
 
 export default {
   name: "TrackingPage",
-  components: { FollowUps },
+  components: { TrackingBoard },
   props: {
     stageId: {
       type: String,
@@ -19,18 +17,20 @@ export default {
     }
   },
   data: () => ({
-    currentLevel: ""
+    currentStageName: ""
   }),
   created() {},
   mounted() {},
   methods: {},
   computed: {
-    currentComponent() {
+    currentStatus() {
       let result;
-      if (this.currentLevel === TrackingStagesId.FollowUps) {
-        result = "FollowUps";
-      } else if (this.currentLevel === TrackingStagesId.Leads) {
-        result = "LeadsPage";
+      if (this.currentStageName === TrackingStagesId.FollowUps) {
+        result = 0;
+      } else if (this.currentStageName === TrackingStagesId.Leads) {
+        result = 1;
+      } else if (this.currentStageName === TrackingStagesId.Closed) {
+        result = 2;
       } else {
         result = DEFAULT_COMPONENT;
       }
@@ -40,7 +40,7 @@ export default {
   watch: {
     stageId: {
       handler(newVal) {
-        this.currentLevel = newVal;
+        this.currentStageName = newVal;
       },
       immediate: true
     }
