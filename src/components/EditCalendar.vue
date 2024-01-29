@@ -68,6 +68,7 @@
           placeholder="Description"
           variant="outlined"
           color="primary"
+          rows="2"
           :rules="[formRules.required]"
         ></v-textarea>
       </v-form>

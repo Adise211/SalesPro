@@ -10,7 +10,7 @@
     <v-card-text :class="{ 'fill-height': cardTextFillHeight }">
       <slot name="card-text"></slot>
     </v-card-text>
-    <v-card-actions v-if="withActions">
+    <v-card-actions v-if="withActions" class="pb-0">
       <slot name="card-actions"></slot>
     </v-card-actions>
   </v-card>

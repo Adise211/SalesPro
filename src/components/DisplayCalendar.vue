@@ -26,7 +26,7 @@
         <div v-else>No events</div>
       </template>
       <template v-slot:card-actions v-if="currentEvents.length > 0">
-        <div class="pb-1 d-flex flex-row justify-space-between" style="width: 100%">
+        <div class="d-flex flex-row justify-space-between" style="width: 100%">
           <v-btn
             color="primary"
             class="font-weight-bold"
