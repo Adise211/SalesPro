@@ -8,6 +8,7 @@
             <AppCharts
               :chartXData="currentChartXData"
               :chartSeriesData="followupsChartData"
+              :chartType="'bar'"
             ></AppCharts>
           </template>
         </ViewCards>
