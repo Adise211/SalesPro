@@ -40,7 +40,8 @@
               :headers="tableHeaders"
               :items="tableItems"
               :items-per-page="itemsPerPage"
-              :height="400"
+              :height="415"
+              :page="page"
             >
               <!-- table body (items) -->
               <template v-slot:item="{ item }">
@@ -106,7 +107,7 @@ export default {
   components: { ViewCards, AppCharts },
   props: {},
   data: () => ({
-    itemsPerPage: "5",
+    itemsPerPage: "6",
     page: 1,
     companyName: "",
     isAddBtnLoading: false,
