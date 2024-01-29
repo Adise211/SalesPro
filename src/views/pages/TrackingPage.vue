@@ -29,6 +29,8 @@ export default {
       let result;
       if (this.currentLevel === TrackingStagesId.FollowUps) {
         result = "FollowUps";
+      } else if (this.currentLevel === TrackingStagesId.Leads) {
+        result = "LeadsPage";
       } else {
         result = DEFAULT_COMPONENT;
       }
