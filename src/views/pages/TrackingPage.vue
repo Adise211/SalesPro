@@ -6,7 +6,7 @@
 
 <script>
 import FollowUps from "../../components/FollowUps.vue";
-import { TrackingPageLabels } from "../../utilities/consts";
+import { TrackingStagesId } from "../../utilities/consts";
 const DEFAULT_COMPONENT = "FollowUps";
 
 export default {
@@ -27,7 +27,7 @@ export default {
   computed: {
     currentComponent() {
       let result;
-      if (this.currentLevel === TrackingPageLabels.FollowUps) {
+      if (this.currentLevel === TrackingStagesId.FollowUps) {
         result = "FollowUps";
       } else {
         result = DEFAULT_COMPONENT;

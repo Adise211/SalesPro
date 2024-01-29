@@ -27,7 +27,7 @@ export const CalendarPageMode = {
   Edit: "edit"
 };
 
-export const TrackingPageLabels = {
+export const TrackingStagesId = {
   FollowUps: "followups",
   Leads: "leads",
   Closed: "closed"
