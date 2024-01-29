@@ -123,7 +123,7 @@ export default {
           break;
         case NavigationItems.FolllowUps:
           pageName = "TrackingPage";
-          paramsObj = { trackingLabel: TrackingPageLabels.FollowUps };
+          paramsObj = { stageId: TrackingPageLabels.FollowUps };
           break;
         case NavigationItems.Leads:
           break;

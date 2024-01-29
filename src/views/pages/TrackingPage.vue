@@ -13,7 +13,7 @@ export default {
   name: "TrackingPage",
   components: { FollowUps },
   props: {
-    trackingLabel: {
+    stageId: {
       type: String,
       default: ""
     }
@@ -36,7 +36,7 @@ export default {
     }
   },
   watch: {
-    trackingLabel: {
+    stageId: {
       handler(newVal) {
         this.currentLevel = newVal;
       },

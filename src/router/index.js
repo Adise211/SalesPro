@@ -50,14 +50,14 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/tracking/:trackingLabel",
-      // trackingLabel: "followups" || "leads" || "closed"
+      path: "/tracking/:stageId",
+      // stageId: "followups" || "leads" || "closed"
       name: "TrackingPage",
       component: () => import("../views/pages/TrackingPage.vue"),
       props: (route) => {
         return {
           ...route.params,
-          trackingLabel: route.params.trackingLabel
+          stageId: route.params.stageId
         };
       },
       meta: { layout: "DefaultLayout" }
