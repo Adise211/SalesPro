@@ -6,6 +6,7 @@
         <ViewCards cardTextFillHeight>
           <template v-slot:card-text>
             <AppCharts
+              v-if="showChart"
               :chartXData="currentChartXData"
               :chartSeriesData="currentChartYData"
               :chartType="'bar'"
@@ -118,7 +119,8 @@ export default {
     companyName: "",
     isAddBtnLoading: false,
     isDeleteDialogOpen: false,
-    currentItem: {}
+    currentItem: {},
+    showChart: true
   }),
   created() {},
   mounted() {},
@@ -246,7 +248,17 @@ export default {
       return monthsShortCopy;
     }
   },
-  watch: {}
+  watch: {
+    currentStage(newVal) {
+      if (newVal) {
+        this.showChart = false;
+
+        setTimeout(() => {
+          this.showChart = true;
+        }, 200);
+      }
+    }
+  }
 };
 </script>
 
