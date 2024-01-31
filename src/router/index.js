@@ -1,9 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { initStores } from "../stores";
+import LoginPage from "../views/pages/LoginPage.vue";
+import SignupPage from "../views/pages/SignupPage.vue";
+import CalendarPage from "../views/pages/CalendarPage.vue";
+import TrackingPage from "../views/pages/TrackingPage.vue";
 
 /**
  *
  * meta.layout --> type of layout ("DefaultLayout" or "MinimalLayout")
+ * No need for lazy load (small project + lazy loads creates a bug)
  *
  */
 
@@ -21,13 +26,13 @@ const router = createRouter({
     {
       path: "/login",
       name: "LoginPage",
-      component: () => import("../views/pages/LoginPage.vue"),
+      component: LoginPage,
       meta: { layout: "MinimalLayout" }
     },
     {
       path: "/signup",
       name: "SignupPage",
-      component: () => import("../views/pages/SignupPage.vue"),
+      component: SignupPage,
       meta: { layout: "MinimalLayout" }
     },
     {
@@ -40,7 +45,7 @@ const router = createRouter({
       path: "/calendar-page/:calendarMode",
       // calendarStatus: "edit" || "view"
       name: "CalendarPage",
-      component: () => import("../views/pages/CalendarPage.vue"),
+      component: CalendarPage,
       props: (route) => {
         return {
           ...route.params,
@@ -53,7 +58,7 @@ const router = createRouter({
       path: "/tracking/:stageId",
       // stageId: "followups" || "leads" || "closed"
       name: "TrackingPage",
-      component: () => import("../views/pages/TrackingPage.vue"),
+      component: TrackingPage,
       props: (route) => {
         return {
           ...route.params,
