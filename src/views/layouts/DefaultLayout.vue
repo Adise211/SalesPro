@@ -130,6 +130,8 @@ export default {
           paramsObj = { stageId: TrackingStagesId.Leads };
           break;
         case NavigationItems.Closed:
+          pageName = "TrackingPage";
+          paramsObj = { stageId: TrackingStagesId.Closed };
           break;
         case NavigationItems.Settings:
           break;
