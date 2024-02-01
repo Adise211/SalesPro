@@ -141,7 +141,7 @@ export default {
       const newCompanyObj = {
         Company: this.companyName,
         LastUpdated: today,
-        Status: "followups"
+        Status: this.currentStage
       };
       const response = await createNewCompany(newCompanyObj);
       if (response.success) {
@@ -152,9 +152,9 @@ export default {
         toastMessage = response.message;
         toastType = "error";
       }
-
       this.isAddBtnLoading = false;
       this.companyName = "";
+      this.refreshActiveChart();
       this.$toast.open({
         type: toastType,
         message: toastMessage
@@ -169,6 +169,7 @@ export default {
       if (response.success) {
         this.removeCompanyFromStore(item);
       }
+      this.refreshActiveChart();
       this.$toast.open({
         type: "success",
         message: ToastMessages.SuccessMessages.Removed
@@ -181,6 +182,13 @@ export default {
       const newStatusKey = toStatus.Status.split(" ").join("");
       selectedItem.Status = TrackingStages[newStatusKey];
       selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
+    },
+    refreshActiveChart() {
+      this.showChart = false;
+
+      setTimeout(() => {
+        this.showChart = true;
+      }, 200);
     }
   },
   computed: {
@@ -272,11 +280,7 @@ export default {
   watch: {
     currentStage(newVal) {
       if (newVal) {
-        this.showChart = false;
-
-        setTimeout(() => {
-          this.showChart = true;
-        }, 200);
+        this.refreshActiveChart();
       }
     }
   }
