@@ -103,7 +103,7 @@
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
 import AppCharts from "./AppCharts.vue";
-import { TrackingStatusTypes, ToastMessages, TrackingStagesId } from "@/utilities/consts";
+import { TrackingStatusTypes, ToastMessages, TrackingStages } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { createNewCompany, removeCompany } from "@/firebase/services/data";
@@ -178,7 +178,7 @@ export default {
     },
     changeStatusHandler(toStatus, selectedItem) {
       const newStatusKey = toStatus.Status.split(" ").join("");
-      selectedItem.Status = TrackingStagesId[newStatusKey];
+      selectedItem.Status = TrackingStages[newStatusKey];
       selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
     }
   },

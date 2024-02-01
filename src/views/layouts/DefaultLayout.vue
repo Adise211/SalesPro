@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { NavigationItems, CalendarPageMode, TrackingStagesId } from "../../utilities/consts";
+import { NavigationItems, CalendarPageMode, TrackingStages } from "../../utilities/consts";
 import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
 import { useCalendarStore } from "../../stores/calendar";
@@ -123,15 +123,15 @@ export default {
           break;
         case NavigationItems.FolllowUps:
           pageName = "TrackingPage";
-          paramsObj = { stageId: TrackingStagesId.FollowUps };
+          paramsObj = { stageId: TrackingStages.FollowUps };
           break;
         case NavigationItems.Leads:
           pageName = "TrackingPage";
-          paramsObj = { stageId: TrackingStagesId.Leads };
+          paramsObj = { stageId: TrackingStages.Leads };
           break;
         case NavigationItems.Closed:
           pageName = "TrackingPage";
-          paramsObj = { stageId: TrackingStagesId.Closed };
+          paramsObj = { stageId: TrackingStages.Closed };
           break;
         case NavigationItems.Settings:
           break;
