@@ -54,8 +54,14 @@
                       Change Status
                       <v-menu activator="parent">
                         <v-list>
-                          <v-list-item v-for="item in statusTypes" :key="item.Id" :value="item.Id">
-                            <v-list-item-title>{{ item.Status }}</v-list-item-title>
+                          <v-list-item
+                            v-for="oneType in statusTypes"
+                            :key="oneType.Id"
+                            :value="oneType.Id"
+                          >
+                            <v-list-item-title @click="changeStatusHandler(oneType, item)">{{
+                              oneType.Status
+                            }}</v-list-item-title>
                           </v-list-item>
                         </v-list>
                       </v-menu>
@@ -97,7 +103,7 @@
 // @ts-ignore
 import ViewCards from "./ViewCards.vue";
 import AppCharts from "./AppCharts.vue";
-import { TrackingStatusTypes, ToastMessages } from "@/utilities/consts";
+import { TrackingStatusTypes, ToastMessages, TrackingStagesId } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { createNewCompany, removeCompany } from "@/firebase/services/data";
@@ -169,6 +175,11 @@ export default {
       // Reset current item and close dialog
       this.currentItem = {};
       this.isDeleteDialogOpen = false;
+    },
+    changeStatusHandler(toStatus, selectedItem) {
+      const newStatusKey = toStatus.Status.split(" ").join("");
+      selectedItem.Status = TrackingStagesId[newStatusKey];
+      selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
     }
   },
   computed: {
