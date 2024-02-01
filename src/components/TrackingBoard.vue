@@ -268,6 +268,7 @@ export default {
       return monthsShortCopy;
     },
     chartDataColors() {
+      // the colors are saved in global.scss
       let colors = ["#008ffb"];
       if (this.currentStage === TrackingStages.Leads) {
         colors = ["#eab308"];
