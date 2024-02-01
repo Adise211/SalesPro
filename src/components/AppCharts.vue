@@ -23,6 +23,10 @@ export default {
     chartXData: {
       type: Array,
       default: () => [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+    },
+    chartDataColors: {
+      type: Array,
+      default: () => ["#008ffb"]
     }
   },
   data: () => ({}),
@@ -39,6 +43,9 @@ export default {
         chart: {
           type: this.chartType,
           height: "80%"
+        },
+        fill: {
+          colors: this.chartDataColors
         },
         series: [
           {

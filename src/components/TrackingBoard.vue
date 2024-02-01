@@ -10,6 +10,7 @@
               :chartXData="currentChartXData"
               :chartSeriesData="currentChartYData"
               :chartType="'bar'"
+              :chartDataColors="chartDataColors"
             ></AppCharts>
           </template>
         </ViewCards>
@@ -257,6 +258,15 @@ export default {
         }
       });
       return monthsShortCopy;
+    },
+    chartDataColors() {
+      let colors = ["#008ffb"];
+      if (this.currentStage === TrackingStages.Leads) {
+        colors = ["#eab308"];
+      } else if (this.currentStage === TrackingStages.Closed) {
+        colors = ["#f4511e"];
+      }
+      return colors;
     }
   },
   watch: {
