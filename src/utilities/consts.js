@@ -34,7 +34,7 @@ export const TrackingStagesId = {
 };
 
 export const TrackingStatusTypes = [
-  { Id: 0, Status: "Folllow Ups" },
+  { Id: 0, Status: "Follow Ups" },
   { Id: 1, Status: "Leads" },
   { Id: 2, Status: "Closed" }
 ];
