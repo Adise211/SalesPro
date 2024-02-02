@@ -4,6 +4,7 @@ import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
 import CalendarPage from "../views/pages/CalendarPage.vue";
 import TrackingPage from "../views/pages/TrackingPage.vue";
+import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 
 /**
  *
@@ -66,6 +67,18 @@ const router = createRouter({
         };
       },
       meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/error-message",
+      name: "ErrorMessagesPage",
+      component: ErrorMessagesPage,
+      props: (route) => {
+        return {
+          ...route.params
+          // messageId: route.params.messageId
+        };
+      },
+      meta: { layout: "MinimalLayout" }
     }
   ]
 });
