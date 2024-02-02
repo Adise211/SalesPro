@@ -17,9 +17,25 @@ export default {
   props: {},
   data: () => ({}),
   created() {},
-  mounted() {},
+  mounted() {
+    window.addEventListener("resize", this.screenResizeHandler);
+  },
+  unmounted() {
+    window.removeEventListener("resize", this.screenResizeHandler);
+  },
   updated() {},
-  methods: {},
+  methods: {
+    screenResizeHandler() {
+      if (this.$vuetify.display.mdAndDown) {
+        this.$router.push({
+          name: "ErrorMessagesPage",
+          params: {
+            messageId: 1
+          }
+        });
+      }
+    }
+  },
   computed: {
     currentLayout() {
       return this.$route.meta?.layout || DEFAULT_LAYOUT;

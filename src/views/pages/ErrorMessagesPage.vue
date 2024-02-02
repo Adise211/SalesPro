@@ -2,7 +2,7 @@
   <div class="d-flex flex-column justify-center align-center fill-height">
     <div
       v-if="currentErrorMessage && currentErrorMessage.messageTitle"
-      class="text-h3 mb-5 font-weight-bold"
+      class="text-h3 text-center mb-5 font-weight-bold"
     >
       {{ currentErrorMessage.messageTitle }}
     </div>
@@ -12,7 +12,7 @@
     >
       {{ currentErrorMessage.messageSubTitle }}
     </div>
-    <div>
+    <div v-if="currentErrorMessage && currentErrorMessage.redirect">
       <v-btn variant="flat" color="primary" @click="onGoBackClick">Go Back</v-btn>
     </div>
   </div>
@@ -37,12 +37,13 @@ export default {
     const isMessageExist = this.errorMessages.find((message) => {
       return message.id == this.messageId;
     });
+
     if (isMessageExist) {
       this.currentErrorMessage = isMessageExist;
     } else {
+      // default message
       this.currentErrorMessage = this.errorMessages[0];
     }
-    console.log("currentErrorMessage", this.currentErrorMessage);
   },
   methods: {
     onGoBackClick() {
@@ -61,13 +62,15 @@ export default {
           id: 0,
           messageTitle: "Page Not Found",
           messageSubTitle: "We tried but the page you are looking for is not exist!",
-          messageImg: null
+          messageImg: null,
+          redirect: true
         },
         {
           id: 1,
-          messageTitle: "Sorry, this screen is not supported",
+          messageTitle: "Sorry! this screen is not supported",
           messageSubTitle: "Please try again in desktop devices",
-          messageImg: null
+          messageImg: null,
+          redirect: false
         }
       ];
     }
