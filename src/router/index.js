@@ -69,13 +69,13 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/error-message",
+      path: "/error-message/:messageId",
       name: "ErrorMessagesPage",
       component: ErrorMessagesPage,
       props: (route) => {
         return {
-          ...route.params
-          // messageId: route.params.messageId
+          ...route.params,
+          messageId: Number.parseInt(route.params.messageId) || 0
         };
       },
       meta: { layout: "MinimalLayout" }
@@ -86,6 +86,7 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   let navigationGuardResult;
   let isUserAuthorized;
+  const isRouteExist = router.hasRoute(to.name);
 
   const { generalStore } = initStores();
   if (generalStore.userId) {
@@ -94,8 +95,20 @@ router.beforeEach(async (to) => {
     isUserAuthorized = false;
   }
 
-  if (isUserAuthorized || to.name === "LoginPage" || to.name === "SignupPage") {
+  if (
+    (isUserAuthorized && isRouteExist) ||
+    to.name === "LoginPage" ||
+    to.name === "SignupPage" ||
+    to.name === "ErrorMessagesPage"
+  ) {
     navigationGuardResult = true;
+  } else if (!isRouteExist) {
+    navigationGuardResult = {
+      name: "ErrorMessagesPage",
+      params: {
+        messageId: 0
+      }
+    };
   } else {
     navigationGuardResult = {
       name: "LoginPage"
