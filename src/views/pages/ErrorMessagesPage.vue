@@ -7,12 +7,13 @@
       {{ currentErrorMessage.messageSubTitle }}
     </div>
     <div>
-      <v-btn variant="flat" color="primary">Go Back</v-btn>
+      <v-btn variant="flat" color="primary" @click="onGoBackClick">Go Back</v-btn>
     </div>
   </div>
 </template>
 
 <script>
+import { CalendarPageMode } from "@/utilities/consts";
 export default {
   name: "ErrorMessagesPage",
   components: {},
@@ -32,7 +33,16 @@ export default {
     });
     console.log("currentErrorMessage", this.currentErrorMessage);
   },
-  methods: {},
+  methods: {
+    onGoBackClick() {
+      this.$router.push({
+        name: "CalendarPage",
+        params: {
+          calendarMode: CalendarPageMode.View
+        }
+      });
+    }
+  },
   computed: {
     errorMessages() {
       return [
