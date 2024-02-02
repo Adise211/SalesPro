@@ -107,7 +107,7 @@ import AppCharts from "./AppCharts.vue";
 import { TrackingStatusTypes, ToastMessages, TrackingStages } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createNewCompany, removeCompany } from "@/firebase/services/data";
+import { createNewCompany, removeCompany, updateCompanyStatus } from "@/firebase/services/data";
 import moment from "moment";
 
 export default {
@@ -178,10 +178,11 @@ export default {
       this.currentItem = {};
       this.isDeleteDialogOpen = false;
     },
-    changeStatusHandler(toStatus, selectedItem) {
+    async changeStatusHandler(toStatus, selectedItem) {
       const newStatusKey = toStatus.Status.split(" ").join("");
       selectedItem.Status = TrackingStages[newStatusKey];
       selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
+      await updateCompanyStatus(selectedItem);
     },
     refreshActiveChart() {
       this.showChart = false;

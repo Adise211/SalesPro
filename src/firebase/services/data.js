@@ -132,3 +132,28 @@ export async function removeCompany(companyObj) {
     console.log("error when removing an item:", error);
   }
 }
+
+export async function updateCompanyStatus(companyObj) {
+  try {
+    const userDataRes = await getUserData();
+    if (userDataRes) {
+      // find the previous company info in server by name
+      const { userListedCompanies } = userDataRes;
+      const previousCompanyObj = userListedCompanies.find(
+        (com) => com.Company === companyObj.Company
+      );
+      // if exist
+      // 1. remove it
+      // 2. add the updated company info
+      if (previousCompanyObj) {
+        const removePreviousRes = await removeCompany(previousCompanyObj);
+        const createNewRes = await createNewCompany(companyObj);
+        if (removePreviousRes.success && createNewRes.success) {
+          return { success: true };
+        }
+      }
+    }
+  } catch (error) {
+    console.log("error when trying to update item status:", error);
+  }
+}
