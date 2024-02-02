@@ -1,9 +1,15 @@
 <template>
   <div class="d-flex flex-column justify-center align-center fill-height">
-    <div v-if="currentErrorMessage && currentErrorMessage.messageTitle" class="text-h3 mb-7">
+    <div
+      v-if="currentErrorMessage && currentErrorMessage.messageTitle"
+      class="text-h3 mb-5 font-weight-bold"
+    >
       {{ currentErrorMessage.messageTitle }}
     </div>
-    <div v-if="currentErrorMessage && currentErrorMessage.messageSubTitle" class="text-h5 mb-7">
+    <div
+      v-if="currentErrorMessage && currentErrorMessage.messageSubTitle"
+      class="text-h5 mb-14 font-weight-medium"
+    >
       {{ currentErrorMessage.messageSubTitle }}
     </div>
     <div>
@@ -28,9 +34,14 @@ export default {
   }),
   created() {},
   mounted() {
-    this.currentErrorMessage = this.errorMessages.find((message) => {
+    const isMessageExist = this.errorMessages.find((message) => {
       return message.id == this.messageId;
     });
+    if (isMessageExist) {
+      this.currentErrorMessage = isMessageExist;
+    } else {
+      this.currentErrorMessage = this.errorMessages[0];
+    }
     console.log("currentErrorMessage", this.currentErrorMessage);
   },
   methods: {
@@ -49,7 +60,7 @@ export default {
         {
           id: 0,
           messageTitle: "Page Not Found",
-          messageSubTitle: "We tried but the page you are looking for is not exist",
+          messageSubTitle: "We tried but the page you are looking for is not exist!",
           messageImg: null
         },
         {
