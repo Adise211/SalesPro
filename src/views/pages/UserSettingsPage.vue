@@ -22,7 +22,7 @@
               <v-list-subheader>App</v-list-subheader>
               <v-list-item class="theme-setting">
                 <template v-slot:prepend>
-                  <v-icon icon="mdi-account"></v-icon>
+                  <v-icon icon="mdi-palette"></v-icon>
                 </template>
                 <v-list-item-title>Theme</v-list-item-title>
               </v-list-item>
@@ -63,13 +63,13 @@ export default {
     profileSettingsItems() {
       return [
         { text: "Profile Picture", icon: "mdi-account" },
-        { text: "Full Name", icon: "mdi-account" }
+        { text: "Full Name", icon: "mdi-pencil" }
       ];
     },
     accountSettingsItems() {
       return [
-        { text: "Email", icon: "mdi-account" },
-        { text: "Password", icon: "mdi-account" }
+        { text: "Email", icon: "mdi-email-edit" },
+        { text: "Password", icon: "mdi-lock" }
       ];
     }
   },
