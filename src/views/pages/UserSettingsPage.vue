@@ -58,7 +58,9 @@
       <!-- board for editing  -->
       <v-col md="6">
         <ViewCards>
-          <template v-slot:card-text> </template>
+          <template v-slot:card-text>
+            <AppSettingBoard></AppSettingBoard>
+          </template>
         </ViewCards>
       </v-col>
     </v-row>
@@ -67,9 +69,10 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
+import AppSettingBoard from "@/components/AppSettingBoard.vue";
 export default {
   name: "UserSettingsPage",
-  components: { ViewCards },
+  components: { ViewCards, AppSettingBoard },
   props: {},
   data: () => ({
     selectedSetting: ""
@@ -79,7 +82,6 @@ export default {
   methods: {
     onSelectSetting(settingName) {
       this.selectedSetting = settingName.split(" ").join("");
-      console.log("selected item:", this.selectedSetting);
     }
   },
   computed: {
