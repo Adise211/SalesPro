@@ -134,6 +134,9 @@ export default {
           paramsObj = { stageId: TrackingStages.Closed };
           break;
         case NavigationItems.Settings:
+          pageName = "UserSettingsPage";
+          paramsObj = {};
+
           break;
         default:
           break;
