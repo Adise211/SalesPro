@@ -6,12 +6,14 @@
         <ViewCards>
           <template v-slot:card-text>
             <v-list>
+              <!-- Profile settings -->
               <v-list-subheader>Profile</v-list-subheader>
               <v-list-item
                 v-for="(item, i) in profileSettingsItems"
                 :key="i"
                 :value="item"
                 color="primary"
+                @click="onSelectSetting(item.text)"
               >
                 <template v-slot:prepend>
                   <v-icon :icon="item.icon"></v-icon>
@@ -19,19 +21,29 @@
 
                 <v-list-item-title>{{ item.text }}</v-list-item-title>
               </v-list-item>
+              <!-- App settings -->
               <v-list-subheader>App</v-list-subheader>
-              <v-list-item class="theme-setting">
+              <v-list-item
+                v-for="(item, i) in appSettingsItems"
+                :key="i"
+                :value="item"
+                color="primary"
+                @click="onSelectSetting(item.text)"
+              >
                 <template v-slot:prepend>
-                  <v-icon icon="mdi-palette"></v-icon>
+                  <v-icon :icon="item.icon"></v-icon>
                 </template>
-                <v-list-item-title>Theme</v-list-item-title>
+
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
               </v-list-item>
+              <!-- Account settings -->
               <v-list-subheader>Account</v-list-subheader>
               <v-list-item
                 v-for="(item, i) in accountSettingsItems"
                 :key="i"
                 :value="item"
                 color="primary"
+                @click="onSelectSetting(item.text)"
               >
                 <template v-slot:prepend>
                   <v-icon :icon="item.icon"></v-icon>
@@ -44,7 +56,11 @@
         </ViewCards>
       </v-col>
       <!-- board for editing  -->
-      <v-col md="6"></v-col>
+      <v-col md="6">
+        <ViewCards>
+          <template v-slot:card-text> </template>
+        </ViewCards>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -55,16 +71,26 @@ export default {
   name: "UserSettingsPage",
   components: { ViewCards },
   props: {},
-  data: () => ({}),
+  data: () => ({
+    selectedSetting: ""
+  }),
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    onSelectSetting(settingName) {
+      this.selectedSetting = settingName.split(" ").join("");
+      console.log("selected item:", this.selectedSetting);
+    }
+  },
   computed: {
     profileSettingsItems() {
       return [
         { text: "Profile Picture", icon: "mdi-account" },
         { text: "Full Name", icon: "mdi-pencil" }
       ];
+    },
+    appSettingsItems() {
+      return [{ text: "Theme", icon: "mdi-palette" }];
     },
     accountSettingsItems() {
       return [
