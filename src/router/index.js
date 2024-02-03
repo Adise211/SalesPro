@@ -20,7 +20,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       redirect: () => {
-        return { name: "LoginPage" };
+        return { name: "CalendarPage", params: { calendarMode: "view" } };
       },
       meta: { layout: "MinimalLayout" }
     },
