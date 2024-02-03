@@ -5,6 +5,7 @@ import SignupPage from "../views/pages/SignupPage.vue";
 import CalendarPage from "../views/pages/CalendarPage.vue";
 import TrackingPage from "../views/pages/TrackingPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
+import UserSettingsPage from "../views/pages/UserSettingsPage.vue";
 
 /**
  *
@@ -79,6 +80,17 @@ const router = createRouter({
         };
       },
       meta: { layout: "MinimalLayout" }
+    },
+    {
+      path: "/settings",
+      name: "UserSettingsPage",
+      component: UserSettingsPage,
+      props: (route) => {
+        return {
+          ...route.params
+        };
+      },
+      meta: { layout: "DefaultLayout" }
     }
   ]
 });
