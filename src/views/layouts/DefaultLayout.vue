@@ -120,6 +120,8 @@ export default {
           paramsObj = { calendarMode: CalendarPageMode.Edit };
           break;
         case NavigationItems.Notes:
+          pageName = "NotesPage";
+          paramsObj = {};
           break;
         case NavigationItems.FolllowUps:
           pageName = "TrackingPage";
@@ -136,7 +138,6 @@ export default {
         case NavigationItems.Settings:
           pageName = "UserSettingsPage";
           paramsObj = {};
-
           break;
         default:
           break;

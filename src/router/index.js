@@ -6,6 +6,7 @@ import CalendarPage from "../views/pages/CalendarPage.vue";
 import TrackingPage from "../views/pages/TrackingPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 import UserSettingsPage from "../views/pages/UserSettingsPage.vue";
+import NotesPage from "../views/pages/NotesPage.vue";
 
 /**
  *
@@ -85,6 +86,17 @@ const router = createRouter({
       path: "/settings",
       name: "UserSettingsPage",
       component: UserSettingsPage,
+      props: (route) => {
+        return {
+          ...route.params
+        };
+      },
+      meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/notes/:noteId?",
+      name: "NotesPage",
+      component: NotesPage,
       props: (route) => {
         return {
           ...route.params
