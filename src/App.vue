@@ -26,12 +26,19 @@ export default {
   updated() {},
   methods: {
     screenResizeHandler() {
-      if (this.$vuetify.display.mdAndDown) {
+      // if it's small display - send user to error message page
+      if (this.isSmallDisplay) {
         this.$router.push({
           name: "ErrorMessagesPage",
           params: {
             messageId: 1
           }
+        });
+      } else {
+        // if it's desktop - send back to main page
+        this.$router.push({
+          name: "CalendarPage",
+          params: { calendarMode: "view" }
         });
       }
     }
@@ -39,6 +46,9 @@ export default {
   computed: {
     currentLayout() {
       return this.$route.meta?.layout || DEFAULT_LAYOUT;
+    },
+    isSmallDisplay() {
+      return this.$vuetify.display.width <= 1200;
     }
   },
   watch: {}
