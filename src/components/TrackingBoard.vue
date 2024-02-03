@@ -51,6 +51,9 @@
                   <td class="text-medium-emphasis">{{ item.Company }}</td>
                   <td class="text-medium-emphasis">{{ item.LastUpdated }}</td>
                   <td>
+                    <v-icon icon="mdi-note" color="grey"></v-icon>
+                  </td>
+                  <td>
                     <v-btn color="primary" density="compact">
                       Change Status
                       <v-menu activator="parent">
@@ -203,6 +206,11 @@ export default {
         {
           title: "Last update",
           key: "LastUpdated"
+        },
+        {
+          title: "Notes",
+          align: "center",
+          sortable: false
         },
         {
           title: "Status",
