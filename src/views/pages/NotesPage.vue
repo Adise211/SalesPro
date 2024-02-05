@@ -57,6 +57,7 @@
             >
             </v-text-field>
             <v-data-table
+              class="notes-table"
               :headers="tableHeaders"
               :items="tableItems"
               :items-per-page="itemsPerPage"
@@ -64,6 +65,19 @@
               :page="page"
               :search="searchExpression"
             >
+              <template v-slot:item="{ item }">
+                <tr>
+                  <td class="text-medium-emphasis">{{ item.noteId }}</td>
+                  <td class="text-medium-emphasis">{{ item.refferTo }}</td>
+                  <td class="text-medium-emphasis">{{ item.lastUpdated }}</td>
+                  <td class="text-center">
+                    <v-icon icon="mdi-bell" color="#eab308"></v-icon>
+                  </td>
+                  <td class="text-center">
+                    <v-icon icon="mdi-pencil" color="primary"></v-icon>
+                  </td>
+                </tr>
+              </template>
               <template v-slot:bottom>
                 <div class="text-center pt-2">
                   <v-pagination v-model="page" :length="pageCount"></v-pagination>
@@ -116,6 +130,11 @@ export default {
           title: "Reminder",
           align: "center",
           sortable: false
+        },
+        {
+          title: "Edit",
+          align: "center",
+          sortable: false
         }
       ];
     },
@@ -136,4 +155,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.notes-table:deep(.v-table__wrapper) {
+  th:nth-child(3n) {
+    width: 24%;
+  }
+}
+</style>
