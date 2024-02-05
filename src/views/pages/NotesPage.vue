@@ -8,9 +8,38 @@
               <div>View note (by id)</div>
             </template>
           </ViewCards>
-          <ViewCards class="create-notes mt-3">
+          <ViewCards class="create-notes mt-3" cardTextFillHeight>
             <template v-slot:card-text>
-              <div>Create notes</div>
+              <div class="fill-height d-flex flex-column">
+                <v-form>
+                  <!-- Reffer To -->
+                  <v-autocomplete
+                    :items="companiesList"
+                    item-title="Company"
+                    item-value="Company"
+                    placeholder="Reffer to"
+                    variant="outlined"
+                    density="compact"
+                    color="primary"
+                    style="max-width: 50%"
+                  >
+                  </v-autocomplete>
+                  <!-- Note Description -->
+                  <v-textarea
+                    v-model="noteDescription"
+                    placeholder="Type here..."
+                    variant="outlined"
+                    color="primary"
+                    rows="2"
+                  >
+                  </v-textarea>
+                </v-form>
+                <!-- Action Buttons -->
+                <div class="mt-auto mb-3">
+                  <v-btn class="mr-2" variant="flat" color="primary">Save</v-btn>
+                  <v-btn variant="outlined" color="primary">Clear</v-btn>
+                </div>
+              </div>
             </template>
           </ViewCards>
         </div>
@@ -50,6 +79,8 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
+import { mapState } from "pinia";
+import { useGeneralStore } from "../../stores/general";
 import moment from "moment";
 
 export default {
@@ -59,12 +90,14 @@ export default {
   data: () => ({
     page: 1,
     itemsPerPage: "6",
-    searchExpression: ""
+    searchExpression: "",
+    noteDescription: ""
   }),
   created() {},
   mounted() {},
   methods: {},
   computed: {
+    ...mapState(useGeneralStore, ["companiesList"]),
     tableHeaders() {
       return [
         {
