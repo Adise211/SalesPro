@@ -47,15 +47,18 @@
       <v-col md="6">
         <ViewCards>
           <template v-slot:card-text>
-            <v-text-field
-              v-model="searchExpression"
-              placeholder="Search"
-              variant="outlined"
-              density="compact"
-              color="primary"
-              style="max-width: 50%"
-            >
-            </v-text-field>
+            <div class="d-flex justify-space-between">
+              <v-text-field
+                v-model="searchExpression"
+                placeholder="Search"
+                variant="outlined"
+                density="compact"
+                color="primary"
+                style="max-width: 50%"
+              >
+              </v-text-field>
+              <v-btn icon="mdi-plus" size="x-small" color="success" @click="createNewNote"></v-btn>
+            </div>
             <v-data-table
               class="notes-table"
               :headers="tableHeaders"
@@ -109,7 +112,11 @@ export default {
   }),
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    createNewNote() {
+      console.log("create new note");
+    }
+  },
   computed: {
     ...mapState(useGeneralStore, ["companiesList"]),
     tableHeaders() {
