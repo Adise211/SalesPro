@@ -11,6 +11,7 @@
         <ViewCards>
           <template v-slot:card-text>
             <Calendar
+              class="app-full-calendar"
               borderless
               transparent
               :attributes="calendarAttrs"
