@@ -8,7 +8,7 @@
               <div>View note (by id)</div>
             </template>
           </ViewCards>
-          <ViewCards class="create-notes mt-3" cardTextFillHeight>
+          <ViewCards class="create-notes mt-3 overflow-visible" cardTextFillHeight>
             <template v-slot:card-text>
               <div class="fill-height d-flex flex-column">
                 <v-form>
@@ -25,7 +25,16 @@
                       style="max-width: 50%"
                     >
                     </v-autocomplete>
-                    <v-btn class="ml-5" color="primary">Pick Time</v-btn>
+                    <DatePicker
+                      mode="dateTime"
+                      class="app-date-picker"
+                      :popover="datePickerPopover"
+                    >
+                      <template v-slot:default="{ togglePopover }">
+                        <!-- <v-btn @click="togglePopover">Select date</v-btn> -->
+                        <v-btn class="ml-5" color="primary" @click="togglePopover">Pick Time</v-btn>
+                      </template>
+                    </DatePicker>
                   </div>
                   <!-- Note Description -->
                   <v-textarea
@@ -102,25 +111,33 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
-// import { DatePicker } from "v-calendar";
+import { DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 import { mapState } from "pinia";
-import { useGeneralStore } from "../../stores/general";
+import { useGeneralStore } from "@/stores/general";
 import moment from "moment";
 
 export default {
   name: "NotesPage",
-  components: { ViewCards },
+  components: { ViewCards, DatePicker },
   props: {},
   data: () => ({
     page: 1,
     itemsPerPage: "6",
     searchExpression: "",
-    noteDescription: ""
+    noteDescription: "",
+    isPickDateDialogOpen: false,
+    datePickerPopover: {
+      visibility: "click",
+      placement: "top"
+    }
   }),
   created() {},
   mounted() {},
   methods: {
+    onPickTime() {
+      this.isPickDateDialogOpen = true;
+    },
     createNewNote() {
       console.log("create new note");
     }
