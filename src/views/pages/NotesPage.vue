@@ -3,7 +3,7 @@
     <v-row class="fill-height">
       <v-col md="6">
         <div class="d-flex flex-column fill-height">
-          <ViewCards class="view-notes">
+          <ViewCards class="view-notes h-50">
             <template v-slot:card-text>
               <div>View note (by id)</div>
             </template>
@@ -13,30 +13,36 @@
               <div class="fill-height d-flex flex-column">
                 <v-form>
                   <!-- Reffer To -->
-                  <v-autocomplete
-                    :items="companiesList"
-                    item-title="Company"
-                    item-value="Company"
-                    placeholder="Reffer to"
-                    variant="outlined"
-                    density="compact"
-                    color="primary"
-                    style="max-width: 50%"
-                  >
-                  </v-autocomplete>
+                  <div class="d-flex">
+                    <v-autocomplete
+                      :items="companiesList"
+                      item-title="Company"
+                      item-value="Company"
+                      placeholder="Reffer to"
+                      variant="outlined"
+                      density="compact"
+                      color="primary"
+                      style="max-width: 50%"
+                    >
+                    </v-autocomplete>
+                    <v-btn class="ml-5" color="primary">Pick Time</v-btn>
+                  </div>
                   <!-- Note Description -->
                   <v-textarea
                     v-model="noteDescription"
                     placeholder="Type here..."
                     variant="outlined"
                     color="primary"
-                    rows="2"
+                    rows="5"
                   >
                   </v-textarea>
+                  <!-- Remind me checkbox (activate reminder) -->
+                  <v-checkbox label="Remind me" color="#eab308"></v-checkbox>
+                  <!-- <DatePicker mode="dateTime"></DatePicker> -->
                 </v-form>
                 <!-- Action Buttons -->
                 <div class="mt-auto mb-3">
-                  <v-btn class="mr-2" variant="flat" color="primary">Save</v-btn>
+                  <v-btn class="mr-2" color="primary">Save</v-btn>
                   <v-btn variant="outlined" color="primary">Clear</v-btn>
                 </div>
               </div>
@@ -57,7 +63,7 @@
                 style="max-width: 50%"
               >
               </v-text-field>
-              <v-btn icon="mdi-plus" size="x-small" color="success" @click="createNewNote"></v-btn>
+              <!-- <v-btn icon="mdi-plus" size="x-small" color="success" @click="createNewNote"></v-btn> -->
             </div>
             <v-data-table
               class="notes-table"
@@ -96,6 +102,8 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
+// import { DatePicker } from "v-calendar";
+import "v-calendar/style.css";
 import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
 import moment from "moment";
