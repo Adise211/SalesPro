@@ -160,10 +160,11 @@ export async function updateCompanyStatus(companyObj) {
 
 export async function createNewNote(noteObj) {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
-    await updateDoc(userRef, {
-      userNotes: arrayRemove(noteObj)
-    });
+    // const userRef = doc(db, "users", auth.currentUser.uid);
+    // await updateDoc(userRef, {
+    //   userNotes: arrayRemove(noteObj)
+    console.log("note in backend:", noteObj);
+    // });
     return { success: true };
   } catch (error) {
     console.log("error when trying to create new note:", error);
