@@ -157,3 +157,15 @@ export async function updateCompanyStatus(companyObj) {
     console.log("error when trying to update item status:", error);
   }
 }
+
+export async function createNewNote(noteObj) {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(userRef, {
+      userNotes: arrayRemove(noteObj)
+    });
+    return { success: true };
+  } catch (error) {
+    console.log("error when trying to create new note:", error);
+  }
+}
