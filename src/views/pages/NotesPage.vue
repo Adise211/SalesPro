@@ -11,7 +11,7 @@
           <ViewCards class="create-notes mt-3" cardTextFillHeight>
             <template v-slot:card-text>
               <div class="fill-height d-flex flex-column">
-                <v-form>
+                <v-form ref="newNoteForm">
                   <!-- Reffer To -->
                   <v-autocomplete
                     :items="companiesList"
@@ -62,7 +62,7 @@
                 <!-- Action Buttons -->
                 <div class="mt-auto mb-3">
                   <v-btn class="mr-2" color="primary" @click="createNewNote">Save</v-btn>
-                  <v-btn variant="outlined" color="primary">Clear</v-btn>
+                  <v-btn variant="outlined" color="primary" @click="onClearForm">Clear</v-btn>
                 </div>
               </div>
             </template>
@@ -142,6 +142,9 @@ export default {
   methods: {
     createNewNote() {
       console.log("create new note");
+    },
+    onClearForm() {
+      this.$refs.newNoteForm.reset();
     }
   },
   computed: {
