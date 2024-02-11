@@ -8,33 +8,44 @@
               <div>View note (by id)</div>
             </template>
           </ViewCards>
-          <ViewCards class="create-notes mt-3 overflow-visible" cardTextFillHeight>
+          <ViewCards class="create-notes mt-3" cardTextFillHeight>
             <template v-slot:card-text>
               <div class="fill-height d-flex flex-column">
                 <v-form>
                   <!-- Reffer To -->
+                  <v-autocomplete
+                    :items="companiesList"
+                    item-title="Company"
+                    item-value="Company"
+                    placeholder="Reffer to"
+                    variant="outlined"
+                    density="compact"
+                    color="primary"
+                    style="max-width: 50%"
+                  >
+                  </v-autocomplete>
                   <div class="d-flex">
-                    <v-autocomplete
-                      :items="companiesList"
-                      item-title="Company"
-                      item-value="Company"
-                      placeholder="Reffer to"
+                    <!-- Date -->
+                    <v-text-field
+                      v-model="selectedDate"
+                      type="date"
                       variant="outlined"
                       density="compact"
                       color="primary"
-                      style="max-width: 50%"
+                      style="max-width: 30%"
                     >
-                    </v-autocomplete>
-                    <DatePicker
-                      mode="dateTime"
-                      class="app-date-picker"
-                      :popover="datePickerPopover"
+                    </v-text-field>
+                    <!-- Time -->
+                    <v-text-field
+                      v-model="selectedTime"
+                      type="time"
+                      class="ml-3"
+                      variant="outlined"
+                      density="compact"
+                      color="primary"
+                      style="max-width: 20%"
                     >
-                      <template v-slot:default="{ togglePopover }">
-                        <!-- <v-btn @click="togglePopover">Select date</v-btn> -->
-                        <v-btn class="ml-5" color="primary" @click="togglePopover">Pick Time</v-btn>
-                      </template>
-                    </DatePicker>
+                    </v-text-field>
                   </div>
                   <!-- Note Description -->
                   <v-textarea
@@ -42,16 +53,15 @@
                     placeholder="Type here..."
                     variant="outlined"
                     color="primary"
-                    rows="5"
+                    rows="3"
                   >
                   </v-textarea>
                   <!-- Remind me checkbox (activate reminder) -->
-                  <v-checkbox label="Remind me" color="#eab308"></v-checkbox>
-                  <!-- <DatePicker mode="dateTime"></DatePicker> -->
+                  <v-checkbox label="Remind me" color="#eab308" density="compact"></v-checkbox>
                 </v-form>
                 <!-- Action Buttons -->
                 <div class="mt-auto mb-3">
-                  <v-btn class="mr-2" color="primary">Save</v-btn>
+                  <v-btn class="mr-2" color="primary" @click="createNewNote">Save</v-btn>
                   <v-btn variant="outlined" color="primary">Clear</v-btn>
                 </div>
               </div>
@@ -72,7 +82,6 @@
                 style="max-width: 50%"
               >
               </v-text-field>
-              <!-- <v-btn icon="mdi-plus" size="x-small" color="success" @click="createNewNote"></v-btn> -->
             </div>
             <v-data-table
               class="notes-table"
@@ -111,7 +120,6 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
-import { DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 import { mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
@@ -119,25 +127,19 @@ import moment from "moment";
 
 export default {
   name: "NotesPage",
-  components: { ViewCards, DatePicker },
+  components: { ViewCards },
   props: {},
   data: () => ({
     page: 1,
     itemsPerPage: "6",
     searchExpression: "",
     noteDescription: "",
-    isPickDateDialogOpen: false,
-    datePickerPopover: {
-      visibility: "click",
-      placement: "top"
-    }
+    selectedDate: null,
+    selectedTime: null
   }),
   created() {},
   mounted() {},
   methods: {
-    onPickTime() {
-      this.isPickDateDialogOpen = true;
-    },
     createNewNote() {
       console.log("create new note");
     }
