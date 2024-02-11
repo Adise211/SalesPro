@@ -14,9 +14,11 @@
                 <v-form ref="newNoteForm">
                   <!-- Reffer To -->
                   <v-autocomplete
+                    v-model="companyName"
                     :items="companiesList"
                     item-title="Company"
                     item-value="Company"
+                    :rules="[formRules.required]"
                     placeholder="Reffer to"
                     variant="outlined"
                     density="compact"
@@ -29,6 +31,7 @@
                     <v-text-field
                       v-model="selectedDate"
                       type="date"
+                      :rules="remindMe ? [formRules.required] : []"
                       variant="outlined"
                       density="compact"
                       color="primary"
@@ -39,6 +42,7 @@
                     <v-text-field
                       v-model="selectedTime"
                       type="time"
+                      :rules="remindMe ? [formRules.required] : []"
                       class="ml-3"
                       variant="outlined"
                       density="compact"
@@ -57,11 +61,18 @@
                   >
                   </v-textarea>
                   <!-- Remind me checkbox (activate reminder) -->
-                  <v-checkbox label="Remind me" color="#eab308" density="compact"></v-checkbox>
+                  <v-checkbox
+                    label="Remind me"
+                    v-model="remindMe"
+                    color="#eab308"
+                    density="compact"
+                  ></v-checkbox>
                 </v-form>
                 <!-- Action Buttons -->
                 <div class="mt-auto mb-3">
-                  <v-btn class="mr-2" color="primary" @click="createNewNote">Save</v-btn>
+                  <v-btn class="mr-2" color="primary" @click="saveNote" :loading="isSaveNoteLoading"
+                    >Save</v-btn
+                  >
                   <v-btn variant="outlined" color="primary" @click="onClearForm">Clear</v-btn>
                 </div>
               </div>
@@ -123,6 +134,8 @@ import ViewCards from "@/components/ViewCards.vue";
 import "v-calendar/style.css";
 import { mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
+import { createNewNote } from "@/firebase/services/data";
+import { ToastMessages } from "@/utilities/consts";
 import moment from "moment";
 
 export default {
@@ -133,15 +146,37 @@ export default {
     page: 1,
     itemsPerPage: "6",
     searchExpression: "",
+    companyName: null,
     noteDescription: "",
     selectedDate: null,
-    selectedTime: null
+    selectedTime: null,
+    remindMe: null,
+    isSaveNoteLoading: false
   }),
   created() {},
   mounted() {},
   methods: {
-    createNewNote() {
-      console.log("create new note");
+    async saveNote() {
+      this.isSaveNoteLoading = true;
+      const { valid } = await this.$refs.newNoteForm.validate();
+      console.log("is form valid?", valid);
+
+      if (valid) {
+        const response = await createNewNote({
+          CompanyName: this.companyName,
+          NoteDescription: this.noteDescription,
+          SelectedDate: this.selectedDate,
+          SelectedTime: this.selectedDate,
+          RemindMe: this.remindMe
+        });
+        if (response.success) {
+          this.$toast.open({
+            type: "success",
+            message: ToastMessages.SuccessMessages.Created
+          });
+        }
+      }
+      this.isSaveNoteLoading = false;
     },
     onClearForm() {
       this.$refs.newNoteForm.reset();
@@ -186,6 +221,11 @@ export default {
     },
     pageCount() {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
+    },
+    formRules() {
+      return {
+        required: (value) => !!value || "Field is required"
+      };
     }
   },
   watch: {}
