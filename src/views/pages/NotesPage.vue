@@ -157,7 +157,7 @@ export default {
     noteDescription: "",
     selectedDate: null,
     selectedTime: null,
-    remindMe: null,
+    remindMe: false,
     isSaveNoteLoading: false
   }),
   created() {},
@@ -166,15 +166,14 @@ export default {
     async saveNote() {
       this.isSaveNoteLoading = true;
       const { valid } = await this.$refs.newNoteForm.validate();
-      console.log("is form valid?", valid);
 
       if (valid) {
         const response = await createNewNote({
-          CompanyName: this.companyName,
-          NoteDescription: this.noteDescription,
-          SelectedDate: this.selectedDate,
-          SelectedTime: this.selectedDate,
-          RemindMe: this.remindMe
+          companyName: this.companyName,
+          noteDescription: this.noteDescription,
+          selectedDate: this.selectedDate,
+          selectedTime: this.selectedTime,
+          remindMe: this.remindMe
         });
         if (response.success) {
           this.$toast.open({

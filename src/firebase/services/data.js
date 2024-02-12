@@ -11,7 +11,8 @@ export async function getUserData() {
       const documentData = docSnap.data();
       return {
         userEvents: documentData.userEvents || [],
-        userListedCompanies: documentData.userListedCompanies || []
+        userListedCompanies: documentData.userListedCompanies || [],
+        userNotes: documentData.userNotes || []
       };
     } else {
       // docSnap.data() will be undefined in this case
@@ -160,11 +161,17 @@ export async function updateCompanyStatus(companyObj) {
 
 export async function createNewNote(noteObj) {
   try {
-    // const userRef = doc(db, "users", auth.currentUser.uid);
-    // await updateDoc(userRef, {
-    //   userNotes: arrayRemove(noteObj)
-    console.log("note in backend:", noteObj);
-    // });
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const createNote = {
+      CompanyName: noteObj.companyName,
+      NoteDescription: noteObj.noteDescription,
+      SelectedDate: noteObj.selectedDate,
+      SelectedTime: noteObj.selectedTime,
+      RemindMe: noteObj.remindMe
+    };
+    await updateDoc(userRef, {
+      userNotes: arrayUnion(createNote)
+    });
     return { success: true };
   } catch (error) {
     console.log("error when trying to create new note:", error);

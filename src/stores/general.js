@@ -11,7 +11,8 @@ export const useGeneralStore = defineStore("general", {
       userLastLoggedInTime: 0,
       userFullName: "",
       userEmail: "",
-      companiesList: []
+      companiesList: [],
+      userNotesList: []
     };
   },
   getters: {
@@ -69,6 +70,9 @@ export const useGeneralStore = defineStore("general", {
       if (objIndex > -1) {
         this.companiesList.splice(objIndex, 1); // 2nd parameter means remove one item only
       }
+    },
+    setUserNotesList(data) {
+      this.userNotesList = data;
     }
   },
   persist: [

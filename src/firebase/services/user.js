@@ -50,6 +50,7 @@ export async function loginUser(data) {
       const userDataResponse = await getUserData();
       calendarStore.setUserEventsList(userDataResponse.userEvents);
       generalStore.setCompaniesList(userDataResponse.userListedCompanies);
+      generalStore.setUserNotesList(userDataResponse.userNotes);
 
       return user;
     }
