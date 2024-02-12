@@ -77,7 +77,14 @@ export const useGeneralStore = defineStore("general", {
   },
   persist: [
     {
-      paths: ["userId", "userLastLoggedInTime", "userFullName", "userEmail", "companiesList"],
+      paths: [
+        "userId",
+        "userLastLoggedInTime",
+        "userFullName",
+        "userEmail",
+        "companiesList",
+        "userNotesList"
+      ],
       storage: localStorage
     },
     {

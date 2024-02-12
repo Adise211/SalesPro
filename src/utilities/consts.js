@@ -50,10 +50,3 @@ export const ToastMessages = {
     General: "General Error"
   }
 };
-
-export function generatedId() {
-  const rand = () => {
-    return Math.random().toString(36).slice(2);
-  };
-  return rand() + rand();
-}

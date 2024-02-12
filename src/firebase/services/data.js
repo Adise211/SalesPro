@@ -1,6 +1,5 @@
 import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-// import { generatedId } from "@/utilities/consts";
 
 export async function getUserData() {
   try {
@@ -162,17 +161,23 @@ export async function updateCompanyStatus(companyObj) {
 export async function createNewNote(noteObj) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
-    const createNote = {
-      CompanyName: noteObj.companyName,
-      NoteDescription: noteObj.noteDescription,
-      SelectedDate: noteObj.selectedDate,
-      SelectedTime: noteObj.selectedTime,
-      RemindMe: noteObj.remindMe
-    };
-    await updateDoc(userRef, {
-      userNotes: arrayUnion(createNote)
-    });
-    return { success: true };
+    const { userNotes } = await getUserData();
+    if (userNotes) {
+      const currentNoteId = userNotes.length > 0 ? userNotes.length : 0;
+
+      const createNote = {
+        NoteId: currentNoteId,
+        CompanyName: noteObj.companyName,
+        NoteDescription: noteObj.noteDescription,
+        SelectedDate: noteObj.selectedDate,
+        SelectedTime: noteObj.selectedTime,
+        RemindMe: noteObj.remindMe
+      };
+      await updateDoc(userRef, {
+        userNotes: arrayUnion(createNote)
+      });
+      return { success: true };
+    }
   } catch (error) {
     console.log("error when trying to create new note:", error);
   }

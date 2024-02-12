@@ -24,13 +24,10 @@
                     density="compact"
                     color="primary"
                     style="max-width: 50%"
-                    multiple
-                    chips
-                    closable-chips
                   >
-                    <template v-slot:chip="{ props, item }">
+                    <!-- <template v-slot:chip="{ props, item }">
                       <v-chip v-bind="props" color="primary" :text="item.title"></v-chip>
-                    </template>
+                    </template> -->
                   </v-autocomplete>
                   <div class="d-flex">
                     <!-- Date -->
@@ -112,11 +109,11 @@
             >
               <template v-slot:item="{ item }">
                 <tr>
-                  <td class="text-medium-emphasis">{{ item.noteId }}</td>
-                  <td class="text-medium-emphasis">{{ item.refferTo }}</td>
-                  <td class="text-medium-emphasis">{{ item.lastUpdated }}</td>
+                  <td class="text-medium-emphasis">{{ item.NoteId }}</td>
+                  <td class="text-medium-emphasis">{{ item.CompanyName }}</td>
+                  <td class="text-medium-emphasis">{{ item.SelectedDate }}</td>
                   <td class="text-center">
-                    <v-icon icon="mdi-bell" color="#eab308"></v-icon>
+                    <v-icon icon="mdi-bell" :color="item.RemindMe ? '#eab308' : 'grey'"></v-icon>
                   </td>
                   <td class="text-center">
                     <v-icon icon="mdi-pencil" color="primary"></v-icon>
@@ -161,7 +158,9 @@ export default {
     isSaveNoteLoading: false
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("userNotesList:", this.userNotesList);
+  },
   methods: {
     async saveNote() {
       this.isSaveNoteLoading = true;
@@ -183,26 +182,27 @@ export default {
         }
       }
       this.isSaveNoteLoading = false;
+      this.onClearForm();
     },
     onClearForm() {
       this.$refs.newNoteForm.reset();
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["companiesList"]),
+    ...mapState(useGeneralStore, ["companiesList", "userNotesList"]),
     tableHeaders() {
       return [
         {
           title: "Id",
-          key: "noteId"
+          key: "NoteId"
         },
         {
           title: "Reffer to",
-          key: "refferTo"
+          key: "CompanyName"
         },
         {
           title: "Last Update",
-          key: "lastUpdated"
+          key: "SelectedDate"
         },
         {
           title: "Reminder",
@@ -217,13 +217,7 @@ export default {
       ];
     },
     tableItems() {
-      return [
-        {
-          noteId: 0,
-          refferTo: "Amazon",
-          lastUpdated: moment(new Date()).format("YYYY-MM-DD")
-        }
-      ];
+      return this.userNotesList;
     },
     pageCount() {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
