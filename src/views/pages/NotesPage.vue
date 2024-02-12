@@ -24,7 +24,13 @@
                     density="compact"
                     color="primary"
                     style="max-width: 50%"
+                    multiple
+                    chips
+                    closable-chips
                   >
+                    <template v-slot:chip="{ props, item }">
+                      <v-chip v-bind="props" color="primary" :text="item.title"></v-chip>
+                    </template>
                   </v-autocomplete>
                   <div class="d-flex">
                     <!-- Date -->
@@ -54,6 +60,7 @@
                   <!-- Note Description -->
                   <v-textarea
                     v-model="noteDescription"
+                    :rules="remindMe ? [formRules.required] : []"
                     placeholder="Type here..."
                     variant="outlined"
                     color="primary"
