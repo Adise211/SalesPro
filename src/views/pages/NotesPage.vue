@@ -116,7 +116,11 @@
                     <v-icon icon="mdi-bell" :color="item.RemindMe ? '#eab308' : 'grey'"></v-icon>
                   </td>
                   <td class="text-center">
-                    <v-icon icon="mdi-pencil" color="primary"></v-icon>
+                    <v-icon
+                      icon="mdi-pencil"
+                      color="primary"
+                      @click="onEditNoteClick(item)"
+                    ></v-icon>
                   </td>
                 </tr>
               </template>
@@ -138,9 +142,9 @@ import ViewCards from "@/components/ViewCards.vue";
 import "v-calendar/style.css";
 import { mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createNewNote } from "@/firebase/services/data";
+import { createNewNote, updateNote } from "@/firebase/services/data";
 import { ToastMessages } from "@/utilities/consts";
-import moment from "moment";
+// import moment from "moment";
 
 export default {
   name: "NotesPage",
@@ -155,37 +159,70 @@ export default {
     selectedDate: null,
     selectedTime: null,
     remindMe: false,
-    isSaveNoteLoading: false
+    cuurentNoteId: null,
+    isSaveNoteLoading: false,
+    isonEditNoteClickMode: false
   }),
   created() {},
-  mounted() {
-    console.log("userNotesList:", this.userNotesList);
-  },
+  mounted() {},
   methods: {
     async saveNote() {
       this.isSaveNoteLoading = true;
-      const { valid } = await this.$refs.newNoteForm.validate();
+      const noteData = {
+        companyName: this.companyName,
+        noteDescription: this.noteDescription,
+        selectedDate: this.selectedDate,
+        selectedTime: this.selectedTime,
+        remindMe: this.remindMe
+      };
 
+      const { valid } = await this.$refs.newNoteForm.validate();
       if (valid) {
-        const response = await createNewNote({
-          companyName: this.companyName,
-          noteDescription: this.noteDescription,
-          selectedDate: this.selectedDate,
-          selectedTime: this.selectedTime,
-          remindMe: this.remindMe
-        });
-        if (response.success) {
-          this.$toast.open({
-            type: "success",
-            message: ToastMessages.SuccessMessages.Created
-          });
+        if (this.isonEditNoteClickMode) {
+          noteData.NoteId = this.cuurentNoteId;
+          await this.updateCurrentNote(noteData);
+        } else {
+          await this.createNote(noteData);
         }
       }
-      this.isSaveNoteLoading = false;
-      this.onClearForm();
     },
     onClearForm() {
       this.$refs.newNoteForm.reset();
+      // reset
+      this.isonEditNoteClickMode = false;
+      this.cuurentNoteId = null;
+    },
+    async onEditNoteClick(note) {
+      // Display the selected note
+      this.isonEditNoteClickMode = true;
+      this.companyName = note.CompanyName;
+      this.noteDescription = note.NoteDescription;
+      this.selectedDate = note.SelectedDate;
+      this.selectedTime = note.SelectedTime;
+      this.remindMe = note.RemindMe;
+      this.cuurentNoteId = note.NoteId;
+    },
+    async createNote(noteData) {
+      const response = await createNewNote(noteData);
+      if (response.success) {
+        this.$toast.open({
+          type: "success",
+          message: ToastMessages.SuccessMessages.Created
+        });
+        this.isSaveNoteLoading = false;
+        this.onClearForm();
+      }
+    },
+    async updateCurrentNote(noteData) {
+      const response = await updateNote(noteData);
+      if (response.success) {
+        this.$toast.open({
+          type: "success",
+          message: ToastMessages.SuccessMessages.Updated
+        });
+        this.isSaveNoteLoading = false;
+        this.onClearForm();
+      }
     }
   },
   computed: {

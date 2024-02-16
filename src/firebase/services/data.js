@@ -160,10 +160,17 @@ export async function updateCompanyStatus(companyObj) {
 
 export async function createNewNote(noteObj) {
   try {
+    let currentNoteId;
     const userRef = doc(db, "users", auth.currentUser.uid);
     const { userNotes } = await getUserData();
     if (userNotes) {
-      const currentNoteId = userNotes.length > 0 ? userNotes.length : 0;
+      if (noteObj.NoteId) {
+        // if the note has an id - keep it
+        currentNoteId = noteObj.NoteId;
+      } else {
+        // if note does not have an id - create one
+        currentNoteId = userNotes.length > 0 ? userNotes.length : 0;
+      }
 
       const createNote = {
         NoteId: currentNoteId,
@@ -180,5 +187,30 @@ export async function createNewNote(noteObj) {
     }
   } catch (error) {
     console.log("error when trying to create new note:", error);
+  }
+}
+
+export async function updateNote(noteObj) {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userDataRes = await getUserData();
+    if (userDataRes) {
+      // find the previous note info in server by id
+      const { userNotes } = userDataRes;
+      const previousNote = userNotes.find((note) => {
+        return note.NoteId === noteObj.NoteId;
+      });
+      // remove prevoius
+      if (previousNote) {
+        await updateDoc(userRef, {
+          userNotes: arrayRemove(previousNote)
+        });
+        // create new
+        await createNewNote(noteObj);
+        return { success: true };
+      }
+    }
+  } catch (error) {
+    console.log("error when trying to update note:", error);
   }
 }
