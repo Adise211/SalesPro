@@ -177,9 +177,9 @@ export default {
     selectedTime: null,
     remindMe: false,
     currentItem: {},
-    cuurentNoteId: null,
+    currentNoteId: null,
     isSaveNoteLoading: false,
-    isonEditNoteClickMode: false,
+    isOnEditMode: false,
     isDeleteDialogOpen: false
   }),
   created() {},
@@ -198,8 +198,8 @@ export default {
 
       const { valid } = await this.$refs.newNoteForm.validate();
       if (valid) {
-        if (this.isonEditNoteClickMode) {
-          noteData.NoteId = this.cuurentNoteId;
+        if (this.isOnEditMode) {
+          noteData.NoteId = this.currentNoteId;
           await this.updateCurrentNote(noteData);
         } else {
           await this.createNote(noteData);
@@ -209,18 +209,18 @@ export default {
     onClearForm() {
       this.$refs.newNoteForm.reset();
       // reset
-      this.isonEditNoteClickMode = false;
-      this.cuurentNoteId = null;
+      this.isOnEditMode = false;
+      this.currentNoteId = null;
     },
     async onEditNoteClick(note) {
       // Display the selected note
-      this.isonEditNoteClickMode = true;
+      this.isOnEditMode = true;
       this.companyName = note.CompanyName;
       this.noteDescription = note.NoteDescription;
       this.selectedDate = note.SelectedDate;
       this.selectedTime = note.SelectedTime;
       this.remindMe = note.RemindMe;
-      this.cuurentNoteId = note.NoteId;
+      this.currentNoteId = note.NoteId;
     },
     async createNote(noteData) {
       const response = await createNewNote(noteData);
