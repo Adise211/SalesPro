@@ -113,7 +113,7 @@
                   <td class="text-medium-emphasis">{{ item.CompanyName }}</td>
                   <td class="text-medium-emphasis">{{ item.SelectedDate }}</td>
                   <td class="text-center">
-                    <v-icon icon="mdi-bell" :color="item.RemindMe ? '#eab308' : 'grey'"></v-icon>
+                    <v-icon v-if="item.RemindMe" icon="mdi-bell" color="#eab308"></v-icon>
                   </td>
                   <td class="text-center">
                     <v-icon
