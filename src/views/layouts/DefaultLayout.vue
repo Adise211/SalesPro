@@ -77,6 +77,15 @@
         <slot></slot>
       </v-main>
     </v-layout>
+    <!-- Reminder Alert Dialog -->
+    <v-dialog v-model="isReminderDialogOpen" width="500">
+      <v-card>
+        <v-toolbar color="primary" class="px-2 text-h5" height="56" elevation="3"
+          >Reminder</v-toolbar
+        >
+        <v-card-text>test</v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -95,7 +104,9 @@ export default {
   name: "DefaultLayout",
   components: {},
   props: {},
-  data: () => ({}),
+  data: () => ({
+    isReminderDialogOpen: true
+  }),
   created() {},
   mounted() {
     checkUserActivityInterval = setInterval(
