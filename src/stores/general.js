@@ -75,7 +75,6 @@ export const useGeneralStore = defineStore("general", {
       this.userNotesList = data;
     },
     updateUserNotesListInStore(noteData) {
-      console.log("store", noteData);
       const currentNoteInList = this.userNotesList.find((note) => {
         return note.NoteId === noteData.NoteId;
       });
@@ -88,6 +87,14 @@ export const useGeneralStore = defineStore("general", {
       } else {
         // Otherwise (list is empty or note doesn't exist in the list) - add the new note
         this.userNotesList.push(noteData);
+      }
+    },
+    removeNoteFromStore(noteObj) {
+      const objIndex = this.userNotesList.indexOf(noteObj);
+
+      // only splice array when item is found
+      if (objIndex > -1) {
+        this.userNotesList.splice(objIndex, 1); // 2nd parameter means remove one item only
       }
     }
   },

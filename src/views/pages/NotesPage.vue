@@ -159,7 +159,7 @@ import ViewCards from "@/components/ViewCards.vue";
 import "v-calendar/style.css";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createNewNote, updateNote } from "@/firebase/services/data";
+import { createNewNote, updateNote, removeNote } from "@/firebase/services/data";
 import { ToastMessages } from "@/utilities/consts";
 // import moment from "moment";
 
@@ -185,7 +185,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["updateUserNotesListInStore"]),
+    ...mapActions(useGeneralStore, ["updateUserNotesListInStore", "removeNoteFromStore"]),
     async saveNote() {
       this.isSaveNoteLoading = true;
       const noteData = {
@@ -252,8 +252,18 @@ export default {
       this.currentItem = item;
       this.isDeleteDialogOpen = true;
     },
-    deleteItem() {
-      console.log("delete this item", this.currentItem);
+    async deleteItem(item) {
+      const response = await removeNote(item);
+      if (response.success) {
+        this.removeNoteFromStore(item);
+      }
+      this.$toast.open({
+        type: "success",
+        message: ToastMessages.SuccessMessages.Removed
+      });
+      // Reset current item and close dialog
+      this.currentItem = {};
+      this.isDeleteDialogOpen = false;
     }
   },
   computed: {

@@ -216,3 +216,15 @@ export async function updateNote(noteObj) {
     console.log("error when trying to update note:", error);
   }
 }
+
+export async function removeNote(noteObj) {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(userRef, {
+      userNotes: arrayRemove(noteObj)
+    });
+    return { success: true };
+  } catch (error) {
+    console.log("error when trying to remove note:", error);
+  }
+}
