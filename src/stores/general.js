@@ -73,6 +73,22 @@ export const useGeneralStore = defineStore("general", {
     },
     setUserNotesList(data) {
       this.userNotesList = data;
+    },
+    updateUserNotesListInStore(noteData) {
+      console.log("store", noteData);
+      const currentNoteInList = this.userNotesList.find((note) => {
+        return note.NoteId === noteData.NoteId;
+      });
+      // If the list is not empty and note exist in the list - replace the note
+      if (this.userNotesList.length > 0 && currentNoteInList) {
+        const noteIndex = this.userNotesList.indexOf(currentNoteInList);
+        if (noteIndex > -1) {
+          this.userNotesList.splice(noteIndex, 1, noteData);
+        }
+      } else {
+        // Otherwise (list is empty or note doesn't exist in the list) - add the new note
+        this.userNotesList.push(noteData);
+      }
     }
   },
   persist: [

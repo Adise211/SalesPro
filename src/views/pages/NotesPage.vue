@@ -140,7 +140,7 @@
 <script>
 import ViewCards from "@/components/ViewCards.vue";
 import "v-calendar/style.css";
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { createNewNote, updateNote } from "@/firebase/services/data";
 import { ToastMessages } from "@/utilities/consts";
@@ -166,6 +166,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapActions(useGeneralStore, ["updateUserNotesListInStore"]),
     async saveNote() {
       this.isSaveNoteLoading = true;
       const noteData = {
@@ -210,17 +211,21 @@ export default {
           message: ToastMessages.SuccessMessages.Created
         });
         this.isSaveNoteLoading = false;
+        this.updateUserNotesListInStore(response.data);
         this.onClearForm();
       }
     },
     async updateCurrentNote(noteData) {
       const response = await updateNote(noteData);
       if (response.success) {
+        console.log("update res:", response.data);
+
         this.$toast.open({
           type: "success",
           message: ToastMessages.SuccessMessages.Updated
         });
         this.isSaveNoteLoading = false;
+        this.updateUserNotesListInStore(response.data);
         this.onClearForm();
       }
     }

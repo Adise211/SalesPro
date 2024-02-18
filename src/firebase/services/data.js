@@ -183,7 +183,7 @@ export async function createNewNote(noteObj) {
       await updateDoc(userRef, {
         userNotes: arrayUnion(createNote)
       });
-      return { success: true };
+      return { success: true, data: createNote };
     }
   } catch (error) {
     console.log("error when trying to create new note:", error);
@@ -206,8 +206,10 @@ export async function updateNote(noteObj) {
           userNotes: arrayRemove(previousNote)
         });
         // create new
-        await createNewNote(noteObj);
-        return { success: true };
+        const createNoteRes = await createNewNote(noteObj);
+        if (createNoteRes.success) {
+          return { success: true, data: createNoteRes.data };
+        }
       }
     }
   } catch (error) {
