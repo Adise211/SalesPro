@@ -26,6 +26,20 @@ export const useGeneralStore = defineStore("general", {
         // the limited time user could be active in the system (from second to hours)
         convertTime(Config.session.userActivityThreshold).hours
       );
+    },
+    noteReminder(state) {
+      // current time
+      let now = moment(new Date());
+      // find notes with reminder for the next day
+      return state.userNotesList.find((note) => {
+        let noteTime = moment(new Date(`${note.SelectedDate} ${note.SelectedTime}`));
+
+        const daysDiff = now.diff(noteTime, "days");
+        // console.log("notes diff:", daysDiff, note.RemindMe, 0 < daysDiff, daysDiff <= 4, note);
+        if (note.RemindMe && 0 < daysDiff && daysDiff <= 1) {
+          return note;
+        }
+      });
     }
   },
   actions: {

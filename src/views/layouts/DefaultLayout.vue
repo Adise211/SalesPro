@@ -80,10 +80,24 @@
     <!-- Reminder Alert Dialog -->
     <v-dialog v-model="isReminderDialogOpen" width="500">
       <v-card>
-        <v-toolbar color="primary" class="px-2 text-h5" height="56" elevation="3"
+        <v-toolbar color="#eab308" class="px-2 text-h5 text-white" height="56" elevation="3"
           >Reminder</v-toolbar
         >
-        <v-card-text>test</v-card-text>
+        <v-card-text>
+          <div class="text-h6">
+            <div>
+              Reffer to:
+              <span class="text-medium-emphasis">{{ noteReminder.CompanyName }}</span>
+            </div>
+            <div>
+              Date: <span class="text-medium-emphasis">{{ noteReminder.SelectedDate }}</span>
+            </div>
+            <div>
+              Time: <span class="text-medium-emphasis">{{ noteReminder.SelectedTime }}</span>
+            </div>
+            <div class="text-center">{{ noteReminder.NoteDescription }}</div>
+          </div>
+        </v-card-text>
       </v-card>
     </v-dialog>
   </div>
@@ -97,7 +111,7 @@ import { useCalendarStore } from "../../stores/calendar";
 import { logoutUser } from "../../firebase/services/user";
 import Config from "../../utilities/config";
 import { convertTime } from "../../utilities/utilsFuncs";
-
+// import moment from "moment";
 let checkUserActivityInterval;
 
 export default {
@@ -109,6 +123,9 @@ export default {
   }),
   created() {},
   mounted() {
+    // console.log("ttt", moment(new Date("2024-02-18 9:00")).fromNow(true));
+    console.log("aaa:", this.noteReminder);
+    // Check if user is still active (interval)
     checkUserActivityInterval = setInterval(
       this.sessionExparationHandler(),
       convertTime(Config.session.userActivityCheckInterval).miliseconds
@@ -178,7 +195,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["userEmail", "userFullName", "isSessionUserActive"])
+    ...mapState(useGeneralStore, [
+      "userEmail",
+      "userFullName",
+      "isSessionUserActive",
+      "noteReminder"
+    ])
   },
   watch: {}
 };
