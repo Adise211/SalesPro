@@ -190,33 +190,6 @@ export async function createNewNote(noteObj) {
   }
 }
 
-export async function updateNote(noteObj) {
-  try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
-    const userDataRes = await getUserData();
-    if (userDataRes) {
-      // find the previous note info in server by id
-      const { userNotes } = userDataRes;
-      const previousNote = userNotes.find((note) => {
-        return note.NoteId === noteObj.NoteId;
-      });
-      // remove prevoius
-      if (previousNote) {
-        await updateDoc(userRef, {
-          userNotes: arrayRemove(previousNote)
-        });
-        // create new
-        const createNoteRes = await createNewNote(noteObj);
-        if (createNoteRes.success) {
-          return { success: true, data: createNoteRes.data };
-        }
-      }
-    }
-  } catch (error) {
-    console.log("error when trying to update note:", error);
-  }
-}
-
 export async function removeNote(noteObj) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
@@ -226,5 +199,29 @@ export async function removeNote(noteObj) {
     return { success: true };
   } catch (error) {
     console.log("error when trying to remove note:", error);
+  }
+}
+
+export async function updateNote(noteObj) {
+  try {
+    const userDataRes = await getUserData();
+    if (userDataRes) {
+      // find the previous note info in server by id
+      const { userNotes } = userDataRes;
+      const previousNote = userNotes.find((note) => {
+        return note.NoteId === noteObj.NoteId;
+      });
+      // remove prevoius
+      if (previousNote) {
+        await removeNote(previousNote);
+        // create new
+        const createNoteRes = await createNewNote(noteObj);
+        if (createNoteRes.success) {
+          return { success: true, data: createNoteRes.data };
+        }
+      }
+    }
+  } catch (error) {
+    console.log("error when trying to update note:", error);
   }
 }
