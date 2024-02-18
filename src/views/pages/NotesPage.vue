@@ -122,6 +122,9 @@
                       @click="onEditNoteClick(item)"
                     ></v-icon>
                   </td>
+                  <td class="text-center">
+                    <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
+                  </td>
                 </tr>
               </template>
               <template v-slot:bottom>
@@ -134,6 +137,20 @@
         </ViewCards>
       </v-col>
     </v-row>
+    <!-- Before Delete Dialog -->
+    <v-dialog v-model="isDeleteDialogOpen" width="500">
+      <v-card height="120px">
+        <v-card-text>Are you sure you want to delete this item?</v-card-text>
+        <v-card-actions>
+          <div class="d-flex flex-row justify-start ml-auto">
+            <v-btn color="primary" variant="flat" @click="deleteItem(currentItem)">I am sure</v-btn>
+            <v-btn color="primary" variant="outlined" @click="isDeleteDialogOpen = false"
+              >Never mind</v-btn
+            >
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -159,9 +176,11 @@ export default {
     selectedDate: null,
     selectedTime: null,
     remindMe: false,
+    currentItem: {},
     cuurentNoteId: null,
     isSaveNoteLoading: false,
-    isonEditNoteClickMode: false
+    isonEditNoteClickMode: false,
+    isDeleteDialogOpen: false
   }),
   created() {},
   mounted() {},
@@ -228,6 +247,13 @@ export default {
         this.updateUserNotesListInStore(response.data);
         this.onClearForm();
       }
+    },
+    onDeleteIconClick(item) {
+      this.currentItem = item;
+      this.isDeleteDialogOpen = true;
+    },
+    deleteItem() {
+      console.log("delete this item", this.currentItem);
     }
   },
   computed: {
@@ -243,7 +269,8 @@ export default {
           key: "CompanyName"
         },
         {
-          title: "Last Update",
+          title: "Date",
+          align: "center",
           key: "SelectedDate"
         },
         {
@@ -253,6 +280,11 @@ export default {
         },
         {
           title: "Edit",
+          align: "center",
+          sortable: false
+        },
+        {
+          title: "Delete",
           align: "center",
           sortable: false
         }
@@ -275,9 +307,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.notes-table:deep(.v-table__wrapper) {
-  th:nth-child(3n) {
-    width: 24%;
-  }
-}
+// .notes-table:deep(.v-table__wrapper) {
+//   th:nth-child(3n) {
+//     width: 24%;
+//   }
+// }
 </style>
