@@ -161,6 +161,7 @@ export async function updateCompanyStatus(companyObj) {
 export async function createNewNote(noteObj) {
   try {
     let currentNoteId;
+    const noteWatchedAt = noteObj.WatchedAt > 0 ? noteObj.WatchedAt : 0;
     const userRef = doc(db, "users", auth.currentUser.uid);
     const { userNotes } = await getUserData();
     if (userNotes) {
@@ -178,7 +179,8 @@ export async function createNewNote(noteObj) {
         NoteDescription: noteObj.noteDescription,
         SelectedDate: noteObj.selectedDate,
         SelectedTime: noteObj.selectedTime,
-        RemindMe: noteObj.remindMe
+        RemindMe: noteObj.remindMe,
+        WatchedAt: noteWatchedAt
       };
       await updateDoc(userRef, {
         userNotes: arrayUnion(createNote)
