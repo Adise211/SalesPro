@@ -78,13 +78,14 @@
       </v-main>
     </v-layout>
     <!-- Reminder Alert Dialog -->
-    <v-dialog v-model="isReminderDialogOpen" width="500">
+    <v-dialog v-if="noteReminder" v-model="isReminderDialogOpen" width="500">
       <v-card>
-        <v-toolbar color="#eab308" class="px-2 text-h5 text-white" height="56" elevation="3"
+        <!-- <v-toolbar color="#eab308" class="px-2 text-h5 text-white" height="56" elevation="3"
           >Reminder</v-toolbar
-        >
+        > -->
+        <v-card-title class="text-h5 font-weight-medium">Reminder</v-card-title>
         <v-card-text>
-          <div class="text-h6">
+          <div>
             <div>
               Reffer to:
               <span class="text-medium-emphasis">{{ noteReminder.CompanyName }}</span>
@@ -98,6 +99,9 @@
             <div class="text-center">{{ noteReminder.NoteDescription }}</div>
           </div>
         </v-card-text>
+        <v-card-actions class="d-flex justify-center align-center">
+          <v-btn variant="flat" color="primary" @click="closeDialog">Close</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -111,7 +115,6 @@ import { useCalendarStore } from "../../stores/calendar";
 import { logoutUser } from "../../firebase/services/user";
 import Config from "../../utilities/config";
 import { convertTime } from "../../utilities/utilsFuncs";
-// import moment from "moment";
 let checkUserActivityInterval;
 
 export default {
@@ -123,8 +126,6 @@ export default {
   }),
   created() {},
   mounted() {
-    // console.log("ttt", moment(new Date("2024-02-18 9:00")).fromNow(true));
-    console.log("aaa:", this.noteReminder);
     // Check if user is still active (interval)
     checkUserActivityInterval = setInterval(
       this.sessionExparationHandler(),
@@ -192,6 +193,9 @@ export default {
         console.log("logged out auto!!!");
         this.onLogout();
       }
+    },
+    closeDialog() {
+      this.isReminderDialogOpen = false;
     }
   },
   computed: {
