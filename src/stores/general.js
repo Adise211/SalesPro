@@ -42,9 +42,17 @@ export const useGeneralStore = defineStore("general", {
           return note;
         }
       });
-
+      const soretedNotes = relevantNotes.sort((a, b) => {
+        const noteA = new Date(`${a.SelectedDate} ${a.SelectedTime}`);
+        const noteB = new Date(`${b.SelectedDate} ${b.SelectedTime}`);
+        if (noteA > noteB) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
       // Take allways the first index
-      return relevantNotes[0];
+      return soretedNotes[0];
     }
   },
   actions: {
