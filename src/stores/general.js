@@ -29,8 +29,22 @@ export const useGeneralStore = defineStore("general", {
       );
     },
     noteReminder(state) {
-      console.log("PPPPP:", state.notesWithReminder);
-      return state.notesWithReminder[0];
+      // Current time
+      const now = moment(new Date());
+
+      // Find notes with reminder for the next 48 hours
+      const relevantNotes = state.notesWithReminder.filter((note) => {
+        const noteTime = moment(new Date(`${note.SelectedDate} ${note.SelectedTime}`));
+
+        const daysDiff = noteTime.diff(now, "hours");
+        // console.log("notes diff:", daysDiff, note.RemindMe, 0 < daysDiff, daysDiff <= 4, note);
+        if (0 < daysDiff && daysDiff <= 48 && !note.WatchedAt) {
+          return note;
+        }
+      });
+
+      // Take allways the first index
+      return relevantNotes[0];
     }
   },
   actions: {
@@ -108,15 +122,8 @@ export const useGeneralStore = defineStore("general", {
     updateNotesWithReminderList() {
       // Reset
       this.notesWithReminder = [];
-      // Current time
-      let now = moment(new Date());
-      // Find notes with reminder for the next day
       const updatedList = this.userNotesList.filter((note) => {
-        let noteTime = moment(new Date(`${note.SelectedDate} ${note.SelectedTime}`));
-
-        const daysDiff = now.diff(noteTime, "days");
-        // console.log("notes diff:", daysDiff, note.RemindMe, 0 < daysDiff, daysDiff <= 4, note);
-        if (note.RemindMe && 0 < daysDiff && daysDiff <= 4) {
+        if (note.RemindMe) {
           return note;
         }
       });
@@ -132,7 +139,8 @@ export const useGeneralStore = defineStore("general", {
         "userFullName",
         "userEmail",
         "companiesList",
-        "userNotesList"
+        "userNotesList",
+        "notesWithReminder"
       ],
       storage: localStorage
     },

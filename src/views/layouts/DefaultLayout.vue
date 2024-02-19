@@ -113,8 +113,10 @@ import { mapState } from "pinia";
 import { useGeneralStore } from "../../stores/general";
 import { useCalendarStore } from "../../stores/calendar";
 import { logoutUser } from "../../firebase/services/user";
+// import { updateNote } from "../../firebase/services/data";
 import Config from "../../utilities/config";
 import { convertTime } from "../../utilities/utilsFuncs";
+// import moment from "moment";
 let checkUserActivityInterval;
 
 export default {
@@ -122,7 +124,7 @@ export default {
   components: {},
   props: {},
   data: () => ({
-    isReminderDialogOpen: true
+    isReminderDialogOpen: false
   }),
   created() {},
   mounted() {
@@ -194,8 +196,18 @@ export default {
         this.onLogout();
       }
     },
-    closeDialog() {
+    async closeDialog() {
+      // const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
       this.isReminderDialogOpen = false;
+
+      // const noteWithWatchedTime = {
+      //   ...this.noteReminder,
+      //   WatchedAt: currentEpochTime
+      // };
+      // const response = await updateNote(noteWithWatchedTime);
+      // if (response.success) {
+      //   console.log("updated watched at in note!", noteWithWatchedTime);
+      // }
     }
   },
   computed: {
@@ -206,7 +218,19 @@ export default {
       "noteReminder"
     ])
   },
-  watch: {}
+  watch: {
+    noteReminder: {
+      handler(newVal) {
+        if (newVal) {
+          // If there is a new reminder for popup - open reminder with delay
+          setTimeout(() => {
+            this.isReminderDialogOpen = true;
+          }, 5000);
+        }
+      },
+      immediate: true
+    }
+  }
 };
 </script>
 
