@@ -12,7 +12,8 @@ export const useGeneralStore = defineStore("general", {
       userFullName: "",
       userEmail: "",
       companiesList: [],
-      userNotesList: []
+      userNotesList: [],
+      notesWithReminder: []
     };
   },
   getters: {
@@ -28,18 +29,8 @@ export const useGeneralStore = defineStore("general", {
       );
     },
     noteReminder(state) {
-      // current time
-      let now = moment(new Date());
-      // find notes with reminder for the next day
-      return state.userNotesList.find((note) => {
-        let noteTime = moment(new Date(`${note.SelectedDate} ${note.SelectedTime}`));
-
-        const daysDiff = now.diff(noteTime, "days");
-        // console.log("notes diff:", daysDiff, note.RemindMe, 0 < daysDiff, daysDiff <= 4, note);
-        if (note.RemindMe && 0 < daysDiff && daysDiff <= 1) {
-          return note;
-        }
-      });
+      console.log("PPPPP:", state.notesWithReminder);
+      return state.notesWithReminder[0];
     }
   },
   actions: {
@@ -87,6 +78,7 @@ export const useGeneralStore = defineStore("general", {
     },
     setUserNotesList(data) {
       this.userNotesList = data;
+      this.updateNotesWithReminderList();
     },
     updateUserNotesListInStore(noteData) {
       const currentNoteInList = this.userNotesList.find((note) => {
@@ -102,6 +94,7 @@ export const useGeneralStore = defineStore("general", {
         // Otherwise (list is empty or note doesn't exist in the list) - add the new note
         this.userNotesList.push(noteData);
       }
+      this.updateNotesWithReminderList();
     },
     removeNoteFromStore(noteObj) {
       const objIndex = this.userNotesList.indexOf(noteObj);
@@ -110,6 +103,25 @@ export const useGeneralStore = defineStore("general", {
       if (objIndex > -1) {
         this.userNotesList.splice(objIndex, 1); // 2nd parameter means remove one item only
       }
+      this.updateNotesWithReminderList();
+    },
+    updateNotesWithReminderList() {
+      // Reset
+      this.notesWithReminder = [];
+      // Current time
+      let now = moment(new Date());
+      // Find notes with reminder for the next day
+      const updatedList = this.userNotesList.filter((note) => {
+        let noteTime = moment(new Date(`${note.SelectedDate} ${note.SelectedTime}`));
+
+        const daysDiff = now.diff(noteTime, "days");
+        // console.log("notes diff:", daysDiff, note.RemindMe, 0 < daysDiff, daysDiff <= 4, note);
+        if (note.RemindMe && 0 < daysDiff && daysDiff <= 4) {
+          return note;
+        }
+      });
+      // Updated list
+      this.notesWithReminder = updatedList;
     }
   },
   persist: [
