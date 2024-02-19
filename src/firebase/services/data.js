@@ -1,5 +1,6 @@
 import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import moment from "moment";
 
 export async function getUserData() {
   try {
@@ -225,5 +226,33 @@ export async function updateNote(noteObj) {
     }
   } catch (error) {
     console.log("error when trying to update note:", error);
+  }
+}
+
+export async function updateNoteWatchedTime(noteObj) {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userDataRes = await getUserData();
+
+    const { userNotes } = userDataRes;
+    // Get the relevant note by id
+    const currentNote = userNotes.find((note) => {
+      return note.NoteId === noteObj.NoteId;
+    });
+    if (currentNote) {
+      // Update watched time
+      const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
+      noteObj.WatchedAt = currentEpochTime;
+
+      // Remove old note
+      await removeNote(currentNote);
+      // Create the updated note
+      await updateDoc(userRef, {
+        userNotes: arrayUnion(noteObj)
+      });
+      return { success: true, data: noteObj };
+    }
+  } catch (error) {
+    console.log("error when trying to update note watched time:", error);
   }
 }
