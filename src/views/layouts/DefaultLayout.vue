@@ -109,11 +109,11 @@
 
 <script>
 import { NavigationItems, CalendarPageMode, TrackingStages } from "../../utilities/consts";
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "../../stores/general";
 import { useCalendarStore } from "../../stores/calendar";
 import { logoutUser } from "../../firebase/services/user";
-// import { updateNote } from "../../firebase/services/data";
+import { updateNoteWatchedTime } from "../../firebase/services/data";
 import Config from "../../utilities/config";
 import { convertTime } from "../../utilities/utilsFuncs";
 // import moment from "moment";
@@ -138,6 +138,7 @@ export default {
     clearInterval(checkUserActivityInterval);
   },
   methods: {
+    ...mapActions(useGeneralStore, ["updateUserNotesListInStore"]),
     onNavItemClick(itemName) {
       let pageName;
       let paramsObj;
@@ -197,17 +198,11 @@ export default {
       }
     },
     async closeDialog() {
-      // const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
       this.isReminderDialogOpen = false;
-
-      // const noteWithWatchedTime = {
-      //   ...this.noteReminder,
-      //   WatchedAt: currentEpochTime
-      // };
-      // const response = await updateNote(noteWithWatchedTime);
-      // if (response.success) {
-      //   console.log("updated watched at in note!", noteWithWatchedTime);
-      // }
+      const response = await updateNoteWatchedTime(this.noteReminder);
+      if (response.success) {
+        this.updateUserNotesListInStore(response.data);
+      }
     }
   },
   computed: {
