@@ -108,14 +108,14 @@
 </template>
 
 <script>
-import { NavigationItems, CalendarPageMode, TrackingStages } from "../../utilities/consts";
+import { NavigationItems, CalendarPageMode, TrackingStages } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
-import { useGeneralStore } from "../../stores/general";
-import { useCalendarStore } from "../../stores/calendar";
-import { logoutUser } from "../../firebase/services/user";
-import { updateNoteWatchedTime } from "../../firebase/services/data";
-import Config from "../../utilities/config";
-import { convertTime } from "../../utilities/utilsFuncs";
+import { useGeneralStore } from "@/stores/general";
+import { useCalendarStore } from "@/stores/calendar";
+import { logoutUser } from "@/firebase/services/user";
+import { updateNoteWatchedTime } from "@/firebase/services/data";
+import Config from "@/utilities/config";
+import { convertTime } from "@/utilities/utilsFuncs";
 // import moment from "moment";
 let checkUserActivityInterval;
 
