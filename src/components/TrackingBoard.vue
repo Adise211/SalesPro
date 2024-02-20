@@ -51,7 +51,12 @@
                   <td class="text-medium-emphasis">{{ item.Company }}</td>
                   <td class="text-medium-emphasis">{{ item.LastUpdated }}</td>
                   <td>
-                    <v-icon icon="mdi-note" color="grey"></v-icon>
+                    <v-icon
+                      v-if="findAttachedNote(item)"
+                      icon="mdi-note"
+                      color="grey"
+                      @click="onItemNoteClick(item)"
+                    ></v-icon>
                   </td>
                   <td>
                     <v-btn color="primary" density="compact">
@@ -193,10 +198,23 @@ export default {
       setTimeout(() => {
         this.showChart = true;
       }, 200);
+    },
+    findAttachedNote(item) {
+      // Check if there is a note for this item
+      const note = this.userNotesList.find((not) => {
+        return not.CompanyName == item.Company;
+      });
+      return note;
+    },
+    onItemNoteClick(item) {
+      if (this.findAttachedNote(item)) {
+        // If there is an attched note - open note fron the parent
+        this.$emit("onWatchNote", this.findAttachedNote(item));
+      }
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["companiesList"]),
+    ...mapState(useGeneralStore, ["companiesList", "userNotesList"]),
     tableHeaders() {
       return [
         {
