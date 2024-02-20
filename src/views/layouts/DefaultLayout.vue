@@ -78,7 +78,7 @@
       </v-main>
     </v-layout>
     <!-- Reminder Alert Dialog -->
-    <v-dialog v-if="noteReminder" v-model="isReminderDialogOpen" width="500">
+    <v-dialog v-if="currentNote" v-model="isReminderDialogOpen" width="500">
       <v-card>
         <!-- <v-toolbar color="#eab308" class="px-2 text-h5 text-white" height="56" elevation="3"
           >Reminder</v-toolbar
@@ -88,15 +88,15 @@
           <div>
             <div>
               Reffer to:
-              <span class="text-medium-emphasis">{{ noteReminder.CompanyName }}</span>
+              <span class="text-medium-emphasis">{{ currentNote.CompanyName }}</span>
             </div>
             <div>
-              Date: <span class="text-medium-emphasis">{{ noteReminder.SelectedDate }}</span>
+              Date: <span class="text-medium-emphasis">{{ currentNote.SelectedDate }}</span>
             </div>
             <div>
-              Time: <span class="text-medium-emphasis">{{ noteReminder.SelectedTime }}</span>
+              Time: <span class="text-medium-emphasis">{{ currentNote.SelectedTime }}</span>
             </div>
-            <div class="text-center">{{ noteReminder.NoteDescription }}</div>
+            <div class="text-center">{{ currentNote.NoteDescription }}</div>
           </div>
         </v-card-text>
         <v-card-actions class="d-flex justify-center align-center">
@@ -122,9 +122,15 @@ let checkUserActivityInterval;
 export default {
   name: "DefaultLayout",
   components: {},
-  props: {},
+  props: {
+    displayNote: {
+      type: Object,
+      default: () => null
+    }
+  },
   data: () => ({
-    isReminderDialogOpen: false
+    isReminderDialogOpen: false,
+    currentNote: null
   }),
   created() {},
   mounted() {
@@ -199,10 +205,13 @@ export default {
     },
     async closeDialog() {
       this.isReminderDialogOpen = false;
-      const response = await updateNoteWatchedTime(this.noteReminder);
-      if (response.success) {
-        this.updateUserNotesListInStore(response.data);
+      if (this.currentNote.NoteId === this.noteReminder?.NoteId) {
+        const response = await updateNoteWatchedTime(this.noteReminder);
+        if (response.success) {
+          this.updateUserNotesListInStore(response.data);
+        }
       }
+      this.currentNote = null;
     }
   },
   computed: {
@@ -217,11 +226,19 @@ export default {
     noteReminder: {
       handler(newVal) {
         if (newVal) {
+          this.currentNote = newVal;
           // If there is a new reminder for popup - open reminder with delay
           setTimeout(() => {
             this.isReminderDialogOpen = true;
           }, 5000);
         }
+      },
+      immediate: true
+    },
+    displayNote: {
+      handler(newVal) {
+        this.currentNote = newVal;
+        this.isReminderDialogOpen = true;
       },
       immediate: true
     }

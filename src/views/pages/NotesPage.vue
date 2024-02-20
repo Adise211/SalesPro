@@ -125,6 +125,9 @@
                   <td class="text-center">
                     <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
                   </td>
+                  <td class="text-center">
+                    <v-icon @click="onWatchIconClick(item)">mdi-eye-plus</v-icon>
+                  </td>
                 </tr>
               </template>
               <template v-slot:bottom>
@@ -264,6 +267,10 @@ export default {
       // Reset current item and close dialog
       this.currentItem = {};
       this.isDeleteDialogOpen = false;
+    },
+    onWatchIconClick(item) {
+      console.log("watch this:", item);
+      this.$emit("onWatchNote", item);
     }
   },
   computed: {
@@ -295,6 +302,11 @@ export default {
         },
         {
           title: "Delete",
+          align: "center",
+          sortable: false
+        },
+        {
+          title: "Watch",
           align: "center",
           sortable: false
         }

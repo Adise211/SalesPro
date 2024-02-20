@@ -1,6 +1,6 @@
 <template>
-  <component :is="currentLayout">
-    <RouterView></RouterView>
+  <component :is="currentLayout" :displayNote="displayNote">
+    <RouterView @onWatchNote="onWatchNote"></RouterView>
   </component>
 </template>
 
@@ -15,7 +15,9 @@ export default {
   name: "App",
   components: { DefaultLayout, RouterView, MinimalLayout },
   props: {},
-  data: () => ({}),
+  data: () => ({
+    displayNote: null
+  }),
   created() {},
   mounted() {
     window.addEventListener("resize", this.screenResizeHandler);
@@ -41,6 +43,9 @@ export default {
           params: { calendarMode: "view" }
         });
       }
+    },
+    onWatchNote(note) {
+      this.displayNote = note;
     }
   },
   computed: {
