@@ -11,13 +11,22 @@
         <ViewCards>
           <template v-slot:card-text>
             <Calendar
+              ref="vcalendar"
               class="app-full-calendar"
               borderless
               transparent
               :attributes="calendarAttrs"
               expanded
               @dayclick="dayClickHandler"
-            />
+            >
+              <template v-slot:footer>
+                <div class="w-25 ml-auto mr-auto">
+                  <v-btn class="w-100" color="primary" variant="flat" @click="moveToToday"
+                    >Today</v-btn
+                  >
+                </div>
+              </template>
+            </Calendar>
           </template>
         </ViewCards>
       </v-col>
@@ -28,13 +37,13 @@
 <script>
 import ViewCards from "@/components/ViewCards.vue";
 // @ts-ignore
-import DisplayCalendar from "../../components/DisplayCalendar.vue";
+import DisplayCalendar from "@/components/DisplayCalendar.vue";
 // @ts-ignore
-import EditCalendar from "../../components/EditCalendar.vue";
+import EditCalendar from "@/components/EditCalendar.vue";
 import { mapState } from "pinia";
-import { useCalendarStore } from "../../stores/calendar";
+import { useCalendarStore } from "@/stores/calendar";
 import { Calendar } from "v-calendar";
-import { CalendarPageMode } from "../../utilities/consts";
+import { CalendarPageMode } from "@/utilities/consts";
 import "v-calendar/style.css";
 
 export default {
@@ -64,6 +73,11 @@ export default {
   methods: {
     dayClickHandler(calendar) {
       this.selectedDate = calendar.id;
+    },
+    moveToToday() {
+      if (this.$refs?.vcalendar) {
+        this.$refs.vcalendar.move(new Date());
+      }
     }
   },
   computed: {
