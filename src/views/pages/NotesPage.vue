@@ -116,6 +116,9 @@
                     <v-icon v-if="item.RemindMe" icon="mdi-bell" color="#eab308"></v-icon>
                   </td>
                   <td class="text-center">
+                    <v-icon @click="onWatchIconClick(item)">mdi-eye-plus</v-icon>
+                  </td>
+                  <td class="text-center">
                     <v-icon
                       icon="mdi-pencil"
                       color="primary"
@@ -124,9 +127,6 @@
                   </td>
                   <td class="text-center">
                     <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon @click="onWatchIconClick(item)">mdi-eye-plus</v-icon>
                   </td>
                 </tr>
               </template>
@@ -296,17 +296,17 @@ export default {
           sortable: false
         },
         {
+          title: "Watch",
+          align: "center",
+          sortable: false
+        },
+        {
           title: "Edit",
           align: "center",
           sortable: false
         },
         {
           title: "Delete",
-          align: "center",
-          sortable: false
-        },
-        {
-          title: "Watch",
           align: "center",
           sortable: false
         }
