@@ -1,33 +1,37 @@
 <template>
   <div class="d-flex flex-column fill-height">
     <ViewCards withActions class="view-events-details">
-      <template v-slot:card-title>Events:</template>
+      <template v-slot:card-title>Events</template>
       <template v-slot:card-text>
         <div v-if="currentEvents.length > 0">
           <v-row>
-            <v-col>
-              <div>Date</div>
-              <span class="text-medium-emphasis">{{ selectedDate }}</span>
-              <div class="mt-4">Company</div>
-              <span class="text-medium-emphasis">{{ currentEvents[currentIndex].Company }}</span>
-              <div class="mt-4">Participants</div>
-              <span class="text-medium-emphasis">{{
-                currentEvents[currentIndex].Participants
-              }}</span>
-            </v-col>
-            <v-col>
-              <div class="mt-4">Description</div>
-              <span class="text-medium-emphasis">{{
-                currentEvents[currentIndex].Description
-              }}</span>
-            </v-col>
+            <v-list>
+              <v-list-item v-for="item in currentEvents" :key="item.EventId">
+                <template v-slot:prepend>
+                  <div
+                    :style="{
+                      'border-right-width': '5px',
+                      'border-right-color': item.EventColor,
+                      'border-right-style': 'solid'
+                    }"
+                    class="mr-2"
+                  >
+                    <br />
+                  </div>
+                  <p class="text-medium-emphasis mr-4">8:00-10:00</p>
+                </template>
+                <v-list-item-title>{{ item.Company }}</v-list-item-title>
+                <!-- <v-list-item-subtitle>{{ item.Prodact }}</v-list-item-subtitle> -->
+                <v-divider></v-divider>
+              </v-list-item>
+            </v-list>
           </v-row>
         </div>
         <div v-else>No events</div>
       </template>
       <template v-slot:card-actions v-if="currentEvents.length > 0">
         <div class="d-flex flex-row justify-space-between" style="width: 100%">
-          <v-btn
+          <!-- <v-btn
             color="primary"
             class="font-weight-bold"
             @click="onPreviousBtnClick"
@@ -39,12 +43,12 @@
             @click="onNextBtnClick"
             :disabled="currentEvents.length < 2 || currentIndex === currentEvents.length - 1"
             >Next</v-btn
-          >
+          > -->
         </div>
       </template>
     </ViewCards>
     <ViewCards class="view-events-list mt-3">
-      <template v-slot:card-title>Week list:</template>
+      <template v-slot:card-title>Week list</template>
       <template v-slot:card-text>
         <v-data-table
           :headers="tableHeaders"
@@ -119,6 +123,7 @@ export default {
       const eventsList = this.userEventsList.filter((item) => {
         return item.EventDate === this.selectedDate;
       });
+      console.log("currentEvents:", eventsList);
       return eventsList || [];
     },
     tableHeaders: function () {
