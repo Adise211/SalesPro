@@ -8,7 +8,7 @@
             <v-list>
               <v-list-item v-for="item in currentEvents" :key="item.EventId">
                 <template v-slot:prepend>
-                  <div
+                  <!-- <div
                     :style="{
                       'border-right-width': '5px',
                       'border-right-color': item.EventColor,
@@ -17,11 +17,14 @@
                     class="mr-2"
                   >
                     <br />
-                  </div>
+                  </div> -->
                   <p class="text-medium-emphasis mr-4">8:00-10:00</p>
                 </template>
                 <v-list-item-title>{{ item.Company }}</v-list-item-title>
-                <!-- <v-list-item-subtitle>{{ item.Prodact }}</v-list-item-subtitle> -->
+                <template v-slot:append>
+                  <v-icon icon="mdi-pencil"></v-icon>
+                  <v-icon icon="mdi-eye" class="ml-4"></v-icon>
+                </template>
                 <v-divider></v-divider>
               </v-list-item>
             </v-list>
