@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column fill-height">
-    <ViewCards withActions class="view-events-details">
+    <ViewCards class="view-events-details" cardTextFillHeight>
       <template v-slot:card-title>Events</template>
       <template v-slot:card-text>
         <div v-if="currentEvents.length > 0">
@@ -30,24 +30,13 @@
             </v-list>
           </v-row>
         </div>
-        <div v-else>No events</div>
+        <div v-else class="fill-height d-flex flex-column align-center justify-start">
+          <div class="text-h6 mt-10 mb-2">No Events</div>
+          <v-btn variant="flat" color="primary" @click="onCreateNewClick">Create New</v-btn>
+        </div>
       </template>
       <template v-slot:card-actions v-if="currentEvents.length > 0">
-        <div class="d-flex flex-row justify-space-between" style="width: 100%">
-          <!-- <v-btn
-            color="primary"
-            class="font-weight-bold"
-            @click="onPreviousBtnClick"
-            :disabled="currentEvents.length < 2 || currentIndex === 0"
-            >Previous</v-btn
-          >
-          <v-btn
-            class="app-orange-color font-weight-bold"
-            @click="onNextBtnClick"
-            :disabled="currentEvents.length < 2 || currentIndex === currentEvents.length - 1"
-            >Next</v-btn
-          > -->
-        </div>
+        <div class="d-flex flex-row justify-space-between" style="width: 100%"></div>
       </template>
     </ViewCards>
     <ViewCards class="view-events-list mt-3">
@@ -88,6 +77,7 @@
 import ViewCards from "./ViewCards.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "../stores/calendar";
+import { CalendarPageMode } from "@/utilities/consts";
 import moment from "moment";
 
 export default {
@@ -118,6 +108,14 @@ export default {
         // not the first index - back to previous event
         this.currentIndex = this.currentIndex - 1;
       }
+    },
+    onCreateNewClick() {
+      this.$router.push({
+        name: "CalendarPage",
+        params: {
+          calendarMode: CalendarPageMode.Edit
+        }
+      });
     }
   },
   computed: {
