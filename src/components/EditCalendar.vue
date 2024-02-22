@@ -17,7 +17,7 @@
         <!-- Company's name -->
         <v-text-field
           v-model="companyName"
-          placeholder="Company"
+          placeholder="Company's Name"
           variant="outlined"
           density="comfortable"
           :rules="[formRules.required]"
@@ -30,6 +30,7 @@
           variant="outlined"
           density="comfortable"
           placeholder="Prodact"
+          persistent-placeholder
           style="width: 50%"
           color="primary"
           :rules="[formRules.required]"
@@ -104,7 +105,8 @@ export default {
     prodactName: "",
     participants: "",
     description: "",
-    isLoading: false
+    isLoading: false,
+    prodacrPlaceHolder: "Prodact"
   }),
   created() {},
   mounted() {},
@@ -175,6 +177,9 @@ export default {
       return {
         required: (value) => !!value || "Field is required"
       };
+    },
+    testing() {
+      return this.prodacrPlaceHolder;
     }
   },
   watch: {}
