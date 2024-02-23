@@ -7,6 +7,7 @@ import TrackingPage from "../views/pages/TrackingPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 import UserSettingsPage from "../views/pages/UserSettingsPage.vue";
 import NotesPage from "../views/pages/NotesPage.vue";
+import CalendarPage2 from "../views/pages/CalendarPage2.vue";
 
 /**
  *
@@ -49,6 +50,19 @@ const router = createRouter({
       // calendarStatus: "edit" || "view"
       name: "CalendarPage",
       component: CalendarPage,
+      props: (route) => {
+        return {
+          ...route.params,
+          calendarMode: route.params.calendarMode
+        };
+      },
+      meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/calendar-page-2/:calendarMode",
+      // calendarStatus: "edit" || "view"
+      name: "CalendarPage2",
+      component: CalendarPage2,
       props: (route) => {
         return {
           ...route.params,

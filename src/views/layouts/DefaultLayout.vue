@@ -154,7 +154,7 @@ export default {
           paramsObj = { calendarMode: CalendarPageMode.View };
           break;
         case NavigationItems.CreateEvent:
-          pageName = "CalendarPage";
+          pageName = "CalendarPage2";
           paramsObj = { calendarMode: CalendarPageMode.Edit };
           break;
         case NavigationItems.Notes:
