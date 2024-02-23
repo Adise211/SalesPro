@@ -92,7 +92,10 @@ export default {
       ];
     },
     appSettingsItems() {
-      return [{ text: "Theme", icon: "mdi-palette" }];
+      return [
+        { text: "Theme", icon: "mdi-palette" },
+        { text: "My Products", icon: "mdi-package-variant" }
+      ];
     },
     accountSettingsItems() {
       return [
