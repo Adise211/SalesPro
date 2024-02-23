@@ -2,10 +2,17 @@
   <v-container fluid class="calendar-page fill-height py-0">
     <v-row class="fill-height">
       <v-col md="6" v-if="!isOnEditCalendarMode">
-        <DisplayCalendar :selectedDate="selectedDate"></DisplayCalendar>
+        <DisplayCalendar
+          :selectedDate="selectedDate"
+          @onEditEvent="
+            (val) => {
+              editEventItem = val;
+            }
+          "
+        ></DisplayCalendar>
       </v-col>
       <v-col md="6" v-if="isOnEditCalendarMode">
-        <EditCalendar :selectedDate="selectedDate"></EditCalendar>
+        <EditCalendar :selectedDate="selectedDate" :editEventItem="editEventItem"></EditCalendar>
       </v-col>
       <v-col md="6">
         <ViewCards>
@@ -36,9 +43,7 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
-// @ts-ignore
 import DisplayCalendar from "@/components/DisplayCalendar.vue";
-// @ts-ignore
 import EditCalendar from "@/components/EditCalendar.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "@/stores/calendar";
@@ -58,6 +63,7 @@ export default {
   data: () => ({
     isOnEditCalendarMode: true,
     selectedDate: "",
+    editEventItem: null,
     calendarAttrs: [
       {
         highlight: {

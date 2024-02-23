@@ -97,6 +97,10 @@ export default {
     selectedDate: {
       type: String,
       default: ""
+    },
+    editEventItem: {
+      type: Object,
+      default: () => null
     }
   },
   data: () => ({
@@ -182,7 +186,20 @@ export default {
       return this.prodacrPlaceHolder;
     }
   },
-  watch: {}
+  watch: {
+    editEventItem: {
+      handler(newItem) {
+        if (newItem) {
+          this.pickedColor = newItem.EventColor;
+          this.companyName = newItem.Company;
+          this.prodactName = newItem.Prodact;
+          this.participants = newItem.Participants;
+          this.description = newItem.Description;
+        }
+      },
+      immediate: true
+    }
+  }
 };
 </script>
 

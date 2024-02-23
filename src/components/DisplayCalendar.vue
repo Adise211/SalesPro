@@ -22,7 +22,7 @@
                 </template>
                 <v-list-item-title>{{ item.Company }}</v-list-item-title>
                 <template v-slot:append>
-                  <v-icon icon="mdi-pencil"></v-icon>
+                  <v-icon icon="mdi-pencil" @click="onEditEventClick(item)"></v-icon>
                   <v-icon icon="mdi-eye" class="ml-4"></v-icon>
                 </template>
                 <v-divider></v-divider>
@@ -116,6 +116,15 @@ export default {
           calendarMode: CalendarPageMode.Edit
         }
       });
+    },
+    onEditEventClick(item) {
+      this.$emit("onEditEvent", item);
+      this.$router.push({
+        name: "CalendarPage",
+        params: {
+          calendarMode: CalendarPageMode.Edit
+        }
+      });
     }
   },
   computed: {
@@ -124,7 +133,6 @@ export default {
       const eventsList = this.userEventsList.filter((item) => {
         return item.EventDate === this.selectedDate;
       });
-      console.log("currentEvents:", eventsList);
       return eventsList || [];
     },
     tableHeaders: function () {
