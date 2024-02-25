@@ -66,8 +66,7 @@
 </template>
 
 <script>
-import { loginUser } from "../../firebase/services/user";
-import { CalendarPageMode } from "../../utilities/consts";
+import { loginUser } from "@/firebase/services/user";
 export default {
   name: "LoginPage",
   components: {},
@@ -94,8 +93,7 @@ export default {
         if (response) {
           this.isLoading = false;
           this.$router.push({
-            name: "CalendarPage",
-            params: { calendarMode: CalendarPageMode.View }
+            name: "OverViewPage"
           });
         }
       }

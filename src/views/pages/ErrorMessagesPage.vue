@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { CalendarPageMode } from "@/utilities/consts";
 export default {
   name: "ErrorMessagesPage",
   components: {},
@@ -48,10 +47,7 @@ export default {
   methods: {
     onGoBackClick() {
       this.$router.push({
-        name: "CalendarPage",
-        params: {
-          calendarMode: CalendarPageMode.View
-        }
+        name: "OverViewPage"
       });
     }
   },

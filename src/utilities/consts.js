@@ -22,11 +22,6 @@ export const CalendarEventColors = {
   Pink: "pink"
 };
 
-export const CalendarPageMode = {
-  View: "view",
-  Edit: "edit"
-};
-
 export const TrackingStages = {
   FollowUps: "followups",
   Leads: "leads",
