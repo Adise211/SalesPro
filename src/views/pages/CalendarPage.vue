@@ -9,7 +9,10 @@
         </AppCard>
       </v-col>
     </v-row>
-    <AppEventDialog></AppEventDialog>
+    <AppEventDialog
+      :isParentReqToOpen="isEventDialogOpen"
+      @onDialogClose="isEventDialogOpen = false"
+    ></AppEventDialog>
   </v-container>
 </template>
 
@@ -26,7 +29,9 @@ export default {
   name: "CalendarPage",
   components: { AppCard, AppEventDialog },
   props: {},
-  data: () => ({}),
+  data: () => ({
+    isEventDialogOpen: false
+  }),
   created() {},
   mounted() {
     const activeCalendar = createCalendar(this.calendarConfig);
@@ -60,7 +65,7 @@ export default {
       calendarHeader.insertBefore(newBtn, lastChild);
     },
     createNewEvent() {
-      alert("creating new event!");
+      this.isEventDialogOpen = true;
     }
   },
   computed: {
