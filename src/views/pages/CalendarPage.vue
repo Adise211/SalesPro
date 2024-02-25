@@ -4,7 +4,6 @@
       <v-col md="12">
         <AppCard cardTextFillHeight>
           <template v-slot:card-text>
-            <div></div>
             <div id="full-calendar"></div>
           </template>
         </AppCard>
