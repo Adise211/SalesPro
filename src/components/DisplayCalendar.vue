@@ -1,43 +1,7 @@
 <template>
   <div class="d-flex flex-column fill-height">
     <ViewCards class="view-events-details" cardTextFillHeight>
-      <template v-slot:card-title>Events</template>
-      <template v-slot:card-text>
-        <div v-if="currentEvents.length > 0">
-          <v-row>
-            <v-list>
-              <v-list-item v-for="item in currentEvents" :key="item.EventId">
-                <template v-slot:prepend>
-                  <!-- <div
-                    :style="{
-                      'border-right-width': '5px',
-                      'border-right-color': item.EventColor,
-                      'border-right-style': 'solid'
-                    }"
-                    class="mr-2"
-                  >
-                    <br />
-                  </div> -->
-                  <p class="text-medium-emphasis mr-4">8:00-10:00</p>
-                </template>
-                <v-list-item-title>{{ item.Company }}</v-list-item-title>
-                <template v-slot:append>
-                  <v-icon icon="mdi-pencil" @click="onEditEventClick(item)"></v-icon>
-                  <v-icon icon="mdi-eye" class="ml-4"></v-icon>
-                </template>
-                <v-divider></v-divider>
-              </v-list-item>
-            </v-list>
-          </v-row>
-        </div>
-        <div v-else class="fill-height d-flex flex-column align-center justify-start">
-          <div class="text-h6 mt-10 mb-2">No Events</div>
-          <v-btn variant="flat" color="primary" @click="onCreateNewClick">Create New</v-btn>
-        </div>
-      </template>
-      <template v-slot:card-actions v-if="currentEvents.length > 0">
-        <div class="d-flex flex-row justify-space-between" style="width: 100%"></div>
-      </template>
+      <template v-slot:card-text> </template>
     </ViewCards>
     <ViewCards class="view-events-list mt-3">
       <template v-slot:card-title>Week list</template>
@@ -77,7 +41,6 @@
 import ViewCards from "./ViewCards.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "../stores/calendar";
-import { CalendarPageMode } from "@/utilities/consts";
 import moment from "moment";
 
 export default {
@@ -108,23 +71,6 @@ export default {
         // not the first index - back to previous event
         this.currentIndex = this.currentIndex - 1;
       }
-    },
-    onCreateNewClick() {
-      this.$router.push({
-        name: "CalendarPage",
-        params: {
-          calendarMode: CalendarPageMode.Edit
-        }
-      });
-    },
-    onEditEventClick(item) {
-      this.$emit("onEditEvent", item);
-      this.$router.push({
-        name: "CalendarPage",
-        params: {
-          calendarMode: CalendarPageMode.Edit
-        }
-      });
     }
   },
   computed: {
