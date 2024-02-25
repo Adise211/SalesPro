@@ -10,6 +10,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@schedule-x/calendar": "^1.17.1",
+    "@schedule-x/theme-default": "^1.18.0",
     "axios": "^1.6.2",
     "dotenv": "^16.3.1",
     "firebase": "^10.7.0",
