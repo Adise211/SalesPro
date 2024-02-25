@@ -25,11 +25,14 @@ a {
   height: 100vh;
 }
 
+// Schedule-x Calendar
+// https://schedule-x.dev/
+
 #full-calendar {
   height: 95%;
-  .sx__month-grid-day {
-    cursor: pointer;
-  }
+  // .sx__month-grid-day {
+  //   cursor: pointer;
+  // }
 }
 
 .calendar-add-event-btn {
@@ -39,33 +42,4 @@ a {
   color: white;
   border-radius: 4px;
   height: 100%;
-}
-// VCalendar
-// SASS variables from here:
-// https://github.com/nathanreyes/v-calendar/blob/v3/src/styles/theme.css
-
-.app-full-calendar {
-  .vc-week {
-    height: 10vh;
-    font-family: var(--app-font-family);
-    .vc-day-content {
-      font-size: var(--vc-text-base);
-    }
-  }
-  .vc-weekday {
-    color: var(--app-orange);
-  }
-  .vc-dots {
-    margin-bottom: 16px;
-  }
-}
-
-.app-date-picker {
-  .vc-weekday {
-    color: var(--app-orange);
-  }
-}
-
-.app-orange-color {
-  color: var(--app-orange);
 }
