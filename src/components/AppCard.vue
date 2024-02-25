@@ -1,20 +1,22 @@
 <template>
-  <!-- <div class="view-card"> -->
   <v-card elevation="5" :max-width="cardMaxWidth" max-height="100%" :height="cardHeight">
-    <v-card-title>
+    <!-- Card Title -->
+    <v-card-title v-if="!cardContentOnly">
       <slot name="card-title"></slot>
     </v-card-title>
-    <v-card-subtitle>
+    <!-- Card Subtitle -->
+    <v-card-subtitle v-if="!cardContentOnly">
       <slot name="card-sub-title"></slot>
     </v-card-subtitle>
+    <!-- Card Text (content) -->
     <v-card-text :class="{ 'fill-height': cardTextFillHeight }">
       <slot name="card-text"></slot>
     </v-card-text>
-    <v-card-actions v-if="withActions" class="pb-0">
+    <!-- Card Actions (buttons) -->
+    <v-card-actions v-if="!cardContentOnly" class="pb-0">
       <slot name="card-actions"></slot>
     </v-card-actions>
   </v-card>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -25,9 +27,9 @@ export default {
       type: [Number, String],
       default: "100%"
     },
-    withActions: {
+    cardContentOnly: {
       type: Boolean,
-      default: false
+      default: true
     },
     cardHeight: {
       type: [Number, String],
