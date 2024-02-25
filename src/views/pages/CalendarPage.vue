@@ -17,6 +17,7 @@ import AppCard from "@/components/AppCard.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "@/stores/calendar";
 import { createCalendar, viewMonthGrid } from "@schedule-x/calendar";
+import { createEventModalPlugin } from "@schedule-x/event-modal";
 import "@schedule-x/theme-default/dist/index.css";
 
 export default {
@@ -70,10 +71,11 @@ export default {
           {
             id: 1,
             title: "Coffee with John",
-            start: "2023-12-04 10:05",
-            end: "2023-12-04 10:35"
+            start: "2024-02-26 10:05",
+            end: "2024-02-26 10:35"
           }
         ],
+        plugins: [createEventModalPlugin()],
         callbacks: {
           onClickDate() {
             // console.log("onClickDate", date);
