@@ -10,26 +10,9 @@
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
           ></v-list-item>
           <v-divider></v-divider>
-          <v-list-group value="Meetings" fluid>
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" title="Meetings"></v-list-item>
-            </template>
-            <v-list-item
-              link
-              title="Calendar"
-              variant="tonal"
-              append-icon="mdi-calendar"
-              @click="onNavItemClick('Calendar')"
-            >
-            </v-list-item>
-            <v-list-item
-              link
-              title="Create Event"
-              variant="tonal"
-              append-icon="mdi-calendar-edit"
-              @click="onNavItemClick('CreateEvent')"
-            ></v-list-item>
-          </v-list-group>
+          <v-list-item link title="Overview" @click="onNavItemClick('OverView')"></v-list-item>
+          <v-list-item link title="Calendar" @click="onNavItemClick('Calendar')"></v-list-item>
+
           <v-list-item link title="Notes" @click="onNavItemClick('Notes')"></v-list-item>
           <v-list-group value="Tracking" fluid>
             <template v-slot:activator="{ props }">
@@ -149,11 +132,11 @@ export default {
       let pageName;
       let paramsObj;
       switch (itemName) {
-        case NavigationItems.Calendar:
+        case NavigationItems.OverView:
           pageName = "CalendarPage";
           paramsObj = { calendarMode: CalendarPageMode.View };
           break;
-        case NavigationItems.CreateEvent:
+        case NavigationItems.Calendar:
           pageName = "CalendarPage2";
           paramsObj = { calendarMode: CalendarPageMode.Edit };
           break;
