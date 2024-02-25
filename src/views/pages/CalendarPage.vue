@@ -29,28 +29,42 @@ export default {
   mounted() {
     const activeCalendar = createCalendar(this.calendarConfig);
     activeCalendar.render(document.getElementById("full-calendar"));
-    this.addBtnInCalendar();
+    // Create and custom button to calendar
+    this.addNewBtnInCalendar();
+  },
+  beforeUnmount() {
+    // Before page unmounted - remove the event listener from custom button
+    const addEventBtn = document.getElementsByClassName("calendar-add-event-btn");
+    if (addEventBtn.length > 0) {
+      addEventBtn.removeEventListener("click", this.createNewEvent);
+    }
   },
   methods: {
-    addBtnInCalendar() {
+    addNewBtnInCalendar() {
+      // Get calendar header
       const calendarHeader = document.getElementsByClassName("sx__calendar-header")[0];
+      // Get last child in calendar header
       const lastChild = calendarHeader.lastChild;
-
-      console.log("firstChild:", lastChild);
+      // Create new button with attr, class and event listener
       const newBtn = document.createElement("button");
       newBtn.innerText = "Add event";
       newBtn.setAttribute("type", "button");
       newBtn.classList.add("calendar-add-event-btn");
       newBtn.addEventListener("click", () => {
-        alert("creating new event!");
+        this.createNewEvent();
       });
+
+      // Insert the button before the last child
       calendarHeader.insertBefore(newBtn, lastChild);
+    },
+    createNewEvent() {
+      alert("creating new event!");
     }
   },
   computed: {
     ...mapState(useCalendarStore, ["eventsGroupsAttr"]),
     calendarConfig() {
-      const vueInstance = this;
+      // const vueInstance = this;
       return {
         views: [viewMonthGrid],
         events: [
@@ -62,9 +76,8 @@ export default {
           }
         ],
         callbacks: {
-          onClickDate(date) {
+          onClickDate() {
             // console.log("onClickDate", date);
-            vueInstance.testOnClickDate(date);
           }
         }
       };
