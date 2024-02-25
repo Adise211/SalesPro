@@ -9,11 +9,13 @@
         </AppCard>
       </v-col>
     </v-row>
+    <AppEventDialog></AppEventDialog>
   </v-container>
 </template>
 
 <script>
 import AppCard from "@/components/AppCard.vue";
+import AppEventDialog from "@/components/AppEventDialog.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "@/stores/calendar";
 import { createCalendar, viewMonthGrid } from "@schedule-x/calendar";
@@ -22,7 +24,7 @@ import "@schedule-x/theme-default/dist/index.css";
 
 export default {
   name: "CalendarPage",
-  components: { AppCard },
+  components: { AppCard, AppEventDialog },
   props: {},
   data: () => ({}),
   created() {},
