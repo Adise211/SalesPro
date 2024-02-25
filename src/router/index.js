@@ -2,12 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import { initStores } from "../stores";
 import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
-import CalendarPage from "../views/pages/CalendarPage.vue";
+import OverViewPage from "../views/pages/OverViewPage.vue";
 import TrackingPage from "../views/pages/TrackingPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 import UserSettingsPage from "../views/pages/UserSettingsPage.vue";
 import NotesPage from "../views/pages/NotesPage.vue";
-import CalendarPage2 from "../views/pages/CalendarPage2.vue";
+import CalendarPage from "../views/pages/CalendarPage.vue";
 
 /**
  *
@@ -23,9 +23,9 @@ const router = createRouter({
       path: "/",
       name: "home",
       redirect: () => {
-        return { name: "CalendarPage", params: { calendarMode: "view" } };
+        return { name: "OverViewPage" };
       },
-      meta: { layout: "MinimalLayout" }
+      meta: { layout: "DefaultLayout" }
     },
     {
       path: "/login",
@@ -40,33 +40,23 @@ const router = createRouter({
       meta: { layout: "MinimalLayout" }
     },
     {
-      path: "/view-page",
-      name: "ViewPage",
-      component: () => import("../views/pages/ViewPage.vue"),
-      meta: { layout: "DefaultLayout" }
-    },
-    {
-      path: "/calendar-page/:calendarMode",
-      // calendarStatus: "edit" || "view"
-      name: "CalendarPage",
-      component: CalendarPage,
+      path: "/overview",
+      name: "OverViewPage",
+      component: OverViewPage,
       props: (route) => {
         return {
-          ...route.params,
-          calendarMode: route.params.calendarMode
+          ...route.params
         };
       },
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/calendar-page-2/:calendarMode",
-      // calendarStatus: "edit" || "view"
-      name: "CalendarPage2",
-      component: CalendarPage2,
+      path: "/user-calendar",
+      name: "CalendarPage",
+      component: CalendarPage,
       props: (route) => {
         return {
-          ...route.params,
-          calendarMode: route.params.calendarMode
+          ...route.params
         };
       },
       meta: { layout: "DefaultLayout" }

@@ -1,39 +1,11 @@
 <template>
   <v-container fluid class="calendar-page fill-height py-0">
     <v-row class="fill-height">
-      <v-col md="6" v-if="!isOnEditCalendarMode">
-        <DisplayCalendar
-          :selectedDate="selectedDate"
-          @onEditEvent="
-            (val) => {
-              editEventItem = val;
-            }
-          "
-        ></DisplayCalendar>
-      </v-col>
-      <v-col md="6" v-if="isOnEditCalendarMode">
-        <EditCalendar :selectedDate="selectedDate" :editEventItem="editEventItem"></EditCalendar>
-      </v-col>
-      <v-col md="6">
-        <ViewCards>
+      <v-col md="12">
+        <ViewCards cardTextFillHeight>
           <template v-slot:card-text>
-            <Calendar
-              ref="vcalendar"
-              class="app-full-calendar"
-              borderless
-              transparent
-              :attributes="calendarAttrs"
-              expanded
-              @dayclick="dayClickHandler"
-            >
-              <template v-slot:footer>
-                <div class="w-25 ml-auto mr-auto">
-                  <v-btn class="w-100" color="primary" variant="flat" @click="moveToToday"
-                    >Today</v-btn
-                  >
-                </div>
-              </template>
-            </Calendar>
+            <div></div>
+            <div id="full-calendar"></div>
           </template>
         </ViewCards>
       </v-col>
@@ -43,78 +15,63 @@
 
 <script>
 import ViewCards from "@/components/ViewCards.vue";
-import DisplayCalendar from "@/components/DisplayCalendar.vue";
-import EditCalendar from "@/components/EditCalendar.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "@/stores/calendar";
-import { Calendar } from "v-calendar";
-import { CalendarPageMode } from "@/utilities/consts";
 import "v-calendar/style.css";
+import { createCalendar, viewMonthGrid } from "@schedule-x/calendar";
+import "@schedule-x/theme-default/dist/index.css";
 
 export default {
   name: "CalendarPage",
-  components: { ViewCards, Calendar, DisplayCalendar, EditCalendar },
-  props: {
-    calendarMode: {
-      type: String,
-      default: ""
-    }
-  },
-  data: () => ({
-    isOnEditCalendarMode: true,
-    selectedDate: "",
-    editEventItem: null,
-    calendarAttrs: [
-      {
-        highlight: {
-          color: "purple",
-          fillMode: "light"
-        },
-        dates: new Date()
-      }
-    ]
-  }),
+  components: { ViewCards },
+  props: {},
+  data: () => ({}),
   created() {},
-  mounted() {},
+  mounted() {
+    const activeCalendar = createCalendar(this.calendarConfig);
+    activeCalendar.render(document.getElementById("full-calendar"));
+    this.addBtnInCalendar();
+  },
   methods: {
-    dayClickHandler(calendar) {
-      this.selectedDate = calendar.id;
-    },
-    moveToToday() {
-      if (this.$refs?.vcalendar) {
-        this.$refs.vcalendar.move(new Date());
-      }
+    addBtnInCalendar() {
+      const calendarHeader = document.getElementsByClassName("sx__calendar-header")[0];
+      const lastChild = calendarHeader.lastChild;
+
+      console.log("firstChild:", lastChild);
+      const newBtn = document.createElement("button");
+      newBtn.innerText = "Add event";
+      newBtn.setAttribute("type", "button");
+      newBtn.classList.add("calendar-add-event-btn");
+      newBtn.addEventListener("click", () => {
+        alert("creating new event!");
+      });
+      calendarHeader.insertBefore(newBtn, lastChild);
     }
   },
   computed: {
-    ...mapState(useCalendarStore, ["eventsGroupsAttr"])
-  },
-  watch: {
-    calendarMode: {
-      handler(newVal) {
-        if (newVal === CalendarPageMode.View) {
-          this.isOnEditCalendarMode = false;
-        } else if (newVal === CalendarPageMode.Edit) {
-          this.isOnEditCalendarMode = true;
+    ...mapState(useCalendarStore, ["eventsGroupsAttr"]),
+    calendarConfig() {
+      const vueInstance = this;
+      return {
+        views: [viewMonthGrid],
+        events: [
+          {
+            id: 1,
+            title: "Coffee with John",
+            start: "2023-12-04 10:05",
+            end: "2023-12-04 10:35"
+          }
+        ],
+        callbacks: {
+          onClickDate(date) {
+            // console.log("onClickDate", date);
+            vueInstance.testOnClickDate(date);
+          }
         }
-      },
-      immediate: true
-    },
-    eventsGroupsAttr: {
-      handler(newData) {
-        if (newData?.length) {
-          newData.map((group) => {
-            const eventsForDisplay = {
-              dot: group.dot,
-              dates: group.dates.map((date) => new Date(date.EventDate))
-            };
-            this.calendarAttrs.push(eventsForDisplay);
-          });
-        }
-      },
-      immediate: true
+      };
     }
-  }
+  },
+  watch: {}
 };
 </script>
 

@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { NavigationItems, CalendarPageMode, TrackingStages } from "@/utilities/consts";
+import { NavigationItems, TrackingStages } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { useCalendarStore } from "@/stores/calendar";
@@ -133,12 +133,12 @@ export default {
       let paramsObj;
       switch (itemName) {
         case NavigationItems.OverView:
-          pageName = "CalendarPage";
-          paramsObj = { calendarMode: CalendarPageMode.View };
+          pageName = "OverViewPage";
+          paramsObj = {};
           break;
         case NavigationItems.Calendar:
-          pageName = "CalendarPage2";
-          paramsObj = { calendarMode: CalendarPageMode.Edit };
+          pageName = "CalendarPage";
+          paramsObj = {};
           break;
         case NavigationItems.Notes:
           pageName = "NotesPage";
