@@ -1,6 +1,6 @@
 export const NavigationItems = {
+  OverView: "OverView",
   Calendar: "Calendar",
-  CreateEvent: "CreateEvent",
   Notes: "Notes",
   FolllowUps: "FolllowUps",
   Leads: "Leads",
