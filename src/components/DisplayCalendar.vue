@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex flex-column fill-height">
-    <ViewCards class="view-events-details" cardTextFillHeight>
+    <AppCard class="view-events-details" cardTextFillHeight>
       <template v-slot:card-text> </template>
-    </ViewCards>
-    <ViewCards class="view-events-list mt-3">
+    </AppCard>
+    <AppCard class="view-events-list mt-3">
       <template v-slot:card-title>Week list</template>
       <template v-slot:card-text>
         <v-data-table
@@ -32,19 +32,19 @@
           </template>
         </v-data-table>
       </template>
-    </ViewCards>
+    </AppCard>
   </div>
 </template>
 
 <script>
 // @ts-ignore
-import ViewCards from "./ViewCards.vue";
+import AppCard from "./AppCard.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "../stores/calendar";
 import moment from "moment";
 
 export default {
-  components: { ViewCards },
+  components: { AppCard },
   props: {
     selectedDate: {
       type: String,

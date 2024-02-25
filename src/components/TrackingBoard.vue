@@ -3,7 +3,7 @@
     <v-row class="fill-height">
       <v-col md="6">
         <!-- 1) Charts -->
-        <ViewCards cardTextFillHeight>
+        <AppCard cardTextFillHeight>
           <template v-slot:card-text>
             <AppCharts
               v-if="showChart"
@@ -13,11 +13,11 @@
               :chartDataColors="chartDataColors"
             ></AppCharts>
           </template>
-        </ViewCards>
+        </AppCard>
       </v-col>
       <v-col md="6">
         <!-- 2) List -->
-        <ViewCards>
+        <AppCard>
           <template v-slot:card-text>
             <div class="d-flex flex-row align-start">
               <v-text-field
@@ -89,7 +89,7 @@
               </template>
             </v-data-table>
           </template>
-        </ViewCards>
+        </AppCard>
       </v-col>
     </v-row>
     <v-dialog v-model="isDeleteDialogOpen" width="500">
@@ -110,7 +110,7 @@
 
 <script>
 // @ts-ignore
-import ViewCards from "./ViewCards.vue";
+import AppCard from "./AppCard.vue";
 import AppCharts from "./AppCharts.vue";
 import { TrackingStatusTypes, ToastMessages, TrackingStages } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
@@ -120,7 +120,7 @@ import moment from "moment";
 
 export default {
   name: "FollowUps",
-  components: { ViewCards, AppCharts },
+  components: { AppCard, AppCharts },
   props: {
     currentStage: {
       type: String,

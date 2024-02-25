@@ -3,12 +3,12 @@
     <v-row class="fill-height">
       <v-col md="6">
         <div class="d-flex flex-column fill-height">
-          <ViewCards class="view-notes h-50">
+          <AppCard class="view-notes h-50">
             <template v-slot:card-text>
               <div>View note (by id)</div>
             </template>
-          </ViewCards>
-          <ViewCards class="create-notes mt-3" cardTextFillHeight>
+          </AppCard>
+          <AppCard class="create-notes mt-3" cardTextFillHeight>
             <template v-slot:card-text>
               <div class="fill-height d-flex flex-column">
                 <v-form ref="newNoteForm">
@@ -81,11 +81,11 @@
                 </div>
               </div>
             </template>
-          </ViewCards>
+          </AppCard>
         </div>
       </v-col>
       <v-col md="6">
-        <ViewCards>
+        <AppCard>
           <template v-slot:card-text>
             <div class="d-flex justify-space-between">
               <v-text-field
@@ -137,7 +137,7 @@
               </template>
             </v-data-table>
           </template>
-        </ViewCards>
+        </AppCard>
       </v-col>
     </v-row>
     <!-- Before Delete Dialog -->
@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import ViewCards from "@/components/ViewCards.vue";
+import AppCard from "@/components/AppCard.vue";
 import "v-calendar/style.css";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
@@ -168,7 +168,7 @@ import { ToastMessages } from "@/utilities/consts";
 
 export default {
   name: "NotesPage",
-  components: { ViewCards },
+  components: { AppCard },
   props: {},
   data: () => ({
     page: 1,

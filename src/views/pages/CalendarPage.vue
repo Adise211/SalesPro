@@ -2,28 +2,27 @@
   <v-container fluid class="calendar-page fill-height py-0">
     <v-row class="fill-height">
       <v-col md="12">
-        <ViewCards cardTextFillHeight>
+        <AppCard cardTextFillHeight>
           <template v-slot:card-text>
             <div></div>
             <div id="full-calendar"></div>
           </template>
-        </ViewCards>
+        </AppCard>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import ViewCards from "@/components/ViewCards.vue";
+import AppCard from "@/components/AppCard.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "@/stores/calendar";
-import "v-calendar/style.css";
 import { createCalendar, viewMonthGrid } from "@schedule-x/calendar";
 import "@schedule-x/theme-default/dist/index.css";
 
 export default {
   name: "CalendarPage",
-  components: { ViewCards },
+  components: { AppCard },
   props: {},
   data: () => ({}),
   created() {},

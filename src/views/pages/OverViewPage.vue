@@ -13,23 +13,23 @@
       </v-col>
 
       <v-col md="6">
-        <ViewCards>
+        <AppCard>
           <template v-slot:card-text> </template>
-        </ViewCards>
+        </AppCard>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import ViewCards from "@/components/ViewCards.vue";
+import AppCard from "@/components/AppCard.vue";
 import DisplayCalendar from "@/components/DisplayCalendar.vue";
 import { mapState } from "pinia";
 import { useCalendarStore } from "@/stores/calendar";
 
 export default {
   name: "CalendarPage",
-  components: { ViewCards, DisplayCalendar },
+  components: { AppCard, DisplayCalendar },
   props: {},
   data: () => ({}),
   created() {},

@@ -3,7 +3,7 @@
     <v-row class="fill-height">
       <!-- list of settings options -->
       <v-col md="6">
-        <ViewCards>
+        <AppCard>
           <template v-slot:card-text>
             <v-list>
               <!-- Profile settings -->
@@ -53,26 +53,26 @@
               </v-list-item>
             </v-list>
           </template>
-        </ViewCards>
+        </AppCard>
       </v-col>
       <!-- board for editing  -->
       <v-col md="6">
-        <ViewCards cardTextFillHeight>
+        <AppCard cardTextFillHeight>
           <template v-slot:card-text>
             <AppSettingBoard :settingType="selectedSetting"></AppSettingBoard>
           </template>
-        </ViewCards>
+        </AppCard>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import ViewCards from "@/components/ViewCards.vue";
+import AppCard from "@/components/AppCard.vue";
 import AppSettingBoard from "@/components/AppSettingBoard.vue";
 export default {
   name: "UserSettingsPage",
-  components: { ViewCards, AppSettingBoard },
+  components: { AppCard, AppSettingBoard },
   props: {},
   data: () => ({
     selectedSetting: ""

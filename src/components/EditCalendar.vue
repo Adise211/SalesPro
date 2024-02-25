@@ -1,5 +1,5 @@
 <template>
-  <ViewCards withActions>
+  <AppCard withActions>
     <template v-slot:card-title>Create New Event</template>
     <template v-slot:card-text>
       <v-form ref="eventForm">
@@ -80,19 +80,19 @@
         <v-btn color="error" variant="outlined" @click="onReset">Reset</v-btn>
       </div>
     </template>
-  </ViewCards>
+  </AppCard>
 </template>
 
 <script>
 // @ts-ignore
-import ViewCards from "./ViewCards.vue";
+import AppCard from "./AppCard.vue";
 import { CalendarEventColors, ToastMessages } from "../utilities/consts";
 import { useCalendarStore } from "../stores/calendar";
 import { mapState, mapActions } from "pinia";
 import { createCalendarEvent } from "../firebase/services/data";
 
 export default {
-  components: { ViewCards },
+  components: { AppCard },
   props: {
     selectedDate: {
       type: String,
