@@ -54,7 +54,8 @@
                 </v-menu>
               </v-col>
               <v-col>
-                <v-text-field label="Event Title*"></v-text-field>
+                <!-- 3) event title -->
+                <v-text-field v-model="eventTitle" abel="Event Title*"></v-text-field>
               </v-col>
             </v-row>
             <!-- Second Row -->
@@ -64,7 +65,12 @@
               </v-col>
               <v-col>
                 <div v-if="!isFullDay" class="d-flex">
-                  <v-select label="Start time" :items="hoursOption"></v-select>
+                  <v-select
+                    v-model="startTime"
+                    label="Start time"
+                    :items="hoursOption"
+                    class="w-25"
+                  ></v-select>
                   <v-select
                     v-model="startTimeInDay"
                     class="w-0 ml-2"
@@ -74,7 +80,12 @@
               </v-col>
               <v-col>
                 <div v-if="!isFullDay" class="d-flex">
-                  <v-select label="End time" :items="hoursOption"></v-select>
+                  <v-select
+                    v-model="endTime"
+                    label="End time"
+                    :items="hoursOption"
+                    class="w-25"
+                  ></v-select>
                   <v-select
                     v-model="endTimeInDay"
                     class="w-0 ml-2"
@@ -86,16 +97,29 @@
             <!-- Third Row -->
             <v-row>
               <v-col>
-                <v-textarea label="Description"></v-textarea>
+                <v-textarea v-model="eventDescription" label="Description"></v-textarea>
               </v-col>
             </v-row>
             <!-- Forth Row -->
             <v-row>
               <v-col>
-                <v-text-field label="People" append-inner-icon="mdi-account-group"></v-text-field>
+                <v-select
+                  v-model="people"
+                  label="People"
+                  append-inner-icon="mdi-account-group"
+                  multiple
+                  :items="['Me', 'Boss']"
+                ></v-select>
               </v-col>
               <v-col>
-                <v-text-field label="Location" append-inner-icon="mdi-map-marker"></v-text-field>
+                <v-text-field
+                  v-model="location"
+                  label="Location"
+                  append-inner-icon="mdi-map-marker"
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="companyName" label="Company's Name"></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -125,12 +149,19 @@ export default {
   data: () => ({
     isDialogOpen: false,
     isFullDay: true,
+    eventTitle: "",
     startTimeInDay: "AM",
     endTimeInDay: "AM",
     startDateMenu: false,
     endDateMenu: false,
     startDateValue: "",
-    endDateValue: ""
+    endDateValue: "",
+    startTime: "",
+    endTime: "",
+    eventDescription: "",
+    companyName: "",
+    people: [],
+    location: ""
   }),
   created() {},
   mounted() {},
