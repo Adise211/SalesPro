@@ -26,7 +26,7 @@
               </v-col>
               <v-col>
                 <div v-if="!isFullDay" class="d-flex">
-                  <v-select label="Start time"></v-select>
+                  <v-select label="Start time" :items="hoursOption"></v-select>
                   <v-select
                     v-model="startTimeInDay"
                     class="w-0 ml-2"
@@ -36,7 +36,7 @@
               </v-col>
               <v-col>
                 <div v-if="!isFullDay" class="d-flex">
-                  <v-select label="End time"></v-select>
+                  <v-select label="End time" :items="hoursOption"></v-select>
                   <v-select
                     v-model="endTimeInDay"
                     class="w-0 ml-2"
@@ -90,7 +90,9 @@ export default {
     endTimeInDay: "AM"
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("hoursOption:", this.hoursOption);
+  },
   methods: {
     onCancel() {
       this.isDialogOpen = false;
@@ -100,6 +102,18 @@ export default {
   computed: {
     beforeOrAfterMidDay() {
       return ["AM", "PM"];
+    },
+    hoursOption() {
+      const fullDayHours = [];
+      for (let hourIndex = 1; hourIndex < 13; hourIndex++) {
+        // Check if the hour is not exist yet in the list
+        if (!fullDayHours.includes(hourIndex.toString())) {
+          // If not exist - add it as time
+          fullDayHours.push(hourIndex + ":00");
+          fullDayHours.push(hourIndex + ":30");
+        }
+      }
+      return fullDayHours;
     }
   },
   watch: {
