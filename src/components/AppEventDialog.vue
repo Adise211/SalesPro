@@ -5,15 +5,53 @@
         <span class="text-h5">Create Event</span>
       </template>
       <template v-slot:card-text>
-        <v-form ref="event-info-form">
-          <v-container>
+        <v-container>
+          <v-form ref="eventInfoForm">
             <!-- First Row -->
             <v-row>
               <v-col>
-                <v-text-field label="Start Date*"></v-text-field>
+                <!-- 1) start date -->
+                <v-menu v-model="startDateMenu" :close-on-content-click="false">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      label="Start Date*"
+                      :modelValue="displayFormattedDates.start"
+                    >
+                    </v-text-field>
+                  </template>
+                  <v-date-picker
+                    hide-header
+                    @update:modelValue="
+                      (val) => {
+                        startDateMenu = false;
+                        startDateValue = val;
+                      }
+                    "
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col>
-                <v-text-field label="End Date*"></v-text-field>
+                <!-- 2) end date -->
+                <v-menu v-model="endDateMenu" :close-on-content-click="false">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      label="End Date*"
+                      :modelValue="displayFormattedDates.end"
+                    >
+                    </v-text-field>
+                  </template>
+                  <v-date-picker
+                    hide-header
+                    @update:modelValue="
+                      (val) => {
+                        endDateMenu = false;
+                        endDateValue = val;
+                      }
+                    "
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col>
                 <v-text-field label="Event Title*"></v-text-field>
@@ -60,8 +98,8 @@
                 <v-text-field label="Location" append-inner-icon="mdi-map-marker"></v-text-field>
               </v-col>
             </v-row>
-          </v-container>
-        </v-form>
+          </v-form>
+        </v-container>
       </template>
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
@@ -74,6 +112,7 @@
 
 <script>
 import AppCard from "./AppCard.vue";
+import { useDate } from "vuetify";
 
 export default {
   components: { AppCard },
@@ -84,18 +123,24 @@ export default {
     }
   },
   data: () => ({
-    isDialogOpen: true,
+    isDialogOpen: false,
     isFullDay: true,
     startTimeInDay: "AM",
-    endTimeInDay: "AM"
+    endTimeInDay: "AM",
+    startDateMenu: false,
+    endDateMenu: false,
+    startDateValue: "",
+    endDateValue: ""
   }),
   created() {},
-  mounted() {
-    console.log("hoursOption:", this.hoursOption);
-  },
+  mounted() {},
   methods: {
     onCancel() {
       this.isDialogOpen = false;
+      // TODO: Reset form
+      // this.$refs.eventInfoForm.reset();
+      this.startDateValue = "";
+      this.endDateValue = "";
       this.$emit("onDialogClose");
     }
   },
@@ -114,6 +159,12 @@ export default {
         }
       }
       return fullDayHours;
+    },
+    displayFormattedDates() {
+      return {
+        start: this.startDateValue ? useDate().format(this.startDateValue, "keyboardDate") : "",
+        end: this.endDateValue ? useDate().format(this.endDateValue, "keyboardDate") : ""
+      };
     }
   },
   watch: {
