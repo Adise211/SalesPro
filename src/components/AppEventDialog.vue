@@ -27,13 +27,21 @@
               <v-col>
                 <div v-if="!isFullDay" class="d-flex">
                   <v-select label="Start time"></v-select>
-                  <v-select></v-select>
+                  <v-select
+                    v-model="startTimeInDay"
+                    class="w-0 ml-2"
+                    :items="beforeOrAfterMidDay"
+                  ></v-select>
                 </div>
               </v-col>
               <v-col>
                 <div v-if="!isFullDay" class="d-flex">
                   <v-select label="End time"></v-select>
-                  <v-select></v-select>
+                  <v-select
+                    v-model="endTimeInDay"
+                    class="w-0 ml-2"
+                    :items="beforeOrAfterMidDay"
+                  ></v-select>
                 </div>
               </v-col>
             </v-row>
@@ -77,7 +85,9 @@ export default {
   },
   data: () => ({
     isDialogOpen: true,
-    isFullDay: false
+    isFullDay: true,
+    startTimeInDay: "AM",
+    endTimeInDay: "AM"
   }),
   created() {},
   mounted() {},
@@ -87,7 +97,11 @@ export default {
       this.$emit("onDialogClose");
     }
   },
-  computed: {},
+  computed: {
+    beforeOrAfterMidDay() {
+      return ["AM", "PM"];
+    }
+  },
   watch: {
     isParentReqToOpen: {
       handler(isReq) {
