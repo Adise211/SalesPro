@@ -12,7 +12,7 @@ export const useGeneralStore = defineStore("general", {
       userFullName: "",
       userEmail: "",
       companiesList: [],
-      userCalendarEventsList: [],
+      calendarEventsList: [],
       userNotesList: [],
       notesWithReminder: []
     };
@@ -75,6 +75,34 @@ export const useGeneralStore = defineStore("general", {
     setCompaniesList(list) {
       this.companiesList = list;
     },
+    setCalendarEventsList(list) {
+      this.calendarEventsList = list;
+    },
+    setUserNotesList(data) {
+      this.userNotesList = data;
+      this.updateNotesWithReminderList();
+    },
+    addCalendarEventInSote(eventData) {
+      this.userNotesList.push(eventData);
+    },
+    removeCalendarEventFromStore(eventData) {
+      const objIndex = this.calendarEventsList.indexOf(eventData);
+      // only splice array when item is found
+      if (objIndex > -1) {
+        this.calendarEventsList.splice(objIndex, 1);
+      }
+    },
+    updateCalendarEventInStore(eventData) {
+      const isEventInList = this.calendarEventsList.find((item) => {
+        return item.id === eventData.id;
+      });
+      if (isEventInList && this.calendarEventsList.length > 0) {
+        const currentEventIndex = this.calendarEventsList.indexOf(isEventInList);
+        if (currentEventIndex > -1) {
+          this.calendarEventsList.splice(currentEventIndex, 1, eventData);
+        }
+      }
+    },
     addNewCompanyInStore(newCompanyObj) {
       // 1. If list is not empty
       if (this.companiesList.length > 0) {
@@ -98,10 +126,6 @@ export const useGeneralStore = defineStore("general", {
       if (objIndex > -1) {
         this.companiesList.splice(objIndex, 1); // 2nd parameter means remove one item only
       }
-    },
-    setUserNotesList(data) {
-      this.userNotesList = data;
-      this.updateNotesWithReminderList();
     },
     updateUserNotesListInStore(noteData) {
       const currentNoteInList = this.userNotesList.find((note) => {
@@ -149,7 +173,8 @@ export const useGeneralStore = defineStore("general", {
         "userEmail",
         "companiesList",
         "userNotesList",
-        "notesWithReminder"
+        "notesWithReminder",
+        "calendarEventsList"
       ],
       storage: localStorage
     },

@@ -39,7 +39,7 @@ export async function loginUser(data) {
     const signInResponse = await signInWithEmailAndPassword(auth, email, password);
     if (signInResponse) {
       const user = signInResponse.user;
-      const { generalStore, calendarStore } = initStores();
+      const { generalStore } = initStores();
       // save user auth info
       generalStore.setUserId(user?.uid);
       generalStore.setUserLastLoggedInTime(new Date());
@@ -48,7 +48,7 @@ export async function loginUser(data) {
       generalStore.setUserEmail(user.email);
       // get user info and add it to the store
       const userDataResponse = await getUserData();
-      calendarStore.setUserEventsList(userDataResponse.userEvents);
+      generalStore.setCalendarEventsList(userDataResponse.userEvents);
       generalStore.setCompaniesList(userDataResponse.userListedCompanies);
       generalStore.setUserNotesList(userDataResponse.userNotes);
 

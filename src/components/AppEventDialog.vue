@@ -139,7 +139,9 @@
       </template>
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text" @click="onSaveData">Save</v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="onSaveData" :loading="isLoading"
+          >Save</v-btn
+        >
         <v-btn color="blue-darken-1" variant="text" @click="onCancel">Cancel</v-btn>
       </template>
     </AppCard>
@@ -150,8 +152,10 @@
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
 import { convertTime, convertDate } from "@/utilities/utilsFuncs";
-import { CalendarEventTemp } from "@/utilities/consts";
+import { CalendarEventTemp, ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent } from "@/firebase/services/data";
+import { mapActions } from "pinia";
+import { useGeneralStore } from "@/stores/general";
 
 export default {
   setup() {
@@ -167,6 +171,7 @@ export default {
   },
   data: () => ({
     isDialogOpen: false,
+    isLoading: false,
     isFullDay: true,
     eventTitle: "",
     startTimeInDay: "AM",
@@ -185,8 +190,10 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapActions(useGeneralStore, ["addCalendarEventInSote"]),
     async onSaveData() {
       // Check if form is valid
+      this.isLoading = true;
       const { valid } = await this.$refs.eventForm.validate();
       if (valid) {
         // Get dates with the next format : "YYYY-MM-DD HH:mm"
@@ -203,6 +210,15 @@ export default {
 
         const response = await createCalendarEvent(newEvent);
         console.log("res:", response);
+        if (response.Result.Success) {
+          this.$toast.open({
+            type: "success",
+            message: ToastMessages.SuccessMessages.Created
+          });
+        }
+        this.isLoading = false;
+        this.addCalendarEventInSote(response.Data);
+        this.onCancel();
       }
     },
     onCancel() {

@@ -31,8 +31,6 @@ export async function createCalendarEvent(data) {
     // generate random id
     const rendonId = "event" + generatedId();
     data.id = rendonId;
-    console.log("aaa:", data);
-    console.log("bbb:", rendonId);
 
     // add event object in "userEvents" array
     // firstore will create automatically if array is not exist
