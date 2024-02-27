@@ -39,13 +39,6 @@ export default {
     // Create and custom button to calendar
     this.addNewBtnInCalendar();
   },
-  beforeUnmount() {
-    // Before page unmounted - remove the event listener from custom button
-    const addEventBtn = document.getElementsByClassName("calendar-add-event-btn");
-    if (addEventBtn.length > 0) {
-      addEventBtn.removeEventListener("click", this.createNewEvent);
-    }
-  },
   methods: {
     addNewBtnInCalendar() {
       // Get calendar header
