@@ -5,8 +5,8 @@
         <span class="text-h5">Create Event</span>
       </template>
       <template v-slot:card-text>
-        <v-container>
-          <v-form ref="eventInfoForm">
+        <v-form ref="eventForm">
+          <v-container>
             <!-- First Row -->
             <v-row>
               <v-col>
@@ -17,6 +17,8 @@
                       v-bind="props"
                       label="Start Date*"
                       :modelValue="displayFormattedDates.start"
+                      :rules="[formRules.required]"
+                      required
                     >
                     </v-text-field>
                   </template>
@@ -39,6 +41,8 @@
                       v-bind="props"
                       label="End Date*"
                       :modelValue="displayFormattedDates.end"
+                      :rules="[formRules.required]"
+                      required
                     >
                     </v-text-field>
                   </template>
@@ -55,7 +59,11 @@
               </v-col>
               <v-col>
                 <!-- 3) event title -->
-                <v-text-field v-model="eventTitle" abel="Event Title*"></v-text-field>
+                <v-text-field
+                  v-model="eventTitle"
+                  label="Event Title*"
+                  :rules="[formRules.required]"
+                ></v-text-field>
               </v-col>
             </v-row>
             <!-- Second Row -->
@@ -69,6 +77,7 @@
                     v-model="startTime"
                     label="Start time"
                     :items="hoursOption"
+                    :rules="[formRules.required]"
                     class="w-25"
                   ></v-select>
                   <v-select
@@ -84,6 +93,7 @@
                     v-model="endTime"
                     label="End time"
                     :items="hoursOption"
+                    :rules="[formRules.required]"
                     class="w-25"
                   ></v-select>
                   <v-select
@@ -119,11 +129,15 @@
                 ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field v-model="companyName" label="Company's Name"></v-text-field>
+                <v-text-field
+                  v-model="companyName"
+                  label="Company's Name"
+                  :rules="[formRules.required]"
+                ></v-text-field>
               </v-col>
             </v-row>
-          </v-form>
-        </v-container>
+          </v-container>
+        </v-form>
       </template>
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
@@ -174,12 +188,13 @@ export default {
     async onSaveData() {
       // save data!
       const { fullStart, fullEnd } = this.getEventFullDates();
+      const { valid } = await this.$refs.eventForm.validate();
+      console.log("valid:", valid);
       console.log(`start from: ${fullStart}\nend date: ${fullEnd}`);
     },
     onCancel() {
       this.isDialogOpen = false;
-      // TODO: Reset form
-      // this.$refs.eventInfoForm.reset();
+      this.$refs.eventForm.reset();
       this.startDateValue = "";
       this.endDateValue = "";
       this.$emit("onDialogClose");
@@ -229,6 +244,11 @@ export default {
           ? this.VuetifyUseDate.format(this.startDateValue, "keyboardDate")
           : "",
         end: this.endDateValue ? this.VuetifyUseDate.format(this.endDateValue, "keyboardDate") : ""
+      };
+    },
+    formRules() {
+      return {
+        required: (value) => !!value || "Field is required"
       };
     }
   },
