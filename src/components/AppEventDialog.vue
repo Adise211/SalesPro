@@ -127,7 +127,7 @@
       </template>
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue-darken-1" variant="text">Save</v-btn>
+        <v-btn color="blue-darken-1" variant="text" @click="onSaveData">Save</v-btn>
         <v-btn color="blue-darken-1" variant="text" @click="onCancel">Cancel</v-btn>
       </template>
     </AppCard>
@@ -137,8 +137,13 @@
 <script>
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
+import { convertTime, convertDate } from "@/utilities/utilsFuncs";
 
 export default {
+  setup() {
+    const VuetifyUseDate = useDate();
+    return { VuetifyUseDate };
+  },
   components: { AppCard },
   props: {
     isParentReqToOpen: {
@@ -166,6 +171,11 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    async onSaveData() {
+      // save data!
+      const { fullStart, fullEnd } = this.getEventFullDates();
+      console.log(`start from: ${fullStart}\nend date: ${fullEnd}`);
+    },
     onCancel() {
       this.isDialogOpen = false;
       // TODO: Reset form
@@ -173,6 +183,28 @@ export default {
       this.startDateValue = "";
       this.endDateValue = "";
       this.$emit("onDialogClose");
+    },
+    getEventFullDates() {
+      let fullStart;
+      let fullEnd;
+
+      const startDateISO = convertDate(this.startDateValue).ISOFormat;
+      const endDateISO = convertDate(this.endDateValue).ISOFormat;
+      if (this.isFullDay) {
+        fullStart = startDateISO;
+        fullEnd = endDateISO;
+      } else {
+        const startTime = convertTime(`${this.startTime} ${this.startTimeInDay}`).time12hFormat;
+        const endTime = convertTime(`${this.endTime} ${this.endTimeInDay}`).time12hFormat;
+
+        fullStart = `${startDateISO} ${startTime}`;
+        fullEnd = `${endDateISO} ${endTime}`;
+      }
+
+      return {
+        fullStart,
+        fullEnd
+      };
     }
   },
   computed: {
@@ -193,8 +225,10 @@ export default {
     },
     displayFormattedDates() {
       return {
-        start: this.startDateValue ? useDate().format(this.startDateValue, "keyboardDate") : "",
-        end: this.endDateValue ? useDate().format(this.endDateValue, "keyboardDate") : ""
+        start: this.startDateValue
+          ? this.VuetifyUseDate.format(this.startDateValue, "keyboardDate")
+          : "",
+        end: this.endDateValue ? this.VuetifyUseDate.format(this.endDateValue, "keyboardDate") : ""
       };
     }
   },
