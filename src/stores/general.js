@@ -12,6 +12,7 @@ export const useGeneralStore = defineStore("general", {
       userFullName: "",
       userEmail: "",
       companiesList: [],
+      userCalendarEventsList: [],
       userNotesList: [],
       notesWithReminder: []
     };

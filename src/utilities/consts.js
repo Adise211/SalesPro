@@ -45,3 +45,14 @@ export const ToastMessages = {
     General: "General Error"
   }
 };
+
+// Template from here: https://schedule-x.dev/docs/calendar/events
+export const CalendarEventTemp = {
+  id: null,
+  start: null,
+  end: null,
+  title: null,
+  description: null,
+  location: null,
+  people: null
+};

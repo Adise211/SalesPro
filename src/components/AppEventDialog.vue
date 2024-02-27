@@ -150,6 +150,8 @@
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
 import { convertTime, convertDate } from "@/utilities/utilsFuncs";
+import { CalendarEventTemp } from "@/utilities/consts";
+import { createCalendarEvent } from "@/firebase/services/data";
 
 export default {
   setup() {
@@ -189,16 +191,18 @@ export default {
       if (valid) {
         // Get dates with the next format : "YYYY-MM-DD HH:mm"
         const { fullStart, fullEnd } = this.getEventFullDates();
+        // Clone the event template
+        const newEvent = { ...CalendarEventTemp };
         // The new event info
-        const newEvent = {
-          start: fullStart,
-          end: fullEnd,
-          title: this.eventTitle,
-          description: this.eventDescription,
-          location: this.location,
-          people: this.people
-        };
-        console.log("newEvent:", newEvent);
+        newEvent.start = fullStart;
+        newEvent.end = fullEnd;
+        newEvent.title = this.eventTitle;
+        newEvent.description = this.eventDescription;
+        newEvent.location = this.location;
+        newEvent.people = this.people;
+
+        const response = await createCalendarEvent(newEvent);
+        console.log("res:", response);
       }
     },
     onCancel() {

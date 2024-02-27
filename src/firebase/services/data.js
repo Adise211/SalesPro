@@ -1,5 +1,6 @@
 import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { generatedId } from "@/utilities/utilsFuncs";
 import moment from "moment";
 
 export async function getUserData() {
@@ -27,32 +28,26 @@ export async function getUserData() {
 export async function createCalendarEvent(data) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
-    // generates random id
-    const rendonId = Math.floor(Math.random() * 10000);
+    // generate random id
+    const rendonId = "event" + generatedId();
+    data.id = rendonId;
+    console.log("aaa:", data);
+    console.log("bbb:", rendonId);
 
-    const newEventObj = {
-      EventId: rendonId,
-      EventDate: data.date,
-      EventColor: data.color,
-      Company: data.company,
-      Prodact: data.prodact,
-      Description: data.description,
-      Participants: data.participants
-    };
     // add event object in "userEvents" array
     // firstore will create automatically if array is not exist
     await updateDoc(userRef, {
-      userEvents: arrayUnion(newEventObj)
+      userEvents: arrayUnion(data)
     });
-    const newCompanyObj = {
-      Company: data.company,
-      LastUpdated: data.date,
-      Status: "followups"
-    };
-    // also add or create company info
-    await createNewCompany(newCompanyObj);
+    // const newCompanyObj = {
+    //   Company: data.company,
+    //   LastUpdated: data.date,
+    //   Status: "followups"
+    // };
+    // // also add or create company info
+    // await createNewCompany(newCompanyObj);
 
-    return { success: true, eventObject: newEventObj };
+    return { Result: { Success: true }, Data: data };
   } catch (error) {
     console.log("error when creating new event:", error);
   }

@@ -22,7 +22,7 @@ export function generatedId() {
   const rand = () => {
     return Math.random().toString(36).slice(2);
   };
-  return rand() + rand();
+  return rand();
 }
 
 export function convertDate(value) {
