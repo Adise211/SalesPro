@@ -18,7 +18,6 @@
                       label="Start Date*"
                       :modelValue="displayFormattedDates.start"
                       :rules="[formRules.required]"
-                      required
                     >
                     </v-text-field>
                   </template>
@@ -42,7 +41,6 @@
                       label="End Date*"
                       :modelValue="displayFormattedDates.end"
                       :rules="[formRules.required]"
-                      required
                     >
                     </v-text-field>
                   </template>
@@ -186,11 +184,22 @@ export default {
   mounted() {},
   methods: {
     async onSaveData() {
-      // save data!
-      const { fullStart, fullEnd } = this.getEventFullDates();
+      // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
-      console.log("valid:", valid);
-      console.log(`start from: ${fullStart}\nend date: ${fullEnd}`);
+      if (valid) {
+        // Get dates with the next format : "YYYY-MM-DD HH:mm"
+        const { fullStart, fullEnd } = this.getEventFullDates();
+        // The new event info
+        const newEvent = {
+          start: fullStart,
+          end: fullEnd,
+          title: this.eventTitle,
+          description: this.eventDescription,
+          location: this.location,
+          people: this.people
+        };
+        console.log("newEvent:", newEvent);
+      }
     },
     onCancel() {
       this.isDialogOpen = false;
