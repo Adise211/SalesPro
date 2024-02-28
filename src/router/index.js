@@ -62,14 +62,14 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/tracking/:stageId",
-      // stageId: "followups" || "leads" || "closed"
+      path: "/tracking/:stageName",
+      // stageName: "followups" || "leads" || "closed"
       name: "TrackingPage",
       component: TrackingPage,
       props: (route) => {
         return {
           ...route.params,
-          stageId: route.params.stageId
+          stageName: route.params.stageName
         };
       },
       meta: { layout: "DefaultLayout" }

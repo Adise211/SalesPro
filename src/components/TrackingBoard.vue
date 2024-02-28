@@ -48,8 +48,8 @@
               <!-- table body (items) -->
               <template v-slot:item="{ item }">
                 <tr>
-                  <td class="text-medium-emphasis">{{ item.Company }}</td>
-                  <td class="text-medium-emphasis">{{ item.LastUpdated }}</td>
+                  <td class="text-medium-emphasis">{{ item.companyName }}</td>
+                  <td class="text-medium-emphasis">{{ item.lastUpdate }}</td>
                   <td>
                     <v-icon
                       v-if="findAttachedNote(item)"
@@ -64,12 +64,12 @@
                       <v-menu activator="parent">
                         <v-list>
                           <v-list-item
-                            v-for="oneType in statusTypes"
-                            :key="oneType.Id"
-                            :value="oneType.Id"
+                            v-for="oneStatus in filteredStatus"
+                            :key="oneStatus.id"
+                            :value="oneStatus.value"
                           >
-                            <v-list-item-title @click="changeStatusHandler(oneType, item)">{{
-                              oneType.Status
+                            <v-list-item-title @click="changeStatusHandler(oneStatus, item)">{{
+                              oneStatus.title
                             }}</v-list-item-title>
                           </v-list-item>
                         </v-list>
@@ -112,21 +112,20 @@
 // @ts-ignore
 import AppCard from "./AppCard.vue";
 import AppCharts from "./AppCharts.vue";
-import { TrackingStatusTypes, ToastMessages, TrackingStages } from "@/utilities/consts";
+import { ToastMessages, TrackingTypes } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createNewCompany, removeCompany, updateCompanyInfo } from "@/firebase/services/data";
+import { removeCompany } from "@/firebase/services/data";
 import moment from "moment";
 
 export default {
   name: "FollowUps",
   components: { AppCard, AppCharts },
   props: {
-    currentStage: {
+    currentStageName: {
       type: String,
       default: ""
-    },
-    statusId: Number
+    }
   },
   data: () => ({
     itemsPerPage: "6",
@@ -138,35 +137,37 @@ export default {
     showChart: true
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("qqqq", this.companiesList);
+  },
   methods: {
     ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
     async addNewItem() {
-      let toastMessage;
-      let toastType;
-      this.isAddBtnLoading = true;
-      const today = moment(new Date()).format("YYYY-MM-DD");
-      const newCompanyObj = {
-        Company: this.companyName,
-        LastUpdated: today,
-        Status: this.currentStage
-      };
-      const response = await createNewCompany(newCompanyObj);
-      if (response.success) {
-        this.addNewCompanyInStore(newCompanyObj);
-        toastMessage = ToastMessages.SuccessMessages.Created;
-        toastType = "success";
-      } else {
-        toastMessage = response.message;
-        toastType = "error";
-      }
-      this.isAddBtnLoading = false;
-      this.companyName = "";
-      this.refreshActiveChart();
-      this.$toast.open({
-        type: toastType,
-        message: toastMessage
-      });
+      // let toastMessage;
+      // let toastType;
+      // this.isAddBtnLoading = true;
+      // const today = moment(new Date()).format("YYYY-MM-DD");
+      // const newCompanyObj = {
+      //   Company: this.companyName,
+      //   LastUpdated: today,
+      //   Status: this.currentStageName
+      // };
+      // const response = await createNewCompany(newCompanyObj);
+      // if (response.success) {
+      //   this.addNewCompanyInStore(newCompanyObj);
+      //   toastMessage = ToastMessages.SuccessMessages.Created;
+      //   toastType = "success";
+      // } else {
+      //   toastMessage = response.message;
+      //   toastType = "error";
+      // }
+      // this.isAddBtnLoading = false;
+      // this.companyName = "";
+      // this.refreshActiveChart();
+      // this.$toast.open({
+      //   type: toastType,
+      //   message: toastMessage
+      // });
     },
     onDeleteIconClick(item) {
       this.currentItem = item;
@@ -186,11 +187,12 @@ export default {
       this.currentItem = {};
       this.isDeleteDialogOpen = false;
     },
-    async changeStatusHandler(toStatus, selectedItem) {
-      const newStatusKey = toStatus.Status.split(" ").join("");
-      selectedItem.Status = TrackingStages[newStatusKey];
-      selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
-      await updateCompanyInfo(selectedItem);
+    async changeStatusHandler() {
+      //Prams: toStatus, selectedItem
+      // const newStatusKey = toStatus.Status.split(" ").join("");
+      // selectedItem.Status = TrackingStages[newStatusKey];
+      // selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
+      // await updateCompanyInfo(selectedItem);
     },
     refreshActiveChart() {
       this.showChart = false;
@@ -215,15 +217,34 @@ export default {
   },
   computed: {
     ...mapState(useGeneralStore, ["companiesList", "userNotesList"]),
+    currentStatusId() {
+      let id;
+
+      switch (this.currentStageName) {
+        case TrackingTypes.FollowUps.value:
+          id = TrackingTypes.FollowUps.id;
+          break;
+        case TrackingTypes.Leads.value:
+          id = TrackingTypes.Leads.id;
+          break;
+        case TrackingTypes.Closed.value:
+          id = TrackingTypes.Closed.id;
+          break;
+        default:
+          id = 0;
+          break;
+      }
+      return id;
+    },
     tableHeaders() {
       return [
         {
           title: "Company",
-          key: "Company"
+          key: "companyName"
         },
         {
           title: "Last update",
-          key: "LastUpdated"
+          key: "lastUpdate"
         },
         {
           title: "Notes",
@@ -243,22 +264,21 @@ export default {
       ];
     },
     tableItems() {
-      let result;
+      let result = [];
       if (this.companiesList.length > 0) {
-        result = this.companiesList.filter((company) => {
-          if (company.Status === this.currentStage) return company;
+        result = this.companiesList.filter((comp) => {
+          if (comp.trackingStatus === this.currentStatusId) return comp;
         });
-      } else {
-        result = [];
       }
       return result;
     },
     pageCount() {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
     },
-    statusTypes() {
-      return TrackingStatusTypes.filter((type) => {
-        return type.Id !== this.statusId;
+    filteredStatus() {
+      // Get all except from the current status
+      return TrackingTypes.filter((item) => {
+        return item.id !== this.currentStatusId;
       });
     },
     currentChartXData() {
@@ -297,16 +317,16 @@ export default {
     chartDataColors() {
       // the colors are saved in global.scss
       let colors = ["#008ffb"];
-      if (this.currentStage === TrackingStages.Leads) {
-        colors = ["#eab308"];
-      } else if (this.currentStage === TrackingStages.Closed) {
-        colors = ["#f4511e"];
-      }
+      // if (this.currentStageName === TrackingStages.Leads) {
+      //   colors = ["#eab308"];
+      // } else if (this.currentStageName === TrackingStages.Closed) {
+      //   colors = ["#f4511e"];
+      // }
       return colors;
     }
   },
   watch: {
-    currentStage(newVal) {
+    currentStageName(newVal) {
       if (newVal) {
         this.refreshActiveChart();
       }

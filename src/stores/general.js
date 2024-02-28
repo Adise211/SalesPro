@@ -11,7 +11,15 @@ export const useGeneralStore = defineStore("general", {
       userLastLoggedInTime: 0,
       userFullName: "",
       userEmail: "",
-      companiesList: [],
+      companiesList: [
+        {
+          companyId: 1,
+          companyName: "Example",
+          relatedEvents: ["event1234"],
+          trackingStatus: 1,
+          lastUpdate: 1709111299
+        }
+      ],
       calendarEvents: [],
       userNotesList: [],
       notesWithReminder: []

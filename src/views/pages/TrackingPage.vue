@@ -1,17 +1,15 @@
 <template>
-  <TrackingBoard :currentStage="currentStageName" :statusId="currentStatus"></TrackingBoard>
+  <TrackingBoard :currentStageName="currentStageName"></TrackingBoard>
 </template>
 
 <script>
 import TrackingBoard from "@/components/TrackingBoard.vue";
-import { TrackingStages } from "@/utilities/consts";
-const DEFAULT_COMPONENT = 0;
 
 export default {
   name: "TrackingPage",
   components: { TrackingBoard },
   props: {
-    stageId: {
+    stageName: {
       type: String,
       default: ""
     }
@@ -22,23 +20,9 @@ export default {
   created() {},
   mounted() {},
   methods: {},
-  computed: {
-    currentStatus() {
-      let result;
-      if (this.currentStageName === TrackingStages.FollowUps) {
-        result = 0;
-      } else if (this.currentStageName === TrackingStages.Leads) {
-        result = 1;
-      } else if (this.currentStageName === TrackingStages.Closed) {
-        result = 2;
-      } else {
-        result = DEFAULT_COMPONENT;
-      }
-      return result;
-    }
-  },
+  computed: {},
   watch: {
-    stageId: {
+    stageName: {
       handler(newVal) {
         this.currentStageName = newVal;
       },

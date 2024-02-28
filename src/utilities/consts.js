@@ -22,17 +22,35 @@ export const CalendarEventColors = {
   Pink: "pink"
 };
 
-export const TrackingStages = {
-  FollowUps: "followups",
-  Leads: "leads",
-  Closed: "closed"
+// export const TrackingStages = {
+//   FollowUps: "followups",
+//   Leads: "leads",
+//   Closed: "closed"
+// };
+
+export const TrackingTypes = {
+  FollowUps: {
+    id: 1,
+    value: "followups",
+    title: "Follow Ups" // For display
+  },
+  Leads: {
+    id: 2,
+    value: "leads",
+    title: "Leads" // For display
+  },
+  Closed: {
+    id: 3,
+    value: "closed",
+    title: "Closed" // For display
+  }
 };
 
-export const TrackingStatusTypes = [
-  { Id: 0, Status: "Follow Ups" },
-  { Id: 1, Status: "Leads" },
-  { Id: 2, Status: "Closed" }
-];
+// export const TrackingStatusTypes = [
+//   { Id: 0, Status: "Follow Ups" },
+//   { Id: 1, Status: "Leads" },
+//   { Id: 2, Status: "Closed" }
+// ];
 
 export const ToastMessages = {
   SuccessMessages: {
