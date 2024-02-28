@@ -11,7 +11,7 @@
     </v-row>
     <AppEventDialog
       :isParentReqToOpen="isEventDialogOpen"
-      @onDialogClose="isEventDialogOpen = false"
+      @onDialogClose="onEventDialogClose"
     ></AppEventDialog>
   </v-container>
 </template>
@@ -20,7 +20,7 @@
 import AppCard from "@/components/AppCard.vue";
 import AppEventDialog from "@/components/AppEventDialog.vue";
 import { mapState } from "pinia";
-import { useCalendarStore } from "@/stores/calendar";
+import { useGeneralStore } from "@/stores/general";
 import { createCalendar, viewMonthGrid } from "@schedule-x/calendar";
 import { createEventModalPlugin } from "@schedule-x/event-modal";
 import "@schedule-x/theme-default/dist/index.css";
@@ -34,9 +34,12 @@ export default {
   }),
   created() {},
   mounted() {
+    // Add the events from store into config
+    this.calendarConfig.events = this.calendarEvents;
+
     const activeCalendar = createCalendar(this.calendarConfig);
     activeCalendar.render(document.getElementById("full-calendar"));
-    // Create and custom button to calendar
+    // Create and add custom button to calendar
     this.addNewBtnInCalendar();
   },
   methods: {
@@ -59,10 +62,13 @@ export default {
     },
     createNewEvent() {
       this.isEventDialogOpen = true;
+    },
+    onEventDialogClose() {
+      this.isEventDialogOpen = false;
     }
   },
   computed: {
-    ...mapState(useCalendarStore, ["eventsGroupsAttr"]),
+    ...mapState(useGeneralStore, ["calendarEvents"]),
     calendarConfig() {
       // const vueInstance = this;
       return {
