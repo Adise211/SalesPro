@@ -127,11 +127,12 @@
                 ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field
+                <v-autocomplete
                   v-model="companyName"
                   label="Company's Name"
-                  :rules="[formRules.required]"
-                ></v-text-field>
+                  append-inner-icon="mdi-magnify"
+                  :items="['Amazon', 'Monday', 'Bolmung']"
+                ></v-autocomplete>
               </v-col>
             </v-row>
           </v-container>
@@ -154,8 +155,8 @@
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
 import { convertTime, convertDate } from "@/utilities/utilsFuncs";
-import { CalendarEventTemp, ToastMessages, CompanyTemp } from "@/utilities/consts";
-import { createCalendarEvent, createNewCompany } from "@/firebase/services/data";
+import { CalendarEventTemp, ToastMessages } from "@/utilities/consts";
+import { createCalendarEvent } from "@/firebase/services/data";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 
@@ -214,9 +215,7 @@ export default {
         const response = await createCalendarEvent(newEvent);
         console.log("res:", response);
         if (response.Result.Success) {
-          const createdCompany = await this.createCompany(response.Data);
-          console.log("createdCompany:", createdCompany);
-          // Show toast
+          // Show success toast
           this.$toast.open({
             type: "success",
             message: ToastMessages.SuccessMessages.Created
@@ -226,19 +225,20 @@ export default {
           // Reset
           this.onCancel();
         }
+        // Stop loader
         this.isLoading = false;
       }
     },
-    async createCompany(eventData) {
-      // Clone template
-      const company = { ...CompanyTemp };
-      company.companyName = this.companyName;
-      company.trackingStatus = 1;
-      const response = await createNewCompany(company, eventData.id);
-      if (response.Result.Success) {
-        return response.Data;
-      }
-    },
+    // async createCompany(eventData) {
+    //   // Clone template
+    //   const company = { ...CompanyTemp };
+    //   company.companyName = this.companyName;
+    //   company.trackingStatus = 1;
+    //   const response = await createNewCompany(company, eventData.id);
+    //   if (response.Result.Success) {
+    //     return response.Data;
+    //   }
+    // },
     onCancel() {
       this.isDialogOpen = false;
       this.$refs.eventForm.reset();

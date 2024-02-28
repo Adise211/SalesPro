@@ -16,6 +16,10 @@ const vuetify = createVuetify({
     },
     VTextarea: {
       variant: "outlined"
+    },
+    VAutocomplete: {
+      variant: "outlined",
+      density: "comfortable"
     }
   }
 });
