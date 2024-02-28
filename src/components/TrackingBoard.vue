@@ -49,8 +49,8 @@
               <template v-slot:item="{ item }">
                 <tr>
                   <td class="text-medium-emphasis">{{ item.companyName }}</td>
-                  <td class="text-medium-emphasis">{{ item.lastUpdate }}</td>
-                  <td>
+                  <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
+                  <td class="text-center">
                     <v-icon
                       v-if="findAttachedNote(item)"
                       icon="mdi-note"
@@ -58,23 +58,8 @@
                       @click="onItemNoteClick(item)"
                     ></v-icon>
                   </td>
-                  <td>
-                    <v-btn color="primary" density="compact">
-                      Change Status
-                      <v-menu activator="parent">
-                        <v-list>
-                          <v-list-item
-                            v-for="oneStatus in filteredStatus"
-                            :key="oneStatus.id"
-                            :value="oneStatus.value"
-                          >
-                            <v-list-item-title @click="changeStatusHandler(oneStatus, item)">{{
-                              oneStatus.title
-                            }}</v-list-item-title>
-                          </v-list-item>
-                        </v-list>
-                      </v-menu>
-                    </v-btn>
+                  <td class="text-center">
+                    <v-icon>mdi-pencil</v-icon>
                   </td>
                   <td class="text-center">
                     <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
@@ -113,6 +98,7 @@
 import AppCard from "./AppCard.vue";
 import AppCharts from "./AppCharts.vue";
 import { ToastMessages, TrackingTypes } from "@/utilities/consts";
+import { convertDate } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { removeCompany } from "@/firebase/services/data";
@@ -137,9 +123,7 @@ export default {
     showChart: true
   }),
   created() {},
-  mounted() {
-    console.log("qqqq", this.companiesList);
-  },
+  mounted() {},
   methods: {
     ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
     async addNewItem() {
@@ -213,6 +197,9 @@ export default {
         // If there is an attched note - open note fron the parent
         this.$emit("onWatchNote", this.findAttachedNote(item));
       }
+    },
+    changedDateFormat(date) {
+      return convertDate(date).MDYFormat;
     }
   },
   computed: {
@@ -252,7 +239,7 @@ export default {
           sortable: false
         },
         {
-          title: "Status",
+          title: "Edit",
           align: "center",
           sortable: false
         },
