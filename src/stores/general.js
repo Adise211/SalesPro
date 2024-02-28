@@ -75,7 +75,7 @@ export const useGeneralStore = defineStore("general", {
     setCompaniesList(list) {
       this.companiesList = list;
     },
-    setCalendarEventsList(list) {
+    setCalendarEvents(list) {
       this.calendarEvents = list;
     },
     setUserNotesList(data) {
@@ -174,7 +174,7 @@ export const useGeneralStore = defineStore("general", {
         "companiesList",
         "userNotesList",
         "notesWithReminder",
-        "calendarEventsList"
+        "calendarEvents"
       ],
       storage: localStorage
     },
