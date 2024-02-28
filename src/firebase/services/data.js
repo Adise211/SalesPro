@@ -71,45 +71,22 @@ export async function getCalendarEvents() {
   }
 }
 
-export async function createNewCompany(newCompanyObj) {
+export async function createNewCompany(newCompanyObj, calendarEventId) {
   try {
-    /**
-     newCompanyObj = {
-      Company: String (name),
-      LastUpdated: String (ISO date),
-      Status: Strign ["followups" | "leads" | "closed"]
-     }
-     */
-
-    // add an id
-    // newCompanyObj.Id = generatedId();
-
     const userRef = doc(db, "users", auth.currentUser.uid);
-    const response = await getUserData();
-    // 1. If list is not empty
-    if (response?.userListedCompanies.length > 0) {
-      const isExist = response.userListedCompanies.find((company) => {
-        if (company.Company === newCompanyObj.Company) {
-          return company;
-        }
-      });
-      if (!isExist) {
-        // If comapny not exist - add it
-        await updateDoc(userRef, {
-          userListedCompanies: arrayUnion(newCompanyObj)
-        });
-        return { success: true };
-      } else {
-        // If exist - do nothing
-        return { success: false, message: "Company exist" };
-      }
-    } else {
-      // 2. If the list is empty - add it
-      await updateDoc(userRef, {
-        userListedCompanies: arrayUnion(newCompanyObj)
-      });
-      return { success: true };
-    }
+    // Add id
+    const rendonId = "comp" + generatedId();
+    newCompanyObj.companyId = rendonId;
+    // Add last updated time as epoch time
+    const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
+    newCompanyObj.lastUpdate = currentEpochTime;
+    // Add related event (event id)
+    newCompanyObj.relatedEvents.push(calendarEventId);
+
+    await updateDoc(userRef, {
+      userListedCompanies: arrayUnion(newCompanyObj)
+    });
+    return { Result: { Success: true }, Data: newCompanyObj };
   } catch (error) {
     console.log("error when creating new company:", error);
   }
@@ -121,29 +98,30 @@ export async function removeCompany(companyObj) {
     await updateDoc(userRef, {
       userListedCompanies: arrayRemove(companyObj)
     });
-    return { success: true };
+    return { Result: { Success: true } };
   } catch (error) {
     console.log("error when removing an item:", error);
   }
 }
 
-export async function updateCompanyStatus(companyObj) {
+export async function updateCompanyInfo(companyObj) {
   try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
     const userDataRes = await getUserData();
     if (userDataRes) {
-      // find the previous company info in server by name
+      // find the previous company object in server by id
       const { userListedCompanies } = userDataRes;
       const previousCompanyObj = userListedCompanies.find(
-        (com) => com.Company === companyObj.Company
+        (com) => com.companyId === companyObj.companyId
       );
-      // if exist
-      // 1. remove it
-      // 2. add the updated company info
+      // if previous company object exist - remove it and add the new instead
       if (previousCompanyObj) {
         const removePreviousRes = await removeCompany(previousCompanyObj);
-        const createNewRes = await createNewCompany(companyObj);
-        if (removePreviousRes.success && createNewRes.success) {
-          return { success: true };
+        await updateDoc(userRef, {
+          userListedCompanies: arrayUnion(companyObj)
+        });
+        if (removePreviousRes.Result.Success) {
+          return { Result: { Success: true }, Data: companyObj };
         }
       }
     }

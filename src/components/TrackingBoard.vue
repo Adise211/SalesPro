@@ -115,7 +115,7 @@ import AppCharts from "./AppCharts.vue";
 import { TrackingStatusTypes, ToastMessages, TrackingStages } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createNewCompany, removeCompany, updateCompanyStatus } from "@/firebase/services/data";
+import { createNewCompany, removeCompany, updateCompanyInfo } from "@/firebase/services/data";
 import moment from "moment";
 
 export default {
@@ -190,7 +190,7 @@ export default {
       const newStatusKey = toStatus.Status.split(" ").join("");
       selectedItem.Status = TrackingStages[newStatusKey];
       selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
-      await updateCompanyStatus(selectedItem);
+      await updateCompanyInfo(selectedItem);
     },
     refreshActiveChart() {
       this.showChart = false;

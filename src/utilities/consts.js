@@ -46,6 +46,14 @@ export const ToastMessages = {
   }
 };
 
+export const CompanyTemp = {
+  companyId: null, // String
+  companyName: null, // String
+  relatedEvents: [], // Array (events id)
+  trackingStatus: 0, // Number
+  lastUpdate: null // Number (epoch time)
+};
+
 // Template from here: https://schedule-x.dev/docs/calendar/events
 export const CalendarEventTemp = {
   id: null,

@@ -154,8 +154,8 @@
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
 import { convertTime, convertDate } from "@/utilities/utilsFuncs";
-import { CalendarEventTemp, ToastMessages } from "@/utilities/consts";
-import { createCalendarEvent } from "@/firebase/services/data";
+import { CalendarEventTemp, ToastMessages, CompanyTemp } from "@/utilities/consts";
+import { createCalendarEvent, createNewCompany } from "@/firebase/services/data";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 
@@ -214,14 +214,29 @@ export default {
         const response = await createCalendarEvent(newEvent);
         console.log("res:", response);
         if (response.Result.Success) {
+          const createdCompany = await this.createCompany(response.Data);
+          console.log("createdCompany:", createdCompany);
+          // Show toast
           this.$toast.open({
             type: "success",
             message: ToastMessages.SuccessMessages.Created
           });
+          // Add to store
+          this.addCalendarEventToStore(response.Data);
+          // Reset
+          this.onCancel();
         }
         this.isLoading = false;
-        this.addCalendarEventToStore(response.Data);
-        this.onCancel();
+      }
+    },
+    async createCompany(eventData) {
+      // Clone template
+      const company = { ...CompanyTemp };
+      company.companyName = this.companyName;
+      company.trackingStatus = 1;
+      const response = await createNewCompany(company, eventData.id);
+      if (response.Result.Success) {
+        return response.Data;
       }
     },
     onCancel() {
