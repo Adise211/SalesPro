@@ -192,7 +192,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["addCalendarEventInSote"]),
+    ...mapActions(useGeneralStore, ["addCalendarEventToStore"]),
     async onSaveData() {
       // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
@@ -220,7 +220,7 @@ export default {
           });
         }
         this.isLoading = false;
-        this.addCalendarEventInSote(response.Data);
+        this.addCalendarEventToStore(response.Data);
         this.onCancel();
       }
     },

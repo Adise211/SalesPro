@@ -82,8 +82,8 @@ export const useGeneralStore = defineStore("general", {
       this.userNotesList = data;
       this.updateNotesWithReminderList();
     },
-    addCalendarEventInSote(eventData) {
-      this.userNotesList.push(eventData);
+    addCalendarEventToStore(eventData) {
+      this.calendarEventsList.push(eventData);
     },
     removeCalendarEventFromStore(eventData) {
       const objIndex = this.calendarEventsList.indexOf(eventData);
