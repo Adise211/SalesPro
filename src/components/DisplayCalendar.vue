@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column fill-height">
-    <AppCard class="view-events-details" cardTextFillHeight>
+    <AppCard class="view-events-details" :cardTextClass="'fill-height'">
       <template v-slot:card-text> </template>
     </AppCard>
     <AppCard class="view-events-list mt-3">

@@ -8,7 +8,7 @@
               <div>View note (by id)</div>
             </template>
           </AppCard>
-          <AppCard class="create-notes mt-3" cardTextFillHeight>
+          <AppCard class="create-notes mt-3" :cardTextClass="'fill-height'">
             <template v-slot:card-text>
               <div class="fill-height d-flex flex-column">
                 <v-form ref="newNoteForm">

@@ -9,7 +9,7 @@
       <slot name="card-sub-title"></slot>
     </v-card-subtitle>
     <!-- Card Text (content) -->
-    <v-card-text :class="{ 'fill-height': cardTextFillHeight }">
+    <v-card-text :class="cardTextClass">
       <slot name="card-text"></slot>
     </v-card-text>
     <!-- Card Actions (buttons) -->
@@ -35,9 +35,9 @@ export default {
       type: [Number, String],
       default: "100%"
     },
-    cardTextFillHeight: {
-      type: Boolean,
-      default: false
+    cardTextClass: {
+      type: String,
+      default: ""
     }
   },
   data: () => ({}),

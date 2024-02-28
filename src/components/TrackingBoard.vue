@@ -3,7 +3,7 @@
     <v-row class="fill-height">
       <v-col md="6">
         <!-- 1) Charts -->
-        <AppCard cardTextFillHeight>
+        <AppCard :cardTextClass="'fill-height'">
           <template v-slot:card-text>
             <AppCharts
               v-if="showChart"

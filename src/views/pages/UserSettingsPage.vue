@@ -57,7 +57,7 @@
       </v-col>
       <!-- board for editing  -->
       <v-col md="6">
-        <AppCard cardTextFillHeight>
+        <AppCard :cardTextClass="'fill-height'">
           <template v-slot:card-text>
             <AppSettingBoard :settingType="selectedSetting"></AppSettingBoard>
           </template>
