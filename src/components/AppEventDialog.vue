@@ -16,8 +16,8 @@
                     <v-text-field
                       v-bind="props"
                       label="Start Date*"
-                      :modelValue="displayFormattedDates.start"
-                      :rules="[formRules.required]"
+                      :modelValue="formattedDatesForDisplay.start"
+                      :rules="[formRules.required, formRules.validRange]"
                     >
                     </v-text-field>
                   </template>
@@ -39,8 +39,8 @@
                     <v-text-field
                       v-bind="props"
                       label="End Date*"
-                      :modelValue="displayFormattedDates.end"
-                      :rules="[formRules.required]"
+                      :modelValue="formattedDatesForDisplay.end"
+                      :rules="[formRules.required, formRules.validRange]"
                     >
                     </v-text-field>
                   </template>
@@ -229,6 +229,7 @@ export default {
       this.$refs.eventForm.reset();
       this.startDateValue = "";
       this.endDateValue = "";
+      this.isFullDay = true;
       this.$emit("onDialogClose");
     },
     getEventFullDates() {
@@ -270,7 +271,7 @@ export default {
       }
       return fullDayHours;
     },
-    displayFormattedDates() {
+    formattedDatesForDisplay() {
       return {
         start: this.startDateValue
           ? this.VuetifyUseDate.format(this.startDateValue, "keyboardDate")
@@ -280,8 +281,22 @@ export default {
     },
     formRules() {
       return {
-        required: (value) => !!value || "Field is required"
+        required: (value) => !!value || "Field is required",
+        validRange: () => this.isDateInValidRange || "Invalid range"
       };
+    },
+    isDateInValidRange() {
+      let isValidRange = true;
+      // If there are start date and end date
+      if (this.startDateValue && this.endDateValue) {
+        const start = this.VuetifyUseDate.date(this.startDateValue);
+        const end = this.VuetifyUseDate.date(this.endDateValue);
+
+        // Chack the range - start date is always the same OR before the end date
+        isValidRange =
+          this.VuetifyUseDate.isBefore(start, end) || this.VuetifyUseDate.isSameDay(start, end);
+      }
+      return isValidRange;
     }
   },
   watch: {
