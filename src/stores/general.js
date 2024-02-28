@@ -12,7 +12,7 @@ export const useGeneralStore = defineStore("general", {
       userFullName: "",
       userEmail: "",
       companiesList: [],
-      calendarEventsList: [],
+      calendarEvents: [],
       userNotesList: [],
       notesWithReminder: []
     };
@@ -76,30 +76,30 @@ export const useGeneralStore = defineStore("general", {
       this.companiesList = list;
     },
     setCalendarEventsList(list) {
-      this.calendarEventsList = list;
+      this.calendarEvents = list;
     },
     setUserNotesList(data) {
       this.userNotesList = data;
       this.updateNotesWithReminderList();
     },
     addCalendarEventToStore(eventData) {
-      this.calendarEventsList.push(eventData);
+      this.calendarEvents.push(eventData);
     },
     removeCalendarEventFromStore(eventData) {
-      const objIndex = this.calendarEventsList.indexOf(eventData);
+      const objIndex = this.calendarEvents.indexOf(eventData);
       // only splice array when item is found
       if (objIndex > -1) {
-        this.calendarEventsList.splice(objIndex, 1);
+        this.calendarEvents.splice(objIndex, 1);
       }
     },
     updateCalendarEventInStore(eventData) {
-      const isEventInList = this.calendarEventsList.find((item) => {
+      const isEventInList = this.calendarEvents.find((item) => {
         return item.id === eventData.id;
       });
-      if (isEventInList && this.calendarEventsList.length > 0) {
-        const currentEventIndex = this.calendarEventsList.indexOf(isEventInList);
+      if (isEventInList && this.calendarEvents.length > 0) {
+        const currentEventIndex = this.calendarEvents.indexOf(isEventInList);
         if (currentEventIndex > -1) {
-          this.calendarEventsList.splice(currentEventIndex, 1, eventData);
+          this.calendarEvents.splice(currentEventIndex, 1, eventData);
         }
       }
     },
