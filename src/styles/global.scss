@@ -19,6 +19,7 @@ a {
   --app-orange: #f4511e;
   --app-yellow: #eab308;
   --app-light-blue: #008ffb;
+  --vuetify-blue-darken-1: #1e88e5;
 }
 
 .main-content {
@@ -30,16 +31,20 @@ a {
 
 #full-calendar {
   height: 100%;
+  .sx__calendar {
+    border: none;
+  }
   // .sx__month-grid-day {
   //   cursor: pointer;
   // }
 }
 
 .calendar-add-event-btn {
-  border: 2px solid #1867c0;
-  background-color: #1867c0;
+  border: 2px solid var(--vuetify-blue-darken-1);
+  background-color: var(--vuetify-blue-darken-1);
   padding: 0px 8px;
   color: white;
   border-radius: 4px;
-  height: 100%;
+  height: 95%;
+  box-shadow: 2px 2px lightgray;
 }
