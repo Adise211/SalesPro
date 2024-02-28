@@ -132,6 +132,8 @@
                   label="Company's Name"
                   append-inner-icon="mdi-magnify"
                   :items="['Amazon', 'Monday', 'Bolmung']"
+                  hint="Companies from tracking boards"
+                  persistent-hint
                 ></v-autocomplete>
               </v-col>
             </v-row>
