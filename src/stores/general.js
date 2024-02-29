@@ -18,6 +18,13 @@ export const useGeneralStore = defineStore("general", {
           relatedEvents: ["event1234"],
           trackingStatus: 1,
           lastUpdate: 1709111299
+        },
+        {
+          companyId: 2,
+          companyName: "Example2",
+          relatedEvents: ["event12345"],
+          trackingStatus: 1,
+          lastUpdate: 1709111299
         }
       ],
       calendarEvents: [],

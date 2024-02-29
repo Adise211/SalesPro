@@ -17,25 +17,23 @@
       </v-col>
       <v-col md="6">
         <!-- 2) List -->
-        <AppCard>
+        <AppCard :cardTextClass="'fill-height'">
           <template v-slot:card-text>
-            <div class="d-flex flex-row align-start">
+            <div class="tracking-table d-flex flex-row align-start">
               <v-text-field
-                v-model="companyName"
-                placeholder="Add new item"
-                variant="outlined"
+                v-model="searchExpression"
+                placeholder="Search"
                 density="compact"
-                color="primary"
                 style="max-width: 50%"
               >
               </v-text-field>
               <v-btn
                 color="success"
-                class="ml-2"
+                class="ml-auto"
                 height="37"
                 @click="addNewItem"
                 :loading="isAddBtnLoading"
-                >Add</v-btn
+                >Add New</v-btn
               >
             </div>
             <v-data-table
@@ -44,6 +42,8 @@
               :items-per-page="itemsPerPage"
               :height="415"
               :page="page"
+              :search="searchExpression"
+              class="mt-3"
             >
               <!-- table body (items) -->
               <template v-slot:item="{ item }">
@@ -120,7 +120,8 @@ export default {
     isAddBtnLoading: false,
     isDeleteDialogOpen: false,
     currentItem: {},
-    showChart: true
+    showChart: true,
+    searchExpression: ""
   }),
   created() {},
   mounted() {},
