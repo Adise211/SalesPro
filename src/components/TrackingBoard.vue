@@ -1,102 +1,50 @@
 <template>
-  <v-container fluid class="fill-height py-0">
-    <v-row class="fill-height">
-      <v-col md="6">
-        <!-- 1) Charts -->
-        <AppCard :cardTextClass="'fill-height'">
-          <template v-slot:card-text>
-            <AppCharts
-              v-if="showChart"
-              :chartXData="currentChartXData"
-              :chartSeriesData="currentChartYData"
-              :chartType="'bar'"
-              :chartDataColors="chartDataColors"
-            ></AppCharts>
-          </template>
-        </AppCard>
-      </v-col>
-      <v-col md="6">
-        <!-- 2) List -->
-        <AppCard :cardTextClass="'fill-height'">
-          <template v-slot:card-text>
-            <div class="tracking-table d-flex flex-row align-start">
-              <v-text-field
-                v-model="searchExpression"
-                placeholder="Search"
-                density="compact"
-                style="max-width: 50%"
-              >
-              </v-text-field>
-              <v-btn
-                color="success"
-                class="ml-auto"
-                height="37"
-                @click="addNewItem"
-                :loading="isAddBtnLoading"
-                >Add New</v-btn
-              >
-            </div>
-            <v-data-table
-              :headers="tableHeaders"
-              :items="tableItems"
-              :items-per-page="itemsPerPage"
-              :height="415"
-              :page="page"
-              :search="searchExpression"
-              class="mt-3"
-            >
-              <!-- table body (items) -->
-              <template v-slot:item="{ item }">
-                <tr>
-                  <td class="text-medium-emphasis">{{ item.companyName }}</td>
-                  <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
-                  <td class="text-center">
-                    <v-icon
-                      v-if="findAttachedNote(item)"
-                      icon="mdi-note"
-                      color="grey"
-                      @click="onItemNoteClick(item)"
-                    ></v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon>mdi-pencil</v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
-                  </td>
-                </tr>
-              </template>
-              <!-- table footer (paging) -->
-              <template v-slot:bottom>
-                <div class="text-center pt-2">
-                  <v-pagination v-model="page" :length="pageCount"></v-pagination>
-                </div>
-              </template>
-            </v-data-table>
-          </template>
-        </AppCard>
-      </v-col>
-    </v-row>
-    <v-dialog v-model="isDeleteDialogOpen" width="500">
-      <v-card height="120px">
-        <v-card-text>Are you sure you want to delete this item?</v-card-text>
-        <v-card-actions>
-          <div class="d-flex flex-row justify-start ml-auto">
-            <v-btn color="primary" variant="flat" @click="deleteItem(currentItem)">I am sure</v-btn>
-            <v-btn color="primary" variant="outlined" @click="isDeleteDialogOpen = false"
-              >Never mind</v-btn
-            >
-          </div>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-container>
+  <v-data-table
+    :headers="tableHeaders"
+    :items="tableItems"
+    :items-per-page="itemsPerPage"
+    :height="390"
+    :page="page"
+    :search="searchExpression"
+    class="mt-3"
+  >
+    <!-- table body (items) -->
+    <template v-slot:item="{ item }">
+      <tr>
+        <td class="text-medium-emphasis">{{ item.companyName }}</td>
+        <td class="text-medium-emphasis">{{ item.contactInfo }}</td>
+        <td class="text-medium-emphasis">{{ item.location }}</td>
+        <td class="text-medium-emphasis">{{ item.product }}</td>
+        <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
+        <td class="text-center">
+          <v-icon
+            v-if="findAttachedNote(item)"
+            icon="mdi-note"
+            color="grey"
+            @click="onItemNoteClick(item)"
+          ></v-icon>
+        </td>
+        <td class="text-center">
+          <v-icon>mdi-pencil</v-icon>
+        </td>
+        <td class="text-center">
+          <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
+        </td>
+      </tr>
+    </template>
+    <!-- table footer (paging) -->
+    <template v-slot:bottom>
+      <div class="text-center pt-2">
+        <v-pagination v-model="page" :length="pageCount"></v-pagination>
+      </div>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
 // @ts-ignore
-import AppCard from "./AppCard.vue";
-import AppCharts from "./AppCharts.vue";
+// import AppCard from "./AppCard.vue";
+// import AppCharts from "./AppCharts.vue";
 import { ToastMessages, TrackingTypes } from "@/utilities/consts";
 import { convertDate } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
@@ -106,7 +54,7 @@ import moment from "moment";
 
 export default {
   name: "FollowUps",
-  components: { AppCard, AppCharts },
+  components: {},
   props: {
     currentStageName: {
       type: String,
@@ -229,6 +177,18 @@ export default {
         {
           title: "Company",
           key: "companyName"
+        },
+        {
+          title: "Contact Info",
+          key: "contactInfo"
+        },
+        {
+          title: "Location",
+          key: "location"
+        },
+        {
+          title: "My Product",
+          key: "product"
         },
         {
           title: "Last update",

@@ -15,6 +15,9 @@ export const useGeneralStore = defineStore("general", {
         {
           companyId: 1,
           companyName: "Example",
+          contactInfo: "12256486525",
+          location: "Arizona, USA",
+          product: "q-11",
           relatedEvents: ["event1234"],
           trackingStatus: 1,
           lastUpdate: 1709111299
@@ -22,6 +25,9 @@ export const useGeneralStore = defineStore("general", {
         {
           companyId: 2,
           companyName: "Example2",
+          contactInfo: "12256486525",
+          location: "Arizona, USA",
+          product: "q-11",
           relatedEvents: ["event12345"],
           trackingStatus: 1,
           lastUpdate: 1709111299
