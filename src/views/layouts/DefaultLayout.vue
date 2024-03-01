@@ -10,23 +10,15 @@
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
           ></v-list-item>
           <v-divider></v-divider>
-          <v-list-item link title="Overview" @click="onNavItemClick('OverView')"></v-list-item>
-          <v-list-item link title="Calendar" @click="onNavItemClick('Calendar')"></v-list-item>
-
-          <v-list-item link title="Notes" @click="onNavItemClick('Notes')"></v-list-item>
           <v-list-item
+            v-for="(item, index) in navItems"
+            :key="index"
             link
-            title="Sales"
-            variant="tonal"
-            append-icon="mdi-sale"
-            @click="onNavItemClick('Sales')"
+            :variant="markShownNavItem(index)"
+            :title="item.title"
+            :append-icon="item.icon"
+            @click="onNavItemClick(item.value, index)"
           ></v-list-item>
-          <v-list-item
-            link
-            title="Extract From Files"
-            @click="onNavItemClick('ExtractFiles')"
-          ></v-list-item>
-          <v-list-item link title="Settings" @click="onNavItemClick('Settings')"></v-list-item>
         </v-list>
 
         <template v-slot:append>
@@ -80,7 +72,7 @@ import { logoutUser } from "@/firebase/services/user";
 import { updateNoteWatchedTime } from "@/firebase/services/data";
 import Config from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
-// import moment from "moment";
+
 let checkUserActivityInterval;
 
 export default {
@@ -94,7 +86,8 @@ export default {
   },
   data: () => ({
     isReminderDialogOpen: false,
-    currentNote: null
+    currentNote: null,
+    currentShownItem: 0
   }),
   created() {},
   mounted() {
@@ -109,9 +102,11 @@ export default {
   },
   methods: {
     ...mapActions(useGeneralStore, ["updateUserNotesListInStore"]),
-    onNavItemClick(itemName) {
+    onNavItemClick(itemName, itemIndex) {
       let pageName;
       let paramsObj;
+      this.currentShownItem = itemIndex;
+
       switch (itemName) {
         case NavigationItems.OverView:
           pageName = "OverViewPage";
@@ -140,6 +135,9 @@ export default {
         name: pageName,
         params: paramsObj
       });
+    },
+    markShownNavItem(itemIndex) {
+      return this.currentShownItem === itemIndex ? "tonal" : "plain";
     },
     async onLogout() {
       const response = await logoutUser();
@@ -176,7 +174,47 @@ export default {
       "userFullName",
       "isSessionUserActive",
       "noteReminder"
-    ])
+    ]),
+    navItems() {
+      return [
+        {
+          title: "Overview",
+          value: "Overview",
+          icon: "mdi-chart-bar",
+          isShownNow: false
+        },
+        {
+          title: "Calendar",
+          value: "Calendar",
+          icon: "mdi-calendar",
+          isShownNow: false
+        },
+        {
+          title: "Notes",
+          value: "Notes",
+          icon: "mdi-note",
+          isShownNow: false
+        },
+        {
+          title: "Sales",
+          value: "Sales",
+          icon: "mdi-sale",
+          isShownNow: false
+        },
+        {
+          title: "Extract From Files",
+          value: "ExtractFiles",
+          icon: "",
+          isShownNow: false
+        },
+        {
+          title: "Settings",
+          value: "Settings",
+          icon: "mdi-cog",
+          isShownNow: false
+        }
+      ];
+    }
   },
   watch: {
     noteReminder: {
