@@ -192,7 +192,7 @@ export default {
         {
           title: "Notes",
           value: "Notes",
-          icon: "mdi-note",
+          icon: "mdi-note-text",
           isShownNow: false
         },
         {
@@ -204,7 +204,7 @@ export default {
         {
           title: "Extract From Files",
           value: "ExtractFiles",
-          icon: "",
+          icon: "mdi-file-cog",
           isShownNow: false
         },
         {
