@@ -16,7 +16,7 @@
         <td class="text-medium-emphasis">{{ item.location }}</td>
         <td class="text-medium-emphasis">{{ item.product }}</td>
         <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
-        <td class="text-center">
+        <td>
           <v-icon
             v-if="findAttachedNote(item)"
             icon="mdi-note"
@@ -196,7 +196,7 @@ export default {
         },
         {
           title: "Notes",
-          align: "center",
+          // align: "center",
           sortable: false
         },
         {

@@ -2,13 +2,13 @@
   <v-container fluid>
     <v-row>
       <v-col md="12" class="pa-3">
-        <AppCard :cardTextClass="'py-0 pr-0'">
+        <AppCard :cardTextClass="'py-0'">
           <template v-slot:card-text>
             <v-toolbar color="white" height="80">
               <v-text-field
                 hide-details
                 single-line
-                placeholder="Search"
+                placeholder="Search here..."
                 append-inner-icon="mdi-magnify"
               ></v-text-field>
               <v-spacer></v-spacer>
