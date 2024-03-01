@@ -62,7 +62,7 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/tracking/:stageName",
+      path: "/sales/:stageName",
       // stageName: "followups" || "leads" || "closed"
       name: "TrackingPage",
       component: TrackingPage,

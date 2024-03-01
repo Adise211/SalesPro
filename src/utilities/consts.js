@@ -2,9 +2,7 @@ export const NavigationItems = {
   OverView: "OverView",
   Calendar: "Calendar",
   Notes: "Notes",
-  FolllowUps: "FolllowUps",
-  Leads: "Leads",
-  Closed: "Closed",
+  Sales: "Sales",
   Settings: "Settings",
   Logout: "Logout"
 };

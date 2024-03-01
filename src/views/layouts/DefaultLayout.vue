@@ -14,32 +14,13 @@
           <v-list-item link title="Calendar" @click="onNavItemClick('Calendar')"></v-list-item>
 
           <v-list-item link title="Notes" @click="onNavItemClick('Notes')"></v-list-item>
-          <v-list-group value="Tracking" fluid>
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" title="Tracking"></v-list-item>
-            </template>
-            <v-list-item
-              link
-              title="Follow ups"
-              variant="tonal"
-              append-icon="mdi-run"
-              @click="onNavItemClick('FolllowUps')"
-            ></v-list-item>
-            <v-list-item
-              link
-              title="Leads"
-              variant="tonal"
-              append-icon="mdi-fire"
-              @click="onNavItemClick('Leads')"
-            ></v-list-item>
-            <v-list-item
-              link
-              title="Closed"
-              variant="tonal"
-              append-icon="mdi-handshake"
-              @click="onNavItemClick('Closed')"
-            ></v-list-item>
-          </v-list-group>
+          <v-list-item
+            link
+            title="Sales"
+            variant="tonal"
+            append-icon="mdi-sale"
+            @click="onNavItemClick('Sales')"
+          ></v-list-item>
           <v-list-item
             link
             title="Extract From Files"
@@ -144,17 +125,9 @@ export default {
           pageName = "NotesPage";
           paramsObj = {};
           break;
-        case NavigationItems.FolllowUps:
+        case NavigationItems.Sales:
           pageName = "TrackingPage";
           paramsObj = { stageName: TrackingTypes.FollowUps.value };
-          break;
-        case NavigationItems.Leads:
-          pageName = "TrackingPage";
-          paramsObj = { stageName: TrackingTypes.Leads.value };
-          break;
-        case NavigationItems.Closed:
-          pageName = "TrackingPage";
-          paramsObj = { stageName: TrackingTypes.Closed.value };
           break;
         case NavigationItems.Settings:
           pageName = "UserSettingsPage";
