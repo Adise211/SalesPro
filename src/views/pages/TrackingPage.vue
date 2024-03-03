@@ -24,7 +24,9 @@
                 >
               </v-toolbar-items>
               <v-spacer></v-spacer>
-              <v-btn color="primary" variant="outlined">Create New</v-btn>
+              <v-btn color="blue-darken-1" variant="outlined" @click="createNewHandler"
+                >Create new</v-btn
+              >
             </v-toolbar>
           </template>
         </AppCard>
@@ -62,7 +64,7 @@
 <script>
 import TrackingBoard from "@/components/TrackingBoard.vue";
 import AppCard from "@/components/AppCard.vue";
-import { TrackingTypes } from "@/utilities/consts";
+import { TrackingTypes, CompanyTemp } from "@/utilities/consts";
 
 export default {
   name: "TrackingPage",
@@ -91,6 +93,15 @@ export default {
           stageName: item.value
         }
       });
+    },
+    createNewHandler() {
+      const newCompany = { ...CompanyTemp };
+      newCompany.companyName = "";
+      newCompany.statusId = this.currentStageId;
+      newCompany.contactInfo = "";
+      newCompany.comapnyLocation = "";
+      newCompany.myProduct = newCompany.notes;
+      newCompany.relatedEvents = [];
     }
   },
   computed: {

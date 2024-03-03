@@ -53,8 +53,12 @@ export const ToastMessages = {
 export const CompanyTemp = {
   companyId: null, // String
   companyName: null, // String
+  statusId: 0, // Number
+  contactInfo: null, //String
+  comapnyLocation: null, // String
+  myProduct: null, // String (productId)
+  notes: null, // String (noteId)
   relatedEvents: [], // Array (events id)
-  trackingStatus: 0, // Number
   lastUpdate: null // Number (epoch time)
 };
 
