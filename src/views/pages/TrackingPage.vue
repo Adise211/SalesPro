@@ -6,6 +6,7 @@
           <template v-slot:card-text>
             <v-toolbar color="white" height="80">
               <v-text-field
+                v-model="searchExpression"
                 hide-details
                 single-line
                 placeholder="Search here..."
@@ -33,7 +34,10 @@
       <v-col md="12" class="pt-0">
         <AppCard>
           <template v-slot:card-text>
-            <TrackingBoard :currentStageName="stageName"></TrackingBoard>
+            <TrackingBoard
+              :currentStageName="stageName"
+              :searchExp="searchExpression"
+            ></TrackingBoard>
           </template>
         </AppCard>
       </v-col>
@@ -71,7 +75,8 @@ export default {
   },
   data: () => ({
     isDialogOpen: false,
-    currentStageId: 1
+    currentStageId: 1,
+    searchExpression: ""
   }),
   created() {},
   mounted() {},

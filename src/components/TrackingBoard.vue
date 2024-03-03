@@ -5,7 +5,7 @@
     :items-per-page="itemsPerPage"
     :height="390"
     :page="page"
-    :search="searchExpression"
+    :search="searchExp"
     class="mt-3"
   >
     <!-- table body (items) -->
@@ -56,6 +56,10 @@ export default {
     currentStageName: {
       type: String,
       default: ""
+    },
+    searchExp: {
+      type: String,
+      default: ""
     }
   },
   data: () => ({
@@ -65,8 +69,7 @@ export default {
     isAddBtnLoading: false,
     isDeleteDialogOpen: false,
     currentItem: {},
-    showChart: true,
-    searchExpression: ""
+    showChart: true
   }),
   created() {},
   mounted() {},
