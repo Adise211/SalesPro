@@ -14,11 +14,13 @@
               <v-spacer></v-spacer>
 
               <v-toolbar-items>
-                <v-btn>Follow Ups</v-btn>
-
-                <v-btn>Leads</v-btn>
-
-                <v-btn>Closed</v-btn>
+                <v-btn
+                  v-for="item in toolbarItems"
+                  :key="item.id"
+                  @click="onToolbarItemClick(item)"
+                  :class="{ 'bg-blue-lighten-1': item.id == currentStageId }"
+                  >{{ item.title }}</v-btn
+                >
               </v-toolbar-items>
               <v-spacer></v-spacer>
               <v-btn color="primary" variant="outlined">Create New</v-btn>
@@ -31,7 +33,7 @@
       <v-col md="12" class="pt-0">
         <AppCard>
           <template v-slot:card-text>
-            <TrackingBoard :currentStageName="currentStageName"></TrackingBoard>
+            <TrackingBoard :currentStageName="stageName"></TrackingBoard>
           </template>
         </AppCard>
       </v-col>
@@ -56,6 +58,7 @@
 <script>
 import TrackingBoard from "@/components/TrackingBoard.vue";
 import AppCard from "@/components/AppCard.vue";
+import { TrackingTypes } from "@/utilities/consts";
 
 export default {
   name: "TrackingPage",
@@ -67,21 +70,34 @@ export default {
     }
   },
   data: () => ({
-    currentStageName: "",
-    isDialogOpen: false
+    isDialogOpen: false,
+    currentStageId: 1
   }),
   created() {},
   mounted() {},
-  methods: {},
-  computed: {},
-  watch: {
-    stageName: {
-      handler(newVal) {
-        this.currentStageName = newVal;
-      },
-      immediate: true
+  methods: {
+    onToolbarItemClick(item) {
+      // for bg color
+      this.currentStageId = item.id;
+      // for router path
+      this.$router.push({
+        name: "TrackingPage",
+        params: {
+          stageName: item.value
+        }
+      });
     }
-  }
+  },
+  computed: {
+    toolbarItems() {
+      const list = [];
+      for (let item in TrackingTypes) {
+        list.push(TrackingTypes[item]);
+      }
+      return list;
+    }
+  },
+  watch: {}
 };
 </script>
 

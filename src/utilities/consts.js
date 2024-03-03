@@ -20,12 +20,6 @@ export const CalendarEventColors = {
   Pink: "pink"
 };
 
-// export const TrackingStages = {
-//   FollowUps: "followups",
-//   Leads: "leads",
-//   Closed: "closed"
-// };
-
 export const TrackingTypes = {
   FollowUps: {
     id: 1,
@@ -43,12 +37,6 @@ export const TrackingTypes = {
     title: "Closed" // For display
   }
 };
-
-// export const TrackingStatusTypes = [
-//   { Id: 0, Status: "Follow Ups" },
-//   { Id: 1, Status: "Leads" },
-//   { Id: 2, Status: "Closed" }
-// ];
 
 export const ToastMessages = {
   SuccessMessages: {

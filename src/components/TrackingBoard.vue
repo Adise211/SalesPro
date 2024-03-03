@@ -42,9 +42,6 @@
 </template>
 
 <script>
-// @ts-ignore
-// import AppCard from "./AppCard.vue";
-// import AppCharts from "./AppCharts.vue";
 import { ToastMessages, TrackingTypes } from "@/utilities/consts";
 import { convertDate } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
@@ -76,31 +73,7 @@ export default {
   methods: {
     ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
     async addNewItem() {
-      // let toastMessage;
-      // let toastType;
-      // this.isAddBtnLoading = true;
-      // const today = moment(new Date()).format("YYYY-MM-DD");
-      // const newCompanyObj = {
-      //   Company: this.companyName,
-      //   LastUpdated: today,
-      //   Status: this.currentStageName
-      // };
-      // const response = await createNewCompany(newCompanyObj);
-      // if (response.success) {
-      //   this.addNewCompanyInStore(newCompanyObj);
-      //   toastMessage = ToastMessages.SuccessMessages.Created;
-      //   toastType = "success";
-      // } else {
-      //   toastMessage = response.message;
-      //   toastType = "error";
-      // }
-      // this.isAddBtnLoading = false;
-      // this.companyName = "";
-      // this.refreshActiveChart();
-      // this.$toast.open({
-      //   type: toastType,
-      //   message: toastMessage
-      // });
+      //
     },
     onDeleteIconClick(item) {
       this.currentItem = item;
@@ -121,7 +94,7 @@ export default {
       this.isDeleteDialogOpen = false;
     },
     async changeStatusHandler() {
-      //Prams: toStatus, selectedItem
+      //Params: toStatus, selectedItem
       // const newStatusKey = toStatus.Status.split(" ").join("");
       // selectedItem.Status = TrackingStages[newStatusKey];
       // selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
