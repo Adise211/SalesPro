@@ -46,29 +46,18 @@
     </v-row>
   </v-container>
   <!-- Create new Company (item) Dialog -->
-  <v-dialog v-model="isDialogOpen">
-    <AppCard>
-      <template v-slot:card-text>
-        <v-container>
-          <v-row>
-            <v-col>
-              <v-text-field></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </template>
-    </AppCard>
-  </v-dialog>
+  <AppCompanyDialog></AppCompanyDialog>
 </template>
 
 <script>
 import TrackingBoard from "@/components/TrackingBoard.vue";
+import AppCompanyDialog from "@/components/AppCompanyDialog.vue";
 import AppCard from "@/components/AppCard.vue";
 import { TrackingTypes, CompanyTemp } from "@/utilities/consts";
 
 export default {
   name: "TrackingPage",
-  components: { AppCard, TrackingBoard },
+  components: { AppCard, TrackingBoard, AppCompanyDialog },
   props: {
     stageName: {
       type: String,
