@@ -117,7 +117,8 @@
 <script>
 import TrackingBoard from "@/components/TrackingBoard.vue";
 import AppCard from "@/components/AppCard.vue";
-import { TrackingTypes, CompanyTemp } from "@/utilities/consts";
+import { TrackingTypes } from "@/utilities/consts";
+import config from "@/utilities/config";
 
 export default {
   name: "TrackingPage",
@@ -132,11 +133,13 @@ export default {
     isDialogOpen: false,
     currentStageId: 1,
     searchExpression: "",
-    itemObject: { ...CompanyTemp },
+    itemObject: { ...config.DataTemplates.CompanyTemp },
     isLoading: false
   }),
   created() {},
-  mounted() {},
+  mounted() {
+    console.log("aaa:", config.DataTemplates.CompanyTemp);
+  },
   methods: {
     onToolbarItemClick(item) {
       // for bg color

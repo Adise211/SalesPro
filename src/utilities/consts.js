@@ -49,28 +49,3 @@ export const ToastMessages = {
     General: "General Error"
   }
 };
-
-export const CompanyTemp = {
-  companyId: null, // String
-  companyName: null, // String
-  statusId: 0, // Number
-  email: null, //String
-  phoneNumber: null, //String
-  stateOrCity: null, // String,
-  country: null,
-  myProduct: null, // String (productId)
-  notes: null, // String (noteId)
-  relatedEvents: [], // Array (events id)
-  lastUpdate: null // Number (epoch time)
-};
-
-// Template from here: https://schedule-x.dev/docs/calendar/events
-export const CalendarEventTemp = {
-  id: null,
-  start: null,
-  end: null,
-  title: null,
-  description: null,
-  location: null,
-  people: null
-};

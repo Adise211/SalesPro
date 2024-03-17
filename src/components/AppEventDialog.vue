@@ -157,10 +157,11 @@
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
 import { convertTime, convertDate } from "@/utilities/utilsFuncs";
-import { CalendarEventTemp, ToastMessages } from "@/utilities/consts";
+import { ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent } from "@/firebase/services/data";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
+import config from "@/utilities/config";
 
 export default {
   setup() {
@@ -205,7 +206,7 @@ export default {
         // Get dates with the next format : "YYYY-MM-DD HH:mm"
         const { fullStart, fullEnd } = this.getEventFullDates();
         // Clone the event template
-        const newEvent = { ...CalendarEventTemp };
+        const newEvent = { ...config.DataTemplates.CalendarEventTemp };
         // The new event info
         newEvent.start = fullStart;
         newEvent.end = fullEnd;
@@ -231,16 +232,6 @@ export default {
         this.isLoading = false;
       }
     },
-    // async createCompany(eventData) {
-    //   // Clone template
-    //   const company = { ...CompanyTemp };
-    //   company.companyName = this.companyName;
-    //   company.trackingStatus = 1;
-    //   const response = await createNewCompany(company, eventData.id);
-    //   if (response.Result.Success) {
-    //     return response.Data;
-    //   }
-    // },
     onCancel() {
       this.isDialogOpen = false;
       this.$refs.eventForm.reset();
