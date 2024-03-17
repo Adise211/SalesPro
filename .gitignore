@@ -156,3 +156,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# my files
+public/_config
