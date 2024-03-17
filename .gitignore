@@ -158,4 +158,4 @@ coverage
 *.sw?
 
 # my files
-public/_config
+public/_config/
