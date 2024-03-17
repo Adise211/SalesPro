@@ -54,8 +54,10 @@ export const CompanyTemp = {
   companyId: null, // String
   companyName: null, // String
   statusId: 0, // Number
-  contactInfo: null, //String
-  comapnyLocation: null, // String
+  email: null, //String
+  phoneNumber: null, //String
+  stateOrCity: null, // String,
+  country: null,
   myProduct: null, // String (productId)
   notes: null, // String (noteId)
   relatedEvents: [], // Array (events id)

@@ -24,7 +24,7 @@
                 >
               </v-toolbar-items>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="outlined" @click="createNewHandler"
+              <v-btn color="blue-darken-1" variant="outlined" @click="isDialogOpen = true"
                 >Create new</v-btn
               >
             </v-toolbar>
@@ -46,18 +46,82 @@
     </v-row>
   </v-container>
   <!-- Create new Company (item) Dialog -->
-  <AppCompanyDialog></AppCompanyDialog>
+  <v-dialog v-model="isDialogOpen" width="70%" height="70%">
+    <AppCard :cardContentOnly="false">
+      <template v-slot:card-title>
+        <span class="text-h5">Create New Item</span>
+      </template>
+      <template v-slot:card-text>
+        <v-form ref="form">
+          <v-container>
+            <!-- First Row -->
+            <v-row>
+              <v-col>
+                <!-- 1) company's name -->
+                <v-text-field
+                  label="Company's Name"
+                  v-model="itemObject.companyName"
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <!-- 2) email -->
+                <v-text-field label="Email" v-model="itemObject.email"></v-text-field>
+              </v-col>
+              <v-col>
+                <!-- 3) phone number -->
+                <v-text-field label="Phone Number" v-model="itemObject.phoneNumber"></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- Second Row -->
+            <v-row>
+              <v-col md="5">
+                <!-- 4) city or state -->
+                <v-text-field label="State/City" v-model="itemObject.stateOrCity"></v-text-field>
+              </v-col>
+              <v-col md="5">
+                <!-- 5) country -->
+                <v-select
+                  label="Country"
+                  :items="['USA', 'Canada']"
+                  v-model="itemObject.country"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <!-- Third Row -->
+            <v-row>
+              <v-col>
+                <!-- 4) product -->
+                <v-select
+                  label="My Product"
+                  :items="['q-99', 'Q-10']"
+                  v-model="itemObject.myProduct"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </template>
+      <template v-slot:card-actions>
+        <v-spacer></v-spacer>
+        <div class="pb-3">
+          <v-btn color="blue-darken-1" variant="text" @click="onSaveItem" :loading="isLoading"
+            >Save</v-btn
+          >
+          <v-btn color="blue-darken-1" variant="text" @click="isDialogOpen = false">Cancel</v-btn>
+        </div>
+      </template>
+    </AppCard>
+  </v-dialog>
 </template>
 
 <script>
 import TrackingBoard from "@/components/TrackingBoard.vue";
-import AppCompanyDialog from "@/components/AppCompanyDialog.vue";
 import AppCard from "@/components/AppCard.vue";
 import { TrackingTypes, CompanyTemp } from "@/utilities/consts";
 
 export default {
   name: "TrackingPage",
-  components: { AppCard, TrackingBoard, AppCompanyDialog },
+  components: { AppCard, TrackingBoard },
   props: {
     stageName: {
       type: String,
@@ -67,7 +131,9 @@ export default {
   data: () => ({
     isDialogOpen: false,
     currentStageId: 1,
-    searchExpression: ""
+    searchExpression: "",
+    itemObject: { ...CompanyTemp },
+    isLoading: false
   }),
   created() {},
   mounted() {},
@@ -83,14 +149,8 @@ export default {
         }
       });
     },
-    createNewHandler() {
-      const newCompany = { ...CompanyTemp };
-      newCompany.companyName = "";
-      newCompany.statusId = this.currentStageId;
-      newCompany.contactInfo = "";
-      newCompany.comapnyLocation = "";
-      newCompany.myProduct = newCompany.notes;
-      newCompany.relatedEvents = [];
+    onSaveItem() {
+      console.log("on save:", this.itemObject);
     }
   },
   computed: {
