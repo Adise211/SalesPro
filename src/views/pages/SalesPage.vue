@@ -24,9 +24,7 @@
                 >
               </v-toolbar-items>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="isDialogOpen = true"
-                >Create new</v-btn
-              >
+              <v-btn color="primary" variant="text" @click="isDialogOpen = true">Create new</v-btn>
             </v-toolbar>
           </template>
         </AppCard>
