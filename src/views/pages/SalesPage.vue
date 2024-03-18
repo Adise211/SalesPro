@@ -36,10 +36,7 @@
       <v-col md="12" class="pt-0">
         <AppCard>
           <template v-slot:card-text>
-            <TrackingBoard
-              :currentStageName="stageName"
-              :searchExp="searchExpression"
-            ></TrackingBoard>
+            <SalesBoard :currentStageName="stageName" :searchExp="searchExpression"></SalesBoard>
           </template>
         </AppCard>
       </v-col>
@@ -115,7 +112,7 @@
 </template>
 
 <script>
-import TrackingBoard from "@/components/TrackingBoard.vue";
+import SalesBoard from "@/components/SalesBoard.vue";
 import AppCard from "@/components/AppCard.vue";
 import { TrackingTypes } from "@/utilities/consts";
 import config from "@/utilities/config";
@@ -123,7 +120,7 @@ import { createNewCompany } from "@/firebase/services/data";
 
 export default {
   name: "SalesPage",
-  components: { AppCard, TrackingBoard },
+  components: { AppCard, SalesBoard },
   props: {
     stageName: {
       type: String,
