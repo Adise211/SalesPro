@@ -1,5 +1,6 @@
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
+import colors from "vuetify/util/colors";
 
 const vuetify = createVuetify({
   icons: {
@@ -24,6 +25,16 @@ const vuetify = createVuetify({
       variant: "outlined",
       density: "comfortable",
       color: "primary"
+    }
+  },
+  theme: {
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+          primary: colors.blue.darken1
+        }
+      }
     }
   }
 });
