@@ -154,12 +154,11 @@ export default {
       });
     },
     async onSaveItem() {
-      console.log("on save:", this.itemObject);
       this.isLoading = true;
       const response = await createNewCompany(this.itemObject);
       if (response.Result.Success) {
         console.log("saved data in DB!", response);
-        this.updateCompaniesListInStore(response.Result.Data);
+        this.updateCompaniesListInStore(response.Data);
       }
       this.isLoading = false;
       this.onDialogClose();
