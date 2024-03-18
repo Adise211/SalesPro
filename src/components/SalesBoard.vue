@@ -26,7 +26,7 @@
           ></v-icon>
         </td>
         <td class="text-center">
-          <v-icon>mdi-pencil</v-icon>
+          <v-icon @click="onEditItem(item)">mdi-pencil</v-icon>
         </td>
         <td class="text-center">
           <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
@@ -76,6 +76,9 @@ export default {
   mounted() {},
   methods: {
     ...mapActions(useGeneralStore, ["removeCompanyFromStore"]),
+    onEditItem(item) {
+      this.$emit("onEditItem", item);
+    },
     onDeleteIconClick(item) {
       this.currentItem = item;
       this.isDeleteDialogOpen = true;

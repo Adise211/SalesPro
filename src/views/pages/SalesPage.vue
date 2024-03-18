@@ -19,7 +19,7 @@
                   v-for="item in toolbarItems"
                   :key="item.id"
                   @click="onToolbarItemClick(item)"
-                  :class="{ 'bg-blue-lighten-1': item.id == currentStageId }"
+                  :class="{ 'bg-primary': item.id == currentStageId }"
                   >{{ item.title }}</v-btn
                 >
               </v-toolbar-items>
@@ -34,7 +34,11 @@
       <v-col md="12" class="pt-0">
         <AppCard>
           <template v-slot:card-text>
-            <SalesBoard :currentStageName="stageName" :searchExp="searchExpression"></SalesBoard>
+            <SalesBoard
+              :currentStageName="stageName"
+              :searchExp="searchExpression"
+              @onEditItem="editItemHandler"
+            ></SalesBoard>
           </template>
         </AppCard>
       </v-col>
@@ -102,7 +106,7 @@
           <v-btn color="blue-darken-1" variant="text" @click="onSaveItem" :loading="isLoading"
             >Save</v-btn
           >
-          <v-btn color="blue-darken-1" variant="text" @click="isDialogOpen = false">Cancel</v-btn>
+          <v-btn color="blue-darken-1" variant="text" @click="onDialogClose">Cancel</v-btn>
         </div>
       </template>
     </AppCard>
@@ -158,7 +162,16 @@ export default {
         this.updateCompaniesListInStore(response.Result.Data);
       }
       this.isLoading = false;
+      this.onDialogClose();
+    },
+    editItemHandler(item) {
+      this.itemObject = item;
+      this.isDialogOpen = true;
+    },
+    onDialogClose() {
+      // close dialogs
       this.isDialogOpen = false;
+      // reset state
       this.itemObject = { ...config.DataTemplates.CompanyTemp };
     }
   },
