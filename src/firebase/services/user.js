@@ -49,7 +49,7 @@ export async function loginUser(data) {
       // get user info and add it to the store
       const userDataResponse = await getUserData();
       generalStore.setCalendarEvents(userDataResponse.userEvents);
-      generalStore.setCompaniesList(userDataResponse.userListedCompanies);
+      generalStore.setCompaniesList(userDataResponse.userListedCompanies || []);
       generalStore.setUserNotesList(userDataResponse.userNotes);
 
       return user;
