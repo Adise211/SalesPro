@@ -12,9 +12,10 @@
     <template v-slot:item="{ item }">
       <tr>
         <td class="text-medium-emphasis">{{ item.companyName }}</td>
-        <td class="text-medium-emphasis">{{ item.contactInfo }}</td>
-        <td class="text-medium-emphasis">{{ item.location }}</td>
-        <td class="text-medium-emphasis">{{ item.product }}</td>
+        <td class="text-medium-emphasis">{{ item.email }}</td>
+        <td class="text-medium-emphasis">{{ item.phoneNumber }}</td>
+        <td class="text-medium-emphasis">{{ item.stateOrCity }}, {{ item.country }}</td>
+        <td class="text-medium-emphasis">{{ item.myProduct }}</td>
         <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
         <td>
           <v-icon
@@ -74,7 +75,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "removeCompanyFromStore"]),
+    ...mapActions(useGeneralStore, ["removeCompanyFromStore"]),
     onDeleteIconClick(item) {
       this.currentItem = item;
       this.isDeleteDialogOpen = true;
@@ -152,24 +153,28 @@ export default {
           key: "companyName"
         },
         {
-          title: "Contact Info",
-          key: "contactInfo"
+          title: "Email",
+          key: "email",
+          align: "center"
+        },
+        {
+          title: "Phone",
+          key: "phoneNumber"
         },
         {
           title: "Location",
-          key: "location"
+          key: "country"
         },
         {
           title: "My Product",
-          key: "product"
+          key: "myProduct"
         },
         {
           title: "Last update",
           key: "lastUpdate"
         },
         {
-          title: "Notes",
-          // align: "center",
+          title: "Note",
           sortable: false
         },
         {
@@ -188,7 +193,7 @@ export default {
       let result = [];
       if (this.companiesList.length > 0) {
         result = this.companiesList.filter((comp) => {
-          if (comp.trackingStatus === this.currentStatusId) return comp;
+          if (comp.statusId === this.currentStatusId) return comp;
         });
       }
       return result;

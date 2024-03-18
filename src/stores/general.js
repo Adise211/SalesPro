@@ -11,28 +11,7 @@ export const useGeneralStore = defineStore("general", {
       userLastLoggedInTime: 0,
       userFullName: "",
       userEmail: "",
-      companiesList: [
-        {
-          companyId: 1,
-          companyName: "Example",
-          contactInfo: "12256486525",
-          location: "Arizona, USA",
-          product: "q-11",
-          relatedEvents: ["event1234"],
-          trackingStatus: 1,
-          lastUpdate: 1709111299
-        },
-        {
-          companyId: 2,
-          companyName: "Example2",
-          contactInfo: "12256486525",
-          location: "Arizona, USA",
-          product: "q-11",
-          relatedEvents: ["event12345"],
-          trackingStatus: 1,
-          lastUpdate: 1709111299
-        }
-      ],
+      companiesList: [],
       calendarEvents: [],
       userNotesList: [],
       notesWithReminder: []
@@ -125,8 +104,8 @@ export const useGeneralStore = defineStore("general", {
       }
     },
     updateCompaniesListInStore(newCompanyObj) {
-      // 1. If list is not empty
-      if (this.companiesList.length > 0) {
+      // 1. If list is not empty + company has an id
+      if (this.companiesList.length > 0 && newCompanyObj.companyId) {
         // Check if the company's name exist in the list
         const isCompanyExist = this.companiesList.find((com) => {
           if (com.companyId === newCompanyObj.companyId) return com;
