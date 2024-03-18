@@ -25,6 +25,11 @@ const vuetify = createVuetify({
       variant: "outlined",
       density: "comfortable",
       color: "primary"
+    },
+    VDataTable: {
+      VIcon: {
+        color: "#0000008a"
+      }
     }
   },
   theme: {
