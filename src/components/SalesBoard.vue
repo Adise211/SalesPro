@@ -75,9 +75,6 @@ export default {
   mounted() {},
   methods: {
     ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "removeCompanyFromStore"]),
-    async addNewItem() {
-      //
-    },
     onDeleteIconClick(item) {
       this.currentItem = item;
       this.isDeleteDialogOpen = true;

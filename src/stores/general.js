@@ -129,11 +129,16 @@ export const useGeneralStore = defineStore("general", {
       if (this.companiesList.length > 0) {
         // Check if the company's name exist in the list
         const isCompanyExist = this.companiesList.find((com) => {
-          if (com.Company === newCompanyObj.Company) return com;
+          if (com.companyId === newCompanyObj.companyId) return com;
         });
         // If not exist - add it
         if (!isCompanyExist) {
           this.companiesList.push(newCompanyObj);
+        } else {
+          // If exist - replace it! (with the updated company object)
+          const companyIndex = this.companiesList.findIndex(isCompanyExist);
+          console.log("found company index!", companyIndex);
+          if (companyIndex > -1) this.companiesList.splice(companyIndex, 1, newCompanyObj);
         }
       } else {
         // 2. If the list is empty - add it

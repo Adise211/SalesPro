@@ -114,6 +114,8 @@
 <script>
 import SalesBoard from "@/components/SalesBoard.vue";
 import AppCard from "@/components/AppCard.vue";
+import { mapActions } from "pinia";
+import { useGeneralStore } from "@/stores/general";
 import { TrackingTypes } from "@/utilities/consts";
 import config from "@/utilities/config";
 import { createNewCompany } from "@/firebase/services/data";
@@ -137,6 +139,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapActions(useGeneralStore, ["updateCompaniesListInStore"]),
     onToolbarItemClick(item) {
       // for bg color
       this.currentStageId = item.id;
@@ -153,7 +156,8 @@ export default {
       this.isLoading = true;
       const response = await createNewCompany(this.itemObject);
       if (response.Result.Success) {
-        console.log("saved data!", response);
+        console.log("saved data in DB!", response);
+        this.updateCompaniesListInStore(response.Result.Data);
       }
       this.isLoading = false;
       this.isDialogOpen = false;
