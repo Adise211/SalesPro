@@ -74,7 +74,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
+    ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "removeCompanyFromStore"]),
     async addNewItem() {
       //
     },

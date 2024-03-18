@@ -117,7 +117,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["addNewCompanyInStore", "removeCompanyFromStore"]),
+    ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "removeCompanyFromStore"]),
     async addNewItem() {
       let toastMessage;
       let toastType;
@@ -130,7 +130,7 @@ export default {
       };
       const response = await createNewCompany(newCompanyObj);
       if (response.success) {
-        this.addNewCompanyInStore(newCompanyObj);
+        this.updateCompaniesListInStore(newCompanyObj);
         toastMessage = ToastMessages.SuccessMessages.Created;
         toastType = "success";
       } else {

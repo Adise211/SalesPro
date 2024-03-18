@@ -124,7 +124,7 @@ export const useGeneralStore = defineStore("general", {
         }
       }
     },
-    addNewCompanyInStore(newCompanyObj) {
+    updateCompaniesListInStore(newCompanyObj) {
       // 1. If list is not empty
       if (this.companiesList.length > 0) {
         // Check if the company's name exist in the list

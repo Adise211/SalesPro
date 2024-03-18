@@ -89,7 +89,7 @@ export const useCalendarStore = defineStore("calendar", {
         LastUpdated: EventDate,
         Status: "followups"
       };
-      generalStore.addNewCompanyInStore(newCompanyObj);
+      generalStore.updateCompaniesListInStore(newCompanyObj);
     }
   },
   persist: {
