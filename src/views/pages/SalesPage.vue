@@ -34,11 +34,11 @@
       <v-col md="12" class="pt-0">
         <AppCard>
           <template v-slot:card-text>
-            <SalesBoard
+            <AppSalesBoard
               :currentStageName="stageName"
               :searchExp="searchExpression"
               @onEditItem="editItemHandler"
-            ></SalesBoard>
+            ></AppSalesBoard>
           </template>
         </AppCard>
       </v-col>
@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import SalesBoard from "@/components/SalesBoard.vue";
+import AppSalesBoard from "@/components/AppSalesBoard.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
@@ -124,7 +124,7 @@ import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
 
 export default {
   name: "SalesPage",
-  components: { AppCard, SalesBoard },
+  components: { AppCard, AppSalesBoard },
   props: {
     stageName: {
       type: String,
