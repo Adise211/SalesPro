@@ -120,7 +120,7 @@ import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { TrackingTypes } from "@/utilities/consts";
 import config from "@/utilities/config";
-import { createNewCompany } from "@/firebase/services/data";
+import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
 
 export default {
   name: "SalesPage",
@@ -155,10 +155,20 @@ export default {
     },
     async onSaveItem() {
       this.isLoading = true;
-      const response = await createNewCompany(this.itemObject);
-      if (response.Result.Success) {
-        console.log("saved data in DB!", response);
-        this.updateCompaniesListInStore(response.Data);
+      // item doesn't have an id (given one in data.js file) - create
+      if (!this.itemObject.companyId) {
+        const createResponse = await createNewCompany(this.itemObject);
+        if (createResponse.Result.Success) {
+          console.log("saved data in DB!", createResponse);
+          this.updateCompaniesListInStore(createResponse.Data);
+        }
+      } else {
+        // otherwise - update
+        const updateResponse = await updateCompanyInfo(this.itemObject);
+        if (updateResponse.Result.Success) {
+          console.log("updated company info!", updateResponse);
+          this.updateCompaniesListInStore(updateResponse.Data);
+        }
       }
       this.isLoading = false;
       this.onDialogClose();
