@@ -7,7 +7,7 @@ Layouts:
 Parent pages:
 -------------
 - ClendarPage
-- TrackingPage
+- SalesPage
 
 
 

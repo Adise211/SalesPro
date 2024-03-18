@@ -121,7 +121,7 @@ export default {
           paramsObj = {};
           break;
         case NavigationItems.Sales:
-          pageName = "TrackingPage";
+          pageName = "SalesPage";
           paramsObj = { stageName: TrackingTypes.FollowUps.value };
           break;
         case NavigationItems.Settings:

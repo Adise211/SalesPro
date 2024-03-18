@@ -3,7 +3,7 @@ import { initStores } from "../stores";
 import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
 import OverViewPage from "../views/pages/OverViewPage.vue";
-import TrackingPage from "../views/pages/TrackingPage.vue";
+import SalesPage from "../views/pages/SalesPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 import UserSettingsPage from "../views/pages/UserSettingsPage.vue";
 import NotesPage from "../views/pages/NotesPage.vue";
@@ -64,8 +64,8 @@ const router = createRouter({
     {
       path: "/sales/:stageName",
       // stageName: "followups" || "leads" || "closed"
-      name: "TrackingPage",
-      component: TrackingPage,
+      name: "SalesPage",
+      component: SalesPage,
       props: (route) => {
         return {
           ...route.params,

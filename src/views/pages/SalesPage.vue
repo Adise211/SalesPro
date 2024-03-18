@@ -121,7 +121,7 @@ import { TrackingTypes } from "@/utilities/consts";
 import config from "@/utilities/config";
 
 export default {
-  name: "TrackingPage",
+  name: "SalesPage",
   components: { AppCard, TrackingBoard },
   props: {
     stageName: {
@@ -146,7 +146,7 @@ export default {
       this.currentStageId = item.id;
       // for router path
       this.$router.push({
-        name: "TrackingPage",
+        name: "SalesPage",
         params: {
           stageName: item.value
         }
