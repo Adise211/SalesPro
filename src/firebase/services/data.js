@@ -71,17 +71,15 @@ export async function getCalendarEvents() {
   }
 }
 
-export async function createNewCompany(newCompanyObj, calendarEventId) {
+export async function createNewCompany(newCompanyObj) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
-    // Add id
+    // Add an id
     const rendonId = "comp" + generatedId();
     newCompanyObj.companyId = rendonId;
-    // Add last updated time as epoch time
+    // Add last updated time (epoch time)
     const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
     newCompanyObj.lastUpdate = currentEpochTime;
-    // Add related event (event id)
-    newCompanyObj.relatedEvents.push(calendarEventId);
 
     await updateDoc(userRef, {
       userListedCompanies: arrayUnion(newCompanyObj)

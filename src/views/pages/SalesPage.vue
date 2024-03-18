@@ -24,7 +24,7 @@
                 >
               </v-toolbar-items>
               <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="outlined" @click="isDialogOpen = true"
+              <v-btn color="blue-darken-1" variant="text" @click="isDialogOpen = true"
                 >Create new</v-btn
               >
             </v-toolbar>
@@ -119,6 +119,7 @@ import TrackingBoard from "@/components/TrackingBoard.vue";
 import AppCard from "@/components/AppCard.vue";
 import { TrackingTypes } from "@/utilities/consts";
 import config from "@/utilities/config";
+import { createNewCompany } from "@/firebase/services/data";
 
 export default {
   name: "SalesPage",
@@ -137,9 +138,7 @@ export default {
     isLoading: false
   }),
   created() {},
-  mounted() {
-    console.log("aaa:", config.DataTemplates.CompanyTemp);
-  },
+  mounted() {},
   methods: {
     onToolbarItemClick(item) {
       // for bg color
@@ -152,8 +151,16 @@ export default {
         }
       });
     },
-    onSaveItem() {
+    async onSaveItem() {
       console.log("on save:", this.itemObject);
+      this.isLoading = true;
+      const response = await createNewCompany(this.itemObject);
+      if (response.Result.Success) {
+        console.log("saved data!", response);
+      }
+      this.isLoading = false;
+      this.isDialogOpen = false;
+      this.itemObject = { ...config.DataTemplates.CompanyTemp };
     }
   },
   computed: {
