@@ -8,18 +8,22 @@ const vuetify = createVuetify({
   defaults: {
     VTextField: {
       variant: "outlined",
-      density: "comfortable"
+      density: "comfortable",
+      color: "primary"
     },
     VSelect: {
       variant: "outlined",
-      density: "comfortable"
+      density: "comfortable",
+      color: "primary"
     },
     VTextarea: {
-      variant: "outlined"
+      variant: "outlined",
+      color: "primary"
     },
     VAutocomplete: {
       variant: "outlined",
-      density: "comfortable"
+      density: "comfortable",
+      color: "primary"
     }
   }
 });
