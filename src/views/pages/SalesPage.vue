@@ -58,8 +58,9 @@
               <v-col>
                 <!-- 1) company's name -->
                 <v-text-field
-                  label="Company's Name"
+                  label="Company's Name*"
                   v-model="itemObject.companyName"
+                  :rules="[formRules.required]"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -80,9 +81,10 @@
               <v-col md="5">
                 <!-- 5) country -->
                 <v-select
+                  v-model="itemObject.country"
                   label="Country"
                   :items="['USA', 'Canada']"
-                  v-model="itemObject.country"
+                  :rules="[formRules.required]"
                 ></v-select>
               </v-col>
             </v-row>
@@ -163,24 +165,28 @@ export default {
       });
     },
     async onSaveItem() {
-      this.isLoading = true;
-      // item doesn't have an id (given one in data.js file) - create
-      if (!this.itemObject.companyId) {
-        const createResponse = await createNewCompany(this.itemObject);
-        if (createResponse.Result.Success) {
-          console.log("saved data in DB!", createResponse);
-          this.updateCompaniesListInStore(createResponse.Data);
+      const { valid } = await this.$refs.form.validate();
+
+      if (valid) {
+        this.isLoading = true;
+        // item doesn't have an id (given one in data.js file) - create
+        if (!this.itemObject.companyId) {
+          const createResponse = await createNewCompany(this.itemObject);
+          if (createResponse.Result.Success) {
+            console.log("saved data in DB!", createResponse);
+            this.updateCompaniesListInStore(createResponse.Data);
+          }
+        } else {
+          // otherwise - update
+          const updateResponse = await updateCompanyInfo(this.itemObject);
+          if (updateResponse.Result.Success) {
+            console.log("updated company info!", updateResponse);
+            this.updateCompaniesListInStore(updateResponse.Data);
+          }
         }
-      } else {
-        // otherwise - update
-        const updateResponse = await updateCompanyInfo(this.itemObject);
-        if (updateResponse.Result.Success) {
-          console.log("updated company info!", updateResponse);
-          this.updateCompaniesListInStore(updateResponse.Data);
-        }
+        this.isLoading = false;
+        this.onDialogClose();
       }
-      this.isLoading = false;
-      this.onDialogClose();
     },
     editItemHandler(item) {
       this.itemObject = item;
@@ -200,14 +206,12 @@ export default {
         list.push(SaleStatuses[item]);
       }
       return list;
+    },
+    formRules() {
+      return {
+        required: (value) => !!value || "Field is required"
+      };
     }
-    // statusOptions() {
-    //   return [
-    //     {
-    //       title
-    //     }
-    //   ]
-    // }
   },
   watch: {}
 };
