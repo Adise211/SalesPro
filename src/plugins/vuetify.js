@@ -30,6 +30,9 @@ const vuetify = createVuetify({
       VIcon: {
         color: "#0000008a"
       }
+    },
+    VPagination: {
+      activeColor: "primary"
     }
   },
   theme: {
