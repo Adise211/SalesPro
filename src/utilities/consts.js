@@ -20,7 +20,7 @@ export const CalendarEventColors = {
   Pink: "pink"
 };
 
-export const TrackingTypes = {
+export const SaleStatuses = {
   FollowUps: {
     id: 1,
     value: "followups",

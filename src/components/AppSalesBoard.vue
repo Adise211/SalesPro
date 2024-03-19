@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { ToastMessages, TrackingTypes } from "@/utilities/consts";
+import { ToastMessages, SaleStatuses } from "@/utilities/consts";
 import AppCard from "@/components/AppCard.vue";
 import { convertDate } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
@@ -164,14 +164,14 @@ export default {
       let id;
 
       switch (this.currentStageName) {
-        case TrackingTypes.FollowUps.value:
-          id = TrackingTypes.FollowUps.id;
+        case SaleStatuses.FollowUps.value:
+          id = SaleStatuses.FollowUps.id;
           break;
-        case TrackingTypes.Leads.value:
-          id = TrackingTypes.Leads.id;
+        case SaleStatuses.Leads.value:
+          id = SaleStatuses.Leads.id;
           break;
-        case TrackingTypes.Closed.value:
-          id = TrackingTypes.Closed.id;
+        case SaleStatuses.Closed.value:
+          id = SaleStatuses.Closed.id;
           break;
         default:
           id = 0;
@@ -236,7 +236,7 @@ export default {
     },
     filteredStatus() {
       // Get all except from the current status
-      return TrackingTypes.filter((item) => {
+      return SaleStatuses.filter((item) => {
         return item.id !== this.currentStatusId;
       });
     },

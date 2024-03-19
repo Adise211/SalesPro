@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { NavigationItems, TrackingTypes } from "@/utilities/consts";
+import { NavigationItems, SaleStatuses } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { useCalendarStore } from "@/stores/calendar";
@@ -122,7 +122,7 @@ export default {
           break;
         case NavigationItems.Sales:
           pageName = "SalesPage";
-          paramsObj = { stageName: TrackingTypes.FollowUps.value };
+          paramsObj = { stageName: SaleStatuses.FollowUps.value };
           break;
         case NavigationItems.Settings:
           pageName = "UserSettingsPage";

@@ -125,7 +125,7 @@ import AppSalesBoard from "@/components/AppSalesBoard.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { TrackingTypes } from "@/utilities/consts";
+import { SaleStatuses } from "@/utilities/consts";
 import config from "@/utilities/config";
 import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
 
@@ -194,8 +194,8 @@ export default {
   computed: {
     toolbarItems() {
       const list = [];
-      for (let item in TrackingTypes) {
-        list.push(TrackingTypes[item]);
+      for (let item in SaleStatuses) {
+        list.push(SaleStatuses[item]);
       }
       return list;
     }
