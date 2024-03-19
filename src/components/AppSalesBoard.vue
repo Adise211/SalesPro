@@ -29,7 +29,7 @@
           <v-icon @click="onEditItem(item)">mdi-pencil</v-icon>
         </td>
         <td class="text-center">
-          <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
+          <v-icon @click="onDeleteItem(item)" color="error"> mdi-delete </v-icon>
         </td>
       </tr>
     </template>
@@ -40,10 +40,35 @@
       </div>
     </template>
   </v-data-table>
+  <!-- confirm delete dialog -->
+  <v-dialog v-model="isDeleteDialogOpen" width="30%">
+    <AppCard :cardContentOnly="false">
+      <template v-slot:card-title>
+        <div>Delete item</div>
+      </template>
+      <template v-slot:card-text>
+        <div>Are you sure you want to delete this item?</div>
+      </template>
+      <template v-slot:card-actions>
+        <v-spacer></v-spacer>
+        <div>
+          <v-btn
+            color="primary"
+            variant="text"
+            @click="deleteConfirmationHandler"
+            :loading="isConfirmDeleteLoading"
+            >Yes</v-btn
+          >
+          <v-btn color="primary" variant="text" @click="isDeleteDialogOpen = false">No</v-btn>
+        </div>
+      </template>
+    </AppCard>
+  </v-dialog>
 </template>
 
 <script>
 import { ToastMessages, TrackingTypes } from "@/utilities/consts";
+import AppCard from "@/components/AppCard.vue";
 import { convertDate } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
@@ -52,7 +77,7 @@ import moment from "moment";
 
 export default {
   name: "FollowUps",
-  components: {},
+  components: { AppCard },
   props: {
     currentStageName: {
       type: String,
@@ -67,8 +92,8 @@ export default {
     itemsPerPage: "6",
     page: 1,
     companyName: "",
-    isAddBtnLoading: false,
     isDeleteDialogOpen: false,
+    isConfirmDeleteLoading: false,
     currentItem: {},
     showChart: true
   }),
@@ -77,23 +102,28 @@ export default {
   methods: {
     ...mapActions(useGeneralStore, ["removeCompanyFromStore"]),
     onEditItem(item) {
+      // the form in dialog to edit/create company is in the parent
       this.$emit("onEditItem", item);
     },
-    onDeleteIconClick(item) {
+    onDeleteItem(item) {
+      // Save item for future use
       this.currentItem = item;
+      // Open confirm delete dialog
       this.isDeleteDialogOpen = true;
     },
-    async deleteItem(item) {
-      const response = await removeCompany(item);
-      if (response.success) {
-        this.removeCompanyFromStore(item);
+    async deleteConfirmationHandler() {
+      this.isConfirmDeleteLoading = true;
+      const response = await removeCompany(this.currentItem);
+      if (response.Result.Success) {
+        this.removeCompanyFromStore(this.currentItem);
       }
       this.refreshActiveChart();
       this.$toast.open({
         type: "success",
         message: ToastMessages.SuccessMessages.Removed
       });
-      // Reset current item and close dialog
+      // Reset current item + loading + close dialog
+      this.isConfirmDeleteLoading = false;
       this.currentItem = {};
       this.isDeleteDialogOpen = false;
     },
