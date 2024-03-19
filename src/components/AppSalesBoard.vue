@@ -157,7 +157,8 @@ export default {
       }
     },
     changedDateFormat(date) {
-      return convertDate(date).MDYFormat;
+      const fromEpochTime = true;
+      return convertDate(date, fromEpochTime).MDYFormat;
     }
   },
   computed: {

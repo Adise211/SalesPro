@@ -78,7 +78,7 @@ export async function createNewCompany(newCompanyObj) {
     const rendonId = "comp" + generatedId();
     newCompanyObj.companyId = rendonId;
     // Add last updated time (epoch time)
-    const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
+    const currentEpochTime = Number.parseInt(moment(new Date()).format("x"));
     newCompanyObj.lastUpdate = currentEpochTime;
 
     await updateDoc(userRef, {

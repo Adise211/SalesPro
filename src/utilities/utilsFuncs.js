@@ -25,9 +25,11 @@ export function generatedId() {
   return rand();
 }
 
-export function convertDate(value) {
-  const ISOFormat = moment(new Date(value)).format("YYYY-MM-DD");
-  const MDYFormat = moment(new Date(value)).format("MM/DD/YYYY");
+export function convertDate(value, fromEpochTime) {
+  const currentValue = fromEpochTime ? value * 1000 : new Date(value);
+
+  const ISOFormat = moment(currentValue).format("YYYY-MM-DD");
+  const MDYFormat = moment(currentValue).format("MM/DD/YYYY");
 
   return {
     ISOFormat,
