@@ -91,16 +91,18 @@
               <v-col>
                 <!-- 4) product -->
                 <v-select
+                  v-model="itemObject.myProduct"
                   label="My Product"
                   :items="['q-99', 'Q-10']"
-                  v-model="itemObject.myProduct"
                 ></v-select>
               </v-col>
               <v-col>
                 <v-select
+                  v-model="itemObject.statusId"
                   label="Status"
-                  :items="['status-1', 'status-2']"
-                  v-model="itemObject.myProduct"
+                  :items="toolbarItems"
+                  item-title="title"
+                  item-value="id"
                 ></v-select>
               </v-col>
             </v-row>
