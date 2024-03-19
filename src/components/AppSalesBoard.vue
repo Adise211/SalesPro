@@ -14,7 +14,9 @@
         <td class="text-medium-emphasis">{{ item.companyName }}</td>
         <td class="text-medium-emphasis">{{ item.email }}</td>
         <td class="text-medium-emphasis">{{ item.phoneNumber }}</td>
-        <td class="text-medium-emphasis">{{ item.stateOrCity }}, {{ item.country }}</td>
+        <td class="text-medium-emphasis">
+          {{ item.stateOrCity }}{{ item.stateOrCity && item.country ? "," : "" }} {{ item.country }}
+        </td>
         <td class="text-medium-emphasis">{{ item.myProduct }}</td>
         <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
         <td>
