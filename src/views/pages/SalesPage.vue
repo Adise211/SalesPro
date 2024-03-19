@@ -96,6 +96,13 @@
                   v-model="itemObject.myProduct"
                 ></v-select>
               </v-col>
+              <v-col>
+                <v-select
+                  label="Status"
+                  :items="['status-1', 'status-2']"
+                  v-model="itemObject.myProduct"
+                ></v-select>
+              </v-col>
             </v-row>
           </v-container>
         </v-form>
@@ -192,6 +199,13 @@ export default {
       }
       return list;
     }
+    // statusOptions() {
+    //   return [
+    //     {
+    //       title
+    //     }
+    //   ]
+    // }
   },
   watch: {}
 };
