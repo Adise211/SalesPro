@@ -48,7 +48,7 @@
   <v-dialog v-model="isDialogOpen" width="70%" height="70%">
     <AppCard :cardContentOnly="false">
       <template v-slot:card-title>
-        <span class="text-h5">Create New Item</span>
+        <div>Create New Item</div>
       </template>
       <template v-slot:card-text>
         <v-form ref="form">
@@ -103,10 +103,10 @@
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
         <div class="pb-3">
-          <v-btn color="blue-darken-1" variant="text" @click="onSaveItem" :loading="isLoading"
+          <v-btn color="primary" variant="text" @click="onSaveItem" :loading="isLoading"
             >Save</v-btn
           >
-          <v-btn color="blue-darken-1" variant="text" @click="onDialogClose">Cancel</v-btn>
+          <v-btn color="primary" variant="text" @click="onDialogClose">Cancel</v-btn>
         </div>
       </template>
     </AppCard>
