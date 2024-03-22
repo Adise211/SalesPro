@@ -75,17 +75,22 @@
             <!-- Second Row -->
             <v-row>
               <v-col md="5">
-                <!-- 4) city or state -->
-                <v-text-field label="State/City" v-model="itemObject.stateOrCity"></v-text-field>
-              </v-col>
-              <v-col md="5">
-                <!-- 5) country -->
-                <v-select
+                <!-- 4) country -->
+                <v-autocomplete
                   v-model="itemObject.country"
                   label="Country"
-                  :items="['USA', 'Canada']"
+                  :items="countriesList"
                   :rules="[formRules.required]"
-                ></v-select>
+                ></v-autocomplete>
+              </v-col>
+              <v-col md="5">
+                <!-- 5) city or state -->
+                <v-autocomplete
+                  label="State/City"
+                  :items="filteredCities"
+                  v-model="itemObject.stateOrCity"
+                  no-data-text="Select country"
+                ></v-autocomplete>
               </v-col>
             </v-row>
             <!-- Third Row -->
@@ -131,7 +136,11 @@ import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { SaleStatuses } from "@/utilities/consts";
 import config from "@/utilities/config";
-import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
+import {
+  createNewCompany,
+  updateCompanyInfo,
+  getAllCountriesAndCities
+} from "@/firebase/services/data";
 
 export default {
   name: "SalesPage",
@@ -147,10 +156,16 @@ export default {
     currentStageId: 1,
     searchExpression: "",
     itemObject: { ...config.DataTemplates.CompanyTemp },
-    isLoading: false
+    isLoading: false,
+    countriesAndCitiesList: []
   }),
   created() {},
-  mounted() {},
+  async mounted() {
+    const response = await getAllCountriesAndCities();
+    if (response.Result?.Success && response.Data && !response.Data.error) {
+      this.countriesAndCitiesList = response.Data.data;
+    }
+  },
   methods: {
     ...mapActions(useGeneralStore, ["updateCompaniesListInStore"]),
     onToolbarItemClick(item) {
@@ -211,6 +226,26 @@ export default {
       return {
         required: (value) => !!value || "Field is required"
       };
+    },
+    countriesList() {
+      let countries = [];
+      if (this.countriesAndCitiesList.length > 0) {
+        countries = this.countriesAndCitiesList.map((item) => {
+          return item.country;
+        });
+      }
+      return countries;
+    },
+    filteredCities() {
+      // TODO: Option to select a city and auto fill the country
+      let cities = [];
+      if (this.countriesAndCitiesList.length > 0 && this.itemObject.country) {
+        const selectedCountry = this.countriesAndCitiesList.find((itemInList) => {
+          return itemInList.country === this.itemObject.country;
+        });
+        cities = selectedCountry.cities || [];
+      }
+      return cities;
     }
   },
   watch: {}
