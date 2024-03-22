@@ -11,13 +11,13 @@
     <!-- table body (items) -->
     <template v-slot:item="{ item }">
       <tr>
-        <td class="text-medium-emphasis">{{ item.companyName }}</td>
-        <td class="text-medium-emphasis">{{ item.email }}</td>
-        <td class="text-medium-emphasis">{{ item.phoneNumber }}</td>
-        <td class="text-medium-emphasis">
+        <td class="text-medium-emphasis app-text-truncate">{{ item.companyName }}</td>
+        <td class="text-medium-emphasis app-text-truncate">{{ item.email }}</td>
+        <td class="text-medium-emphasis app-text-truncate">{{ item.phoneNumber }}</td>
+        <td class="text-medium-emphasis app-text-truncate">
           {{ item.stateOrCity }}{{ item.stateOrCity && item.country ? "," : "" }} {{ item.country }}
         </td>
-        <td class="text-medium-emphasis">{{ item.myProduct }}</td>
+        <td class="text-medium-emphasis app-text-truncate">{{ item.myProduct }}</td>
         <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
         <td>
           <v-icon
@@ -186,42 +186,51 @@ export default {
       return [
         {
           title: "Company",
-          key: "companyName"
+          key: "companyName",
+          width: "15%"
         },
         {
           title: "Email",
           key: "email",
-          align: "center"
+          align: "center",
+          width: "16%"
         },
         {
           title: "Phone",
-          key: "phoneNumber"
+          key: "phoneNumber",
+          width: "10%"
         },
         {
           title: "Location",
-          key: "country"
+          key: "country",
+          width: "15%"
         },
         {
           title: "My Product",
-          key: "myProduct"
+          key: "myProduct",
+          width: "11%"
         },
         {
-          title: "Last update",
-          key: "lastUpdate"
+          title: "Last Update",
+          key: "lastUpdate",
+          width: "10%"
         },
         {
           title: "Note",
-          sortable: false
+          sortable: false,
+          width: "5%"
         },
         {
           title: "Edit",
           align: "center",
-          sortable: false
+          sortable: false,
+          width: "5%"
         },
         {
           title: "Delete",
           align: "center",
-          sortable: false
+          sortable: false,
+          width: "5%"
         }
       ];
     },
@@ -297,4 +306,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.app-text-truncate {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

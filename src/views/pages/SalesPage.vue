@@ -250,7 +250,7 @@ export default {
         const selectedCountry = this.countriesAndCitiesList.find((itemInList) => {
           return itemInList.country === this.itemObject.country;
         });
-        cities = selectedCountry.cities || [];
+        cities = selectedCountry?.cities || [];
       }
       return cities;
     }
