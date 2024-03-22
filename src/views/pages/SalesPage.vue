@@ -134,7 +134,7 @@ import AppSalesBoard from "@/components/AppSalesBoard.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { SaleStatuses } from "@/utilities/consts";
+import { SaleStatuses, ToastMessages } from "@/utilities/consts";
 import config from "@/utilities/config";
 import {
   createNewCompany,
@@ -167,7 +167,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useGeneralStore, ["updateCompaniesListInStore"]),
+    ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "setToastMessage"]),
     onToolbarItemClick(item) {
       // for bg color
       this.currentStageId = item.id;
@@ -180,6 +180,7 @@ export default {
       });
     },
     async onSaveItem() {
+      let currentToastMsgType;
       const { valid } = await this.$refs.form.validate();
 
       if (valid) {
@@ -190,6 +191,7 @@ export default {
           if (createResponse.Result.Success) {
             console.log("saved data in DB!", createResponse);
             this.updateCompaniesListInStore(createResponse.Data);
+            currentToastMsgType = ToastMessages.SuccessMessages.Created;
           }
         } else {
           // otherwise - update
@@ -197,9 +199,14 @@ export default {
           if (updateResponse.Result.Success) {
             console.log("updated company info!", updateResponse);
             this.updateCompaniesListInStore(updateResponse.Data);
+            currentToastMsgType = ToastMessages.SuccessMessages.Updated;
           }
         }
         this.isLoading = false;
+        this.setToastMessage({
+          type: "success",
+          message: currentToastMsgType
+        });
         this.onDialogClose();
       }
     },

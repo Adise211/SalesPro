@@ -14,7 +14,11 @@ export const useGeneralStore = defineStore("general", {
       companiesList: [],
       calendarEvents: [],
       userNotesList: [],
-      notesWithReminder: []
+      notesWithReminder: [],
+      toastMessage: {
+        type: "",
+        message: ""
+      }
     };
   },
   getters: {
@@ -81,6 +85,15 @@ export const useGeneralStore = defineStore("general", {
     setUserNotesList(data) {
       this.userNotesList = data;
       this.updateNotesWithReminderList();
+    },
+    setToastMessage(data) {
+      const { type, message } = data;
+      this.toastMessage.type = type;
+      this.toastMessage.message = message;
+    },
+    resetToastMessage() {
+      this.toastMessage.type = "";
+      this.toastMessage.message = "";
     },
     addCalendarEventToStore(eventData) {
       this.calendarEvents.push(eventData);

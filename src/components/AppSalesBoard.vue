@@ -102,7 +102,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["removeCompanyFromStore"]),
+    ...mapActions(useGeneralStore, ["removeCompanyFromStore", "setToastMessage"]),
     onEditItem(item) {
       // the form in dialog to edit/create company is in the parent
       this.$emit("onEditItem", item);
@@ -120,7 +120,7 @@ export default {
         this.removeCompanyFromStore(this.currentItem);
       }
       this.refreshActiveChart();
-      this.$toast.open({
+      this.setToastMessage({
         type: "success",
         message: ToastMessages.SuccessMessages.Removed
       });

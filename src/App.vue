@@ -6,9 +6,10 @@
 
 <script>
 import { RouterView } from "vue-router";
-// @ts-ignore
 import DefaultLayout from "./views/layouts/DefaultLayout.vue";
 import MinimalLayout from "./views/layouts/MinimalLayout.vue";
+import { mapState, mapActions } from "pinia";
+import { useGeneralStore } from "./stores/general";
 const DEFAULT_LAYOUT = "MinimalLayout";
 
 export default {
@@ -27,6 +28,7 @@ export default {
   },
   updated() {},
   methods: {
+    ...mapActions(useGeneralStore, ["resetToastMessage"]),
     screenResizeHandler() {
       // if it's small display - send user to error message page
       if (this.isSmallDisplay) {
@@ -49,6 +51,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(useGeneralStore, ["toastMessage"]),
     currentLayout() {
       return this.$route.meta?.layout || DEFAULT_LAYOUT;
     },
@@ -56,7 +59,18 @@ export default {
       return this.$vuetify.display.width <= 1200;
     }
   },
-  watch: {}
+  watch: {
+    toastMessage: {
+      handler(newMessage) {
+        if (newMessage.type && newMessage.message) {
+          // open toast + clear the toast message once it disappears
+          this.$toast.open({ ...newMessage, onDismiss: this.resetToastMessage() });
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  }
 };
 </script>
 

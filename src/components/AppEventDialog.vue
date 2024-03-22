@@ -196,7 +196,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["addCalendarEventToStore"]),
+    ...mapActions(useGeneralStore, ["addCalendarEventToStore", "setToastMessage"]),
     async onSaveData() {
       // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
@@ -219,7 +219,7 @@ export default {
         console.log("res:", response);
         if (response.Result.Success) {
           // Show success toast
-          this.$toast.open({
+          this.setToastMessage({
             type: "success",
             message: ToastMessages.SuccessMessages.Created
           });

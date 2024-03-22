@@ -105,6 +105,9 @@
 
 <script>
 import { createNewUser } from "../../firebase/services/user";
+import { mapActions } from "pinia";
+import { useGeneralStore } from "@/stores/general";
+
 export default {
   name: "SignupPage",
   components: {},
@@ -122,6 +125,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapActions(useGeneralStore, ["setToastMessage"]),
     async onSignupClick() {
       this.isLoading = true;
       const { valid } = await this.$refs.signupForm.validate();
@@ -136,7 +140,7 @@ export default {
         console.log("response in client:", response);
         if (response?.createdNewUser) {
           this.isLoading = false;
-          this.$toast.open({
+          this.setToastMessage({
             type: "success",
             message: "Signed up successfully!"
           });

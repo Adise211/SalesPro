@@ -188,7 +188,11 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["updateUserNotesListInStore", "removeNoteFromStore"]),
+    ...mapActions(useGeneralStore, [
+      "updateUserNotesListInStore",
+      "removeNoteFromStore",
+      "setToastMessage"
+    ]),
     async saveNote() {
       this.isSaveNoteLoading = true;
       const noteData = {
@@ -228,7 +232,7 @@ export default {
     async createNote(noteData) {
       const response = await createNewNote(noteData);
       if (response.success) {
-        this.$toast.open({
+        this.setToastMessage({
           type: "success",
           message: ToastMessages.SuccessMessages.Created
         });
@@ -242,7 +246,7 @@ export default {
       if (response.success) {
         console.log("update res:", response.data);
 
-        this.$toast.open({
+        this.setToastMessage({
           type: "success",
           message: ToastMessages.SuccessMessages.Updated
         });
@@ -260,7 +264,7 @@ export default {
       if (response.success) {
         this.removeNoteFromStore(item);
       }
-      this.$toast.open({
+      this.setToastMessage({
         type: "success",
         message: ToastMessages.SuccessMessages.Removed
       });
