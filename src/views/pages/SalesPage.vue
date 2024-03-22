@@ -85,12 +85,12 @@
               </v-col>
               <v-col md="5">
                 <!-- 5) city or state -->
-                <v-autocomplete
+                <v-combobox
                   label="State/City"
                   :items="filteredCities"
                   v-model="itemObject.stateOrCity"
                   no-data-text="Select country"
-                ></v-autocomplete>
+                ></v-combobox>
               </v-col>
             </v-row>
             <!-- Third Row -->
