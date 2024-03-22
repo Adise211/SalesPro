@@ -34,11 +34,11 @@
       <v-col md="12" class="pt-0">
         <AppCard>
           <template v-slot:card-text>
-            <AppSalesBoard
+            <AppSalesDataTable
               :currentStageName="stageName"
               :searchExp="searchExpression"
               @onEditItem="editItemHandler"
-            ></AppSalesBoard>
+            ></AppSalesDataTable>
           </template>
         </AppCard>
       </v-col>
@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import AppSalesBoard from "@/components/AppSalesBoard.vue";
+import AppSalesDataTable from "@/components/AppSalesDataTable.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
@@ -144,7 +144,7 @@ import {
 
 export default {
   name: "SalesPage",
-  components: { AppCard, AppSalesBoard },
+  components: { AppCard, AppSalesDataTable },
   props: {
     stageName: {
       type: String,
