@@ -13,11 +13,11 @@
           <v-list-item
             v-for="(item, index) in navItems"
             :key="index"
+            :value="item.value"
             link
-            :variant="markShownNavItem(index)"
             :title="item.title"
             :append-icon="item.icon"
-            @click="onNavItemClick(item.value, index)"
+            @click="onNavItemClick(item.value)"
           ></v-list-item>
         </v-list>
 
@@ -86,8 +86,7 @@ export default {
   },
   data: () => ({
     isReminderDialogOpen: false,
-    currentNote: null,
-    currentShownItem: 0
+    currentNote: null
   }),
   created() {},
   mounted() {
@@ -102,10 +101,9 @@ export default {
   },
   methods: {
     ...mapActions(useGeneralStore, ["updateUserNotesListInStore"]),
-    onNavItemClick(itemName, itemIndex) {
+    onNavItemClick(itemName) {
       let pageName;
       let paramsObj;
-      this.currentShownItem = itemIndex;
 
       switch (itemName) {
         case NavigationItems.OverView:
@@ -135,9 +133,6 @@ export default {
         name: pageName,
         params: paramsObj
       });
-    },
-    markShownNavItem(itemIndex) {
-      return this.currentShownItem === itemIndex ? "tonal" : "plain";
     },
     async onLogout() {
       const response = await logoutUser();
