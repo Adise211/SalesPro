@@ -79,7 +79,7 @@ export async function createNewCompany(newCompanyObj) {
     const rendonId = "comp" + generatedId();
     newCompanyObj.companyId = rendonId;
     // Add last updated time (epoch time)
-    const currentEpochTime = Number.parseInt(moment(new Date()).format("x"));
+    const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
     newCompanyObj.lastUpdate = currentEpochTime;
 
     await updateDoc(userRef, {
@@ -116,6 +116,11 @@ export async function updateCompanyInfo(companyObj) {
       // if previous company object exist - remove it and add the new instead
       if (previousCompanyObj) {
         const removePreviousRes = await removeCompany(previousCompanyObj);
+
+        // update the lastUpdate time
+        const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
+        companyObj.lastUpdate = currentEpochTime;
+
         await updateDoc(userRef, {
           userListedCompanies: arrayUnion(companyObj)
         });
