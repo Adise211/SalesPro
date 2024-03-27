@@ -5,10 +5,8 @@ about SASS Variables - https://vuetifyjs.com/en/features/sass-variables/#compone
 
 -------------
 
-VCalendar:
-library - https://vcalendar.io/ 
-Popper for VCalendar - https://popper.js.org/docs/v2/
-SASS Variables for VCalendar - https://github.com/nathanreyes/v-calendar/blob/v3/src/styles/theme.css 
+Schedule-x Calendar:
+https://schedule-x.dev/docs/calendar
 
 -------------
 
