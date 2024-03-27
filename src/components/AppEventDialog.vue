@@ -111,6 +111,18 @@
             <!-- Forth Row -->
             <v-row>
               <v-col>
+                <v-autocomplete
+                  v-model="companyName"
+                  label="Company's Name"
+                  append-inner-icon="mdi-magnify"
+                  :items="companiesList"
+                  item-title="companyName"
+                  item-value="companyId"
+                  hint="Companies from sales board"
+                  persistent-hint
+                ></v-autocomplete>
+              </v-col>
+              <v-col>
                 <v-select
                   v-model="people"
                   label="People"
@@ -125,16 +137,6 @@
                   label="Location"
                   append-inner-icon="mdi-map-marker"
                 ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-autocomplete
-                  v-model="companyName"
-                  label="Company's Name"
-                  append-inner-icon="mdi-magnify"
-                  :items="['Amazon', 'Monday', 'Bolmung']"
-                  hint="Companies from tracking boards"
-                  persistent-hint
-                ></v-autocomplete>
               </v-col>
             </v-row>
           </v-container>
@@ -159,7 +161,7 @@ import { useDate } from "vuetify";
 import { convertTime, convertDate } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent } from "@/firebase/services/data";
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import config from "@/utilities/config";
 
@@ -264,6 +266,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(useGeneralStore, ["companiesList"]),
     beforeOrAfterMidDay() {
       return ["AM", "PM"];
     },
