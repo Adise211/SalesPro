@@ -112,7 +112,7 @@
             <v-row>
               <v-col>
                 <v-autocomplete
-                  v-model="companyName"
+                  v-model="selectedComapnyId"
                   label="Company's Name"
                   append-inner-icon="mdi-magnify"
                   :items="companiesList"
@@ -191,7 +191,7 @@ export default {
     startTime: "",
     endTime: "",
     eventDescription: "",
-    companyName: "",
+    selectedComapnyId: "",
     people: [],
     location: ""
   }),
@@ -204,7 +204,6 @@ export default {
       const { valid } = await this.$refs.eventForm.validate();
       if (valid) {
         this.isLoading = true;
-
         // Get dates with the next format : "YYYY-MM-DD HH:mm"
         const { fullStart, fullEnd } = this.getEventFullDates();
         // Clone the event template
@@ -216,6 +215,7 @@ export default {
         newEvent.description = this.eventDescription;
         newEvent.location = this.location;
         newEvent.people = this.people;
+        newEvent.companyId = this.selectedComapnyId;
 
         const response = await createCalendarEvent(newEvent);
         console.log("res:", response);
