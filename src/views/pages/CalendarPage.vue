@@ -41,6 +41,12 @@ export default {
       this.activeCalendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "dayGridMonth",
         height: "100%",
+        dayMaxEventRows: true, // for all non-TimeGrid views
+        views: {
+          dayGridMonth: {
+            dayMaxEventRows: 2 // adjust to 6 only for timeGridWeek/timeGridDay
+          }
+        },
         customButtons: {
           addEventButton: {
             text: "add event...",
