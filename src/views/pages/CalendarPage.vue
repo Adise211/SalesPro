@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
     <AppEventDialog
-      :isParentReqToOpen="isEventDialogOpen"
+      :isDialogOpen="isEventDialogOpen"
       @onDialogClose="isEventDialogOpen = false"
     ></AppEventDialog>
   </v-container>
@@ -28,6 +28,7 @@ export default {
   components: { AppCard, AppEventDialog },
   props: {},
   data: () => ({
+    activeCalendar: null,
     isEventDialogOpen: false
   }),
   created() {},
@@ -60,23 +61,6 @@ export default {
     }, 100);
   },
   methods: {
-    addNewBtnInCalendar() {
-      // Get calendar header
-      const calendarHeader = document.getElementsByClassName("sx__calendar-header")[0];
-      // Get last child in calendar header
-      const lastChild = calendarHeader.lastChild;
-      // Create new button with attr, class and event listener
-      const newBtn = document.createElement("button");
-      newBtn.innerText = "Add event";
-      newBtn.setAttribute("type", "button");
-      newBtn.classList.add("calendar-add-event-btn");
-      newBtn.addEventListener("click", () => {
-        this.createNewEvent();
-      });
-
-      // Insert the button before the last child
-      calendarHeader.insertBefore(newBtn, lastChild);
-    },
     createNewEvent() {
       this.isEventDialogOpen = true;
     },
@@ -86,26 +70,6 @@ export default {
   },
   computed: {
     ...mapState(useGeneralStore, ["calendarEvents"])
-    // calendarConfig() {
-    //   // const vueInstance = this;
-    //   return {
-    //     views: [viewMonthGrid],
-    //     events: [
-    //       {
-    //         id: 1,
-    //         title: "Coffee with John",
-    //         start: "2024-02-26 10:05",
-    //         end: "2024-02-26 10:35"
-    //       }
-    //     ],
-    //     plugins: [createEventModalPlugin()],
-    //     callbacks: {
-    //       onClickDate() {
-    //         // console.log("onClickDate", date);
-    //       }
-    //     }
-    //   };
-    // }
   },
   watch: {}
 };

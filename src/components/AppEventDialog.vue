@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isDialogOpen" width="60%">
+  <v-dialog v-model="isDialogOpenLocally" width="60%">
     <AppCard :cardContentOnly="false">
       <template v-slot:card-title>
         <span class="text-h5">Create Event</span>
@@ -172,13 +172,13 @@ export default {
   },
   components: { AppCard },
   props: {
-    isParentReqToOpen: {
+    isDialogOpen: {
       type: Boolean,
       default: false
     }
   },
   data: () => ({
-    isDialogOpen: false,
+    isDialogOpenLocally: false,
     isLoading: false,
     isFullDay: true,
     eventTitle: "",
@@ -235,7 +235,7 @@ export default {
       }
     },
     onCancel() {
-      this.isDialogOpen = false;
+      this.isDialogOpenLocally = false;
       this.$refs.eventForm.reset();
       this.startDateValue = "";
       this.endDateValue = "";
@@ -311,13 +311,9 @@ export default {
     }
   },
   watch: {
-    isParentReqToOpen: {
-      handler(isReq) {
-        if (isReq) {
-          this.isDialogOpen = true;
-        } else {
-          this.isDialogOpen = false;
-        }
+    isDialogOpen: {
+      handler(isOpen) {
+        this.isDialogOpenLocally = isOpen;
       }
     }
   }
