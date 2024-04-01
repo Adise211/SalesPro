@@ -26,23 +26,6 @@ a {
   height: 100vh;
 }
 
-// Schedule-x Calendar
-// https://schedule-x.dev/
-
-#full-calendar {
-  height: 100%;
-  .sx__calendar {
-    border: none;
-  }
-  .sx__event {
-    cursor: pointer;
-  }
-
-  // .sx__month-grid-day {
-  //   cursor: pointer;
-  // }
-}
-
 .calendar-add-event-btn {
   border: 2px solid var(--vuetify-blue-darken-1);
   background-color: var(--vuetify-blue-darken-1);

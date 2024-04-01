@@ -2,7 +2,7 @@
   <v-container fluid class="calendar-page fill-height py-0">
     <v-row class="fill-height">
       <v-col md="12">
-        <AppCard :cardTextClass="'fill-height pa-0'">
+        <AppCard :cardTextClass="'fill-height'">
           <template v-slot:card-text>
             <div id="full-calendar"></div>
           </template>
@@ -11,7 +11,7 @@
     </v-row>
     <AppEventDialog
       :isParentReqToOpen="isEventDialogOpen"
-      @onDialogClose="onEventDialogClose"
+      @onDialogClose="isEventDialogOpen = false"
     ></AppEventDialog>
   </v-container>
 </template>
@@ -21,9 +21,7 @@ import AppCard from "@/components/AppCard.vue";
 import AppEventDialog from "@/components/AppEventDialog.vue";
 import { mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createCalendar, viewMonthGrid } from "@schedule-x/calendar";
-import { createEventModalPlugin } from "@schedule-x/event-modal";
-import "@schedule-x/theme-default/dist/index.css";
+const FullCalendar = window.FullCalendar;
 
 export default {
   name: "CalendarPage",
@@ -34,13 +32,32 @@ export default {
   }),
   created() {},
   mounted() {
-    // Add the events from store into config
-    this.calendarConfig.events = this.calendarEvents;
+    const vueInstance = this;
 
-    const activeCalendar = createCalendar(this.calendarConfig);
-    activeCalendar.render(document.getElementById("full-calendar"));
-    // Create and add custom button to calendar
-    this.addNewBtnInCalendar();
+    // in timeout for the height prop
+    setTimeout(() => {
+      var calendarEl = document.getElementById("full-calendar");
+      this.activeCalendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        height: "100%",
+        customButtons: {
+          addEventButton: {
+            text: "add event...",
+            click: () => {
+              vueInstance.isEventDialogOpen = true;
+            }
+          }
+        },
+        headerToolbar: {
+          left: "title",
+          center: "addEventButton",
+          right: "today prev,next dayGridMonth,timeGridWeek,timeGridDay"
+        },
+        events: vueInstance.calendarEvents
+      });
+
+      this.activeCalendar.render();
+    }, 100);
   },
   methods: {
     addNewBtnInCalendar() {
@@ -68,27 +85,27 @@ export default {
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["calendarEvents"]),
-    calendarConfig() {
-      // const vueInstance = this;
-      return {
-        views: [viewMonthGrid],
-        events: [
-          {
-            id: 1,
-            title: "Coffee with John",
-            start: "2024-02-26 10:05",
-            end: "2024-02-26 10:35"
-          }
-        ],
-        plugins: [createEventModalPlugin()],
-        callbacks: {
-          onClickDate() {
-            // console.log("onClickDate", date);
-          }
-        }
-      };
-    }
+    ...mapState(useGeneralStore, ["calendarEvents"])
+    // calendarConfig() {
+    //   // const vueInstance = this;
+    //   return {
+    //     views: [viewMonthGrid],
+    //     events: [
+    //       {
+    //         id: 1,
+    //         title: "Coffee with John",
+    //         start: "2024-02-26 10:05",
+    //         end: "2024-02-26 10:35"
+    //       }
+    //     ],
+    //     plugins: [createEventModalPlugin()],
+    //     callbacks: {
+    //       onClickDate() {
+    //         // console.log("onClickDate", date);
+    //       }
+    //     }
+    //   };
+    // }
   },
   watch: {}
 };
