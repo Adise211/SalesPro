@@ -209,6 +209,7 @@ export default {
         // Clone the event template
         const newEvent = { ...config.DataTemplates.CalendarEventTemp };
         // The new event info
+        newEvent.allDay = this.isFullDay;
         newEvent.start = fullStart;
         newEvent.end = fullEnd;
         newEvent.title = this.eventTitle;

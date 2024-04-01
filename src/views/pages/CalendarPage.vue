@@ -61,9 +61,6 @@ export default {
     }, 100);
   },
   methods: {
-    createNewEvent() {
-      this.isEventDialogOpen = true;
-    },
     onEventDialogClose() {
       this.isEventDialogOpen = false;
     }
