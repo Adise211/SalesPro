@@ -94,7 +94,7 @@ export default {
       let element = eventInfo.jsEvent.target;
       // get the position relative to the viewport
       let elementPositionTop = element.getBoundingClientRect().top;
-      let elementPositionLeft = element.getBoundingClientRect().left;
+      let elementPositionLeft = element.getBoundingClientRect().right;
       // set the popover position
       this.selectedEventPopoverPosition.top = elementPositionTop;
       this.selectedEventPopoverPosition.left = elementPositionLeft;
