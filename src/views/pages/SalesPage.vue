@@ -19,12 +19,14 @@
                   v-for="item in toolbarItems"
                   :key="item.id"
                   @click="onToolbarItemClick(item)"
-                  :class="{ 'bg-primary': item.id == currentStageId }"
+                  :class="{ 'bg-blue-grey-darken-4': item.id == currentStageId }"
                   >{{ item.title }}</v-btn
                 >
               </v-toolbar-items>
               <v-spacer></v-spacer>
-              <v-btn color="primary" variant="text" @click="isDialogOpen = true">Create new</v-btn>
+              <v-btn color="blue-grey-darken-4" variant="text" @click="isDialogOpen = true"
+                >Create new</v-btn
+              >
             </v-toolbar>
           </template>
         </AppCard>
