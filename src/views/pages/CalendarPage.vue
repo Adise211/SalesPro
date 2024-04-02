@@ -13,6 +13,19 @@
       :isDialogOpen="isEventDialogOpen"
       @onDialogClose="isEventDialogOpen = false"
     ></AppEventDialog>
+    <!-- Event popup -->
+    <v-card
+      v-if="selectedEvent && selectedEvent.el"
+      class="selected-event-popover"
+      :style="{
+        top: selectedEventPopoverPosition.top + 'px',
+        left: selectedEventPopoverPosition.left + 'px'
+      }"
+    >
+      <v-card-title></v-card-title>
+      <v-card-text></v-card-text>
+      <v-card-actions></v-card-actions>
+    </v-card>
   </v-container>
 </template>
 
@@ -29,7 +42,12 @@ export default {
   props: {},
   data: () => ({
     activeCalendar: null,
-    isEventDialogOpen: false
+    isEventDialogOpen: false,
+    selectedEvent: null,
+    selectedEventPopoverPosition: {
+      top: 0,
+      left: 0
+    }
   }),
   created() {},
   mounted() {
@@ -44,12 +62,12 @@ export default {
         dayMaxEventRows: true, // for all non-TimeGrid views
         views: {
           dayGridMonth: {
-            dayMaxEventRows: 2 // adjust to 6 only for timeGridWeek/timeGridDay
+            dayMaxEventRows: 2
           }
         },
         customButtons: {
           addEventButton: {
-            text: "add event...",
+            text: "Add Event",
             click: () => {
               vueInstance.isEventDialogOpen = true;
             }
@@ -60,7 +78,8 @@ export default {
           center: "addEventButton",
           right: "today prev,next dayGridMonth,timeGridWeek,timeGridDay"
         },
-        events: vueInstance.calendarEvents
+        events: vueInstance.calendarEvents,
+        eventClick: (eventInfo) => vueInstance.calendarEventClickHandler(eventInfo)
       });
 
       this.activeCalendar.render();
@@ -69,6 +88,18 @@ export default {
   methods: {
     onEventDialogClose() {
       this.isEventDialogOpen = false;
+    },
+    calendarEventClickHandler(eventInfo) {
+      // get the clicked el
+      let element = eventInfo.jsEvent.target;
+      // get the position relative to the viewport
+      let elementPositionTop = element.getBoundingClientRect().top;
+      let elementPositionLeft = element.getBoundingClientRect().left;
+      // set the popover position
+      this.selectedEventPopoverPosition.top = elementPositionTop;
+      this.selectedEventPopoverPosition.left = elementPositionLeft;
+
+      this.selectedEvent = eventInfo;
     }
   },
   computed: {
@@ -78,4 +109,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.selected-event-popover {
+  position: absolute;
+  z-index: 9999;
+}
+</style>
