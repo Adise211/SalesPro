@@ -145,10 +145,10 @@
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
         <div class="pb-3">
-          <v-btn color="blue-darken-1" variant="text" @click="onSaveData" :loading="isLoading"
+          <v-btn color="primary" variant="text" @click="onSaveData" :loading="isLoading"
             >Save</v-btn
           >
-          <v-btn color="blue-darken-1" variant="text" @click="onCancel">Cancel</v-btn>
+          <v-btn color="primary" variant="text" @click="onCancel">Cancel</v-btn>
         </div>
       </template>
     </AppCard>

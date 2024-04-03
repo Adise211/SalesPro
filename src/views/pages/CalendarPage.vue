@@ -41,10 +41,10 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <div>
-          <v-btn>Edit</v-btn>
-          <v-btn @click="selectedEvent = null">Close</v-btn>
-        </div>
+        <v-spacer></v-spacer>
+        <v-btn variant="text">Edit</v-btn>
+        <v-btn variant="text" @click="selectedEvent = null">Close</v-btn>
+        <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
   </v-container>
