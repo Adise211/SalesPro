@@ -17,14 +17,35 @@
     <v-card
       v-if="selectedEvent && selectedEvent.el"
       class="selected-event-popover"
+      elevation="16"
+      v-click-outside="onPopoverOutsideClick"
       :style="{
         top: selectedEventPopoverPosition.top + 'px',
         left: selectedEventPopoverPosition.left + 'px'
       }"
     >
-      <v-card-title></v-card-title>
-      <v-card-text></v-card-text>
-      <v-card-actions></v-card-actions>
+      <v-card-title>{{ selectedEvent.event.title }}</v-card-title>
+
+      <v-card-text class="mt-2">
+        <div>
+          <span class="mr-1"><v-icon icon="mdi-clock-outline" color="primary"></v-icon></span>
+          {{ selectedEvent.appEvent.start }} - {{ selectedEvent.appEvent.end }}
+        </div>
+        <div class="mt-2">
+          <span class="mr-1"><v-icon icon="mdi-map-marker" color="primary"></v-icon></span>
+          {{ selectedEvent.appEvent.location }}
+        </div>
+        <div class="mt-2">
+          <span class="mr-1"><v-icon icon="mdi-account-multiple" color="primary"></v-icon></span>
+          {{ selectedEvent.appEvent.people[0] }}
+        </div>
+      </v-card-text>
+      <v-card-actions>
+        <div>
+          <v-btn>Edit</v-btn>
+          <v-btn @click="selectedEvent = null">Close</v-btn>
+        </div>
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
@@ -99,7 +120,14 @@ export default {
       this.selectedEventPopoverPosition.top = elementPositionTop;
       this.selectedEventPopoverPosition.left = elementPositionLeft;
 
-      this.selectedEvent = eventInfo;
+      const appSavedEventInfo = this.calendarEvents.find((oneEv) => {
+        return oneEv.id === eventInfo.event.id;
+      });
+
+      this.selectedEvent = { ...eventInfo, appEvent: appSavedEventInfo };
+    },
+    onPopoverOutsideClick() {
+      this.selectedEvent = null;
     }
   },
   computed: {
