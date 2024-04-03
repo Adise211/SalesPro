@@ -29,7 +29,7 @@
       <v-card-text class="mt-2">
         <div>
           <span class="mr-1"><v-icon icon="mdi-clock-outline" color="primary"></v-icon></span>
-          {{ selectedEvent.appEvent.start }} - {{ selectedEvent.appEvent.end }}
+          {{ formattedEventDate }}
         </div>
         <div class="mt-2">
           <span class="mr-1"><v-icon icon="mdi-map-marker" color="primary"></v-icon></span>
@@ -55,6 +55,8 @@ import AppCard from "@/components/AppCard.vue";
 import AppEventDialog from "@/components/AppEventDialog.vue";
 import { mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
+import { convertDate } from "@/utilities/utilsFuncs";
+import moment from "moment";
 const FullCalendar = window.FullCalendar;
 
 export default {
@@ -131,7 +133,22 @@ export default {
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["calendarEvents"])
+    ...mapState(useGeneralStore, ["calendarEvents"]),
+    formattedEventDate() {
+      let date = "";
+      let dateFormatType = "";
+      if (this.selectedEvent) {
+        const { start, end } = this.selectedEvent.appEvent;
+        // choose date format (with times/without times)
+        dateFormatType = this.selectedEvent.appEvent.allDay ? "MDYFormat" : "FullDateWithTime";
+
+        // check if it's one full day or not
+        date = moment(start).isSame(end, "day")
+          ? convertDate(start)[dateFormatType] + " - " + "all day"
+          : convertDate(start)[dateFormatType] + " - " + convertDate(end)[dateFormatType];
+      }
+      return date;
+    }
   },
   watch: {}
 };
