@@ -25,18 +25,18 @@
         left: selectedEventPopoverPosition.left + 'px'
       }"
     >
-      <v-card-title>{{ selectedEvent.event.title }}</v-card-title>
+      <v-card-title class="text-truncate">{{ selectedEvent.event.title }}</v-card-title>
 
       <v-card-text class="mt-2">
         <div>
           <span class="mr-1"><v-icon icon="mdi-clock-outline" color="primary"></v-icon></span>
           {{ formattedEventDate }}
         </div>
-        <div class="mt-2">
+        <div class="mt-2 text-truncate">
           <span class="mr-1"><v-icon icon="mdi-map-marker" color="primary"></v-icon></span>
           {{ selectedEvent.appEvent.location }}
         </div>
-        <div class="mt-2">
+        <div class="mt-2 text-truncate">
           <span class="mr-1"><v-icon icon="mdi-account-multiple" color="primary"></v-icon></span>
           {{ eventPerticipants }}
         </div>
