@@ -37,7 +37,7 @@
         </div>
         <div class="mt-2">
           <span class="mr-1"><v-icon icon="mdi-account-multiple" color="primary"></v-icon></span>
-          {{ selectedEvent.appEvent.people[0] }}
+          {{ eventPerticipants }}
         </div>
       </v-card-text>
       <v-card-actions>
@@ -148,6 +148,9 @@ export default {
           : convertDate(start)[dateFormatType] + " - " + convertDate(end)[dateFormatType];
       }
       return date;
+    },
+    eventPerticipants() {
+      return this.selectedEvent?.appEvent.people.join() || "";
     }
   },
   watch: {}
