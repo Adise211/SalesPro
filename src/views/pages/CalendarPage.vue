@@ -17,6 +17,7 @@
     <v-card
       v-if="selectedEvent && selectedEvent.el"
       class="selected-event-popover"
+      width="240px"
       elevation="16"
       v-click-outside="onPopoverOutsideClick"
       :style="{
@@ -136,16 +137,12 @@ export default {
     ...mapState(useGeneralStore, ["calendarEvents"]),
     formattedEventDate() {
       let date = "";
-      let dateFormatType = "";
       if (this.selectedEvent) {
         const { start, end } = this.selectedEvent.appEvent;
-        // choose date format (with times/without times)
-        dateFormatType = this.selectedEvent.appEvent.allDay ? "MDYFormat" : "FullDateWithTime";
-
-        // check if it's one full day or not
+        // check if it's full day or not
         date = moment(start).isSame(end, "day")
-          ? convertDate(start)[dateFormatType] + " - " + "all day"
-          : convertDate(start)[dateFormatType] + " - " + convertDate(end)[dateFormatType];
+          ? convertDate(start).MDYFormat + " - " + "All day"
+          : convertDate(start).MDYFormat + " - " + convertDate(end).MDYFormat;
       }
       return date;
     },
