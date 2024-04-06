@@ -43,8 +43,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn variant="text">Edit</v-btn>
-        <v-btn variant="text" @click="selectedEvent = null">Close</v-btn>
+        <v-btn variant="text" color="primary" @click="onOpenMoreEventInfo">Open</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -131,6 +130,9 @@ export default {
     },
     onPopoverOutsideClick() {
       this.selectedEvent = null;
+    },
+    onOpenMoreEventInfo() {
+      alert("opening more info");
     }
   },
   computed: {
