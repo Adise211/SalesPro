@@ -19,7 +19,7 @@
       class="selected-event-popover"
       width="240px"
       elevation="16"
-      v-click-outside="onPopoverOutsideClick"
+      v-click-outside="closeEventPopover"
       :style="{
         top: selectedEventPopoverPosition.top + 'px',
         left: selectedEventPopoverPosition.left + 'px'
@@ -130,11 +130,12 @@ export default {
       this.selectedEvent = { ...eventInfo, appEvent: appSavedEventInfo };
       this.isEventPopoverOpen = true;
     },
-    onPopoverOutsideClick() {
+    closeEventPopover() {
       this.isEventPopoverOpen = false;
     },
     onOpenMoreEventInfo() {
-      alert("opening more info");
+      this.isEventDialogOpen = true;
+      this.closeEventPopover();
     }
   },
   computed: {
