@@ -17,7 +17,8 @@
     <v-card
       v-if="isEventPopoverOpen && selectedEvent && selectedEvent.el"
       class="selected-event-popover"
-      width="240px"
+      width="350px"
+      max-height="300px"
       elevation="16"
       v-click-outside="closeEventPopover"
       :style="{
@@ -28,22 +29,20 @@
       <v-card-title class="text-truncate">{{ selectedEvent.event.title }}</v-card-title>
 
       <v-card-text class="mt-2">
-        <div>
-          <span class="mr-1"><v-icon icon="mdi-clock-outline" color="primary"></v-icon></span>
-          {{ formattedEventDate }}
-        </div>
-        <div class="mt-2 text-truncate">
-          <span class="mr-1"><v-icon icon="mdi-map-marker" color="primary"></v-icon></span>
-          {{ selectedEvent.appEvent.location }}
-        </div>
-        <div class="mt-2 text-truncate">
-          <span class="mr-1"><v-icon icon="mdi-account-multiple" color="primary"></v-icon></span>
-          {{ eventPerticipants }}
+        <div
+          v-for="(detail, index) in eventDetailsForDisplay"
+          :key="index"
+          class="text-truncate"
+          :class="{ 'mt-2': index != 0 }"
+        >
+          <span class="mr-5">{{ detail.title }}:</span>
+          {{ detail.value }}
         </div>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn variant="text" color="primary" @click="onOpenMoreEventInfo">Open</v-btn>
+        <v-btn variant="text" color="primary" @click="onEditEventClick">Edit</v-btn>
+        <v-btn variant="text" color="error">Delete</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -133,7 +132,7 @@ export default {
     closeEventPopover() {
       this.isEventPopoverOpen = false;
     },
-    onOpenMoreEventInfo() {
+    onEditEventClick() {
       this.isEventDialogOpen = true;
       this.closeEventPopover();
     }
@@ -153,6 +152,30 @@ export default {
     },
     eventPerticipants() {
       return this.selectedEvent?.appEvent.people.join() || "";
+    },
+    eventDetailsForDisplay() {
+      return [
+        {
+          title: "Date",
+          value: this.formattedEventDate
+        },
+        {
+          title: "Location",
+          value: this.selectedEvent.appEvent.location
+        },
+        {
+          title: "Perticipants",
+          value: this.eventPerticipants
+        },
+        {
+          title: "Description",
+          value: this.selectedEvent.appEvent.description
+        },
+        {
+          title: "Company",
+          value: this.selectedEvent.appEvent.description
+        }
+      ];
     }
   },
   watch: {}
