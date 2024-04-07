@@ -15,7 +15,7 @@
     ></AppEventDialog>
     <!-- Event popup -->
     <v-card
-      v-if="selectedEvent && selectedEvent.el"
+      v-if="isEventPopoverOpen && selectedEvent && selectedEvent.el"
       class="selected-event-popover"
       width="240px"
       elevation="16"
@@ -66,6 +66,7 @@ export default {
   data: () => ({
     activeCalendar: null,
     isEventDialogOpen: false,
+    isEventPopoverOpen: false,
     selectedEvent: null,
     selectedEventPopoverPosition: {
       top: 0,
@@ -127,9 +128,10 @@ export default {
       });
 
       this.selectedEvent = { ...eventInfo, appEvent: appSavedEventInfo };
+      this.isEventPopoverOpen = true;
     },
     onPopoverOutsideClick() {
-      this.selectedEvent = null;
+      this.isEventPopoverOpen = false;
     },
     onOpenMoreEventInfo() {
       alert("opening more info");
