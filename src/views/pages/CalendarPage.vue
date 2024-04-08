@@ -26,8 +26,8 @@
         left: selectedEventPopoverPosition.left + 'px'
       }"
     >
-      <v-card-title class="text-truncate d-flex justify-space-between">
-        <span>{{ selectedEvent.event.title }}</span>
+      <v-card-title class="d-flex justify-space-between align-center">
+        <span class="text-truncate" style="max-width: 80%">{{ selectedEvent.event.title }}</span>
         <v-icon size="small" color="primary" @click="onEditEventClick"
           >mdi-square-edit-outline</v-icon
         >
@@ -38,10 +38,10 @@
           v-for="(detail, index) in eventDetailsForDisplay"
           :key="index"
           class="text-truncate"
-          :class="{ 'mt-2': index != 0 }"
+          :class="{ 'mt-3': index != 0 }"
         >
-          <span class="mr-5">{{ detail.title }}:</span>
-          {{ detail.value }}
+          <span class="mr-2 font-weight-bold">{{ detail.title }}:</span>
+          <span>{{ detail.value }}</span>
         </div>
       </v-card-text>
       <v-card-actions>
