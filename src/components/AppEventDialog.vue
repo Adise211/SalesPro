@@ -197,7 +197,8 @@ export default {
     eventDescription: "",
     selectedComapnyId: "",
     people: [],
-    location: ""
+    location: "",
+    isOnEditMode: false
   }),
   created() {},
   mounted() {},
@@ -221,9 +222,7 @@ export default {
         newEvent.location = this.location;
         newEvent.people = this.people;
         newEvent.companyId = this.selectedComapnyId;
-
         const response = await createCalendarEvent(newEvent);
-        console.log("res:", response);
         if (response.Result.Success) {
           // Show success toast
           this.setToastMessage({
@@ -323,14 +322,23 @@ export default {
     },
     selectedEvent(newData) {
       if (newData) {
-        this.isFullDay = newData.appEvent.allDay;
-        // this.startDateValue =
-        // this.endDateValue
-        this.eventTitle = newData.appEvent.title;
-        this.eventDescription = newData.appEvent.description;
-        this.location = newData.appEvent.location;
-        this.people = newData.appEvent.people;
-        this.selectedComapnyId = newData.appEvent.companyId;
+        console.log("newData:", newData, newData.appEvent.start.split(" ")[1]);
+        this.isOnEditMode = true;
+        const { appEvent } = newData;
+        const { start, end } = newData.appEvent;
+
+        this.isFullDay = appEvent.allDay;
+        this.startDateValue = convertDate(start).MDYFormat;
+        this.endDateValue = convertDate(end).MDYFormat;
+        this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
+        this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
+        this.eventTitle = appEvent.title;
+        this.eventDescription = appEvent.description;
+        this.location = appEvent.location;
+        this.people = appEvent.people;
+        this.selectedComapnyId = appEvent.companyId;
+      } else {
+        this.isOnEditMode = false;
       }
     }
   }
