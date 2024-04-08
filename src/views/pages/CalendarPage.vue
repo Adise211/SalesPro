@@ -26,7 +26,12 @@
         left: selectedEventPopoverPosition.left + 'px'
       }"
     >
-      <v-card-title class="text-truncate">{{ selectedEvent.event.title }}</v-card-title>
+      <v-card-title class="text-truncate d-flex justify-space-between">
+        <span>{{ selectedEvent.event.title }}</span>
+        <v-icon size="small" color="primary" @click="onEditEventClick"
+          >mdi-square-edit-outline</v-icon
+        >
+      </v-card-title>
 
       <v-card-text class="mt-2">
         <div
@@ -41,7 +46,6 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn variant="text" color="primary" @click="onEditEventClick">Edit</v-btn>
         <v-btn variant="text" color="error">Delete</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
