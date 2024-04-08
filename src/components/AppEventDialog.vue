@@ -175,6 +175,10 @@ export default {
     isDialogOpen: {
       type: Boolean,
       default: false
+    },
+    selectedEvent: {
+      type: Object,
+      default: () => {}
     }
   },
   data: () => ({
@@ -315,6 +319,18 @@ export default {
     isDialogOpen: {
       handler(isOpen) {
         this.isDialogOpenLocally = isOpen;
+      }
+    },
+    selectedEvent(newData) {
+      if (newData) {
+        this.isFullDay = newData.appEvent.allDay;
+        // this.startDateValue =
+        // this.endDateValue
+        this.eventTitle = newData.appEvent.title;
+        this.eventDescription = newData.appEvent.description;
+        this.location = newData.appEvent.location;
+        this.people = newData.appEvent.people;
+        this.selectedComapnyId = newData.appEvent.companyId;
       }
     }
   }

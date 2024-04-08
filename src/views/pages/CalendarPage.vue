@@ -11,6 +11,7 @@
     </v-row>
     <AppEventDialog
       :isDialogOpen="isEventDialogOpen"
+      :selectedEvent="selectedEvent"
       @onDialogClose="isEventDialogOpen = false"
     ></AppEventDialog>
     <!-- Event popup -->
