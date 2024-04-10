@@ -83,7 +83,7 @@
                     class="w-25"
                   ></v-select>
                   <v-select
-                    v-model="startTimeInDay"
+                    v-model="startLocale12HVal"
                     class="w-0 ml-2"
                     :items="beforeOrAfterMidDay"
                   ></v-select>
@@ -99,7 +99,7 @@
                     class="w-25"
                   ></v-select>
                   <v-select
-                    v-model="endTimeInDay"
+                    v-model="endLocale12HVal"
                     class="w-0 ml-2"
                     :items="beforeOrAfterMidDay"
                   ></v-select>
@@ -189,8 +189,8 @@ export default {
     isDialogOpenLocally: false,
     isLoading: false,
     currentEventObj: { ...config.DataTemplates.CalendarEventTemp },
-    startTimeInDay: "AM",
-    endTimeInDay: "AM",
+    startLocale12HVal: "AM",
+    endLocale12HVal: "AM",
     startDateMenu: false,
     endDateMenu: false,
     startDateValue: "",
@@ -248,8 +248,8 @@ export default {
         fullStart = startDateISO;
         fullEnd = endDateISO;
       } else {
-        const startTime = convertTime(`${this.startTime} ${this.startTimeInDay}`).time12hFormat;
-        const endTime = convertTime(`${this.endTime} ${this.endTimeInDay}`).time12hFormat;
+        const startTime = convertTime(`${this.startTime} ${this.startLocale12HVal}`).time12hFormat;
+        const endTime = convertTime(`${this.endTime} ${this.endLocale12HVal}`).time12hFormat;
 
         fullStart = `${startDateISO} ${startTime}`;
         fullEnd = `${endDateISO} ${endTime}`;
@@ -311,28 +311,22 @@ export default {
       handler(isOpen) {
         this.isDialogOpenLocally = isOpen;
       }
-    }
-    // selectedEvent(newData) {
-    //   if (newData) {
-    //     console.log("newData:", newData, newData.appEvent.start.split(" ")[1]);
-    //     this.isOnEditMode = true;
-    //     const { appEvent } = newData;
-    //     const { start, end } = newData.appEvent;
+    },
+    selectedEvent(newData) {
+      if (newData) {
+        this.currentEventObj = Object.assign(this.currentEventObj, newData.appEvent);
+        this.isOnEditMode = true;
 
-    //     this.isFullDay = appEvent.allDay;
-    //     this.startDateValue = convertDate(start).MDYFormat;
-    //     this.endDateValue = convertDate(end).MDYFormat;
-    //     this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
-    //     this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
-    //     this.eventTitle = appEvent.title;
-    //     this.eventDescription = appEvent.description;
-    //     this.location = appEvent.location;
-    //     this.people = appEvent.people;
-    //     this.selectedComapnyId = appEvent.companyId;
-    //   } else {
-    //     this.isOnEditMode = false;
-    //   }
-    //}
+        const { appEvent } = newData;
+        const { start, end } = appEvent;
+        this.startDateValue = convertDate(start).MDYFormat;
+        this.endDateValue = convertDate(end).MDYFormat;
+        this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
+        this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
+      } else {
+        this.isOnEditMode = false;
+      }
+    }
   }
 };
 </script>
