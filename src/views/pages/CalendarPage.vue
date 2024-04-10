@@ -156,7 +156,7 @@ export default {
       return date;
     },
     eventPerticipants() {
-      return this.selectedEvent?.appEvent.people.join() || "";
+      return this.selectedEvent?.appEvent?.people?.join() || "";
     },
     eventDetailsForDisplay() {
       return [

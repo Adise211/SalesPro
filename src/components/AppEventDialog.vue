@@ -58,7 +58,7 @@
               <v-col>
                 <!-- 3) event title -->
                 <v-text-field
-                  v-model="eventTitle"
+                  v-model="currentEventObj.title"
                   label="Event Title*"
                   :rules="[formRules.required]"
                 ></v-text-field>
@@ -67,10 +67,14 @@
             <!-- Second Row -->
             <v-row>
               <v-col md="3">
-                <v-checkbox label="Full day" v-model="isFullDay" color="blue-darken-1"></v-checkbox>
+                <v-checkbox
+                  label="Full day"
+                  v-model="currentEventObj.allDay"
+                  color="blue-darken-1"
+                ></v-checkbox>
               </v-col>
               <v-col>
-                <div v-if="!isFullDay" class="d-flex">
+                <div v-if="!currentEventObj.allDay" class="d-flex">
                   <v-select
                     v-model="startTime"
                     label="Start time"
@@ -86,7 +90,7 @@
                 </div>
               </v-col>
               <v-col>
-                <div v-if="!isFullDay" class="d-flex">
+                <div v-if="!currentEventObj.allDay" class="d-flex">
                   <v-select
                     v-model="endTime"
                     label="End time"
@@ -105,14 +109,14 @@
             <!-- Third Row -->
             <v-row>
               <v-col>
-                <v-textarea v-model="eventDescription" label="Description"></v-textarea>
+                <v-textarea v-model="currentEventObj.description" label="Description"></v-textarea>
               </v-col>
             </v-row>
             <!-- Forth Row -->
             <v-row>
               <v-col>
                 <v-autocomplete
-                  v-model="selectedComapnyId"
+                  v-model="currentEventObj.companyId"
                   label="Company's Name"
                   append-inner-icon="mdi-magnify"
                   :items="companiesList"
@@ -124,7 +128,7 @@
               </v-col>
               <v-col>
                 <v-select
-                  v-model="people"
+                  v-model="currentEventObj.people"
                   label="People"
                   append-inner-icon="mdi-account-group"
                   multiple
@@ -133,7 +137,7 @@
               </v-col>
               <v-col>
                 <v-text-field
-                  v-model="location"
+                  v-model="currentEventObj.location"
                   label="Location"
                   append-inner-icon="mdi-map-marker"
                 ></v-text-field>
@@ -184,8 +188,7 @@ export default {
   data: () => ({
     isDialogOpenLocally: false,
     isLoading: false,
-    isFullDay: true,
-    eventTitle: "",
+    currentEventObj: { ...config.DataTemplates.CalendarEventTemp },
     startTimeInDay: "AM",
     endTimeInDay: "AM",
     startDateMenu: false,
@@ -194,10 +197,6 @@ export default {
     endDateValue: "",
     startTime: "",
     endTime: "",
-    eventDescription: "",
-    selectedComapnyId: "",
-    people: [],
-    location: "",
     isOnEditMode: false
   }),
   created() {},
@@ -207,22 +206,14 @@ export default {
     async onSaveData() {
       // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
-      if (valid) {
+      if (valid && this.currentEventObj) {
         this.isLoading = true;
         // Get dates with the next format : "YYYY-MM-DD HH:mm"
         const { fullStart, fullEnd } = this.getEventFullDates();
-        // Clone the event template
-        const newEvent = { ...config.DataTemplates.CalendarEventTemp };
-        // The new event info
-        newEvent.allDay = this.isFullDay;
-        newEvent.start = fullStart;
-        newEvent.end = fullEnd;
-        newEvent.title = this.eventTitle;
-        newEvent.description = this.eventDescription;
-        newEvent.location = this.location;
-        newEvent.people = this.people;
-        newEvent.companyId = this.selectedComapnyId;
-        const response = await createCalendarEvent(newEvent);
+        this.currentEventObj.start = fullStart;
+        this.currentEventObj.end = fullEnd;
+
+        const response = await createCalendarEvent(this.currentEventObj);
         if (response.Result.Success) {
           // Show success toast
           this.setToastMessage({
@@ -240,10 +231,11 @@ export default {
     },
     onCancel() {
       this.isDialogOpenLocally = false;
-      this.$refs.eventForm.reset();
+      this.$refs.eventForm.resetValidation();
       this.startDateValue = "";
       this.endDateValue = "";
-      this.isFullDay = true;
+      // this.isFullDay = true;
+      this.currentEventObj = { ...config.DataTemplates.CalendarEventTemp };
       this.$emit("onDialogClose");
     },
     getEventFullDates() {
@@ -252,7 +244,7 @@ export default {
 
       const startDateISO = convertDate(this.startDateValue).ISOFormat;
       const endDateISO = convertDate(this.endDateValue).ISOFormat;
-      if (this.isFullDay) {
+      if (this.currentEventObj.allDay) {
         fullStart = startDateISO;
         fullEnd = endDateISO;
       } else {
@@ -319,28 +311,28 @@ export default {
       handler(isOpen) {
         this.isDialogOpenLocally = isOpen;
       }
-    },
-    selectedEvent(newData) {
-      if (newData) {
-        console.log("newData:", newData, newData.appEvent.start.split(" ")[1]);
-        this.isOnEditMode = true;
-        const { appEvent } = newData;
-        const { start, end } = newData.appEvent;
-
-        this.isFullDay = appEvent.allDay;
-        this.startDateValue = convertDate(start).MDYFormat;
-        this.endDateValue = convertDate(end).MDYFormat;
-        this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
-        this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
-        this.eventTitle = appEvent.title;
-        this.eventDescription = appEvent.description;
-        this.location = appEvent.location;
-        this.people = appEvent.people;
-        this.selectedComapnyId = appEvent.companyId;
-      } else {
-        this.isOnEditMode = false;
-      }
     }
+    // selectedEvent(newData) {
+    //   if (newData) {
+    //     console.log("newData:", newData, newData.appEvent.start.split(" ")[1]);
+    //     this.isOnEditMode = true;
+    //     const { appEvent } = newData;
+    //     const { start, end } = newData.appEvent;
+
+    //     this.isFullDay = appEvent.allDay;
+    //     this.startDateValue = convertDate(start).MDYFormat;
+    //     this.endDateValue = convertDate(end).MDYFormat;
+    //     this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
+    //     this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
+    //     this.eventTitle = appEvent.title;
+    //     this.eventDescription = appEvent.description;
+    //     this.location = appEvent.location;
+    //     this.people = appEvent.people;
+    //     this.selectedComapnyId = appEvent.companyId;
+    //   } else {
+    //     this.isOnEditMode = false;
+    //   }
+    //}
   }
 };
 </script>
