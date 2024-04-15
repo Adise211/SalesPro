@@ -29,26 +29,54 @@ export async function getUserData() {
 export async function createCalendarEvent(data) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
-    // generate random id
-    const rendonId = "event" + generatedId();
-    data.id = rendonId;
+    if (!data.id) {
+      // generate random id
+      const rendonId = "event" + generatedId();
+      data.id = rendonId;
+    }
 
     // add event object in "userEvents" array
     // firstore will create automatically if array is not exist
     await updateDoc(userRef, {
       userEvents: arrayUnion(data)
     });
-    // const newCompanyObj = {
-    //   Company: data.company,
-    //   LastUpdated: data.date,
-    //   Status: "followups"
-    // };
-    // // also add or create company info
-    // await createNewCompany(newCompanyObj);
-
     return { Result: { Success: true }, Data: data };
   } catch (error) {
     console.log("error when creating new event:", error);
+  }
+}
+
+export async function updateCalendarEvent(data) {
+  try {
+    const userDataRes = await getUserData();
+    if (userDataRes) {
+      const { userEvents } = userDataRes;
+      const previousEvent = userEvents.find((ev) => ev.id === data.id);
+
+      if (previousEvent) {
+        // remove previousEvent
+        const removeEventRes = await removeCalendarEvent(previousEvent);
+        // update the new
+        const createEventRes = await createCalendarEvent(data);
+        if (removeEventRes.Result.Success && createEventRes.Result.Success) {
+          return { Result: { Success: true }, Data: createEventRes.Data };
+        }
+      }
+    }
+  } catch (error) {
+    console.log("error when updating calendar event:", error);
+  }
+}
+
+export async function removeCalendarEvent(data) {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(userRef, {
+      userEvents: arrayRemove(data)
+    });
+    return { Result: { Success: true } };
+  } catch (error) {
+    console.log("error when removing calendar event:", error);
   }
 }
 
