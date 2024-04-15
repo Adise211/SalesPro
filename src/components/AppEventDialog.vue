@@ -164,7 +164,7 @@ import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
 import { convertTime, convertDate } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
-import { createCalendarEvent } from "@/firebase/services/data";
+import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/data";
 import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import config from "@/utilities/config";
@@ -202,8 +202,22 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["addCalendarEventToStore", "setToastMessage"]),
+    ...mapActions(useGeneralStore, [
+      "addCalendarEventToStore",
+      "setToastMessage",
+      "updateCalendarEventInStore"
+    ]),
     async onSaveData() {
+      let APIRequest = createCalendarEvent;
+      let storeAction = this.addCalendarEventToStore;
+      let currentToastMsg = ToastMessages.SuccessMessages.Created;
+
+      if (this.isOnEditMode) {
+        APIRequest = updateCalendarEvent;
+        storeAction = this.updateCalendarEventInStore;
+        currentToastMsg = ToastMessages.SuccessMessages.Updated;
+      }
+
       // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
       if (valid && this.currentEventObj) {
@@ -213,16 +227,15 @@ export default {
         this.currentEventObj.start = fullStart;
         this.currentEventObj.end = fullEnd;
 
-        const response = await createCalendarEvent(this.currentEventObj);
+        const response = await APIRequest(this.currentEventObj);
         if (response.Result.Success) {
           // Show success toast
           this.setToastMessage({
             type: "success",
-            message: ToastMessages.SuccessMessages.Created
+            message: currentToastMsg
           });
-          // Add to store
-          this.addCalendarEventToStore(response.Data);
-          // Reset
+          // Add to store and reset
+          storeAction(response.Data);
           this.onCancel();
         }
         // Stop loader
@@ -234,7 +247,6 @@ export default {
       this.$refs.eventForm.resetValidation();
       this.startDateValue = "";
       this.endDateValue = "";
-      // this.isFullDay = true;
       this.currentEventObj = { ...config.DataTemplates.CalendarEventTemp };
       this.$emit("onDialogClose");
     },

@@ -12,7 +12,7 @@
     <AppEventDialog
       :isDialogOpen="isEventDialogOpen"
       :selectedEvent="selectedEvent"
-      @onDialogClose="isEventDialogOpen = false"
+      @onDialogClose="onEventDialogClose"
     ></AppEventDialog>
     <!-- Event popup -->
     <v-card
@@ -116,6 +116,7 @@ export default {
   methods: {
     onEventDialogClose() {
       this.isEventDialogOpen = false;
+      this.selectedEvent = null;
     },
     calendarEventClickHandler(eventInfo) {
       // get the clicked el
