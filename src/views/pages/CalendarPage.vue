@@ -47,7 +47,13 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn variant="text" color="error">Delete</v-btn>
+        <v-btn
+          variant="text"
+          color="error"
+          @click="onDeleteEventClick"
+          :loading="isDeleteLoaderActive"
+          >Delete</v-btn
+        >
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -57,9 +63,11 @@
 <script>
 import AppCard from "@/components/AppCard.vue";
 import AppEventDialog from "@/components/AppEventDialog.vue";
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { convertDate } from "@/utilities/utilsFuncs";
+import { ToastMessages } from "@/utilities/consts";
+import { removeCalendarEvent } from "@/firebase/services/data";
 import moment from "moment";
 const FullCalendar = window.FullCalendar;
 
@@ -75,7 +83,8 @@ export default {
     selectedEventPopoverPosition: {
       top: 0,
       left: 0
-    }
+    },
+    isDeleteLoaderActive: false
   }),
   created() {},
   mounted() {
@@ -114,6 +123,7 @@ export default {
     }, 100);
   },
   methods: {
+    ...mapActions(useGeneralStore, ["removeCalendarEventFromStore", "setToastMessage"]),
     onEventDialogClose() {
       this.isEventDialogOpen = false;
       this.selectedEvent = null;
@@ -141,6 +151,22 @@ export default {
     onEditEventClick() {
       this.isEventDialogOpen = true;
       this.closeEventPopover();
+    },
+    async onDeleteEventClick() {
+      this.isDeleteLoaderActive = true;
+      const response = await removeCalendarEvent(this.selectedEvent.appEvent);
+      if (response.Result.Success) {
+        // Show success toast
+        this.setToastMessage({
+          type: "success",
+          message: ToastMessages.SuccessMessages.Removed
+        });
+        // Add to store and reset
+        this.removeCalendarEventFromStore(this.selectedEvent.appEvent);
+        this.onEventDialogClose();
+        this.closeEventPopover();
+      }
+      this.isDeleteLoaderActive = false;
     }
   },
   computed: {
