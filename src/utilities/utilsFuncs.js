@@ -30,11 +30,13 @@ export function convertDate(value, fromEpochTime) {
 
   const ISOFormat = moment(currentValue).format("YYYY-MM-DD");
   const MDYFormat = moment(currentValue).format("MM/DD/YYYY");
-  const FullDateWithTime = moment(currentValue).format("MM/DD/YYYY HH:mm");
+  const FullDateWith12H = moment(currentValue).format("MM/DD/YYYY HH:mm");
+  const FullDateWith24H = moment(currentValue).format("MM/DD/YYYY h:mm A");
 
   return {
     ISOFormat,
     MDYFormat,
-    FullDateWithTime
+    FullDateWith12H,
+    FullDateWith24H
   };
 }
