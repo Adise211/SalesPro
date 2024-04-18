@@ -9,54 +9,55 @@
         </AppCard>
       </v-col>
     </v-row>
+    <!-- Event popup -->
+    <v-dialog
+      :target="targetEventEl"
+      v-model="showEventPopup"
+      location-strategy="connected"
+      :scrim="false"
+      width="300"
+      transition="scroll-x-reverse-transition"
+      location="left"
+      :offset="[180, 10]"
+    >
+      <v-card>
+        <v-card-title class="d-flex justify-space-between align-center">
+          <span class="text-truncate" style="max-width: 80%">{{ selectedEvent.event.title }}</span>
+          <v-icon size="small" color="primary" @click="onEditEventClick"
+            >mdi-square-edit-outline</v-icon
+          >
+        </v-card-title>
+
+        <v-card-text>
+          <div
+            v-for="(detail, index) in eventDetailsForDisplay"
+            :key="index"
+            class="text-medium-emphasis text-truncate text-body-2"
+            :class="{ 'mt-2': index != 0 }"
+          >
+            <span class="mr-2">{{ detail.title }}:</span>
+            <span>{{ detail.value }}</span>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            variant="flat"
+            color="error"
+            @click="onDeleteEventClick"
+            :loading="isDeleteLoaderActive"
+            >Delete</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- Create/Update event dialog -->
     <AppEventDialog
       :isDialogOpen="isEventDialogOpen"
       :selectedEvent="selectedEvent"
       @onDialogClose="onEventDialogClose"
     ></AppEventDialog>
-    <!-- Event popup -->
-    <v-card
-      v-if="isEventPopoverOpen && selectedEvent && selectedEvent.el"
-      class="selected-event-popover"
-      width="350px"
-      max-height="300px"
-      elevation="16"
-      v-click-outside="closeEventPopover"
-      :style="{
-        top: selectedEventPopoverPosition.top + 'px',
-        left: selectedEventPopoverPosition.left + 'px'
-      }"
-    >
-      <v-card-title class="d-flex justify-space-between align-center">
-        <span class="text-truncate" style="max-width: 80%">{{ selectedEvent.event.title }}</span>
-        <v-icon size="small" color="primary" @click="onEditEventClick"
-          >mdi-square-edit-outline</v-icon
-        >
-      </v-card-title>
-
-      <v-card-text class="mt-2">
-        <div
-          v-for="(detail, index) in eventDetailsForDisplay"
-          :key="index"
-          class="text-truncate"
-          :class="{ 'mt-3': index != 0 }"
-        >
-          <span class="mr-2 font-weight-bold">{{ detail.title }}:</span>
-          <span>{{ detail.value }}</span>
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          variant="text"
-          color="error"
-          @click="onDeleteEventClick"
-          :loading="isDeleteLoaderActive"
-          >Delete</v-btn
-        >
-        <v-spacer></v-spacer>
-      </v-card-actions>
-    </v-card>
   </v-container>
 </template>
 
@@ -78,13 +79,14 @@ export default {
   data: () => ({
     activeCalendar: null,
     isEventDialogOpen: false,
-    isEventPopoverOpen: false,
     selectedEvent: null,
-    selectedEventPopoverPosition: {
-      top: 0,
-      left: 0
-    },
-    isDeleteLoaderActive: false
+    isDeleteLoaderActive: false,
+    targetEventEl: "",
+    showEventPopup: false
+    // selectedEventPopoverPosition: {
+    //   top: 0,
+    //   left: 0
+    // },
   }),
   created() {},
   mounted() {
@@ -124,33 +126,36 @@ export default {
   },
   methods: {
     ...mapActions(useGeneralStore, ["removeCalendarEventFromStore", "setToastMessage"]),
-    onEventDialogClose() {
-      this.isEventDialogOpen = false;
-      this.selectedEvent = null;
-    },
     calendarEventClickHandler(eventInfo) {
       // get the clicked el
       let element = eventInfo.jsEvent.target;
+      element.setAttribute("id", eventInfo.event.id);
+      this.targetEventEl = element;
+      this.showEventPopup = true;
+
       // get the position relative to the viewport
-      let elementPositionTop = element.getBoundingClientRect().top;
-      let elementPositionLeft = element.getBoundingClientRect().right;
-      // set the popover position
-      this.selectedEventPopoverPosition.top = elementPositionTop;
-      this.selectedEventPopoverPosition.left = elementPositionLeft;
+      // let elementPositionTop = element.getBoundingClientRect().top;
+      // let elementPositionLeft = element.getBoundingClientRect().right;
+      // // set the popover position
+      // this.selectedEventPopoverPosition.top = elementPositionTop;
+      // this.selectedEventPopoverPosition.left = elementPositionLeft;
 
       const appSavedEventInfo = this.calendarEvents.find((oneEv) => {
         return oneEv.id === eventInfo.event.id;
       });
 
       this.selectedEvent = { ...eventInfo, appEvent: appSavedEventInfo };
-      this.isEventPopoverOpen = true;
     },
-    closeEventPopover() {
-      this.isEventPopoverOpen = false;
+    onEventDialogClose() {
+      this.isEventDialogOpen = false;
+      this.selectedEvent = null;
+    },
+    closeEventPopup() {
+      this.showEventPopup = false;
     },
     onEditEventClick() {
       this.isEventDialogOpen = true;
-      this.closeEventPopover();
+      this.closeEventPopup();
     },
     async onDeleteEventClick() {
       this.isDeleteLoaderActive = true;
@@ -164,7 +169,7 @@ export default {
         // Add to store and reset
         this.removeCalendarEventFromStore(this.selectedEvent.appEvent);
         this.onEventDialogClose();
-        this.closeEventPopover();
+        this.closeEventPopup();
       }
       this.isDeleteLoaderActive = false;
     }
@@ -192,20 +197,20 @@ export default {
           value: this.formattedEventDate
         },
         {
-          title: "Location",
-          value: this.selectedEvent.appEvent.location
+          title: "Description",
+          value: this.selectedEvent.appEvent.description
         },
         {
           title: "Perticipants",
           value: this.eventPerticipants
         },
         {
-          title: "Description",
+          title: "Company",
           value: this.selectedEvent.appEvent.description
         },
         {
-          title: "Company",
-          value: this.selectedEvent.appEvent.description
+          title: "Location",
+          value: this.selectedEvent.appEvent.location
         }
       ];
     }
