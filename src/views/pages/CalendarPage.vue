@@ -20,7 +20,7 @@
       location="left"
       :offset="[180, 10]"
     >
-      <v-card>
+      <v-card v-if="selectedEvent">
         <v-card-title class="d-flex justify-space-between align-center">
           <span class="text-truncate" style="max-width: 80%">{{ selectedEvent.event.title }}</span>
           <v-icon size="small" color="primary" @click="onEditEventClick"
@@ -56,6 +56,7 @@
     <AppEventDialog
       :isDialogOpen="isEventDialogOpen"
       :selectedEvent="selectedEvent"
+      @addNewEvent="addNewEventToFC"
       @onDialogClose="onEventDialogClose"
     ></AppEventDialog>
   </v-container>
@@ -129,7 +130,6 @@ export default {
     calendarEventClickHandler(eventInfo) {
       // get the clicked el
       let element = eventInfo.jsEvent.target;
-      element.setAttribute("id", eventInfo.event.id);
       this.targetEventEl = element;
       this.showEventPopup = true;
 
@@ -157,6 +157,11 @@ export default {
       this.isEventDialogOpen = true;
       this.closeEventPopup();
     },
+    addNewEventToFC(val) {
+      // Add to Fullcalendar component:
+      // https://fullcalendar.io/docs/Calendar-addEvent
+      this.activeCalendar.addEvent(val);
+    },
     async onDeleteEventClick() {
       this.isDeleteLoaderActive = true;
       const response = await removeCalendarEvent(this.selectedEvent.appEvent);
@@ -168,10 +173,13 @@ export default {
         });
         // Add to store and reset
         this.removeCalendarEventFromStore(this.selectedEvent.appEvent);
-        this.onEventDialogClose();
         this.closeEventPopup();
+        // Remove from Fullcalendar component:
+        // https://fullcalendar.io/docs/Event-remove
+        this.selectedEvent.event.remove();
       }
       this.isDeleteLoaderActive = false;
+      this.selectedEvent = null;
     }
   },
   computed: {

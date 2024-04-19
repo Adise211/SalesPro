@@ -234,8 +234,9 @@ export default {
             type: "success",
             message: currentToastMsg
           });
-          // Add to store and reset
+          // Add to store, send to parent and reset
           storeAction(response.Data);
+          this.$emit("addNewEvent", response.Data);
           this.onCancel();
         }
         // Stop loader
