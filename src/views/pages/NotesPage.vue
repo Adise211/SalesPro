@@ -1,7 +1,63 @@
 <template>
   <v-container fluid class="fill-height py-0">
     <v-row class="fill-height">
-      <v-col md="6">
+      <v-col md="8">
+        <AppCard>
+          <template v-slot:card-text>
+            <v-row class="mb-7 pt-2 align-center">
+              <v-col md="5">
+                <v-text-field
+                  v-model="searchExpression"
+                  hide-details
+                  single-line
+                  placeholder="Search here..."
+                  append-inner-icon="mdi-magnify"
+                >
+                </v-text-field>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col md="4" class="text-end">
+                <v-btn variant="text" color="primary" prepend-icon="mdi-plus">Add Note</v-btn>
+              </v-col>
+            </v-row>
+            <v-data-table
+              class="notes-table"
+              :headers="tableHeaders"
+              :items="tableItems"
+              :items-per-page="itemsPerPage"
+              :height="415"
+              :page="page"
+              :search="searchExpression"
+            >
+              <template v-slot:item="{ item }">
+                <tr>
+                  <td class="text-medium-emphasis">{{ item.NoteId }}</td>
+                  <td class="text-medium-emphasis">{{ item.CompanyName }}</td>
+                  <td class="text-medium-emphasis">{{ item.SelectedDate }}</td>
+                  <td class="text-center">
+                    <v-icon v-if="item.RemindMe" icon="mdi-bell" color="#eab308"></v-icon>
+                  </td>
+                  <!-- <td class="text-center">
+                    <v-icon @click="onWatchIconClick(item)">mdi-eye-plus</v-icon>
+                  </td> -->
+                  <td class="text-center">
+                    <v-icon icon="mdi-pencil" @click="onEditNoteClick(item)"></v-icon>
+                  </td>
+                  <td class="text-center">
+                    <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
+                  </td>
+                </tr>
+              </template>
+              <template v-slot:bottom>
+                <div class="text-center pt-2">
+                  <v-pagination v-model="page" :length="pageCount"></v-pagination>
+                </div>
+              </template>
+            </v-data-table>
+          </template>
+        </AppCard>
+      </v-col>
+      <v-col md="4">
         <div class="d-flex flex-column fill-height">
           <AppCard class="view-notes h-50">
             <template v-slot:card-text>
@@ -83,61 +139,6 @@
             </template>
           </AppCard>
         </div>
-      </v-col>
-      <v-col md="6">
-        <AppCard>
-          <template v-slot:card-text>
-            <div class="d-flex justify-space-between">
-              <v-text-field
-                v-model="searchExpression"
-                placeholder="Search"
-                variant="outlined"
-                density="compact"
-                color="primary"
-                style="max-width: 50%"
-              >
-              </v-text-field>
-            </div>
-            <v-data-table
-              class="notes-table"
-              :headers="tableHeaders"
-              :items="tableItems"
-              :items-per-page="itemsPerPage"
-              :height="415"
-              :page="page"
-              :search="searchExpression"
-            >
-              <template v-slot:item="{ item }">
-                <tr>
-                  <td class="text-medium-emphasis">{{ item.NoteId }}</td>
-                  <td class="text-medium-emphasis">{{ item.CompanyName }}</td>
-                  <td class="text-medium-emphasis">{{ item.SelectedDate }}</td>
-                  <td class="text-center">
-                    <v-icon v-if="item.RemindMe" icon="mdi-bell" color="#eab308"></v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon @click="onWatchIconClick(item)">mdi-eye-plus</v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon
-                      icon="mdi-pencil"
-                      color="primary"
-                      @click="onEditNoteClick(item)"
-                    ></v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
-                  </td>
-                </tr>
-              </template>
-              <template v-slot:bottom>
-                <div class="text-center pt-2">
-                  <v-pagination v-model="page" :length="pageCount"></v-pagination>
-                </div>
-              </template>
-            </v-data-table>
-          </template>
-        </AppCard>
       </v-col>
     </v-row>
     <!-- Before Delete Dialog -->
@@ -283,36 +284,43 @@ export default {
       return [
         {
           title: "Id",
-          key: "NoteId"
+          key: "NoteId",
+          width: "5%"
         },
         {
-          title: "Reffer to",
+          title: "Attached To",
           key: "CompanyName"
+          // width: "20%"
         },
         {
-          title: "Date",
+          title: "Created At",
           align: "center",
-          key: "SelectedDate"
+          key: "SelectedDate",
+          width: "16%"
         },
         {
           title: "Reminder",
           align: "center",
-          sortable: false
+          sortable: false,
+          width: "5%"
         },
-        {
-          title: "Watch",
-          align: "center",
-          sortable: false
-        },
+        // {
+        //   title: "Watch",
+        //   align: "center",
+        //   sortable: false,
+        //   width: "5%"
+        // },
         {
           title: "Edit",
           align: "center",
-          sortable: false
+          sortable: false,
+          width: "5%"
         },
         {
           title: "Delete",
           align: "center",
-          sortable: false
+          sortable: false,
+          width: "5%"
         }
       ];
     },

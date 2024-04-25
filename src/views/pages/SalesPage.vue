@@ -24,8 +24,12 @@
                 >
               </v-toolbar-items>
               <v-spacer></v-spacer>
-              <v-btn color="blue-grey-darken-4" variant="text" @click="isDialogOpen = true"
-                >Create new</v-btn
+              <v-btn
+                color="primary"
+                variant="text"
+                @click="isDialogOpen = true"
+                prepend-icon="mdi-plus"
+                >Add Company</v-btn
               >
             </v-toolbar>
           </template>
@@ -50,7 +54,7 @@
   <v-dialog v-model="isDialogOpen" width="70%" height="70%">
     <AppCard :cardContentOnly="false">
       <template v-slot:card-title>
-        <div>Create New Item</div>
+        <div>Add Company</div>
       </template>
       <template v-slot:card-text>
         <v-form ref="form">
