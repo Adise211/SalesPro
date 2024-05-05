@@ -145,28 +145,28 @@ export const useGeneralStore = defineStore("general", {
         this.companiesList.splice(objIndex, 1); // 2nd parameter means remove one item only
       }
     },
+    addEventToStore(noteData) {
+      this.userNotesList.push(noteData);
+    },
     updateUserNotesListInStore(noteData) {
       const currentNoteInList = this.userNotesList.find((note) => {
-        return note.NoteId === noteData.NoteId;
+        return note.noteId === noteData.noteId;
       });
       // If the list is not empty and note exist in the list - replace the note
-      if (this.userNotesList.length > 0 && currentNoteInList) {
+      if (currentNoteInList) {
         const noteIndex = this.userNotesList.indexOf(currentNoteInList);
         if (noteIndex > -1) {
           this.userNotesList.splice(noteIndex, 1, noteData);
         }
-      } else {
-        // Otherwise (list is empty or note doesn't exist in the list) - add the new note
-        this.userNotesList.push(noteData);
       }
       this.updateNotesWithReminderList();
     },
     removeNoteFromStore(noteObj) {
-      const objIndex = this.userNotesList.indexOf(noteObj);
+      const noteIndex = this.userNotesList.indexOf(noteObj);
 
       // only splice array when item is found
-      if (objIndex > -1) {
-        this.userNotesList.splice(objIndex, 1); // 2nd parameter means remove one item only
+      if (noteIndex > -1) {
+        this.userNotesList.splice(noteIndex, 1); // 2nd parameter means remove one item only
       }
       this.updateNotesWithReminderList();
     },

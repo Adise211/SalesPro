@@ -17,7 +17,13 @@
               </v-col>
               <v-spacer></v-spacer>
               <v-col md="4" class="text-end">
-                <v-btn variant="text" color="primary" prepend-icon="mdi-plus">Add Note</v-btn>
+                <v-btn
+                  variant="text"
+                  color="primary"
+                  prepend-icon="mdi-plus"
+                  @click="isNoteDialogOpen = true"
+                  >Add Note</v-btn
+                >
               </v-col>
             </v-row>
             <v-data-table
@@ -31,9 +37,9 @@
             >
               <template v-slot:item="{ item }">
                 <tr>
-                  <td class="text-medium-emphasis">{{ item.NoteId }}</td>
-                  <td class="text-medium-emphasis">{{ item.CompanyName }}</td>
-                  <td class="text-medium-emphasis">{{ item.SelectedDate }}</td>
+                  <td class="text-medium-emphasis">{{ item.noteId }}</td>
+                  <td class="text-medium-emphasis">{{ companyNameById(item.companyId) }}</td>
+                  <td class="text-medium-emphasis">{{ item.date }}</td>
                   <td class="text-center">
                     <v-icon v-if="item.RemindMe" icon="mdi-bell" color="#eab308"></v-icon>
                   </td>
@@ -58,78 +64,12 @@
         <div class="d-flex flex-column fill-height">
           <AppCard class="view-notes h-50">
             <template v-slot:card-text>
-              <div>View Note (by id)</div>
+              <div>soon will show the note (reminder)..</div>
             </template>
           </AppCard>
           <AppCard class="create-notes mt-3" :cardTextClass="'fill-height'">
             <template v-slot:card-text>
-              <div class="fill-height d-flex flex-column">
-                <v-form ref="newNoteForm">
-                  <!-- Reffer To -->
-                  <v-autocomplete
-                    v-model="companyName"
-                    :items="companiesList"
-                    item-title="Company"
-                    item-value="Company"
-                    :rules="[formRules.required]"
-                    placeholder="Reffer to"
-                    variant="outlined"
-                    density="compact"
-                    color="primary"
-                    style="max-width: 50%"
-                  >
-                  </v-autocomplete>
-                  <div class="d-flex">
-                    <!-- Date -->
-                    <v-text-field
-                      v-model="selectedDate"
-                      type="date"
-                      :rules="remindMe ? [formRules.required] : []"
-                      variant="outlined"
-                      density="compact"
-                      color="primary"
-                      style="max-width: 30%"
-                    >
-                    </v-text-field>
-                    <!-- Time -->
-                    <v-text-field
-                      v-model="selectedTime"
-                      type="time"
-                      :rules="remindMe ? [formRules.required] : []"
-                      class="ml-3"
-                      variant="outlined"
-                      density="compact"
-                      color="primary"
-                      style="max-width: 20%"
-                    >
-                    </v-text-field>
-                  </div>
-                  <!-- Note Description -->
-                  <v-textarea
-                    v-model="noteDescription"
-                    :rules="remindMe ? [formRules.required] : []"
-                    placeholder="Type here..."
-                    variant="outlined"
-                    color="primary"
-                    rows="3"
-                  >
-                  </v-textarea>
-                  <!-- Remind me checkbox (activate reminder) -->
-                  <v-checkbox
-                    label="Remind me"
-                    v-model="remindMe"
-                    color="#eab308"
-                    density="compact"
-                  ></v-checkbox>
-                </v-form>
-                <!-- Action Buttons -->
-                <div class="mt-auto mb-3">
-                  <v-btn class="mr-2" color="primary" @click="saveNote" :loading="isSaveNoteLoading"
-                    >Save</v-btn
-                  >
-                  <v-btn variant="outlined" color="primary" @click="onClearForm">Clear</v-btn>
-                </div>
-              </div>
+              <div>last updated notes list ....</div>
             </template>
           </AppCard>
         </div>
@@ -141,7 +81,9 @@
         <v-card-text>Are you sure you want to delete this item?</v-card-text>
         <v-card-actions>
           <div class="d-flex flex-row justify-start ml-auto">
-            <v-btn color="primary" variant="flat" @click="deleteItem(currentItem)">I am sure</v-btn>
+            <v-btn color="primary" variant="flat" @click="deleteItem(selectedNote)"
+              >I am sure</v-btn
+            >
             <v-btn color="primary" variant="outlined" @click="isDeleteDialogOpen = false"
               >Never mind</v-btn
             >
@@ -152,6 +94,7 @@
     <!-- Create/Update Note -->
     <AppNoteDialog
       :isDialogOpen="isNoteDialogOpen"
+      :selectedNote="selectedNote"
       @onDialogClose="isNoteDialogOpen = false"
     ></AppNoteDialog>
   </v-container>
@@ -162,7 +105,7 @@ import AppCard from "@/components/AppCard.vue";
 import AppNoteDialog from "@/components/AppNoteDialog.vue";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createNewNote, updateNote, removeNote } from "@/firebase/services/data";
+import { removeNote } from "@/firebase/services/data";
 import { ToastMessages } from "@/utilities/consts";
 
 export default {
@@ -174,14 +117,8 @@ export default {
     itemsPerPage: "6",
     searchExpression: "",
     isNoteDialogOpen: false,
-    companyName: null,
-    noteDescription: "",
-    selectedDate: null,
-    selectedTime: null,
-    remindMe: false,
-    currentItem: {},
+    selectedNote: {},
     currentNoteId: null,
-    isSaveNoteLoading: false,
     isOnEditMode: false,
     isDeleteDialogOpen: false
   }),
@@ -193,71 +130,23 @@ export default {
       "removeNoteFromStore",
       "setToastMessage"
     ]),
-    async saveNote() {
-      this.isSaveNoteLoading = true;
-      const noteData = {
-        companyName: this.companyName,
-        noteDescription: this.noteDescription,
-        selectedDate: this.selectedDate,
-        selectedTime: this.selectedTime,
-        remindMe: this.remindMe
-      };
-
-      const { valid } = await this.$refs.newNoteForm.validate();
-      if (valid) {
-        if (this.isOnEditMode) {
-          noteData.NoteId = this.currentNoteId;
-          await this.updateCurrentNote(noteData);
-        } else {
-          await this.createNote(noteData);
-        }
+    companyNameById(id) {
+      if (this.userNotesList.length > 0 && id) {
+        // Find the comapny with the passed id
+        const existNote = this.companiesList.find((company) => {
+          return company.companyId === id;
+        });
+        // Return the name of the company
+        return existNote.companyName;
       }
-    },
-    onClearForm() {
-      this.$refs.newNoteForm.reset();
-      // reset
-      this.isOnEditMode = false;
-      this.currentNoteId = null;
     },
     async onEditNoteClick(note) {
       this.isNoteDialogOpen = true;
-      // Display the selected note
       this.isOnEditMode = true;
-      this.companyName = note.CompanyName;
-      this.noteDescription = note.NoteDescription;
-      this.selectedDate = note.SelectedDate;
-      this.selectedTime = note.SelectedTime;
-      this.remindMe = note.RemindMe;
-      this.currentNoteId = note.NoteId;
-    },
-    async createNote(noteData) {
-      const response = await createNewNote(noteData);
-      if (response.success) {
-        this.setToastMessage({
-          type: "success",
-          message: ToastMessages.SuccessMessages.Created
-        });
-        this.isSaveNoteLoading = false;
-        this.updateUserNotesListInStore(response.data);
-        this.onClearForm();
-      }
-    },
-    async updateCurrentNote(noteData) {
-      const response = await updateNote(noteData);
-      if (response.success) {
-        console.log("update res:", response.data);
-
-        this.setToastMessage({
-          type: "success",
-          message: ToastMessages.SuccessMessages.Updated
-        });
-        this.isSaveNoteLoading = false;
-        this.updateUserNotesListInStore(response.data);
-        this.onClearForm();
-      }
+      this.selectedNote = note;
     },
     onDeleteIconClick(item) {
-      this.currentItem = item;
+      this.selectedNote = item;
       this.isDeleteDialogOpen = true;
     },
     async deleteItem(item) {
@@ -270,12 +159,8 @@ export default {
         message: ToastMessages.SuccessMessages.Removed
       });
       // Reset current item and close dialog
-      this.currentItem = {};
+      this.selectedNote = {};
       this.isDeleteDialogOpen = false;
-    },
-    onWatchIconClick(item) {
-      console.log("watch this:", item);
-      this.$emit("onWatchNote", item);
     }
   },
   computed: {
@@ -283,33 +168,21 @@ export default {
     tableHeaders() {
       return [
         {
-          title: "Id",
-          key: "NoteId",
-          width: "5%"
+          title: "Title",
+          key: "title"
         },
         {
-          title: "Attached To",
-          key: "CompanyName"
-          // width: "20%"
+          title: "Reffer To",
+          key: "companyId"
         },
         {
-          title: "Created At",
-          align: "center",
-          key: "SelectedDate",
-          width: "16%"
+          title: "Date",
+          key: "date"
         },
         {
           title: "Reminder",
-          align: "center",
-          sortable: false,
-          width: "5%"
+          sortable: false
         },
-        // {
-        //   title: "Watch",
-        //   align: "center",
-        //   sortable: false,
-        //   width: "5%"
-        // },
         {
           title: "Edit",
           align: "center",
