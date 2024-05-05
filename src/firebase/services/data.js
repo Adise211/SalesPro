@@ -164,33 +164,19 @@ export async function updateCompanyInfo(companyObj) {
 
 export async function createNewNote(noteObj) {
   try {
-    let currentNoteId;
-    const noteWatchedAt = noteObj.WatchedAt > 0 ? noteObj.WatchedAt : 0;
     const userRef = doc(db, "users", auth.currentUser.uid);
-    const { userNotes } = await getUserData();
-    if (userNotes) {
-      if (noteObj.NoteId) {
-        // if the note has an id - keep it
-        currentNoteId = noteObj.NoteId;
-      } else {
-        // if note does not have an id - create one
-        currentNoteId = userNotes.length > 0 ? userNotes.length : 0;
-      }
 
-      const createNote = {
-        NoteId: currentNoteId,
-        CompanyName: noteObj.companyName,
-        NoteDescription: noteObj.noteDescription,
-        SelectedDate: noteObj.selectedDate,
-        SelectedTime: noteObj.selectedTime,
-        RemindMe: noteObj.remindMe,
-        WatchedAt: noteWatchedAt
-      };
-      await updateDoc(userRef, {
-        userNotes: arrayUnion(createNote)
-      });
-      return { success: true, data: createNote };
-    }
+    // Add an id
+    const rendonId = "note" + generatedId();
+    noteObj.noteId = rendonId;
+    // Add last updated time (epoch time)
+    const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
+    noteObj.lastUpdate = currentEpochTime;
+
+    await updateDoc(userRef, {
+      userNotes: arrayUnion(noteObj)
+    });
+    return { Result: { Success: true }, Data: noteObj };
   } catch (error) {
     console.log("error when trying to create new note:", error);
   }
