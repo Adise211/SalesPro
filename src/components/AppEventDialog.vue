@@ -78,7 +78,7 @@
                   <v-select
                     v-model="startTime"
                     label="Start time"
-                    :items="hoursOption"
+                    :items="hourOptions"
                     :rules="[formRules.required]"
                     class="w-25"
                   ></v-select>
@@ -94,7 +94,7 @@
                   <v-select
                     v-model="endTime"
                     label="End time"
-                    :items="hoursOption"
+                    :items="hourOptions"
                     :rules="[formRules.required]"
                     class="w-25"
                   ></v-select>
@@ -279,7 +279,7 @@ export default {
     beforeOrAfterMidDay() {
       return ["AM", "PM"];
     },
-    hoursOption() {
+    hourOptions() {
       const fullDayHours = [];
       for (let hourIndex = 1; hourIndex < 13; hourIndex++) {
         // Check if the hour is not exist yet in the list

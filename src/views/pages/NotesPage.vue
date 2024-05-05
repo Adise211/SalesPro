@@ -37,9 +37,6 @@
                   <td class="text-center">
                     <v-icon v-if="item.RemindMe" icon="mdi-bell" color="#eab308"></v-icon>
                   </td>
-                  <!-- <td class="text-center">
-                    <v-icon @click="onWatchIconClick(item)">mdi-eye-plus</v-icon>
-                  </td> -->
                   <td class="text-center">
                     <v-icon icon="mdi-pencil" @click="onEditNoteClick(item)"></v-icon>
                   </td>
@@ -61,7 +58,7 @@
         <div class="d-flex flex-column fill-height">
           <AppCard class="view-notes h-50">
             <template v-slot:card-text>
-              <div>View note (by id)</div>
+              <div>View Note (by id)</div>
             </template>
           </AppCard>
           <AppCard class="create-notes mt-3" :cardTextClass="'fill-height'">
@@ -81,9 +78,6 @@
                     color="primary"
                     style="max-width: 50%"
                   >
-                    <!-- <template v-slot:chip="{ props, item }">
-                      <v-chip v-bind="props" color="primary" :text="item.title"></v-chip>
-                    </template> -->
                   </v-autocomplete>
                   <div class="d-flex">
                     <!-- Date -->
@@ -155,26 +149,31 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- Create/Update Note -->
+    <AppNoteDialog
+      :isDialogOpen="isNoteDialogOpen"
+      @onDialogClose="isNoteDialogOpen = false"
+    ></AppNoteDialog>
   </v-container>
 </template>
 
 <script>
 import AppCard from "@/components/AppCard.vue";
-import "v-calendar/style.css";
+import AppNoteDialog from "@/components/AppNoteDialog.vue";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { createNewNote, updateNote, removeNote } from "@/firebase/services/data";
 import { ToastMessages } from "@/utilities/consts";
-// import moment from "moment";
 
 export default {
   name: "NotesPage",
-  components: { AppCard },
+  components: { AppCard, AppNoteDialog },
   props: {},
   data: () => ({
     page: 1,
     itemsPerPage: "6",
     searchExpression: "",
+    isNoteDialogOpen: false,
     companyName: null,
     noteDescription: "",
     selectedDate: null,
@@ -221,6 +220,7 @@ export default {
       this.currentNoteId = null;
     },
     async onEditNoteClick(note) {
+      this.isNoteDialogOpen = true;
       // Display the selected note
       this.isOnEditMode = true;
       this.companyName = note.CompanyName;
