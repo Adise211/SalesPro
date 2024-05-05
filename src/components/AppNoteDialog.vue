@@ -2,7 +2,7 @@
   <v-dialog v-model="isDialogOpenLocaly" width="50%">
     <AppCard :cardContentOnly="false">
       <template v-slot:card-title>
-        <div>Note</div>
+        <div>Create Note</div>
       </template>
       <template v-slot:card-text>
         <v-form ref="noteForm">
@@ -11,7 +11,7 @@
             <v-row>
               <!-- Title -->
               <v-col>
-                <v-text-field label="Title"></v-text-field>
+                <v-text-field label="Title" :rules="[formRules.required]"></v-text-field>
               </v-col>
               <!-- Reffer to (company) -->
               <v-col cols="7">
@@ -28,11 +28,25 @@
             </v-row>
             <!-- Second Row -->
             <v-row>
-              <!-- Date -->
+              <!-- Description -->
+              <v-col cols="7">
+                <v-textarea label="Description" :rows="4"></v-textarea>
+              </v-col>
               <v-col>
-                <v-menu v-model="isDateMenuOpen" :close-on-content-click="false">
+                <!-- Date -->
+                <v-menu
+                  v-if="currentNote.remindMe"
+                  v-model="isDateMenuOpen"
+                  :close-on-content-click="false"
+                >
                   <template v-slot:activator="{ props }">
-                    <v-text-field v-bind="props" label="Date" :modelValue="displayDate">
+                    <v-text-field
+                      v-bind="props"
+                      label="Date"
+                      :modelValue="displayDate"
+                      class="mb-2"
+                      :rules="currentNote.remindMe ? [formRules.required] : []"
+                    >
                     </v-text-field>
                   </template>
                   <v-date-picker
@@ -46,20 +60,22 @@
                   ></v-date-picker>
                 </v-menu>
                 <!-- Time -->
-                <div class="d-flex">
-                  <v-select label="Time" :items="hourOptions"> </v-select>
+                <div v-if="currentNote.remindMe" class="d-flex">
+                  <v-select
+                    label="Time"
+                    :items="hourOptions"
+                    :rules="currentNote.remindMe ? [formRules.required] : []"
+                    style="width: 60%"
+                  >
+                  </v-select>
                   <v-select v-model="dayPeriod" :items="['AM', 'PM']"> </v-select>
                 </div>
-              </v-col>
-              <!-- Description -->
-              <v-col cols="7">
-                <v-textarea label="Description" :rows="4"></v-textarea>
               </v-col>
             </v-row>
             <!-- RemindMe Checkbox-->
             <v-checkbox
               label="Remind me"
-              v-model="remindMe"
+              v-model="currentNote.remindMe"
               color="#eab308"
               density="compact"
               hide-details
@@ -129,6 +145,11 @@ export default {
         }
       }
       return fullDayHours;
+    },
+    formRules() {
+      return {
+        required: (value) => !!value || "Field is required"
+      };
     }
   },
   watch: {
