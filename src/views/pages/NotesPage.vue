@@ -101,7 +101,7 @@
       :isDialogOpen="isNoteDialogOpen"
       :selectedNote="selectedNote"
       :isOnEditMode="isOnEditMode"
-      @onDialogClose="isNoteDialogOpen = false"
+      @onDialogClose="onDialogClose"
     ></AppNoteDialog>
   </v-container>
 </template>
@@ -147,9 +147,10 @@ export default {
       }
     },
     async onEditNoteClick(note) {
-      this.isNoteDialogOpen = true;
       this.isOnEditMode = true;
+      console.log("AAA", note.noteId);
       this.selectedNote = note;
+      this.isNoteDialogOpen = true;
     },
     onDeleteIconClick(item) {
       this.selectedNote = item;
@@ -167,6 +168,11 @@ export default {
       // Reset current item and close dialog
       this.selectedNote = {};
       this.isDeleteDialogOpen = false;
+    },
+    onDialogClose() {
+      this.isNoteDialogOpen = false;
+      this.isOnEditMode = false;
+      this.selectedNote = {};
     }
   },
   computed: {
