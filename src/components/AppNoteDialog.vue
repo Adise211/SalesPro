@@ -71,6 +71,7 @@
                 <!-- Time -->
                 <div v-if="currentNote.remindMe" class="d-flex">
                   <v-select
+                    v-model="selectedHour"
                     label="Time"
                     :items="hourOptions"
                     :rules="currentNote.remindMe ? [formRules.required] : []"
@@ -112,13 +113,23 @@ import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { createNewNote } from "@/firebase/services/data";
 import { ToastMessages } from "@/utilities/consts";
+import { convertDate } from "@/utilities/utilsFuncs";
+import { useDate } from "vuetify";
 
 export default {
+  setup() {
+    const UseDate = useDate();
+    return { UseDate };
+  },
   components: { AppCard },
   props: {
     isDialogOpen: {
       type: Boolean,
       default: false
+    },
+    selectedNote: {
+      type: Object,
+      default: () => {}
     }
   },
   data: () => ({
@@ -140,6 +151,7 @@ export default {
         // If it's a note with reminder - take the selected time value
         if (this.currentNote.remindMe) {
           this.currentNote.time = `${this.selectedHour} ${this.period}`;
+          this.currentNote.date = convertDate(this.currentNote.date).MDYFormat;
         }
         const response = await createNewNote(this.currentNote);
         if (response && response.Result.Success) {
@@ -155,15 +167,26 @@ export default {
       }
       this.onCancel();
     },
+    resetCurrentNote() {
+      this.currentNote = { ...config.DataTemplates.NoteTemp };
+    },
     onCancel() {
       this.isDialogOpenLocaly = false;
+      this.resetCurrentNote();
       this.$emit("onDialogClose");
+    },
+    changedDateFormat(date) {
+      if (date) {
+        return this.UseDate.format(this.currentNote.date, "keyboardDate");
+      }
     }
   },
   computed: {
     ...mapState(useGeneralStore, ["companiesList"]),
     displayDate() {
-      return "";
+      return this.currentNote.date
+        ? this.UseDate.format(this.currentNote.date, "keyboardDate")
+        : "";
     },
     hourOptions() {
       const fullDayHours = [];
@@ -186,6 +209,18 @@ export default {
   watch: {
     isDialogOpen(isOpen) {
       this.isDialogOpenLocaly = isOpen;
+    },
+    selectedNote(newData) {
+      if (newData) {
+        this.currentNote = newData;
+        // If note has time - separte the value
+        if (newData.time) {
+          this.selectedHour = newData.time.split(" ")[0];
+          this.period = newData.time.split(" ")[1];
+        }
+      } else {
+        this.resetCurrentNote();
+      }
     }
   }
 };

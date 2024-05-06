@@ -37,11 +37,16 @@
             >
               <template v-slot:item="{ item }">
                 <tr>
-                  <td class="text-medium-emphasis">{{ item.noteId }}</td>
-                  <td class="text-medium-emphasis">{{ companyNameById(item.companyId) }}</td>
-                  <td class="text-medium-emphasis">{{ item.date }}</td>
+                  <td class="text-medium-emphasis app-text-truncate">{{ item.title }}</td>
+                  <td class="text-medium-emphasis app-text-truncate">
+                    {{ companyNameById(item.companyId) }}
+                  </td>
+                  <td class="text-medium-emphasis text-center">
+                    {{ item.date && item.time ? `${item.date} ${item.time}` : "" }}
+                  </td>
                   <td class="text-center">
-                    <v-icon v-if="item.RemindMe" icon="mdi-bell" color="#eab308"></v-icon>
+                    <v-icon v-if="item.remindMe" icon="mdi-bell" color="#eab308"></v-icon>
+                    <v-icon v-else icon="mdi-bell-off"></v-icon>
                   </td>
                   <td class="text-center">
                     <v-icon icon="mdi-pencil" @click="onEditNoteClick(item)"></v-icon>
@@ -169,19 +174,23 @@ export default {
       return [
         {
           title: "Title",
-          key: "title"
+          key: "title",
+          maxWidth: "20%"
         },
         {
           title: "Reffer To",
           key: "companyId"
         },
         {
-          title: "Date",
-          key: "date"
+          title: "Due Date",
+          key: "date",
+          align: "center",
+          width: "25%"
         },
         {
           title: "Reminder",
-          sortable: false
+          sortable: false,
+          width: "6%"
         },
         {
           title: "Edit",
@@ -214,9 +223,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// .notes-table:deep(.v-table__wrapper) {
-//   th:nth-child(3n) {
-//     width: 24%;
-//   }
-// }
+.app-text-truncate {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

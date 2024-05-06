@@ -171,8 +171,8 @@ import config from "@/utilities/config";
 
 export default {
   setup() {
-    const VuetifyUseDate = useDate();
-    return { VuetifyUseDate };
+    const UseDate = useDate();
+    return { UseDate };
   },
   components: { AppCard },
   props: {
@@ -293,10 +293,8 @@ export default {
     },
     formattedDatesForDisplay() {
       return {
-        start: this.startDateValue
-          ? this.VuetifyUseDate.format(this.startDateValue, "keyboardDate")
-          : "",
-        end: this.endDateValue ? this.VuetifyUseDate.format(this.endDateValue, "keyboardDate") : ""
+        start: this.startDateValue ? this.UseDate.format(this.startDateValue, "keyboardDate") : "",
+        end: this.endDateValue ? this.UseDate.format(this.endDateValue, "keyboardDate") : ""
       };
     },
     formRules() {
@@ -309,12 +307,11 @@ export default {
       let isValidRange = true;
       // If there are start date and end date
       if (this.startDateValue && this.endDateValue) {
-        const start = this.VuetifyUseDate.date(this.startDateValue);
-        const end = this.VuetifyUseDate.date(this.endDateValue);
+        const start = this.UseDate.date(this.startDateValue);
+        const end = this.UseDate.date(this.endDateValue);
 
         // Chack the range - start date is always the same OR before the end date
-        isValidRange =
-          this.VuetifyUseDate.isBefore(start, end) || this.VuetifyUseDate.isSameDay(start, end);
+        isValidRange = this.UseDate.isBefore(start, end) || this.UseDate.isSameDay(start, end);
       }
       return isValidRange;
     }
