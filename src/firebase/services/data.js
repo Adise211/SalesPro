@@ -166,9 +166,11 @@ export async function createNewNote(noteObj) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
 
-    // Add an id
-    const rendonId = "note" + generatedId();
-    noteObj.noteId = rendonId;
+    // If note does'nt have and id - add id
+    if (!noteObj.noteId) {
+      const rendonId = "note" + generatedId();
+      noteObj.noteId = rendonId;
+    }
     // Add last updated time (epoch time)
     const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
     noteObj.lastUpdate = currentEpochTime;
@@ -208,8 +210,9 @@ export async function updateNote(noteObj) {
         await removeNote(previousNote);
         // create new
         const createNoteRes = await createNewNote(noteObj);
-        if (createNoteRes.success) {
-          return { success: true, data: createNoteRes.data };
+        if (createNoteRes.Result.Success) {
+          // return the created note data
+          return { Result: { Success: true }, Data: createNoteRes.Data };
         }
       }
     }

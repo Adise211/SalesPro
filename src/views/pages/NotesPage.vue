@@ -100,6 +100,7 @@
     <AppNoteDialog
       :isDialogOpen="isNoteDialogOpen"
       :selectedNote="selectedNote"
+      :isOnEditMode="isOnEditMode"
       @onDialogClose="isNoteDialogOpen = false"
     ></AppNoteDialog>
   </v-container>

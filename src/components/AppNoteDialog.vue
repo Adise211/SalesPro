@@ -54,7 +54,7 @@
                       label="Date"
                       :modelValue="displayDate"
                       class="mb-2"
-                      :rules="currentNote.remindMe ? [formRules.required] : []"
+                      :rules="[formRules.required]"
                     >
                     </v-text-field>
                   </template>
@@ -74,7 +74,7 @@
                     v-model="selectedHour"
                     label="Time"
                     :items="hourOptions"
-                    :rules="currentNote.remindMe ? [formRules.required] : []"
+                    :rules="[formRules.required]"
                     style="width: 60%"
                   >
                   </v-select>
@@ -111,7 +111,7 @@ import AppCard from "./AppCard.vue";
 import config from "@/utilities/config";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { createNewNote } from "@/firebase/services/data";
+import { createNewNote, updateNote } from "@/firebase/services/data";
 import { ToastMessages } from "@/utilities/consts";
 import { convertDate } from "@/utilities/utilsFuncs";
 import { useDate } from "vuetify";
@@ -124,6 +124,10 @@ export default {
   components: { AppCard },
   props: {
     isDialogOpen: {
+      type: Boolean,
+      default: false
+    },
+    isOnEditMode: {
       type: Boolean,
       default: false
     },
@@ -143,8 +147,22 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["setToastMessage", "addEventToStore"]),
+    ...mapActions(useGeneralStore, [
+      "setToastMessage",
+      "addEventToStore",
+      "updateUserNotesListInStore"
+    ]),
     async onSaveData() {
+      let APIRequest = createNewNote;
+      let storeAction = this.addEventToStore;
+      let currentToastMsg = ToastMessages.SuccessMessages.Created;
+
+      // On edit note
+      if (this.isOnEditMode) {
+        APIRequest = updateNote;
+        storeAction = this.updateUserNotesListInStore;
+        currentToastMsg = ToastMessages.SuccessMessages.Updated;
+      }
       const { valid } = await this.$refs.noteForm.validate();
       if (valid) {
         this.isLoading = true;
@@ -153,18 +171,20 @@ export default {
           this.currentNote.time = `${this.selectedHour} ${this.period}`;
           this.currentNote.date = convertDate(this.currentNote.date).MDYFormat;
         }
-        const response = await createNewNote(this.currentNote);
+        const response = await APIRequest(this.currentNote);
         if (response && response.Result.Success) {
           console.log("SAVED DATA...", this.currentNote);
           // Show success toast
           this.setToastMessage({
             type: "success",
-            message: ToastMessages.SuccessMessages.Created
+            message: currentToastMsg
           });
-          // Add to store, send to parent and reset
-          this.addEventToStore(response.Data);
+          // Update the list in store
+          storeAction(response.Data);
         }
       }
+      this.isLoading = false;
+      // Reset
       this.onCancel();
     },
     resetCurrentNote() {

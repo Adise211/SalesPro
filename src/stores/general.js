@@ -152,7 +152,7 @@ export const useGeneralStore = defineStore("general", {
       const currentNoteInList = this.userNotesList.find((note) => {
         return note.noteId === noteData.noteId;
       });
-      // If the list is not empty and note exist in the list - replace the note
+      // If the note exist in the list - replace the note
       if (currentNoteInList) {
         const noteIndex = this.userNotesList.indexOf(currentNoteInList);
         if (noteIndex > -1) {
