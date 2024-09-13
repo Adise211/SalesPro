@@ -36,7 +36,7 @@
               :search="searchExpression"
             >
               <template v-slot:item="{ item }">
-                <tr>
+                <tr @dblclick="onNoteRowDB">
                   <td class="text-medium-emphasis app-text-truncate">{{ item.title }}</td>
                   <td class="text-medium-emphasis app-text-truncate">
                     {{ companyNameById(item.companyId) }}
@@ -46,7 +46,7 @@
                   </td>
                   <td class="text-center">
                     <v-icon v-if="item.remindMe" icon="mdi-bell" color="#eab308"></v-icon>
-                    <v-icon v-else icon="mdi-bell-off"></v-icon>
+                    <v-icon v-else-if="!item.remindMe" icon="mdi-bell-off"></v-icon>
                   </td>
                   <td class="text-center">
                     <v-icon icon="mdi-pencil" @click="onEditNoteClick(item)"></v-icon>
@@ -86,12 +86,8 @@
         <v-card-text>Are you sure you want to delete this item?</v-card-text>
         <v-card-actions>
           <div class="d-flex flex-row justify-start ml-auto">
-            <v-btn color="primary" variant="flat" @click="deleteItem(selectedNote)"
-              >I am sure</v-btn
-            >
-            <v-btn color="primary" variant="outlined" @click="isDeleteDialogOpen = false"
-              >Never mind</v-btn
-            >
+            <v-btn color="primary" variant="flat" @click="deleteItem(selectedNote)">Yes</v-btn>
+            <v-btn color="primary" variant="outlined" @click="isDeleteDialogOpen = false">No</v-btn>
           </div>
         </v-card-actions>
       </v-card>
@@ -136,6 +132,9 @@ export default {
       "removeNoteFromStore",
       "setToastMessage"
     ]),
+    onNoteRowDB() {
+      console.log("Hi There!");
+    },
     companyNameById(id) {
       if (this.userNotesList.length > 0 && id) {
         // Find the comapny with the passed id
@@ -148,7 +147,6 @@ export default {
     },
     async onEditNoteClick(note) {
       this.isOnEditMode = true;
-      console.log("AAA", note.noteId);
       this.selectedNote = note;
       this.isNoteDialogOpen = true;
     },
@@ -225,7 +223,14 @@ export default {
       };
     }
   },
-  watch: {}
+  watch: {
+    userNotesList: {
+      handler(newData) {
+        console.log("UPDATED NOTES LIST?", newData[0].remindMe);
+      },
+      deep: true
+    }
+  }
 };
 </script>
 

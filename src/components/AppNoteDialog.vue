@@ -193,6 +193,7 @@ export default {
     onCancel() {
       this.isDialogOpenLocaly = false;
       this.resetCurrentNote();
+      console.log("EMOTY?", this.currentNote);
       this.$emit("onDialogClose");
     },
     changedDateFormat(date) {
