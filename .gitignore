@@ -159,3 +159,4 @@ coverage
 
 # my files
 public/_config/
+.npmrc
