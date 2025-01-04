@@ -8,8 +8,7 @@ async function _loadSettings() {
   }
 }
 
-// Remove await for build???
-await _loadSettings();
+_loadSettings();
 
 const Config = _settings;
 
