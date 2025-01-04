@@ -20,21 +20,23 @@ steps:
 - task: Npm@1
   inputs:
     command: 'install'
-    workingDir: 'sales-pro-app'
+    workingDir: ''
     customRegistry: 'useFeed'
     customFeed: 'db7a7be3-b4a6-4fc1-b8be-0f85048bfaab'
+
+
 
 - task: Npm@1
   inputs:
     command: 'custom'
-    workingDir: 'sales-pro-app'
+    workingDir: ''
     customCommand: 'run build'
     customRegistry: 'useFeed'
     customFeed: 'db7a7be3-b4a6-4fc1-b8be-0f85048bfaab'
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: 'sales-pro-app/dist'
+    rootFolderOrFile: '/dist'
     includeRootFolder: true
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
