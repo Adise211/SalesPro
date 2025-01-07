@@ -18,6 +18,11 @@ steps:
     displayName: "Modify JSON File with PowerShell"
 
 
+  - task: DownloadSecureFile@1
+    displayName: 'Download .env file'
+    inputs:
+      secureFile: '.env'
+
 
   - task: Npm@1
     displayName: "npm install"
