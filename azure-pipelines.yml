@@ -17,6 +17,15 @@ steps:
       echo See https://aka.ms/yaml
     displayName: "Run a multi-line script"
 
+  - powershell: |
+      $json = Get-Content -Path $(Build.SourcesDirectory)\config.json | ConvertFrom-Json
+
+      $json.enviroment = "staging"
+
+      $json | ConvertTo-Json -Depth 10 | Set-Content -Path $(Build.SourcesDirectory)\config.json
+
+    displayName: "Modify JSON File with PowerShell"
+
   - task: Npm@1
     displayName: "npm install"
     inputs:
