@@ -4,48 +4,47 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+  - main
 
 pool: Self-Hosted-1
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  - script: echo Hello, world!
+    displayName: "Run a one-line script"
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - script: |
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+    displayName: "Run a multi-line script"
 
-- task: PowerShell@2
-  displayName: 'Change env in config file'
-  inputs:
-    filePath: 'config.json'
-    arguments: '$json = Get-Content -Path $(Build.ArtifactStagingDirectory)\config.json | ConvertFrom-Json  $json.enviroment = "staging" $json | ConvertTo-Json -Depth 2 | Set-Content -Path $(Build.ArtifactStagingDirectory)\config.json'
+  - task: PowerShell@2
+    displayName: "Change env in config file"
+    inputs:
+      filePath: "config.json"
+      script: '$json = Get-Content -Path $(Build.ArtifactStagingDirectory)\config.json | ConvertFrom-Json  $json.enviroment = "staging" $json | ConvertTo-Json -Depth 2 | Set-Content -Path $(Build.ArtifactStagingDirectory)\config.json'
 
-- task: Npm@1
-  displayName: 'npm install'
-  inputs:
-    command: 'install'
-    workingDir: ''
-    customRegistry: 'useFeed'
-    customFeed: 'db7a7be3-b4a6-4fc1-b8be-0f85048bfaab'
+  - task: Npm@1
+    displayName: "npm install"
+    inputs:
+      command: "install"
+      workingDir: ""
+      customRegistry: "useFeed"
+      customFeed: "db7a7be3-b4a6-4fc1-b8be-0f85048bfaab"
 
+  - task: Npm@1
+    displayName: "npm build"
+    inputs:
+      command: "custom"
+      workingDir: ""
+      customCommand: "run build"
+      customRegistry: "useFeed"
+      customFeed: "db7a7be3-b4a6-4fc1-b8be-0f85048bfaab"
 
-- task: Npm@1
-  displayName: 'npm build'
-  inputs:
-    command: 'custom'
-    workingDir: ''
-    customCommand: 'run build'
-    customRegistry: 'useFeed'
-    customFeed: 'db7a7be3-b4a6-4fc1-b8be-0f85048bfaab'
-
-- task: ArchiveFiles@2
-  displayName: 'Save into Zip file'
-  inputs:
-    rootFolderOrFile: 'dist'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+  - task: ArchiveFiles@2
+    displayName: "Save into Zip file"
+    inputs:
+      rootFolderOrFile: "dist"
+      includeRootFolder: true
+      archiveType: "zip"
+      archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+      replaceExistingArchive: true
