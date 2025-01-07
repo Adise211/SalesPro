@@ -70,7 +70,7 @@ import { useGeneralStore } from "@/stores/general";
 import { useCalendarStore } from "@/stores/calendar";
 import { logoutUser } from "@/firebase/services/user";
 import { updateNoteWatchedTime } from "@/firebase/services/data";
-import Config from "@/utilities/config";
+import { Config } from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
 
 let checkUserActivityInterval;

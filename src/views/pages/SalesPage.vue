@@ -141,7 +141,7 @@ import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { SaleStatuses, ToastMessages } from "@/utilities/consts";
-import config from "@/utilities/config";
+import { Config } from "@/utilities/config";
 import {
   createNewCompany,
   updateCompanyInfo,
@@ -161,7 +161,7 @@ export default {
     isDialogOpen: false,
     currentStageId: 1,
     searchExpression: "",
-    itemObject: { ...config.DataTemplates.CompanyTemp },
+    itemObject: { ...Config.DataTemplates.CompanyTemp },
     isLoading: false,
     countriesAndCitiesList: []
   }),
@@ -224,7 +224,7 @@ export default {
       // close dialogs
       this.isDialogOpen = false;
       // reset state
-      this.itemObject = { ...config.DataTemplates.CompanyTemp };
+      this.itemObject = { ...Config.DataTemplates.CompanyTemp };
     }
   },
   computed: {

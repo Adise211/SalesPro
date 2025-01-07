@@ -108,7 +108,7 @@
 
 <script>
 import AppCard from "./AppCard.vue";
-import config from "@/utilities/config";
+import { Config } from "@/utilities/config";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { createNewNote, updateNote } from "@/firebase/services/data";
@@ -139,7 +139,7 @@ export default {
   data: () => ({
     isDialogOpenLocaly: false,
     isLoading: false,
-    currentNote: { ...config.DataTemplates.NoteTemp },
+    currentNote: { ...Config.DataTemplates.NoteTemp },
     isDateMenuOpen: false,
     selectedHour: "",
     period: "AM"
@@ -188,7 +188,7 @@ export default {
       this.onCancel();
     },
     resetCurrentNote() {
-      this.currentNote = { ...config.DataTemplates.NoteTemp };
+      this.currentNote = { ...Config.DataTemplates.NoteTemp };
     },
     onCancel() {
       this.isDialogOpenLocaly = false;

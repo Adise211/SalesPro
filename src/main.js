@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-
+import { _loadSettings } from "./utilities/config";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
@@ -10,8 +10,14 @@ import "./styles/global.scss";
 
 const app = createApp(App);
 
-app.use(pinia);
-app.use(router);
-app.use(vuetify);
-app.use(ToastPlugin);
-app.mount("#app");
+init();
+
+async function init() {
+  await _loadSettings();
+
+  app.use(pinia);
+  app.use(router);
+  app.use(vuetify);
+  app.use(ToastPlugin);
+  app.mount("#app");
+}

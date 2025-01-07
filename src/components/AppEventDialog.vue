@@ -167,7 +167,7 @@ import { ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/data";
 import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import config from "@/utilities/config";
+import { Config } from "@/utilities/config";
 
 export default {
   setup() {
@@ -188,7 +188,7 @@ export default {
   data: () => ({
     isDialogOpenLocally: false,
     isLoading: false,
-    currentEventObj: { ...config.DataTemplates.CalendarEventTemp },
+    currentEventObj: { ...Config.DataTemplates.CalendarEventTemp },
     startLocale12HVal: "AM",
     endLocale12HVal: "AM",
     startDateMenu: false,
@@ -248,7 +248,7 @@ export default {
       this.$refs.eventForm.resetValidation();
       this.startDateValue = "";
       this.endDateValue = "";
-      this.currentEventObj = { ...config.DataTemplates.CalendarEventTemp };
+      this.currentEventObj = { ...Config.DataTemplates.CalendarEventTemp };
       this.$emit("onDialogClose");
     },
     getEventFullDates() {

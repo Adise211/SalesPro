@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import moment from "moment";
-import Config from "../utilities/config";
+import { Config } from "../utilities/config";
 import { convertTime } from "../utilities/utilsFuncs";
 
 export const useGeneralStore = defineStore("general", {
