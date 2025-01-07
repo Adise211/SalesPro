@@ -91,6 +91,7 @@ export default {
   }),
   created() {},
   mounted() {
+    console.log("TESTING CURRENT ENV:", import.meta.env.MODE);
     console.log("TESTING CI CD:", Env);
 
     // Check if user is still active (interval)
