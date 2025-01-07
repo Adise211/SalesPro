@@ -1,4 +1,4 @@
 {
   "enviroment": "development",
-  "options": "local,development,development.localhost,staging,production,dev"
+  "options": "local,development,development.localhost,staging,production"
 }
