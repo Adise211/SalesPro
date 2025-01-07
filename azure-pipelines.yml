@@ -17,13 +17,6 @@ steps:
       $json | ConvertTo-Json -Depth 10 | Set-Content -Path $(Build.SourcesDirectory)\config.json
     displayName: "Modify JSON File with PowerShell"
 
-
-  - task: DownloadSecureFile@1
-    displayName: 'Download .env file'
-    inputs:
-      secureFile: '.env'
-
-
   - task: Npm@1
     displayName: "npm install"
     inputs:
@@ -32,11 +25,14 @@ steps:
       customRegistry: "useFeed"
       customFeed: "db7a7be3-b4a6-4fc1-b8be-0f85048bfaab"
 
-
   - script: |
       npm install -g firebase-tools
     displayName: "Install Firebase Hosting"
 
+  - task: DownloadSecureFile@1
+    displayName: "Download .env file"
+    inputs:
+      secureFile: ".env"
 
   - task: Npm@1
     displayName: "npm build"
@@ -47,11 +43,9 @@ steps:
       customRegistry: "useFeed"
       customFeed: "db7a7be3-b4a6-4fc1-b8be-0f85048bfaab"
 
-
   - script: |
       firebase deploy --token $(FIREBASE_TOKEN)
     displayName: "Deploy To Firebase"
-
 
   - task: ArchiveFiles@2
     displayName: "Save into Zip file"
