@@ -160,5 +160,3 @@ coverage
 # my files
 public/_config/
 .npmrc
-firebase.json
-.firebaserc
