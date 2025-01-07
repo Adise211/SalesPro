@@ -27,7 +27,8 @@ steps:
 
   - script: |
       npm install -g firebase-tools
-    displayName: "Install Firebase Hosting"
+      npm install dotenv dotenv-expand
+    displayName: "Install Firebase Hosting & DotEnv"
 
   - task: DownloadSecureFile@1
     displayName: "Download .env file"
