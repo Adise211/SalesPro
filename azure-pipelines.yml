@@ -9,22 +9,15 @@ trigger:
 pool: Self-Hosted-1
 
 steps:
-  - script: echo Hello, world!
-    displayName: "Run a one-line script"
-
-  - script: |
-      echo Add other tasks to build, test, and deploy your project.
-      echo See https://aka.ms/yaml
-    displayName: "Run a multi-line script"
-
   - powershell: |
       $json = Get-Content -Path $(Build.SourcesDirectory)\config.json | ConvertFrom-Json
 
       $json.enviroment = "staging"
 
       $json | ConvertTo-Json -Depth 10 | Set-Content -Path $(Build.SourcesDirectory)\config.json
-
     displayName: "Modify JSON File with PowerShell"
+
+
 
   - task: Npm@1
     displayName: "npm install"
@@ -34,6 +27,12 @@ steps:
       customRegistry: "useFeed"
       customFeed: "db7a7be3-b4a6-4fc1-b8be-0f85048bfaab"
 
+
+  - script: |
+      npm install -g firebase-tools
+    displayName: "Install Firebase Hosting"
+
+
   - task: Npm@1
     displayName: "npm build"
     inputs:
@@ -42,6 +41,12 @@ steps:
       customCommand: "run build"
       customRegistry: "useFeed"
       customFeed: "db7a7be3-b4a6-4fc1-b8be-0f85048bfaab"
+
+
+  - script: |
+      firebase deploy --token $(FIREBASE_TOKEN)
+    displayName: "Deploy To Firebase"
+
 
   - task: ArchiveFiles@2
     displayName: "Save into Zip file"
