@@ -36,11 +36,11 @@ steps:
       secureFile: ".env"
 
   - task: CopyFiles@2
-    displayName: 'Copy .env File Into Project Folder'
+    displayName: "Copy .env File Into Project Folder"
     inputs:
-      SourceFolder: '$(Agent.TempDirectory)'
-      Contents: '**'
-      TargetFolder: '$(Build.SourcesDirectory)'
+      SourceFolder: "$(Agent.TempDirectory)"
+      Contents: "*/.env"
+      TargetFolder: "$(Build.SourcesDirectory)"
 
   - task: Npm@1
     displayName: "npm build"
