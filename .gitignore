@@ -158,6 +158,5 @@ coverage
 *.sw?
 
 # my files
-public/_config/config.json
-public/_config/_dataTemplates.js
+public/_config/
 .npmrc
