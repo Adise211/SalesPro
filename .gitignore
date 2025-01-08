@@ -159,4 +159,5 @@ coverage
 
 # my files
 public/_config/*
+!public/_config/.gitkeep
 .npmrc
