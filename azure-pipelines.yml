@@ -54,12 +54,3 @@ steps:
   - script: |
       firebase deploy --token $(FIREBASE_TOKEN)
     displayName: "Deploy To Firebase"
-
-  - task: ArchiveFiles@2
-    displayName: "Save into Zip file"
-    inputs:
-      rootFolderOrFile: "dist"
-      includeRootFolder: true
-      archiveType: "zip"
-      archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
-      replaceExistingArchive: true
