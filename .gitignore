@@ -158,6 +158,6 @@ coverage
 *.sw?
 
 # my files
-public/_config/*
-!public/_config/.gitkeep
+public/_config/config.json
+public/_config/_dataTemplates.js
 .npmrc
