@@ -31,9 +31,16 @@ steps:
     displayName: "Install Firebase Hosting & DotEnv"
 
   - task: DownloadSecureFile@1
-    displayName: "Download .env file"
+    displayName: "Download .env File"
     inputs:
       secureFile: ".env"
+
+  - task: CopyFiles@2
+    displayName: 'Copy .env File Into Project Folder'
+    inputs:
+      SourceFolder: '$(Agent.TempDirectory)'
+      Contents: '**'
+      TargetFolder: '$(Build.SourcesDirectory)'
 
   - task: Npm@1
     displayName: "npm build"
