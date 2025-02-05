@@ -2,7 +2,7 @@
   <v-container fluid class="calendar-page fill-height py-0">
     <v-row class="fill-height">
       <v-col md="12">
-        <AppCard :cardTextClass="'fill-height'">
+        <AppCard>
           <template v-slot:card-text>
             <div id="full-calendar"></div>
           </template>

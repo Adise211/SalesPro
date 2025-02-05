@@ -1,84 +1,8 @@
 <template>
-  <v-container fluid class="fill-height py-0">
+  <v-container fluid class="notes-page fill-height py-0">
     <v-row class="fill-height">
-      <v-col md="8">
-        <AppCard>
-          <template v-slot:card-text>
-            <v-row class="mb-7 pt-2 align-center">
-              <v-col md="5">
-                <v-text-field
-                  v-model="searchExpression"
-                  hide-details
-                  single-line
-                  placeholder="Search here..."
-                  append-inner-icon="mdi-magnify"
-                >
-                </v-text-field>
-              </v-col>
-              <v-spacer></v-spacer>
-              <v-col md="4" class="text-end">
-                <v-btn
-                  variant="text"
-                  color="primary"
-                  prepend-icon="mdi-plus"
-                  @click="isNoteDialogOpen = true"
-                  >Add Note</v-btn
-                >
-              </v-col>
-            </v-row>
-            <v-data-table
-              class="notes-table"
-              :headers="tableHeaders"
-              :items="tableItems"
-              :items-per-page="itemsPerPage"
-              :height="415"
-              :page="page"
-              :search="searchExpression"
-            >
-              <template v-slot:item="{ item }">
-                <tr @dblclick="onNoteRowDB">
-                  <td class="text-medium-emphasis app-text-truncate">{{ item.title }}</td>
-                  <td class="text-medium-emphasis app-text-truncate">
-                    {{ companyNameById(item.companyId) }}
-                  </td>
-                  <td class="text-medium-emphasis text-center">
-                    {{ item.date && item.time ? `${item.date} ${item.time}` : "" }}
-                  </td>
-                  <td class="text-center">
-                    <v-icon v-if="item.remindMe" icon="mdi-bell" color="#eab308"></v-icon>
-                    <v-icon v-else-if="!item.remindMe" icon="mdi-bell-off"></v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon icon="mdi-pencil" @click="onEditNoteClick(item)"></v-icon>
-                  </td>
-                  <td class="text-center">
-                    <v-icon @click="onDeleteIconClick(item)" color="error"> mdi-delete </v-icon>
-                  </td>
-                </tr>
-              </template>
-              <template v-slot:bottom>
-                <div class="text-center pt-2">
-                  <v-pagination v-model="page" :length="pageCount"></v-pagination>
-                </div>
-              </template>
-            </v-data-table>
-          </template>
-        </AppCard>
-      </v-col>
-      <v-col md="4">
-        <div class="d-flex flex-column fill-height">
-          <AppCard class="view-notes h-50">
-            <template v-slot:card-text>
-              <div>soon will show the note (reminder)..</div>
-            </template>
-          </AppCard>
-          <AppCard class="create-notes mt-3" :cardTextClass="'fill-height'">
-            <template v-slot:card-text>
-              <div>last updated notes list ....</div>
-            </template>
-          </AppCard>
-        </div>
-      </v-col>
+      <v-col md="8"> </v-col>
+      <v-col md="4"> </v-col>
     </v-row>
     <!-- Before Delete Dialog -->
     <v-dialog v-model="isDeleteDialogOpen" width="500">
@@ -103,7 +27,6 @@
 </template>
 
 <script>
-import AppCard from "@/components/AppCard.vue";
 import AppNoteDialog from "@/components/AppNoteDialog.vue";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
@@ -112,7 +35,7 @@ import { ToastMessages } from "@/utilities/consts";
 
 export default {
   name: "NotesPage",
-  components: { AppCard, AppNoteDialog },
+  components: { AppNoteDialog },
   props: {},
   data: () => ({
     page: 1,

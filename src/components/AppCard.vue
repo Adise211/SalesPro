@@ -9,7 +9,7 @@
       <slot name="card-sub-title"></slot>
     </v-card-subtitle>
     <!-- Card Text (content) -->
-    <v-card-text :class="cardTextClass">
+    <v-card-text :class="cardTextClass" class="fill-height">
       <slot name="card-text"></slot>
     </v-card-text>
     <!-- Card Actions (buttons) -->
