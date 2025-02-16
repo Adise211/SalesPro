@@ -1,7 +1,7 @@
 <template>
   <div class="default-layout">
     <v-layout class="rounded rounded-md">
-      <v-navigation-drawer color="blue-grey-darken-4" persistent width="200">
+      <v-navigation-drawer color="primary" persistent width="200">
         <v-list>
           <v-list-item class="py-5" title="My Work Space" subtitle="My Role"></v-list-item>
           <v-divider></v-divider>
@@ -16,13 +16,13 @@
           ></v-list-item>
         </v-list>
 
-        <template v-slot:append>
+        <!-- <template v-slot:append>
           <div class="pa-2">
             <v-btn block color="primary" @click="onLogout"> Logout </v-btn>
           </div>
-        </template>
+        </template> -->
       </v-navigation-drawer>
-      <v-app-bar color="blue-grey-darken-4" flat>
+      <v-app-bar color="secondary" flat>
         <v-app-bar-title>SalesPro</v-app-bar-title>
         <template v-slot:append>
           <v-btn icon="mdi-cog"></v-btn>
