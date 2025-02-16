@@ -86,8 +86,16 @@ export default {
           pageName = "SalesPage";
           paramsObj = { stageName: SaleStatuses.FollowUps.value };
           break;
+        case NavigationItems.Notes:
+          pageName = "NotesPage";
+          paramsObj = {};
+          break;
         case NavigationItems.Products:
           pageName = "ProductsPage";
+          paramsObj = {};
+          break;
+        case NavigationItems.Files:
+          pageName = "FilesPage";
           paramsObj = {};
           break;
         case NavigationItems.MyAccount:

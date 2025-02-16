@@ -5,8 +5,9 @@ import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
 import CalendarPage from "../views/pages/CalendarPage.vue";
 import SalesPage from "../views/pages/SalesPage.vue";
-import ProductsPage from "../views/pages/ProductsPage.vue";
 import NotesPage from "../views/pages/NotesPage.vue";
+import ProductsPage from "../views/pages/ProductsPage.vue";
+import FilesPage from "../views/pages/FilesPage.vue";
 import MyAccountPage from "../views/pages/MyAccountPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 
@@ -63,9 +64,42 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
+      path: "/notes/:noteId?",
+      name: "NotesPage",
+      component: NotesPage,
+      props: (route) => {
+        return {
+          ...route.params
+        };
+      },
+      meta: { layout: "DefaultLayout" }
+    },
+    {
       path: "/products",
       name: "ProductsPage",
       component: ProductsPage,
+      props: (route) => {
+        return {
+          ...route.params
+        };
+      },
+      meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/files",
+      name: "FilesPage",
+      component: FilesPage,
+      props: (route) => {
+        return {
+          ...route.params
+        };
+      },
+      meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/account",
+      name: "MyAccountPage",
+      component: MyAccountPage,
       props: (route) => {
         return {
           ...route.params
@@ -84,28 +118,6 @@ const router = createRouter({
         };
       },
       meta: { layout: "MinimalLayout" }
-    },
-    {
-      path: "/account",
-      name: "MyAccountPage",
-      component: MyAccountPage,
-      props: (route) => {
-        return {
-          ...route.params
-        };
-      },
-      meta: { layout: "DefaultLayout" }
-    },
-    {
-      path: "/notes/:noteId?",
-      name: "NotesPage",
-      component: NotesPage,
-      props: (route) => {
-        return {
-          ...route.params
-        };
-      },
-      meta: { layout: "DefaultLayout" }
     }
   ]
 });
