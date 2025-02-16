@@ -3,11 +3,11 @@ import { initStores } from "../stores";
 import HomePage from "../views/pages/HomePage.vue";
 import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
-import SalesPage from "../views/pages/SalesPage.vue";
-import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
-import MyAccountPage from "../views/pages/MyAccountPage.vue";
-import NotesPage from "../views/pages/NotesPage.vue";
 import CalendarPage from "../views/pages/CalendarPage.vue";
+import SalesPage from "../views/pages/SalesPage.vue";
+import NotesPage from "../views/pages/NotesPage.vue";
+import MyAccountPage from "../views/pages/MyAccountPage.vue";
+import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 
 /**
  *
