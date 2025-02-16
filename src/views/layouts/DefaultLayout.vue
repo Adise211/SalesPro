@@ -72,7 +72,6 @@ import { logoutUser } from "@/firebase/services/user";
 import { updateNoteWatchedTime } from "@/firebase/services/data";
 import { Config } from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
-import Env from "../../../config.json";
 
 let checkUserActivityInterval;
 
@@ -91,9 +90,6 @@ export default {
   }),
   created() {},
   mounted() {
-    console.log("TESTING CURRENT ENV:", import.meta.env.MODE);
-    console.log("TESTING CI CD:", Env);
-
     // Check if user is still active (interval)
     checkUserActivityInterval = setInterval(
       this.sessionExparationHandler(),
