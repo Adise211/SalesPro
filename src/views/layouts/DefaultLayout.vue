@@ -22,7 +22,16 @@
           </div>
         </template>
       </v-navigation-drawer>
-      <v-app-bar color="blue-grey-darken-4" flat title="SalesPro"> </v-app-bar>
+      <v-app-bar color="blue-grey-darken-4" flat>
+        <v-app-bar-title>SalesPro</v-app-bar-title>
+        <template v-slot:append>
+          <v-btn icon="mdi-cog"></v-btn>
+          <v-btn icon="mdi-bell"></v-btn>
+          <v-avatar>
+            <v-img alt="John" src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+          </v-avatar>
+        </template>
+      </v-app-bar>
 
       <v-main class="main-content">
         <slot></slot>
