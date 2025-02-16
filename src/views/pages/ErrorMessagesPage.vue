@@ -47,7 +47,7 @@ export default {
   methods: {
     onGoBackClick() {
       this.$router.push({
-        name: "OverViewPage"
+        name: "HomePage"
       });
     }
   },

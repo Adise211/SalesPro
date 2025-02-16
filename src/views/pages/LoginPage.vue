@@ -93,7 +93,7 @@ export default {
         if (response) {
           this.isLoading = false;
           this.$router.push({
-            name: "OverViewPage"
+            name: "HomePage"
           });
         }
       }

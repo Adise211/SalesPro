@@ -75,7 +75,7 @@ export default {
 
       switch (itemName) {
         case NavigationItems.Home:
-          pageName = "OverViewPage";
+          pageName = "HomePage";
           paramsObj = {};
           break;
         case NavigationItems.Calendar:

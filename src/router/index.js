@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { initStores } from "../stores";
+import HomePage from "../views/pages/HomePage.vue";
 import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
-import OverViewPage from "../views/pages/OverViewPage.vue";
 import SalesPage from "../views/pages/SalesPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
 import UserSettingsPage from "../views/pages/UserSettingsPage.vue";
@@ -21,10 +21,8 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home",
-      redirect: () => {
-        return { name: "OverViewPage" };
-      },
+      name: "HomePage",
+      component: HomePage,
       meta: { layout: "DefaultLayout" }
     },
     {
@@ -38,17 +36,6 @@ const router = createRouter({
       name: "SignupPage",
       component: SignupPage,
       meta: { layout: "MinimalLayout" }
-    },
-    {
-      path: "/overview",
-      name: "OverViewPage",
-      component: OverViewPage,
-      props: (route) => {
-        return {
-          ...route.params
-        };
-      },
-      meta: { layout: "DefaultLayout" }
     },
     {
       path: "/user-calendar",
