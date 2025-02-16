@@ -185,8 +185,8 @@ export default {
           isShownNow: false
         },
         {
-          title: NavigationItems.MyAccount,
-          value: "MyAccount",
+          title: "My Account",
+          value: NavigationItems.MyAccount,
           icon: "mdi-account",
           isShownNow: false
         }

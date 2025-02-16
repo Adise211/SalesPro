@@ -5,7 +5,7 @@ export const NavigationItems = {
   Products: "Products",
   Notes: "Notes",
   Files: "Files",
-  MyAccount: "My Account",
+  MyAccount: "MyAccount",
   Logout: "Logout"
 };
 
