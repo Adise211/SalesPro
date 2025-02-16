@@ -82,13 +82,13 @@ export default {
           pageName = "CalendarPage";
           paramsObj = {};
           break;
-        case NavigationItems.Notes:
-          pageName = "NotesPage";
-          paramsObj = {};
-          break;
         case NavigationItems.Sales:
           pageName = "SalesPage";
           paramsObj = { stageName: SaleStatuses.FollowUps.value };
+          break;
+        case NavigationItems.Products:
+          pageName = "ProductsPage";
+          paramsObj = {};
           break;
         case NavigationItems.MyAccount:
           pageName = "MyAccountPage";
