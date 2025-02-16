@@ -5,7 +5,7 @@ import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
 import SalesPage from "../views/pages/SalesPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
-import UserSettingsPage from "../views/pages/UserSettingsPage.vue";
+import MyAccountPage from "../views/pages/MyAccountPage.vue";
 import NotesPage from "../views/pages/NotesPage.vue";
 import CalendarPage from "../views/pages/CalendarPage.vue";
 
@@ -74,9 +74,9 @@ const router = createRouter({
       meta: { layout: "MinimalLayout" }
     },
     {
-      path: "/settings",
-      name: "UserSettingsPage",
-      component: UserSettingsPage,
+      path: "/account",
+      name: "MyAccountPage",
+      component: MyAccountPage,
       props: (route) => {
         return {
           ...route.params

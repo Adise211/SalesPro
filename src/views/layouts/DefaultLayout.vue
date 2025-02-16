@@ -91,7 +91,7 @@ export default {
           paramsObj = { stageName: SaleStatuses.FollowUps.value };
           break;
         case NavigationItems.MyAccount:
-          pageName = "UserSettingsPage";
+          pageName = "MyAccountPage";
           paramsObj = {};
           break;
         default:
