@@ -1,14 +1,9 @@
 <template>
   <div class="default-layout">
     <v-layout class="rounded rounded-md">
-      <v-navigation-drawer color="blue-grey-darken-4" persistent>
+      <v-navigation-drawer color="blue-grey-darken-4" persistent width="200">
         <v-list>
-          <v-list-item
-            class="py-5"
-            :title="userFullName"
-            :subtitle="userEmail"
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-          ></v-list-item>
+          <v-list-item class="py-5" title="My Work Space" subtitle="My Role"></v-list-item>
           <v-divider></v-divider>
           <v-list-item
             v-for="(item, index) in navItems"
@@ -33,33 +28,6 @@
         <slot></slot>
       </v-main>
     </v-layout>
-    <!-- Reminder Alert Dialog -->
-    <v-dialog v-if="currentNote" v-model="isReminderDialogOpen" width="500">
-      <v-card>
-        <!-- <v-toolbar color="#eab308" class="px-2 text-h5 text-white" height="56" elevation="3"
-          >Reminder</v-toolbar
-        > -->
-        <v-card-title class="text-h5 font-weight-medium">Reminder</v-card-title>
-        <v-card-text>
-          <div>
-            <div>
-              Reffer to:
-              <span class="text-medium-emphasis">{{ currentNote.CompanyName }}</span>
-            </div>
-            <div>
-              Date: <span class="text-medium-emphasis">{{ currentNote.SelectedDate }}</span>
-            </div>
-            <div>
-              Time: <span class="text-medium-emphasis">{{ currentNote.SelectedTime }}</span>
-            </div>
-            <div class="text-center">{{ currentNote.NoteDescription }}</div>
-          </div>
-        </v-card-text>
-        <v-card-actions class="d-flex justify-center align-center">
-          <v-btn variant="flat" color="primary" @click="closeDialog">Close</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -106,7 +74,7 @@ export default {
       let paramsObj;
 
       switch (itemName) {
-        case NavigationItems.OverView:
+        case NavigationItems.Home:
           pageName = "OverViewPage";
           paramsObj = {};
           break;
@@ -122,7 +90,7 @@ export default {
           pageName = "SalesPage";
           paramsObj = { stageName: SaleStatuses.FollowUps.value };
           break;
-        case NavigationItems.Settings:
+        case NavigationItems.MyAccount:
           pageName = "UserSettingsPage";
           paramsObj = {};
           break;
@@ -173,39 +141,45 @@ export default {
     navItems() {
       return [
         {
-          title: "Overview",
-          value: "Overview",
-          icon: "mdi-chart-bar",
+          title: NavigationItems.Home,
+          value: NavigationItems.Home,
+          icon: "mdi-home",
           isShownNow: false
         },
         {
-          title: "Calendar",
-          value: "Calendar",
+          title: NavigationItems.Calendar,
+          value: NavigationItems.Calendar,
           icon: "mdi-calendar",
           isShownNow: false
         },
         {
-          title: "Notes",
-          value: "Notes",
-          icon: "mdi-note-text",
-          isShownNow: false
-        },
-        {
-          title: "Sales",
-          value: "Sales",
+          title: NavigationItems.Sales,
+          value: NavigationItems.Sales,
           icon: "mdi-sale",
           isShownNow: false
         },
         {
-          title: "Extract From Files",
-          value: "ExtractFiles",
-          icon: "mdi-file-cog",
+          title: NavigationItems.Notes,
+          value: NavigationItems.Notes,
+          icon: "mdi-note",
           isShownNow: false
         },
         {
-          title: "Settings",
-          value: "Settings",
-          icon: "mdi-cog",
+          title: NavigationItems.Products,
+          value: NavigationItems.Products,
+          icon: "mdi-package-variant",
+          isShownNow: false
+        },
+        {
+          title: NavigationItems.Files,
+          value: NavigationItems.Files,
+          icon: "mdi-file-document",
+          isShownNow: false
+        },
+        {
+          title: NavigationItems.MyAccount,
+          value: "MyAccount",
+          icon: "mdi-account",
           isShownNow: false
         }
       ];

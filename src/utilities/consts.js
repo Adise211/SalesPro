@@ -1,9 +1,11 @@
 export const NavigationItems = {
-  OverView: "OverView",
+  Home: "Home",
   Calendar: "Calendar",
-  Notes: "Notes",
   Sales: "Sales",
-  Settings: "Settings",
+  Products: "Products",
+  Notes: "Notes",
+  Files: "Files",
+  MyAccount: "My Account",
   Logout: "Logout"
 };
 
