@@ -23,12 +23,26 @@
         </template> -->
       </v-navigation-drawer>
       <v-app-bar color="secondary" flat>
-        <v-app-bar-title>SalesPro</v-app-bar-title>
+        <v-app-bar-title class="text-h5 font-weight-bold">SalesPro</v-app-bar-title>
         <template v-slot:append>
           <v-btn icon="mdi-cog"></v-btn>
           <v-btn icon="mdi-bell"></v-btn>
-          <v-avatar>
+          <v-avatar class="mx-3 app-cursor-pointer">
             <v-img alt="John" src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+            <v-menu activator="parent" location="bottom">
+              <v-card>
+                <v-card-text class="text-center">
+                  <v-list class="pb-0">
+                    <v-list-item class="text-h6">Adise M.</v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item class="text-truncate">adisemamo211@walla.com</v-list-item>
+                    <v-list-item>
+                      <v-btn block color="primary" @click="onLogout"> Signout </v-btn>
+                    </v-list-item>
+                  </v-list>
+                </v-card-text>
+              </v-card>
+            </v-menu>
           </v-avatar>
         </template>
       </v-app-bar>
