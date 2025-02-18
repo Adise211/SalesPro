@@ -1,3 +1,8 @@
+export const ResultCodes = Object.freeze({
+  Error: -1,
+  Success: 1
+});
+
 export const NavigationItems = {
   Home: "Home",
   Calendar: "Calendar",
