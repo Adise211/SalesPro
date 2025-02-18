@@ -15,12 +15,6 @@
             @click="onNavItemClick(item.value)"
           ></v-list-item>
         </v-list>
-
-        <!-- <template v-slot:append>
-          <div class="pa-2">
-            <v-btn block color="primary" @click="onLogout"> Logout </v-btn>
-          </div>
-        </template> -->
       </v-navigation-drawer>
       <v-app-bar color="secondary" flat>
         <v-app-bar-title class="text-h5 font-weight-bold">SalesPro</v-app-bar-title>
