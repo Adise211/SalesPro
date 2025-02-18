@@ -25,17 +25,37 @@
       <v-app-bar color="secondary" flat>
         <v-app-bar-title class="text-h5 font-weight-bold">SalesPro</v-app-bar-title>
         <template v-slot:append>
-          <v-btn icon="mdi-cog"></v-btn>
+          <!-- Edit User Info  -->
+          <v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn v-bind="props" icon="mdi-cog"> </v-btn>
+            </template>
+            <v-list class="text-center">
+              <v-list-item>
+                <v-list-item-title>Edit Profile</v-list-item-title>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item>
+                <v-list-item-title>Change Password</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+          <!-- Notification -->
           <v-btn icon="mdi-bell"></v-btn>
+          <!-- User Info + Signout -->
           <v-avatar class="mx-3 app-cursor-pointer">
             <v-img alt="John" src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
             <v-menu activator="parent" location="bottom">
-              <v-card>
+              <v-card width="250">
                 <v-card-text class="text-center">
                   <v-list class="pb-0">
-                    <v-list-item class="text-h6">Adise M.</v-list-item>
+                    <v-list-item>
+                      <p class="text-h6 text-truncate">Adise M.</p>
+                    </v-list-item>
                     <v-divider></v-divider>
-                    <v-list-item class="text-truncate">adisemamo211@walla.com</v-list-item>
+                    <v-list-item>
+                      <p class="text-truncate">adisemamo211@walla.com</p>
+                    </v-list-item>
                     <v-list-item>
                       <v-btn block color="primary" @click="onLogout"> Signout </v-btn>
                     </v-list-item>
