@@ -68,7 +68,7 @@
           <v-text-field
             v-model="userLastName"
             class="mt-1"
-            placeholder="Last name (optinal)"
+            placeholder="Last name"
             variant="outlined"
             density="comfortable"
             style="width: 80%"
@@ -137,13 +137,15 @@ export default {
           LastName: this.userLastName
         };
         const response = await createNewUser(newUserData);
-        console.log("response in client:", response);
-        if (response?.createdNewUser) {
+        console.log("create new user response:", response);
+        if (response.Result.ResultCode > 0) {
           this.isLoading = false;
+          // Toast message
           this.setToastMessage({
             type: "success",
             message: "Signed up successfully!"
           });
+          // Transfer to login page
           setTimeout(() => {
             this.$router.push({
               name: "LoginPage"

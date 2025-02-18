@@ -7,6 +7,7 @@ import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc } from "firebase/firestore";
 import { getUserData } from "./data";
+import { ResultCodes } from "../../utilities/consts";
 
 export async function createNewUser(data) {
   try {
@@ -18,7 +19,13 @@ export async function createNewUser(data) {
       const userFullName = `${data.FirstName} ${data.LastName}`;
       updateUserProfile({ userFullName, userPhotoUrl: "" });
       await setDoc(doc(db, "users", user.uid), { test: true });
-      return { createdNewUser: true };
+      return {
+        Result: {
+          ResultCode: ResultCodes.Success,
+          ResultText: ""
+        },
+        Data: {}
+      };
     }
   } catch (error) {
     console.log("error creating new user", error);
