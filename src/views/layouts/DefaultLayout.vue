@@ -41,7 +41,27 @@
             </v-list>
           </v-menu>
           <!-- Notification -->
-          <v-btn icon="mdi-bell"></v-btn>
+          <v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn v-bind="props" icon="mdi-bell"> </v-btn>
+            </template>
+            <v-list width="250">
+              <v-list-item v-for="item in notificationsList" :key="item.id">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-subtitle class="text-high-emphasis">
+                  {{ item.subtitle }}
+                </v-list-item-subtitle>
+                <v-spacer></v-spacer>
+                <template v-slot:append>
+                  <v-list-item-action class="flex-column align-end">
+                    <small class="mb-4 text-high-emphasis opacity-60">{{ item.date }}</small>
+                    <v-spacer></v-spacer>
+                    <small class="mb-4 text-high-emphasis opacity-60">{{ item.time }}</small>
+                  </v-list-item-action>
+                </template>
+              </v-list-item>
+            </v-list>
+          </v-menu>
           <!-- User Info + Signout -->
           <v-avatar class="mx-3 app-cursor-pointer">
             <v-img alt="John" src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
@@ -233,6 +253,13 @@ export default {
           icon: "mdi-account",
           isShownNow: false
         }
+      ];
+    },
+    notificationsList() {
+      return [
+        { id: 1, title: "test 1", subtitle: "Some text for test", date: "21/01/24", time: "12:45" },
+        { id: 2, title: "test 1", subtitle: "Some text for test", date: "19/05/24", time: "13:00" },
+        { id: 3, title: "test 1", subtitle: "Some text for test", date: "31/12/24", time: "19:20" }
       ];
     }
   },
