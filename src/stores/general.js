@@ -1,16 +1,9 @@
 import { defineStore } from "pinia";
 import moment from "moment";
-import { Config } from "../utilities/config";
-import { convertTime } from "../utilities/utilsFuncs";
 
 export const useGeneralStore = defineStore("general", {
   state: () => {
     return {
-      userId: "",
-      sessionToken: "",
-      userLastLoggedInTime: 0,
-      userFullName: "",
-      userEmail: "",
       companiesList: [],
       calendarEvents: [],
       userNotesList: [],
@@ -22,17 +15,6 @@ export const useGeneralStore = defineStore("general", {
     };
   },
   getters: {
-    isSessionUserActive(state) {
-      let currentTime = moment(new Date());
-      let lastLoggedInTime = moment(state.userLastLoggedInTime);
-
-      return (
-        // how much time passed since user logged in until now in hours
-        currentTime.diff(lastLoggedInTime, "hours") <
-        // the limited time user could be active in the system (from second to hours)
-        convertTime(Config.session.userActivityThreshold).hours
-      );
-    },
     noteReminder(state) {
       // Current time
       const now = moment(new Date());
@@ -61,21 +43,6 @@ export const useGeneralStore = defineStore("general", {
     }
   },
   actions: {
-    setUserId(data) {
-      this.userId = data;
-    },
-    setSessionToken(token) {
-      this.sessionToken = token;
-    },
-    setUserLastLoggedInTime(time) {
-      this.userLastLoggedInTime = time;
-    },
-    setUserFullName(fullName) {
-      this.userFullName = fullName;
-    },
-    setUserEmail(email) {
-      this.userEmail = email;
-    },
     setCompaniesList(list) {
       this.companiesList = list;
     },
@@ -184,21 +151,12 @@ export const useGeneralStore = defineStore("general", {
   },
   persist: [
     {
-      paths: [
-        "userId",
-        "userLastLoggedInTime",
-        "userFullName",
-        "userEmail",
-        "companiesList",
-        "userNotesList",
-        "notesWithReminder",
-        "calendarEvents"
-      ],
+      paths: ["companiesList", "userNotesList", "notesWithReminder", "calendarEvents"],
       storage: localStorage
-    },
-    {
-      paths: ["sessionToken"],
-      storage: sessionStorage
     }
+    // {
+    //   paths: ["sessionToken"],
+    //   storage: sessionStorage
+    // }
   ]
 });
