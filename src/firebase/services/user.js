@@ -57,7 +57,11 @@ export async function loginUser(data) {
       generalStore.setCompaniesList(userDataResponse.userListedCompanies || []);
       generalStore.setUserNotesList(userDataResponse.userNotes);
 
-      return user;
+      // Send back the response
+      const result = new ResponseBody();
+      result.Result.ResultCode = ResultCodes.Success;
+      result.Data = user;
+      return result;
     }
   } catch (error) {
     console.log("error trying signin", error);
