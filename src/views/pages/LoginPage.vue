@@ -17,7 +17,7 @@
                 class="mx-auto"
                 placeholder="Email"
                 append-inner-icon="mdi-email"
-                :rules="[loginRules.required]"
+                :rules="[loginRules.required, loginRules.emailMatch]"
                 validate-on="blur"
                 variant="outlined"
                 density="comfortable"
@@ -42,7 +42,7 @@
             </v-form>
           </div>
           <div class="login-actions d-flex flex-column align-center justify-center mt-5">
-            <v-btn color="primary" variant="flat" @click="onSigninClick" :loading="isLoading"
+            <v-btn color="primary" variant="flat" @click="onLoginClick" :loading="isLoading"
               >Login</v-btn
             >
             <a
@@ -80,7 +80,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    async onSigninClick() {
+    async onLoginClick() {
       const { valid } = await this.$refs.loginForm.validate();
       if (valid) {
         this.isLoading = true;
@@ -90,7 +90,7 @@ export default {
         });
         console.log("client: signin response -", response);
 
-        if (response) {
+        if (response.Result.ResultCode > 0) {
           this.isLoading = false;
           this.$router.push({
             name: "HomePage"
@@ -112,7 +112,7 @@ export default {
       return "images/logo.png";
     },
     loginRules() {
-      const emailRegex = new RegExp(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/, "g");
+      const emailRegex = new RegExp(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/);
       return {
         required: (value) => !!value || "Required.",
         emailMatch: (value) => emailRegex.test(value) || "Invalid e-mail."
