@@ -15,7 +15,7 @@
             v-model="userEmail"
             append-inner-icon="mdi-email"
             placeholder="Email"
-            :rules="[signupRules.required]"
+            :rules="[signupRules.required, signupRules.emailMatch]"
             validate-on="blur"
             variant="outlined"
             density="comfortable"
@@ -69,6 +69,7 @@
             v-model="userLastName"
             class="mt-1"
             placeholder="Last name"
+            :rules="[signupRules.required]"
             variant="outlined"
             density="comfortable"
             style="width: 80%"
@@ -127,9 +128,9 @@ export default {
   methods: {
     ...mapActions(useGeneralStore, ["setToastMessage"]),
     async onSignupClick() {
-      this.isLoading = true;
       const { valid } = await this.$refs.signupForm.validate();
       if (valid) {
+        this.isLoading = true;
         const newUserData = {
           Email: this.userEmail,
           Password: this.userPassword1,
@@ -165,15 +166,14 @@ export default {
       return "/images/login-image2.jpg";
     },
     signupRules() {
-      const emailRegex = new RegExp(
-        /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/g
+      const EMAIL_REGEXP = new RegExp(
+        /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
       );
       return {
         required: (value) => !!value || "Required.",
-        // TO DO: make the email regex work (not in use right now!)
-        emailMatch: (value) => emailRegex.test(value) || "Invalid e-mail.",
-        verifyPassword: (value) => value === this.userPassword1 || "Not the same password",
-        passwordLength: (value) => value >= 6 || "insert ore than 6 cha..."
+        emailMatch: (value) => EMAIL_REGEXP.test(value.trim()) || "Invalid e-mail.",
+        verifyPassword: (value) => value === this.userPassword1 || "Password do not match",
+        passwordLength: (value) => value.length >= 6 || "Insert at at least 6 characters"
       };
     }
   },
