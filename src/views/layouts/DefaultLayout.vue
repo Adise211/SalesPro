@@ -91,6 +91,7 @@
 <script>
 import { NavigationItems, SaleStatuses } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
+import { useSessionStore } from "../../stores/session";
 import { useGeneralStore } from "@/stores/general";
 import { useCalendarStore } from "@/stores/calendar";
 import { logoutUser } from "@/firebase/services/user";
@@ -197,12 +198,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(useGeneralStore, [
-      "userEmail",
-      "userFullName",
-      "isSessionUserActive",
-      "noteReminder"
-    ]),
+    ...mapState(useGeneralStore, ["noteReminder"]),
+    ...mapState(useSessionStore, ["userEmail", "userFullName", "isSessionUserActive"]),
     navItems() {
       return [
         {

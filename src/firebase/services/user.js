@@ -44,13 +44,13 @@ export async function loginUser(data) {
     const signInResponse = await signInWithEmailAndPassword(auth, email, password);
     if (signInResponse) {
       const user = signInResponse.user;
-      const { generalStore } = initStores();
+      const { generalStore, sessionStore } = initStores();
       // save user auth info
-      generalStore.setUserId(user?.uid);
-      generalStore.setUserLastLoggedInTime(new Date());
-      generalStore.setSessionToken(user?.accessToken);
-      generalStore.setUserFullName(user.displayName);
-      generalStore.setUserEmail(user.email);
+      sessionStore.setUserId(user?.uid);
+      sessionStore.setUserLastLoggedInTime(new Date());
+      sessionStore.setSessionToken(user?.accessToken);
+      sessionStore.setUserFullName(user.displayName);
+      sessionStore.setUserEmail(user.email);
       // get user info and add it to the store
       const userDataResponse = await getUserData();
       generalStore.setCalendarEvents(userDataResponse.userEvents);
@@ -70,8 +70,8 @@ export async function loginUser(data) {
 
 export async function logoutUser() {
   try {
-    const { generalStore } = initStores();
-    generalStore.setUserLastLoggedInTime(0);
+    const { sessionStore } = initStores();
+    sessionStore.setUserLastLoggedInTime(0);
     await auth.signOut();
 
     return { isUserLogedout: true };

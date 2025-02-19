@@ -1,3 +1,4 @@
+import { useSessionStore } from "./session";
 import { useCalendarStore } from "./calendar";
 import { useGeneralStore } from "./general";
 
@@ -6,8 +7,9 @@ import { useGeneralStore } from "./general";
 function initStores() {
   const generalStore = useGeneralStore();
   const calendarStore = useCalendarStore();
+  const sessionStore = useSessionStore();
 
-  return { generalStore, calendarStore };
+  return { generalStore, calendarStore, sessionStore };
 }
 
 export { initStores };

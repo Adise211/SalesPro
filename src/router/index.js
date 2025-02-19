@@ -127,8 +127,8 @@ router.beforeEach(async (to) => {
   let isUserAuthorized;
   const isRouteExist = router.hasRoute(to.name);
 
-  const { generalStore } = initStores();
-  if (generalStore.userId) {
+  const { sessionStore } = initStores();
+  if (sessionStore.userId) {
     isUserAuthorized = true;
   } else {
     isUserAuthorized = false;
