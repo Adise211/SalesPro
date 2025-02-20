@@ -68,13 +68,14 @@ export async function loginUser(data) {
   }
 }
 
-export async function logoutUser() {
+export async function signoutUser() {
   try {
-    const { sessionStore } = initStores();
-    sessionStore.setUserLastLoggedInTime(0);
     await auth.signOut();
 
-    return { isUserLogedout: true };
+    // Send back the response
+    const result = new ResponseBody();
+    result.Result.ResultCode = ResultCodes.Success;
+    return result;
   } catch (error) {
     console.log("error trying to logout", error);
   }

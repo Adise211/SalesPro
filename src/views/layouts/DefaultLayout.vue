@@ -71,7 +71,7 @@
                       <p class="text-truncate">adisemamo211@walla.com</p>
                     </v-list-item>
                     <v-list-item>
-                      <v-btn block color="primary" @click="onLogout"> Signout </v-btn>
+                      <v-btn block color="primary" @click="onSignout"> Signout </v-btn>
                     </v-list-item>
                   </v-list>
                 </v-card-text>
@@ -94,7 +94,7 @@ import { mapState, mapActions } from "pinia";
 import { useSessionStore } from "../../stores/session";
 import { useGeneralStore } from "@/stores/general";
 import { useCalendarStore } from "@/stores/calendar";
-import { logoutUser } from "@/firebase/services/user";
+import { signoutUser } from "@/firebase/services/user";
 import { updateNoteWatchedTime } from "@/firebase/services/data";
 import { Config } from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
@@ -168,12 +168,15 @@ export default {
         params: paramsObj
       });
     },
-    async onLogout() {
-      const response = await logoutUser();
-      if (response?.isUserLogedout) {
+    async onSignout() {
+      const response = await signoutUser();
+
+      if (response.Result.ResultCode > 0) {
         // Reset store (user info)
         useGeneralStore().$reset();
         useCalendarStore().$reset();
+        useSessionStore().$reset();
+
         // Redirect to login page
         this.$router.push({
           name: "LoginPage"
@@ -183,7 +186,7 @@ export default {
     sessionExparationHandler() {
       if (!this.isSessionUserActive) {
         console.log("logged out auto!!!");
-        this.onLogout();
+        this.onSignout();
       }
     },
     async closeDialog() {
