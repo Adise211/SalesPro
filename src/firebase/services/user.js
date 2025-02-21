@@ -12,12 +12,18 @@ import { ResponseBody } from "../../../public/_config/data_temp";
 
 export async function createNewUser(data) {
   try {
+    // Fix name (first letter as capital letter)
+    const fixedFirstName =
+      data.FirstName.charAt(0).toUpperCase() + data.FirstName.slice(1).toLowerCase();
+    const fixedLastName =
+      data.LastName.charAt(0).toUpperCase() + data.LastName.slice(1).toLowerCase();
+
     const email = data.Email;
     const password = data.Password;
     const response = await createUserWithEmailAndPassword(auth, email, password);
     if (response) {
       const user = response.user;
-      const userFullName = `${data.FirstName} ${data.LastName}`;
+      const userFullName = `${fixedFirstName} ${fixedLastName}`;
       // Update user auth profile (Firebase Auth)
       await updateUserProfile({ userFullName, userPhotoUrl: "" });
       // Create new user table
