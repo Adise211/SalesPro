@@ -58,6 +58,19 @@ export async function updateUserProfile(data) {
   }
 }
 
+// export async function updateUserInfo(data) {
+//   try {
+//     const info = {
+//       WorkSpace: data.workspace,
+//       Role: data.role
+//     }
+
+//   } catch (error) {
+//     console.log("error uodating user info", error);
+
+//   }
+// }
+
 export async function loginUser(data) {
   try {
     const email = data.Email;
