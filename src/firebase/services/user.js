@@ -87,6 +87,9 @@ export async function loginUser(data) {
       sessionStore.setUserEmail(user.email);
       // get user info and add it to the store
       const userDataResponse = await getUserData();
+      sessionStore.setUserWorkSpace(userDataResponse.WorkSpace || "");
+      sessionStore.setUserRole(userDataResponse.Role || "");
+      // TODO: Change the data (params)
       generalStore.setCalendarEvents(userDataResponse.userEvents);
       generalStore.setCompaniesList(userDataResponse.userListedCompanies || []);
       generalStore.setUserNotesList(userDataResponse.userNotes);

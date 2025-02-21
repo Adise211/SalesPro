@@ -10,7 +10,9 @@ export const useSessionStore = defineStore("session", {
       sessionToken: "",
       userLastLoggedInTime: 0,
       userFullName: "",
-      userEmail: ""
+      userEmail: "",
+      userWorkSpace: "",
+      userRole: ""
     };
   },
   getters: {
@@ -41,6 +43,12 @@ export const useSessionStore = defineStore("session", {
     },
     setUserEmail(email) {
       this.userEmail = email;
+    },
+    setUserWorkSpace(workspace) {
+      this.userWorkSpace = workspace;
+    },
+    setUserRole(role) {
+      this.userRole = role;
     }
   },
   persist: true
