@@ -57,7 +57,7 @@
             v-model="userFirstName"
             class="mt-1"
             placeholder="Name"
-            :rules="[signupRules.required]"
+            :rules="[signupRules.required, signupRules.nameMatch]"
             validate-on="blur"
             variant="outlined"
             density="comfortable"
@@ -69,7 +69,7 @@
             v-model="userLastName"
             class="mt-1"
             placeholder="Last name"
-            :rules="[signupRules.required]"
+            :rules="[signupRules.required, signupRules.nameMatch]"
             variant="outlined"
             density="comfortable"
             style="width: 80%"
@@ -169,9 +169,13 @@ export default {
       const EMAIL_REGEXP = new RegExp(
         /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
       );
+      // Letters only (no numbers or special chars)
+      const NAME_REGEXP = new RegExp(/^[A-Za-z]+$/);
+
       return {
         required: (value) => !!value || "Required.",
         emailMatch: (value) => EMAIL_REGEXP.test(value.trim()) || "Invalid e-mail.",
+        nameMatch: (value) => NAME_REGEXP.test(value.trim()) || "Insert letters only",
         verifyPassword: (value) => value === this.userPassword1 || "Password do not match",
         passwordLength: (value) => value.length >= 6 || "Insert at at least 6 characters"
       };
