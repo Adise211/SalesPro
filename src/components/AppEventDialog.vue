@@ -83,9 +83,9 @@
                     class="w-25"
                   ></v-select>
                   <v-select
-                    v-model="startLocale12HVal"
+                    v-model="start12HStringVal"
                     class="w-0 ml-2"
-                    :items="beforeOrAfterMidDay"
+                    :items="hours12FormatStrings"
                   ></v-select>
                 </div>
               </v-col>
@@ -99,9 +99,9 @@
                     class="w-25"
                   ></v-select>
                   <v-select
-                    v-model="endLocale12HVal"
+                    v-model="end12HStringVal"
                     class="w-0 ml-2"
-                    :items="beforeOrAfterMidDay"
+                    :items="hours12FormatStrings"
                   ></v-select>
                 </div>
               </v-col>
@@ -117,19 +117,18 @@
               <v-col>
                 <v-autocomplete
                   v-model="currentEventObj.companyId"
-                  label="Company's Name"
+                  label="Customer (optinal)"
                   append-inner-icon="mdi-magnify"
                   :items="companiesList"
                   item-title="companyName"
                   item-value="companyId"
-                  hint="Companies from sales board"
                   persistent-hint
                 ></v-autocomplete>
               </v-col>
               <v-col>
                 <v-select
                   v-model="currentEventObj.people"
-                  label="People"
+                  label="Team"
                   append-inner-icon="mdi-account-group"
                   multiple
                   :items="['Me', 'Boss']"
@@ -149,10 +148,10 @@
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
         <div class="pb-3">
-          <v-btn color="primary" variant="text" @click="onSaveData" :loading="isLoading"
+          <v-btn color="primary" variant="text" @click="onCancel">Cancel</v-btn>
+          <v-btn color="primary" variant="flat" @click="onSaveData" :loading="isLoading"
             >Save</v-btn
           >
-          <v-btn color="primary" variant="text" @click="onCancel">Cancel</v-btn>
         </div>
       </template>
     </AppCard>
@@ -189,8 +188,8 @@ export default {
     isDialogOpenLocally: false,
     isLoading: false,
     currentEventObj: { ...Config.DataTemplates.CalendarEventTemp },
-    startLocale12HVal: "AM",
-    endLocale12HVal: "AM",
+    start12HStringVal: "AM",
+    end12HStringVal: "AM",
     startDateMenu: false,
     endDateMenu: false,
     startDateValue: "",
@@ -261,8 +260,8 @@ export default {
         fullStart = startDateISO;
         fullEnd = endDateISO;
       } else {
-        const startTime = convertTime(`${this.startTime} ${this.startLocale12HVal}`).time12hFormat;
-        const endTime = convertTime(`${this.endTime} ${this.endLocale12HVal}`).time12hFormat;
+        const startTime = convertTime(`${this.startTime} ${this.start12HStringVal}`).time12hFormat;
+        const endTime = convertTime(`${this.endTime} ${this.end12HStringVal}`).time12hFormat;
 
         fullStart = `${startDateISO} ${startTime}`;
         fullEnd = `${endDateISO} ${endTime}`;
@@ -276,20 +275,20 @@ export default {
   },
   computed: {
     ...mapState(useGeneralStore, ["companiesList"]),
-    beforeOrAfterMidDay() {
+    hours12FormatStrings() {
       return ["AM", "PM"];
     },
     hourOptions() {
-      const fullDayHours = [];
+      const hours = [];
       for (let hourIndex = 1; hourIndex < 13; hourIndex++) {
-        // Check if the hour is not exist yet in the list
-        if (!fullDayHours.includes(hourIndex.toString())) {
-          // If not exist - add it as time
-          fullDayHours.push(hourIndex + ":00");
-          fullDayHours.push(hourIndex + ":30");
+        // Check if hour not exist in the list
+        if (!hours.includes(hourIndex.toString())) {
+          // If not exist - add it
+          hours.push(hourIndex + ":00");
+          hours.push(hourIndex + ":30");
         }
       }
-      return fullDayHours;
+      return hours;
     },
     formattedDatesForDisplay() {
       return {
