@@ -64,11 +64,11 @@
                 <v-card-text class="text-center">
                   <v-list class="pb-0">
                     <v-list-item>
-                      <p class="text-h6 text-truncate">Adise M.</p>
+                      <p class="text-h6 text-truncate">{{ userNameDisplay }}</p>
                     </v-list-item>
                     <v-divider></v-divider>
                     <v-list-item>
-                      <p class="text-truncate">adisemamo211@walla.com</p>
+                      <p class="text-truncate">{{ userEmail }}</p>
                     </v-list-item>
                     <v-list-item>
                       <v-btn block color="primary" @click="onSignout"> Signout </v-btn>
@@ -248,6 +248,12 @@ export default {
           isShownNow: false
         }
       ];
+    },
+    userNameDisplay() {
+      const LAST_NAME = this.userFullName.split(" ")[1];
+      const LAST_NAME_INDEX = this.userFullName.indexOf(LAST_NAME);
+
+      return this.userFullName.slice(0, LAST_NAME_INDEX + 1) + ".";
     },
     notificationsList() {
       return [
