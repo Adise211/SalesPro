@@ -18,8 +18,19 @@ export async function createNewUser(data) {
     if (response) {
       const user = response.user;
       const userFullName = `${data.FirstName} ${data.LastName}`;
-      updateUserProfile({ userFullName, userPhotoUrl: "" });
-      await setDoc(doc(db, "users", user.uid), { test: true });
+      // Update user auth profile (Firebase Auth)
+      await updateUserProfile({ userFullName, userPhotoUrl: "" });
+      // Create new user table
+      await setDoc(doc(db, "users", user.uid), {
+        UserInfo: {
+          Email: email,
+          FullName: userFullName,
+          WorkSpace: "",
+          Role: "",
+          LastLogin: 0,
+          LastUpdated: Date.now()
+        }
+      });
       // Send back the response
       const result = new ResponseBody();
       result.Result.ResultCode = ResultCodes.Success;
@@ -31,10 +42,14 @@ export async function createNewUser(data) {
 }
 
 export async function updateUserProfile(data) {
-  await updateProfile(auth.currentUser, {
-    displayName: data.userFullName,
-    photoURL: data.userPhotoUrl
-  });
+  try {
+    await updateProfile(auth.currentUser, {
+      displayName: data.userFullName,
+      photoURL: data.userPhotoUrl
+    });
+  } catch (error) {
+    console.log("error uodating user profile", error);
+  }
 }
 
 export async function loginUser(data) {
