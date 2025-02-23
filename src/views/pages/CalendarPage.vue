@@ -128,6 +128,7 @@ export default {
   methods: {
     ...mapActions(useGeneralStore, ["removeCalendarEventFromStore", "setToastMessage"]),
     calendarEventClickHandler(eventInfo) {
+      console.log("EVENT CLICK:", eventInfo);
       // get the clicked el
       let element = eventInfo.jsEvent.target;
       this.targetEventEl = element;

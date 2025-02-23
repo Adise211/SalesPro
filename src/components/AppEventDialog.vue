@@ -58,7 +58,7 @@
               <v-col>
                 <!-- 3) event title -->
                 <v-text-field
-                  v-model="currentEventObj.title"
+                  v-model="currentEvent.Title"
                   label="Event Title*"
                   :rules="[formRules.required]"
                 ></v-text-field>
@@ -69,12 +69,12 @@
               <v-col md="3">
                 <v-checkbox
                   label="Full day"
-                  v-model="currentEventObj.allDay"
+                  v-model="currentEvent.AllDay"
                   color="blue-darken-1"
                 ></v-checkbox>
               </v-col>
               <v-col>
-                <div v-if="!currentEventObj.allDay" class="d-flex">
+                <div v-if="!currentEvent.AllDay" class="d-flex">
                   <v-select
                     v-model="startTime"
                     label="Start time"
@@ -90,7 +90,7 @@
                 </div>
               </v-col>
               <v-col>
-                <div v-if="!currentEventObj.allDay" class="d-flex">
+                <div v-if="!currentEvent.AllDay" class="d-flex">
                   <v-select
                     v-model="endTime"
                     label="End time"
@@ -109,14 +109,14 @@
             <!-- Third Row -->
             <v-row>
               <v-col>
-                <v-textarea v-model="currentEventObj.description" label="Description"></v-textarea>
+                <v-textarea v-model="currentEvent.Description" label="Description"></v-textarea>
               </v-col>
             </v-row>
             <!-- Forth Row -->
             <v-row>
               <v-col>
                 <v-autocomplete
-                  v-model="currentEventObj.companyId"
+                  v-model="currentEvent.CustomerId"
                   label="Customer (optinal)"
                   append-inner-icon="mdi-magnify"
                   :items="companiesList"
@@ -127,8 +127,8 @@
               </v-col>
               <v-col>
                 <v-select
-                  v-model="currentEventObj.people"
-                  label="Team"
+                  v-model="currentEvent.Team"
+                  label="Team (optinal)"
                   append-inner-icon="mdi-account-group"
                   multiple
                   :items="['Me', 'Boss']"
@@ -136,8 +136,8 @@
               </v-col>
               <v-col>
                 <v-text-field
-                  v-model="currentEventObj.location"
-                  label="Location"
+                  v-model="currentEvent.Location"
+                  label="Location (optinal)"
                   append-inner-icon="mdi-map-marker"
                 ></v-text-field>
               </v-col>
@@ -148,7 +148,7 @@
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
         <div class="pb-3">
-          <v-btn color="primary" variant="text" @click="onCancel">Cancel</v-btn>
+          <v-btn color="primary" variant="text" @click="closeDialog">Cancel</v-btn>
           <v-btn color="primary" variant="flat" @click="onSaveData" :loading="isLoading"
             >Save</v-btn
           >
@@ -166,7 +166,7 @@ import { ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/data";
 import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { Config } from "@/utilities/config";
+import { CalendarEvent } from "../../public/_config/data_temp";
 
 export default {
   setup() {
@@ -187,7 +187,7 @@ export default {
   data: () => ({
     isDialogOpenLocally: false,
     isLoading: false,
-    currentEventObj: { ...Config.DataTemplates.CalendarEventTemp },
+    currentEvent: new CalendarEvent(),
     start12HStringVal: "AM",
     end12HStringVal: "AM",
     startDateMenu: false,
@@ -196,7 +196,7 @@ export default {
     endDateValue: "",
     startTime: "",
     endTime: "",
-    isOnEditMode: false
+    isEditMode: false
   }),
   created() {},
   mounted() {},
@@ -211,7 +211,7 @@ export default {
       let storeAction = this.addCalendarEventToStore;
       let currentToastMsg = ToastMessages.SuccessMessages.Created;
 
-      if (this.isOnEditMode) {
+      if (this.isEditMode) {
         APIRequest = updateCalendarEvent;
         storeAction = this.updateCalendarEventInStore;
         currentToastMsg = ToastMessages.SuccessMessages.Updated;
@@ -219,14 +219,15 @@ export default {
 
       // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
-      if (valid && this.currentEventObj) {
+      if (valid && this.currentEvent) {
         this.isLoading = true;
         // Get dates with the next format : "YYYY-MM-DD HH:mm"
         const { fullStart, fullEnd } = this.getEventFullDates();
-        this.currentEventObj.start = fullStart;
-        this.currentEventObj.end = fullEnd;
+        this.currentEvent.Start = fullStart;
+        this.currentEvent.End = fullEnd;
+        console.log("current event ->", this.currentEvent);
 
-        const response = await APIRequest(this.currentEventObj);
+        const response = await APIRequest(this.currentEvent);
         if (response.Result.Success) {
           // Show success toast
           this.setToastMessage({
@@ -236,18 +237,18 @@ export default {
           // Add to store, send to parent and reset
           storeAction(response.Data);
           this.$emit("addNewEvent", response.Data);
-          this.onCancel();
+          this.closeDialog();
         }
         // Stop loader
         this.isLoading = false;
       }
     },
-    onCancel() {
+    closeDialog() {
       this.isDialogOpenLocally = false;
       this.$refs.eventForm.resetValidation();
       this.startDateValue = "";
       this.endDateValue = "";
-      this.currentEventObj = { ...Config.DataTemplates.CalendarEventTemp };
+      this.currentEvent = new CalendarEvent();
       this.$emit("onDialogClose");
     },
     getEventFullDates() {
@@ -256,7 +257,7 @@ export default {
 
       const startDateISO = convertDate(this.startDateValue).ISOFormat;
       const endDateISO = convertDate(this.endDateValue).ISOFormat;
-      if (this.currentEventObj.allDay) {
+      if (this.currentEvent.AllDay) {
         fullStart = startDateISO;
         fullEnd = endDateISO;
       } else {
@@ -323,8 +324,8 @@ export default {
     },
     selectedEvent(newData) {
       if (newData) {
-        this.currentEventObj = Object.assign(this.currentEventObj, newData.appEvent);
-        this.isOnEditMode = true;
+        this.currentEvent = Object.assign(this.currentEvent, newData.appEvent);
+        this.isEditMode = true;
 
         const { appEvent } = newData;
         const { start, end } = appEvent;
@@ -333,7 +334,7 @@ export default {
         this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
         this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
       } else {
-        this.isOnEditMode = false;
+        this.isEditMode = false;
       }
     }
   }

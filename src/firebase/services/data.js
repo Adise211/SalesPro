@@ -29,16 +29,16 @@ export async function getUserData() {
 export async function createCalendarEvent(data) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
-    if (!data.id) {
+    if (!data.Id) {
       // generate random id
       const rendonId = "event" + generatedId();
-      data.id = rendonId;
+      data.Id = rendonId;
     }
 
     // add event object in "userEvents" array
     // firstore will create automatically if array is not exist
     await updateDoc(userRef, {
-      userEvents: arrayUnion(data)
+      CalendarEvents: arrayUnion(data)
     });
     return { Result: { Success: true }, Data: data };
   } catch (error) {
