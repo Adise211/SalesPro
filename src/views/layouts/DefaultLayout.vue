@@ -93,7 +93,6 @@ import { NavigationItems, SaleStatuses } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useSessionStore } from "../../stores/session";
 import { useGeneralStore } from "@/stores/general";
-import { useCalendarStore } from "@/stores/calendar";
 import { signoutUser } from "@/firebase/services/user";
 import { updateNoteWatchedTime } from "@/firebase/services/data";
 import { Config } from "@/utilities/config";
@@ -174,7 +173,6 @@ export default {
       if (response.Result.ResultCode > 0) {
         // Reset store (user info)
         useGeneralStore().$reset();
-        useCalendarStore().$reset();
         useSessionStore().$reset();
 
         // Redirect to login page

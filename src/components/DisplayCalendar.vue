@@ -39,8 +39,6 @@
 <script>
 // @ts-ignore
 import AppCard from "./AppCard.vue";
-import { mapState } from "pinia";
-import { useCalendarStore } from "../stores/calendar";
 import moment from "moment";
 
 export default {
@@ -74,7 +72,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(useCalendarStore, ["userEventsList"]),
     currentEvents: function () {
       const eventsList = this.userEventsList.filter((item) => {
         return item.EventDate === this.selectedDate;

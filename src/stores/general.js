@@ -149,14 +149,5 @@ export const useGeneralStore = defineStore("general", {
       this.notesWithReminder = updatedList;
     }
   },
-  persist: [
-    {
-      paths: ["companiesList", "userNotesList", "notesWithReminder", "calendarEvents"],
-      storage: localStorage
-    }
-    // {
-    //   paths: ["sessionToken"],
-    //   storage: sessionStorage
-    // }
-  ]
+  persist: true
 });
