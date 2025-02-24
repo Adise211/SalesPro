@@ -67,7 +67,7 @@ import AppCard from "@/components/AppCard.vue";
 import AppEventDialog from "@/components/AppEventDialog.vue";
 import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { convertDate } from "@/utilities/utilsFuncs";
+import { convertDate, changePropertiesToLowerCase } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
 import { removeCalendarEvent } from "@/firebase/services/data";
 import moment from "moment";
@@ -158,10 +158,11 @@ export default {
       this.isEventDialogOpen = true;
       this.closeEventPopup();
     },
-    addNewEventToFC(val) {
+    addNewEventToFC(obj) {
+      const updatedObj = changePropertiesToLowerCase(obj);
       // Add to Fullcalendar component:
       // https://fullcalendar.io/docs/Calendar-addEvent
-      this.activeCalendar.addEvent(val);
+      this.activeCalendar.addEvent(updatedObj);
     },
     async onDeleteEventClick() {
       this.isDeleteLoaderActive = true;

@@ -299,7 +299,7 @@ export default {
     },
     formRules() {
       return {
-        required: (value) => !!value || "Field is required",
+        required: (value) => !!value || "Required.",
         validRange: () => this.isDateInValidRange || "Invalid range"
       };
     },

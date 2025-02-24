@@ -40,3 +40,13 @@ export function convertDate(value, fromEpochTime) {
     FullDateWith24H
   };
 }
+
+export function changePropertiesToLowerCase(obj) {
+  const updatedObj = Object.keys(obj).reduce((acc, key) => {
+    const newKey = key.charAt(0).toLowerCase() + key.slice(1);
+    acc[newKey] = obj[key];
+    return acc;
+  }, {});
+
+  return updatedObj;
+}
