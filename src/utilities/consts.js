@@ -53,6 +53,10 @@ export const ToastMessages = {
     Removed: "Removed Successfully!"
   },
   ErrorMessages: {
-    General: "General Error"
+    General: "General Error",
+    Created: "Failed to create",
+    Updated: "Failed to update",
+    Delete: "Failed to delete",
+    Removed: "Failed to remove"
   }
 };
