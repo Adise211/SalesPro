@@ -215,14 +215,6 @@ export default {
   methods: {
     ...mapActions(useGeneralStore, ["setToastMessage"]),
     async onSaveData() {
-      let APIRequest = createCalendarEvent;
-      let currentToastMsg = ToastMessages.SuccessMessages.Created;
-
-      if (this.isEditMode) {
-        APIRequest = updateCalendarEvent;
-        currentToastMsg = ToastMessages.SuccessMessages.Updated;
-      }
-
       // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
       if (valid && this.currentEvent) {
@@ -233,24 +225,50 @@ export default {
         this.currentEvent.End = fullEnd;
         console.log("current event ->", this.currentEvent);
 
-        const response = await APIRequest(this.currentEvent);
-        if (response.Result.ResultCode > 0) {
-          // Show success toast
-          this.setToastMessage({
-            type: "success",
-            message: currentToastMsg
-          });
-          // Send to parent and reset
-          this.$emit("addNewEvent", response.Data);
+        // Create or update event depend on the mode
+        if (!this.isEditMode) {
+          await this.createNewEvent();
         } else {
-          this.setToastMessage({
-            type: "error",
-            message: ToastMessages.ErrorMessages.Updated
-          });
+          await this.updateEvent();
         }
-        // Stop loader
+
+        // Stop loader and close dialog
         this.isLoading = false;
         this.closeDialog();
+      }
+    },
+    async createNewEvent() {
+      const response = await createCalendarEvent(this.currentEvent);
+      if (response.Result.ResultCode > 0) {
+        // Send to parent
+        this.$emit("addNewEvent", response.Data);
+        // Show success toast
+        this.setToastMessage({
+          type: "success",
+          message: ToastMessages.SuccessMessages.Created
+        });
+      } else {
+        this.setToastMessage({
+          type: "error",
+          message: ToastMessages.ErrorMessages.Created
+        });
+      }
+    },
+    async updateEvent() {
+      const response = await updateCalendarEvent(this.currentEvent);
+      if (response.Result.ResultCode > 0) {
+        // Send to parent
+        this.$emit("addNewEvent", response.Data);
+        // Show success toast
+        this.setToastMessage({
+          type: "success",
+          message: ToastMessages.SuccessMessages.Updated
+        });
+      } else {
+        this.setToastMessage({
+          type: "error",
+          message: ToastMessages.ErrorMessages.Updated
+        });
       }
     },
     closeDialog() {
