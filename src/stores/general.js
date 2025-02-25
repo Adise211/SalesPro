@@ -5,7 +5,6 @@ export const useGeneralStore = defineStore("general", {
   state: () => {
     return {
       companiesList: [],
-      calendarEvents: [],
       userNotesList: [],
       notesWithReminder: [],
       toastMessage: {
@@ -46,9 +45,6 @@ export const useGeneralStore = defineStore("general", {
     setCompaniesList(list) {
       this.companiesList = list;
     },
-    setCalendarEvents(list) {
-      this.calendarEvents = list;
-    },
     setUserNotesList(data) {
       this.userNotesList = data;
       this.updateNotesWithReminderList();
@@ -62,27 +58,27 @@ export const useGeneralStore = defineStore("general", {
       this.toastMessage.type = "";
       this.toastMessage.message = "";
     },
-    addCalendarEventToStore(eventData) {
-      this.calendarEvents.push(eventData);
-    },
-    removeCalendarEventFromStore(eventData) {
-      const objIndex = this.calendarEvents.indexOf(eventData);
-      // only splice array when item is found
-      if (objIndex > -1) {
-        this.calendarEvents.splice(objIndex, 1);
-      }
-    },
-    updateCalendarEventInStore(eventData) {
-      const isEventInList = this.calendarEvents.find((item) => {
-        return item.id === eventData.id;
-      });
-      if (isEventInList && this.calendarEvents.length > 0) {
-        const currentEventIndex = this.calendarEvents.indexOf(isEventInList);
-        if (currentEventIndex > -1) {
-          this.calendarEvents.splice(currentEventIndex, 1, eventData);
-        }
-      }
-    },
+    // addCalendarEventToStore(eventData) {
+    //   this.calendarEvents.push(eventData);
+    // },
+    // removeCalendarEventFromStore(eventData) {
+    //   const objIndex = this.calendarEvents.indexOf(eventData);
+    //   // only splice array when item is found
+    //   if (objIndex > -1) {
+    //     this.calendarEvents.splice(objIndex, 1);
+    //   }
+    // },
+    // updateCalendarEventInStore(eventData) {
+    //   const isEventInList = this.calendarEvents.find((item) => {
+    //     return item.id === eventData.id;
+    //   });
+    //   if (isEventInList && this.calendarEvents.length > 0) {
+    //     const currentEventIndex = this.calendarEvents.indexOf(isEventInList);
+    //     if (currentEventIndex > -1) {
+    //       this.calendarEvents.splice(currentEventIndex, 1, eventData);
+    //     }
+    //   }
+    // },
     updateCompaniesListInStore(newCompanyObj) {
       // 1. If list is not empty + company has an id
       console.log("store:", newCompanyObj);
@@ -112,9 +108,9 @@ export const useGeneralStore = defineStore("general", {
         this.companiesList.splice(objIndex, 1); // 2nd parameter means remove one item only
       }
     },
-    addEventToStore(noteData) {
-      this.userNotesList.push(noteData);
-    },
+    // addEventToStore(noteData) {
+    //   this.userNotesList.push(noteData);
+    // },
     updateUserNotesListInStore(noteData) {
       const currentNoteInList = this.userNotesList.find((note) => {
         return note.noteId === noteData.noteId;

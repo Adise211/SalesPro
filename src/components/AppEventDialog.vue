@@ -166,7 +166,19 @@ import { ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/data";
 import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { CalendarEvent } from "../../public/_config/data_temp";
+
+const NEW_EVENT_OBJECT = {
+  Id: null,
+  AllDay: false,
+  Start: null,
+  End: null,
+  Title: "",
+  Description: null,
+  Location: null,
+  Color: null,
+  Team: [],
+  CustomerId: null
+};
 
 export default {
   setup() {
@@ -187,7 +199,7 @@ export default {
   data: () => ({
     isDialogOpenLocally: false,
     isLoading: false,
-    currentEvent: new CalendarEvent(),
+    currentEvent: NEW_EVENT_OBJECT,
     start12HStringVal: "AM",
     end12HStringVal: "AM",
     startDateMenu: false,
@@ -201,19 +213,13 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, [
-      "addCalendarEventToStore",
-      "setToastMessage",
-      "updateCalendarEventInStore"
-    ]),
+    ...mapActions(useGeneralStore, ["setToastMessage"]),
     async onSaveData() {
       let APIRequest = createCalendarEvent;
-      let storeAction = this.addCalendarEventToStore;
       let currentToastMsg = ToastMessages.SuccessMessages.Created;
 
       if (this.isEditMode) {
         APIRequest = updateCalendarEvent;
-        storeAction = this.updateCalendarEventInStore;
         currentToastMsg = ToastMessages.SuccessMessages.Updated;
       }
 
@@ -234,8 +240,7 @@ export default {
             type: "success",
             message: currentToastMsg
           });
-          // Add to store, send to parent and reset
-          storeAction(response.Data);
+          // Send to parent and reset
           this.$emit("addNewEvent", response.Data);
           this.closeDialog();
         }
@@ -248,7 +253,7 @@ export default {
       this.$refs.eventForm.resetValidation();
       this.startDateValue = "";
       this.endDateValue = "";
-      this.currentEvent = new CalendarEvent();
+      this.currentEvent = NEW_EVENT_OBJECT;
       this.$emit("onDialogClose");
     },
     getEventFullDates() {
