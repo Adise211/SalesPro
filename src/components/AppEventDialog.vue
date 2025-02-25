@@ -234,7 +234,7 @@ export default {
         console.log("current event ->", this.currentEvent);
 
         const response = await APIRequest(this.currentEvent);
-        if (response.Result.Success) {
+        if (response.Result.ResultCode > 0) {
           // Show success toast
           this.setToastMessage({
             type: "success",
@@ -242,10 +242,15 @@ export default {
           });
           // Send to parent and reset
           this.$emit("addNewEvent", response.Data);
-          this.closeDialog();
+        } else {
+          this.setToastMessage({
+            type: "error",
+            message: ToastMessages.ErrorMessages.Updated
+          });
         }
         // Stop loader
         this.isLoading = false;
+        this.closeDialog();
       }
     },
     closeDialog() {

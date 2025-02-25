@@ -3,6 +3,7 @@ import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firest
 import { generatedId } from "@/utilities/utilsFuncs";
 import Axios from "axios";
 import moment from "moment";
+import { ResponseBody } from "../../../public/_config/data_temp";
 
 export async function getUserData() {
   try {
@@ -40,7 +41,11 @@ export async function createCalendarEvent(data) {
     await updateDoc(userRef, {
       CalendarEvents: arrayUnion(data)
     });
-    return { Result: { Success: true }, Data: data };
+    // Send back the result
+    const result = new ResponseBody();
+    result.Result.ResultCode = 1;
+    result.Data = data;
+    return result;
   } catch (error) {
     console.log("error when creating new event:", error);
   }
