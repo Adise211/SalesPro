@@ -16,7 +16,7 @@
                     <v-text-field
                       v-bind="props"
                       label="Start Date*"
-                      :modelValue="formattedDatesForDisplay.start"
+                      :modelValue="startDateDisplay"
                       :rules="[formRules.required, formRules.validRange]"
                     >
                     </v-text-field>
@@ -39,7 +39,7 @@
                     <v-text-field
                       v-bind="props"
                       label="End Date*"
-                      :modelValue="formattedDatesForDisplay.end"
+                      :modelValue="endDateDisplay"
                       :rules="[formRules.required, formRules.validRange]"
                     >
                     </v-text-field>
@@ -76,32 +76,40 @@
               <v-col>
                 <div v-if="!currentEvent.AllDay" class="d-flex">
                   <v-select
-                    v-model="startTime"
+                    v-model="startHour"
                     label="Start time"
                     :items="hourOptions"
                     :rules="[formRules.required]"
                     class="w-25"
                   ></v-select>
                   <v-select
-                    v-model="start12HStringVal"
                     class="w-0 ml-2"
-                    :items="hours12FormatStrings"
+                    :items="time12HoursStringOptions"
+                    @update:modelValue="
+                      (val) => {
+                        startTimeVal = startHour + ' ' + val;
+                      }
+                    "
                   ></v-select>
                 </div>
               </v-col>
               <v-col>
                 <div v-if="!currentEvent.AllDay" class="d-flex">
                   <v-select
-                    v-model="endTime"
+                    v-model="endHour"
                     label="End time"
                     :items="hourOptions"
                     :rules="[formRules.required]"
                     class="w-25"
                   ></v-select>
                   <v-select
-                    v-model="end12HStringVal"
                     class="w-0 ml-2"
-                    :items="hours12FormatStrings"
+                    :items="time12HoursStringOptions"
+                    @update:modelValue="
+                      (val) => {
+                        endTimeVal = endHour + ' ' + val;
+                      }
+                    "
                   ></v-select>
                 </div>
               </v-col>
@@ -161,7 +169,7 @@
 <script>
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
-import { convertTime, convertDate } from "@/utilities/utilsFuncs";
+import { convertDate } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/data";
 import { mapActions, mapState } from "pinia";
@@ -200,14 +208,14 @@ export default {
     isDialogOpenLocally: false,
     isLoading: false,
     currentEvent: NEW_EVENT_OBJECT,
-    start12HStringVal: "AM",
-    end12HStringVal: "AM",
     startDateMenu: false,
     endDateMenu: false,
     startDateValue: "",
     endDateValue: "",
-    startTime: "",
-    endTime: "",
+    startHour: "",
+    endHour: "",
+    startTimeVal: "",
+    endTimeVal: "",
     isEditMode: false
   }),
   created() {},
@@ -289,11 +297,8 @@ export default {
         fullStart = startDateISO;
         fullEnd = endDateISO;
       } else {
-        const startTime = convertTime(`${this.startTime} ${this.start12HStringVal}`).time12hFormat;
-        const endTime = convertTime(`${this.endTime} ${this.end12HStringVal}`).time12hFormat;
-
-        fullStart = `${startDateISO} ${startTime}`;
-        fullEnd = `${endDateISO} ${endTime}`;
+        fullStart = `${startDateISO} ${this.startTimeVal}`;
+        fullEnd = `${endDateISO} ${this.endTimeVal}`;
       }
 
       return {
@@ -304,7 +309,7 @@ export default {
   },
   computed: {
     ...mapState(useGeneralStore, ["companiesList"]),
-    hours12FormatStrings() {
+    time12HoursStringOptions() {
       return ["AM", "PM"];
     },
     hourOptions() {
@@ -319,11 +324,11 @@ export default {
       }
       return hours;
     },
-    formattedDatesForDisplay() {
-      return {
-        start: this.startDateValue ? this.UseDate.format(this.startDateValue, "keyboardDate") : "",
-        end: this.endDateValue ? this.UseDate.format(this.endDateValue, "keyboardDate") : ""
-      };
+    startDateDisplay() {
+      return this.startDateValue ? this.UseDate.format(this.startDateValue, "keyboardDate") : "";
+    },
+    endDateDisplay() {
+      return this.endDateValue ? this.UseDate.format(this.endDateValue, "keyboardDate") : "";
     },
     formRules() {
       return {
@@ -349,22 +354,22 @@ export default {
       handler(isOpen) {
         this.isDialogOpenLocally = isOpen;
       }
-    },
-    selectedEvent(newData) {
-      if (newData) {
-        this.currentEvent = Object.assign(this.currentEvent, newData.appEvent);
-        this.isEditMode = true;
-
-        const { appEvent } = newData;
-        const { start, end } = appEvent;
-        this.startDateValue = convertDate(start).MDYFormat;
-        this.endDateValue = convertDate(end).MDYFormat;
-        this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
-        this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
-      } else {
-        this.isEditMode = false;
-      }
     }
+    // selectedEvent(newData) {
+    //   if (newData) {
+    //     this.currentEvent = Object.assign(this.currentEvent, newData.appEvent);
+    //     this.isEditMode = true;
+
+    //     const { appEvent } = newData;
+    //     const { start, end } = appEvent;
+    //     this.startDateValue = convertDate(start).MDYFormat;
+    //     this.endDateValue = convertDate(end).MDYFormat;
+    //     this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
+    //     this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
+    //   } else {
+    //     this.isEditMode = false;
+    //   }
+    // }
   }
 };
 </script>
