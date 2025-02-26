@@ -90,7 +90,6 @@ export async function loginUser(data) {
       sessionStore.setUserWorkSpace(userDataResponse.WorkSpace || "");
       sessionStore.setUserRole(userDataResponse.Role || "");
       // TODO: Change the data (params)
-      generalStore.setCalendarEvents(userDataResponse.userEvents);
       generalStore.setCompaniesList(userDataResponse.userListedCompanies || []);
       generalStore.setUserNotesList(userDataResponse.userNotes);
 
