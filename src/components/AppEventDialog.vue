@@ -26,7 +26,7 @@
                     @update:modelValue="
                       (val) => {
                         startDateMenu = false;
-                        startDateValue = val;
+                        startDateVal = val;
                       }
                     "
                   ></v-date-picker>
@@ -49,7 +49,7 @@
                     @update:modelValue="
                       (val) => {
                         endDateMenu = false;
-                        endDateValue = val;
+                        endDateVal = val;
                       }
                     "
                   ></v-date-picker>
@@ -87,7 +87,7 @@
                     :items="time12HoursStringOptions"
                     @update:modelValue="
                       (val) => {
-                        startTimeVal = startHour + ' ' + val;
+                        startTimeVal = startHour + val;
                       }
                     "
                   ></v-select>
@@ -107,7 +107,7 @@
                     :items="time12HoursStringOptions"
                     @update:modelValue="
                       (val) => {
-                        endTimeVal = endHour + ' ' + val;
+                        endTimeVal = endHour + val;
                       }
                     "
                   ></v-select>
@@ -210,8 +210,8 @@ export default {
     currentEvent: NEW_EVENT_OBJECT,
     startDateMenu: false,
     endDateMenu: false,
-    startDateValue: "",
-    endDateValue: "",
+    startDateVal: "",
+    endDateVal: "",
     startHour: "",
     endHour: "",
     startTimeVal: "",
@@ -225,12 +225,16 @@ export default {
     async onSaveData() {
       // Check if form is valid
       const { valid } = await this.$refs.eventForm.validate();
+
       if (valid && this.currentEvent) {
         this.isLoading = true;
         // Get dates with the next format : "YYYY-MM-DD HH:mm"
-        const { fullStart, fullEnd } = this.getEventFullDates();
-        this.currentEvent.Start = fullStart;
-        this.currentEvent.End = fullEnd;
+        this.currentEvent.Start = `${convertDate(this.startDateVal).ISOFormat} ${
+          this.startTimeVal
+        }`.trim();
+        this.currentEvent.End = `${convertDate(this.endDateVal).ISOFormat} ${
+          this.endTimeVal
+        }`.trim();
         console.log("current event ->", this.currentEvent);
 
         // Create or update event depend on the mode
@@ -282,29 +286,14 @@ export default {
     closeDialog() {
       this.isDialogOpenLocally = false;
       this.$refs.eventForm.resetValidation();
-      this.startDateValue = "";
-      this.endDateValue = "";
+      this.startDateVal = "";
+      this.endDateVal = "";
+      this.startHour = "";
+      this.endHour = "";
+      this.startTimeVal = "";
+      this.endTimeVal = "";
       this.currentEvent = NEW_EVENT_OBJECT;
       this.$emit("onDialogClose");
-    },
-    getEventFullDates() {
-      let fullStart;
-      let fullEnd;
-
-      const startDateISO = convertDate(this.startDateValue).ISOFormat;
-      const endDateISO = convertDate(this.endDateValue).ISOFormat;
-      if (this.currentEvent.AllDay) {
-        fullStart = startDateISO;
-        fullEnd = endDateISO;
-      } else {
-        fullStart = `${startDateISO} ${this.startTimeVal}`;
-        fullEnd = `${endDateISO} ${this.endTimeVal}`;
-      }
-
-      return {
-        fullStart,
-        fullEnd
-      };
     }
   },
   computed: {
@@ -325,10 +314,10 @@ export default {
       return hours;
     },
     startDateDisplay() {
-      return this.startDateValue ? this.UseDate.format(this.startDateValue, "keyboardDate") : "";
+      return this.startDateVal ? convertDate(this.startDateVal).MDYFormat : "";
     },
     endDateDisplay() {
-      return this.endDateValue ? this.UseDate.format(this.endDateValue, "keyboardDate") : "";
+      return this.endDateVal ? convertDate(this.endDateVal).MDYFormat : "";
     },
     formRules() {
       return {
@@ -339,9 +328,9 @@ export default {
     isDateInValidRange() {
       let isValidRange = true;
       // If there are start date and end date
-      if (this.startDateValue && this.endDateValue) {
-        const start = this.UseDate.date(this.startDateValue);
-        const end = this.UseDate.date(this.endDateValue);
+      if (this.startDateVal && this.endDateVal) {
+        const start = this.UseDate.date(this.startDateVal);
+        const end = this.UseDate.date(this.endDateVal);
 
         // Chack the range - start date is always the same OR before the end date
         isValidRange = this.UseDate.isBefore(start, end) || this.UseDate.isSameDay(start, end);
@@ -355,21 +344,6 @@ export default {
         this.isDialogOpenLocally = isOpen;
       }
     }
-    // selectedEvent(newData) {
-    //   if (newData) {
-    //     this.currentEvent = Object.assign(this.currentEvent, newData.appEvent);
-    //     this.isEditMode = true;
-
-    //     const { appEvent } = newData;
-    //     const { start, end } = appEvent;
-    //     this.startDateValue = convertDate(start).MDYFormat;
-    //     this.endDateValue = convertDate(end).MDYFormat;
-    //     this.startTime = !appEvent.allDay ? start.split(" ")[1] : "";
-    //     this.endTime = !appEvent.allDay ? end.split(" ")[1] : "";
-    //   } else {
-    //     this.isEditMode = false;
-    //   }
-    // }
   }
 };
 </script>
