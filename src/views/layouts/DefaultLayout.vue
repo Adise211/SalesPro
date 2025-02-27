@@ -151,6 +151,14 @@ export default {
           pageName = "ProductsPage";
           paramsObj = {};
           break;
+        case NavigationItems.Customers:
+          pageName = "CustomersPage";
+          paramsObj = {};
+          break;
+        case NavigationItems.Teams:
+          pageName = "TeamsPage";
+          paramsObj = {};
+          break;
         case NavigationItems.Files:
           pageName = "FilesPage";
           paramsObj = {};
@@ -231,6 +239,18 @@ export default {
           title: NavigationItems.Products,
           value: NavigationItems.Products,
           icon: "mdi-package-variant",
+          isShownNow: false
+        },
+        {
+          title: NavigationItems.Customers,
+          value: NavigationItems.Customers,
+          icon: "mdi-domain",
+          isShownNow: false
+        },
+        {
+          title: NavigationItems.Teams,
+          value: NavigationItems.Teams,
+          icon: "mdi-account-multiple",
           isShownNow: false
         },
         {

@@ -9,6 +9,8 @@ export const NavigationItems = {
   Sales: "Sales",
   Products: "Products",
   Notes: "Notes",
+  Customers: "Customers",
+  Teams: "Teams",
   Files: "Files",
   MyAccount: "MyAccount",
   Logout: "Logout"

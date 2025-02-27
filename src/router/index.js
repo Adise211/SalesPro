@@ -7,6 +7,8 @@ import CalendarPage from "../views/pages/CalendarPage.vue";
 import SalesPage from "../views/pages/SalesPage.vue";
 import NotesPage from "../views/pages/NotesPage.vue";
 import ProductsPage from "../views/pages/ProductsPage.vue";
+import CustomersPage from "../views/pages/CustomersPage.vue";
+import TeamsPage from "../views/pages/TeamsPage.vue";
 import FilesPage from "../views/pages/FilesPage.vue";
 import MyAccountPage from "../views/pages/MyAccountPage.vue";
 import ErrorMessagesPage from "../views/pages/ErrorMessagesPage.vue";
@@ -78,6 +80,28 @@ const router = createRouter({
       path: "/products",
       name: "ProductsPage",
       component: ProductsPage,
+      props: (route) => {
+        return {
+          ...route.params
+        };
+      },
+      meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/customers",
+      name: "CustomersPage",
+      component: CustomersPage,
+      props: (route) => {
+        return {
+          ...route.params
+        };
+      },
+      meta: { layout: "DefaultLayout" }
+    },
+    {
+      path: "/teams",
+      name: "TeamsPage",
+      component: TeamsPage,
       props: (route) => {
         return {
           ...route.params
