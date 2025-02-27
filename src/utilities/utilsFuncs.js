@@ -5,8 +5,8 @@ export function convertTime(value) {
   const minutes = Math.floor((value % 3600) / 60);
   const seconds = Math.floor((value % 3600) % 60);
   const miliseconds = value * 1000;
-  const time12hFormat = moment(`${value}`, ["h:mm A"]).format("HH:mm");
-  const time24hFormat = moment(`${value}`, ["HH:mm"]).format("h:mm A");
+  const time12hFormat = moment(value, "HH:mm").format("h:mm A");
+  const time24hFormat = moment(value, "h:mm A").format("HH:mm");
 
   return {
     hours,
@@ -25,19 +25,21 @@ export function generatedId() {
   return rand();
 }
 
-export function convertDate(value, fromEpochTime) {
-  const currentValue = fromEpochTime ? value * 1000 : new Date(value);
+export function convertDate(value) {
+  const currentValue = new Date(value);
 
   const ISOFormat = moment(currentValue).format("YYYY-MM-DD");
   const MDYFormat = moment(currentValue).format("MM/DD/YYYY");
-  const FullDateWith12H = moment(currentValue).format("MM/DD/YYYY HH:mm");
-  const FullDateWith24H = moment(currentValue).format("MM/DD/YYYY h:mm A");
+  const MDYWith24H = moment(currentValue).format("MM/DD/YYYY HH:mm");
+  const MDYWith12H = moment(currentValue).format("MM/DD/YYYY h:mm A");
+  const MilliTimestamp = moment(currentValue).format("x");
 
   return {
     ISOFormat,
     MDYFormat,
-    FullDateWith12H,
-    FullDateWith24H
+    MDYWith24H,
+    MDYWith12H,
+    MilliTimestamp
   };
 }
 
