@@ -16,6 +16,7 @@
                     <v-text-field
                       v-bind="props"
                       label="Start Date*"
+                      readonly
                       :modelValue="startDateDisplay"
                       :rules="[formRules.required, formRules.validRange]"
                     >
@@ -39,6 +40,7 @@
                     <v-text-field
                       v-bind="props"
                       label="End Date*"
+                      readonly
                       :modelValue="endDateDisplay"
                       :rules="[formRules.required, formRules.validRange]"
                     >
@@ -85,9 +87,10 @@
                   <v-select
                     class="w-0 ml-2"
                     :items="time12HoursStringOptions"
+                    placeholder="AM"
                     @update:modelValue="
                       (val) => {
-                        startTimeVal = startHour + val;
+                        startTimeVal = startHour + ' ' + val;
                       }
                     "
                   ></v-select>
@@ -105,9 +108,10 @@
                   <v-select
                     class="w-0 ml-2"
                     :items="time12HoursStringOptions"
+                    placeholder="AM"
                     @update:modelValue="
                       (val) => {
-                        endTimeVal = endHour + val;
+                        endTimeVal = endHour + ' ' + val;
                       }
                     "
                   ></v-select>
@@ -169,7 +173,7 @@
 <script>
 import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
-import { convertDate } from "@/utilities/utilsFuncs";
+import { convertDate, convertTime } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
 import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/data";
 import { mapActions, mapState } from "pinia";
@@ -207,7 +211,7 @@ export default {
   data: () => ({
     isDialogOpenLocally: false,
     isLoading: false,
-    currentEvent: NEW_EVENT_OBJECT,
+    currentEvent: { ...NEW_EVENT_OBJECT },
     startDateMenu: false,
     endDateMenu: false,
     startDateVal: "",
@@ -228,13 +232,16 @@ export default {
 
       if (valid && this.currentEvent) {
         this.isLoading = true;
-        // Get dates with the next format : "YYYY-MM-DD HH:mm"
-        this.currentEvent.Start = `${convertDate(this.startDateVal).ISOFormat} ${
-          this.startTimeVal
+        // Convert dates and time to the next format : "YYYY-MM-DD HH:mm"
+        const SELECTED_START_DATE = `${convertDate(this.startDateVal).ISOFormat} ${
+          convertTime(this.startTimeVal).time24hFormat
         }`.trim();
-        this.currentEvent.End = `${convertDate(this.endDateVal).ISOFormat} ${
-          this.endTimeVal
+        const SELECTED_END_DATE = `${convertDate(this.endDateVal).ISOFormat} ${
+          convertTime(this.endTimeVal).time24hFormat
         }`.trim();
+
+        this.currentEvent.Start = SELECTED_START_DATE;
+        this.currentEvent.End = SELECTED_END_DATE;
         console.log("current event ->", this.currentEvent);
 
         // Create or update event depend on the mode
@@ -292,7 +299,7 @@ export default {
       this.endHour = "";
       this.startTimeVal = "";
       this.endTimeVal = "";
-      this.currentEvent = NEW_EVENT_OBJECT;
+      this.currentEvent = { ...NEW_EVENT_OBJECT };
       this.$emit("onDialogClose");
     }
   },
