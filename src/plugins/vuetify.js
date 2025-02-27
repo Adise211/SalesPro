@@ -10,21 +10,25 @@ const vuetify = createVuetify({
     VTextField: {
       variant: "outlined",
       density: "comfortable",
-      color: "primary"
+      color: "primary",
+      validateOn: "submit"
     },
     VSelect: {
       variant: "outlined",
       density: "comfortable",
-      color: "primary"
+      color: "primary",
+      validateOn: "submit"
     },
     VTextarea: {
       variant: "outlined",
-      color: "primary"
+      color: "primary",
+      validateOn: "submit"
     },
     VAutocomplete: {
       variant: "outlined",
       density: "comfortable",
-      color: "primary"
+      color: "primary",
+      validateOn: "submit"
     },
     VCombobox: {
       variant: "outlined",
