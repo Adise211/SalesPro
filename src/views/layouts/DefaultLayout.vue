@@ -143,10 +143,6 @@ export default {
           pageName = "SalesPage";
           paramsObj = { stageName: SaleStatuses.FollowUps.value };
           break;
-        case NavigationItems.Notes:
-          pageName = "NotesPage";
-          paramsObj = {};
-          break;
         case NavigationItems.Products:
           pageName = "ProductsPage";
           paramsObj = {};
@@ -227,12 +223,6 @@ export default {
           title: NavigationItems.Sales,
           value: NavigationItems.Sales,
           icon: "mdi-sale",
-          isShownNow: false
-        },
-        {
-          title: NavigationItems.Notes,
-          value: NavigationItems.Notes,
-          icon: "mdi-note",
           isShownNow: false
         },
         {

@@ -8,7 +8,6 @@ export const NavigationItems = {
   Calendar: "Calendar",
   Sales: "Sales",
   Products: "Products",
-  Notes: "Notes",
   Customers: "Customers",
   Teams: "Teams",
   Files: "Files",

@@ -5,7 +5,6 @@ import LoginPage from "../views/pages/LoginPage.vue";
 import SignupPage from "../views/pages/SignupPage.vue";
 import CalendarPage from "../views/pages/CalendarPage.vue";
 import SalesPage from "../views/pages/SalesPage.vue";
-import NotesPage from "../views/pages/NotesPage.vue";
 import ProductsPage from "../views/pages/ProductsPage.vue";
 import CustomersPage from "../views/pages/CustomersPage.vue";
 import TeamsPage from "../views/pages/TeamsPage.vue";
@@ -61,17 +60,6 @@ const router = createRouter({
         return {
           ...route.params,
           stageName: route.params.stageName
-        };
-      },
-      meta: { layout: "DefaultLayout" }
-    },
-    {
-      path: "/notes/:noteId?",
-      name: "NotesPage",
-      component: NotesPage,
-      props: (route) => {
-        return {
-          ...route.params
         };
       },
       meta: { layout: "DefaultLayout" }
