@@ -73,6 +73,7 @@
                   label="Full day"
                   v-model="currentEvent.AllDay"
                   color="blue-darken-1"
+                  @update:modelValue="resetTimeFields"
                 ></v-checkbox>
               </v-col>
               <v-col>
@@ -93,6 +94,7 @@
                         startTimeVal = startHour + ' ' + val;
                       }
                     "
+                    :rules="startHour ? [formRules.required] : []"
                   ></v-select>
                 </div>
               </v-col>
@@ -114,6 +116,7 @@
                         endTimeVal = endHour + ' ' + val;
                       }
                     "
+                    :rules="endHour ? [formRules.required] : []"
                   ></v-select>
                 </div>
               </v-col>
@@ -301,6 +304,15 @@ export default {
       this.endTimeVal = "";
       this.currentEvent = { ...NEW_EVENT_OBJECT };
       this.$emit("onDialogClose");
+    },
+    resetTimeFields(isAllDay) {
+      if (isAllDay) {
+        // Reset fields if allDay is set to true
+        this.startHour = "";
+        this.startTimeVal = "";
+        this.endHour = "";
+        this.endTimeVal = "";
+      }
     }
   },
   computed: {
