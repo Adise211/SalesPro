@@ -13,12 +13,10 @@
       <tr>
         <td class="text-medium-emphasis app-text-truncate">{{ item.companyName }}</td>
         <td class="text-medium-emphasis app-text-truncate">{{ item.email }}</td>
-        <td class="text-medium-emphasis app-text-truncate">{{ item.phoneNumber }}</td>
-        <td class="text-medium-emphasis app-text-truncate">
-          {{ item.stateOrCity }}{{ item.stateOrCity && item.country ? "," : "" }} {{ item.country }}
-        </td>
-        <td class="text-medium-emphasis app-text-truncate">{{ item.myProduct }}</td>
-        <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
+        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.phoneNumber }}</td>
+        <td class="text-medium-emphasis app-text-truncate">{{ item.Location }}</td>
+        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.myProduct }}</td>
+        <td class="text-medium-emphasis text-center">{{ changedDateFormat(item.lastUpdate) }}</td>
         <td class="text-center">
           <v-menu activator="parent">
             <template v-slot:activator="{ props }">
@@ -189,40 +187,46 @@ export default {
     tableHeaders() {
       return [
         {
-          title: "Company",
-          key: "companyName",
-          width: "15%"
+          title: "Name",
+          key: "Name",
+          width: ""
         },
         {
           title: "Email",
-          key: "email",
-          align: "center",
-          width: "16%"
+          key: "Email",
+          align: "center"
         },
         {
           title: "Phone",
-          key: "phoneNumber",
-          width: "10%"
-        },
-        {
-          title: "Location",
-          key: "country",
+          key: "PhoneNumber",
+          align: "center",
+          sortable: false,
           width: "15%"
         },
         {
-          title: "My Product",
-          key: "myProduct",
-          width: "11%"
+          title: "Location",
+          key: "Location",
+          align: "center",
+          width: "15%"
         },
         {
-          title: "Last Update",
-          key: "lastUpdate",
+          title: "Product/Service",
+          key: "ProductId",
+          align: "center",
+          width: "20%"
+        },
+        {
+          title: "LastUpdated",
+          key: "LastUpdated",
+          align: "center",
+          sortable: false,
           width: "10%"
         },
         {
           title: "",
           key: "",
-          width: "10%"
+          sortable: false,
+          width: "5%"
         }
       ];
     },
