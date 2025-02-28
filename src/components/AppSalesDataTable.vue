@@ -19,19 +19,23 @@
         </td>
         <td class="text-medium-emphasis app-text-truncate">{{ item.myProduct }}</td>
         <td class="text-medium-emphasis">{{ changedDateFormat(item.lastUpdate) }}</td>
-        <td>
-          <v-icon
-            v-if="findAttachedNote(item)"
-            icon="mdi-note"
-            color="grey"
-            @click="onItemNoteClick(item)"
-          ></v-icon>
-        </td>
         <td class="text-center">
-          <v-icon @click="onEditItem(item)">mdi-pencil</v-icon>
-        </td>
-        <td class="text-center">
-          <v-icon @click="onDeleteItem(item)" color="error"> mdi-delete </v-icon>
+          <v-menu activator="parent">
+            <template v-slot:activator="{ props }">
+              <v-icon v-bind="props"> mdi-dots-vertical</v-icon>
+            </template>
+            <v-list width="100">
+              <v-list-item @click="onEditItem(item)">
+                <v-list-item-title>Edit</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="onItemNoteClick(item)">
+                <v-list-item-title>Note</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="onDeleteItem(item)">
+                <v-list-item-title>Delete</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </td>
       </tr>
     </template>
@@ -216,21 +220,9 @@ export default {
           width: "10%"
         },
         {
-          title: "Note",
-          sortable: false,
-          width: "5%"
-        },
-        {
-          title: "Edit",
-          align: "center",
-          sortable: false,
-          width: "5%"
-        },
-        {
-          title: "Delete",
-          align: "center",
-          sortable: false,
-          width: "5%"
+          title: "",
+          key: "",
+          width: "10%"
         }
       ];
     },
