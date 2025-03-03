@@ -11,12 +11,12 @@
     <!-- table body (items) -->
     <template v-slot:item="{ item }">
       <tr>
-        <td class="text-medium-emphasis app-text-truncate">{{ item.companyName }}</td>
-        <td class="text-medium-emphasis app-text-truncate">{{ item.email }}</td>
-        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.phoneNumber }}</td>
+        <td class="text-medium-emphasis app-text-truncate">{{ item.Name }}</td>
+        <td class="text-medium-emphasis app-text-truncate">{{ item.Email }}</td>
+        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.Phone }}</td>
         <td class="text-medium-emphasis app-text-truncate">{{ item.Location }}</td>
-        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.myProduct }}</td>
-        <td class="text-medium-emphasis text-center">{{ changedDateFormat(item.lastUpdate) }}</td>
+        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.ProductId }}</td>
+        <td class="text-medium-emphasis text-center">{{ changedDateFormat(item.LastUpdated) }}</td>
         <td class="text-center">
           <v-menu activator="parent">
             <template v-slot:activator="{ props }">
@@ -179,7 +179,7 @@ export default {
         },
         {
           title: "Phone",
-          key: "PhoneNumber",
+          key: "Phone",
           align: "center",
           sortable: false,
           width: "15%"

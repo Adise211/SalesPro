@@ -112,13 +112,13 @@ export async function createNewCompany(data) {
       const rendonId = "company" + generatedId();
       data.Id = rendonId;
     }
+    // Update time
+    data.LastUpdated = Date.now();
 
     await updateDoc(userRef, {
       Companies: arrayUnion(data)
     });
 
-    // Update time
-    data.LastUpdated = Date.now();
     return { Result: { ResultCode: 1 }, Data: data };
   } catch (error) {
     console.log("error when creating new company:", error);

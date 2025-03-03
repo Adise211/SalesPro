@@ -65,17 +65,17 @@
                 <!-- 1) company's name -->
                 <v-text-field
                   label="Company's Name*"
-                  v-model="itemObject.companyName"
+                  v-model="currentCompany.Name"
                   :rules="[formRules.required]"
                 ></v-text-field>
               </v-col>
               <v-col>
                 <!-- 2) email -->
-                <v-text-field label="Email" v-model="itemObject.email"></v-text-field>
+                <v-text-field label="Email" v-model="currentCompany.Email"></v-text-field>
               </v-col>
               <v-col>
                 <!-- 3) phone number -->
-                <v-text-field label="Phone Number" v-model="itemObject.phoneNumber"></v-text-field>
+                <v-text-field label="Phone Number" v-model="currentCompany.Phone"></v-text-field>
               </v-col>
             </v-row>
             <!-- Second Row -->
@@ -83,7 +83,7 @@
               <v-col md="5">
                 <!-- 4) country -->
                 <v-autocomplete
-                  v-model="itemObject.country"
+                  v-model="currentCompany.Location"
                   label="Country"
                   :items="countriesList"
                   :rules="[formRules.required]"
@@ -91,12 +91,12 @@
               </v-col>
               <v-col md="5">
                 <!-- 5) city or state -->
-                <v-combobox
+                <!-- <v-combobox
                   label="State/City"
                   :items="filteredCities"
-                  v-model="itemObject.stateOrCity"
+                  v-model="currentCompany.stateOrCity"
                   no-data-text="Select country"
-                ></v-combobox>
+                ></v-combobox> -->
               </v-col>
             </v-row>
             <!-- Third Row -->
@@ -104,14 +104,14 @@
               <v-col>
                 <!-- 4) product -->
                 <v-select
-                  v-model="itemObject.myProduct"
+                  v-model="currentCompany.ProductId"
                   label="My Product"
                   :items="['q-99', 'Q-10']"
                 ></v-select>
               </v-col>
               <v-col>
                 <v-select
-                  v-model="itemObject.statusId"
+                  v-model="currentCompany.StatusId"
                   label="Status"
                   :items="toolbarItems"
                   item-title="title"
@@ -141,7 +141,6 @@ import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { SalesStatusId, ToastMessages } from "@/utilities/consts";
-import { Config } from "@/utilities/config";
 import {
   createNewCompany,
   updateCompanyInfo,
@@ -149,6 +148,16 @@ import {
 } from "@/firebase/services/data";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
+const NEW_COMPANY_OBJECT = {
+  Id: null, // String
+  Name: null, // String
+  StatusId: DEFAULT_STATUS_ID, // Number
+  Email: null, //String
+  Phone: null, //String
+  Location: null, // String
+  ProductId: null, // String (productId)
+  NoteId: null // String (noteId)
+};
 
 export default {
   name: "SalesPage",
@@ -158,7 +167,8 @@ export default {
     activeStatusId: DEFAULT_STATUS_ID,
     isDialogOpen: false,
     searchExpression: "",
-    itemObject: { ...Config.DataTemplates.CompanyTemp },
+    currentCompany: { ...NEW_COMPANY_OBJECT },
+    editMode: false,
     isLoading: false,
     countriesAndCitiesList: []
   }),
@@ -176,45 +186,63 @@ export default {
       this.activeStatusId = SalesStatusId[item];
     },
     async onSaveItem() {
-      let currentToastMsgType;
+      console.log("CURRENT COMAPNY", this.currentCompany);
+
+      let toastType;
+      let toastMessage;
       const { valid } = await this.$refs.form.validate();
 
       if (valid) {
         this.isLoading = true;
-        // item doesn't have an id (given one in data.js file) - create
-        if (!this.itemObject.companyId) {
-          const createResponse = await createNewCompany(this.itemObject);
-          if (createResponse.Result.Success) {
-            console.log("saved data in DB!", createResponse);
-            this.updateCompaniesListInStore(createResponse.Data);
-            currentToastMsgType = ToastMessages.SuccessMessages.Created;
+        // If not on edit mode - create new
+        if (!this.editMode) {
+          const createResponse = await createNewCompany(this.currentCompany);
+
+          if (createResponse.Result.ResultCode > 0) {
+            // Add to store + show success toast message
+            // this.updateCompaniesListInStore(createResponse.Data);
+            toastType = "success";
+            toastMessage = ToastMessages.SuccessMessages.Created;
+          } else {
+            // Show error toast message
+            toastType = "error";
+            toastMessage = ToastMessages.ErrorMessages.Created;
           }
         } else {
-          // otherwise - update
-          const updateResponse = await updateCompanyInfo(this.itemObject);
-          if (updateResponse.Result.Success) {
-            console.log("updated company info!", updateResponse);
+          // On edit mode - update
+          const updateResponse = await updateCompanyInfo(this.currentCompany);
+          if (updateResponse.Result.ResultCode > 0) {
+            // Add to store + show success toast message
             this.updateCompaniesListInStore(updateResponse.Data);
-            currentToastMsgType = ToastMessages.SuccessMessages.Updated;
+            toastType = "success";
+            toastMessage = ToastMessages.SuccessMessages.Updated;
+          } else {
+            // Show error toast message
+            toastType = "error";
+            toastMessage = ToastMessages.ErrorMessages.Updated;
           }
         }
+
+        // End loading and close dialog
         this.isLoading = false;
         this.setToastMessage({
-          type: "success",
-          message: currentToastMsgType
+          type: toastType,
+          message: toastMessage
         });
         this.onDialogClose();
       }
     },
     editItemHandler(item) {
-      this.itemObject = item;
+      this.currentCompany = item;
       this.isDialogOpen = true;
+      this.editMode = true;
     },
     onDialogClose() {
       // close dialogs
       this.isDialogOpen = false;
-      // reset state
-      this.itemObject = { ...Config.DataTemplates.CompanyTemp };
+      // reset states
+      this.currentCompany = { ...NEW_COMPANY_OBJECT };
+      this.editMode = false;
     }
   },
   computed: {
@@ -238,9 +266,9 @@ export default {
     filteredCities() {
       // TODO: Option to select a city and auto fill the country
       let cities = [];
-      if (this.countriesAndCitiesList.length > 0 && this.itemObject.country) {
+      if (this.countriesAndCitiesList.length > 0 && this.currentCompany.country) {
         const selectedCountry = this.countriesAndCitiesList.find((itemInList) => {
-          return itemInList.country === this.itemObject.country;
+          return itemInList.country === this.currentCompany.country;
         });
         cities = selectedCountry?.cities || [];
       }
