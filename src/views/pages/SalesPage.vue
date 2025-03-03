@@ -16,11 +16,11 @@
 
               <v-toolbar-items>
                 <v-btn
-                  v-for="item in toolbarItems"
-                  :key="item.id"
+                  v-for="(item, index) in toolbarItems"
+                  :key="index"
                   @click="onToolbarItemClick(item)"
-                  :class="{ 'bg-blue-grey-darken-4': item.id == currentStageId }"
-                  >{{ item.title }}</v-btn
+                  :class="{ 'bg-blue-grey-darken-4': index + 1 == activeStatusId }"
+                  >{{ item }}</v-btn
                 >
               </v-toolbar-items>
               <v-spacer></v-spacer>
@@ -140,13 +140,15 @@ import AppSalesDataTable from "@/components/AppSalesDataTable.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { SaleStatuses, ToastMessages } from "@/utilities/consts";
+import { SaleStatusId, SaleStatusText, ToastMessages } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 import {
   createNewCompany,
   updateCompanyInfo,
   getAllCountriesAndCities
 } from "@/firebase/services/data";
+
+const DEFAULT_STATUS_ID = SaleStatusId.Follow;
 
 export default {
   name: "SalesPage",
@@ -158,6 +160,7 @@ export default {
     }
   },
   data: () => ({
+    activeStatusId: DEFAULT_STATUS_ID,
     isDialogOpen: false,
     searchExpression: "",
     itemObject: { ...Config.DataTemplates.CompanyTemp },
@@ -174,13 +177,13 @@ export default {
   methods: {
     ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "setToastMessage"]),
     onToolbarItemClick(item) {
-      // for bg color
-      this.currentStageId = item.id;
-      // for router path
+      // Update active status (number)
+      this.activeStatusId = SaleStatusId[item];
+
+      // Update param in router (text)
       this.$router.push({
-        name: "SalesPage",
         params: {
-          statusId: item.value
+          statusId: SaleStatusText[item]
         }
       });
     },
@@ -228,11 +231,7 @@ export default {
   },
   computed: {
     toolbarItems() {
-      const list = [];
-      for (let item in SaleStatuses) {
-        list.push(SaleStatuses[item]);
-      }
-      return list;
+      return Object.keys(SaleStatusId);
     },
     formRules() {
       return {

@@ -34,6 +34,12 @@ export const SaleStatusId = {
   Closed: 3
 };
 
+export const SaleStatusText = {
+  Follow: "follow",
+  Leads: "leads",
+  Closed: "closed"
+};
+
 export const SaleStatuses = {
   FollowUps: {
     id: 1,
