@@ -140,7 +140,7 @@ import AppSalesDataTable from "@/components/AppSalesDataTable.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { SaleStatusId, SaleStatusText, ToastMessages } from "@/utilities/consts";
+import { SalesStatusId, SalesStatusText, ToastMessages } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 import {
   createNewCompany,
@@ -148,7 +148,7 @@ import {
   getAllCountriesAndCities
 } from "@/firebase/services/data";
 
-const DEFAULT_STATUS_ID = SaleStatusId.Follow;
+const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 
 export default {
   name: "SalesPage",
@@ -178,12 +178,12 @@ export default {
     ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "setToastMessage"]),
     onToolbarItemClick(item) {
       // Update active status (number)
-      this.activeStatusId = SaleStatusId[item];
+      this.activeStatusId = SalesStatusId[item];
 
       // Update param in router (text)
       this.$router.push({
         params: {
-          statusId: SaleStatusText[item]
+          statusId: SalesStatusText[item]
         }
       });
     },
@@ -231,7 +231,7 @@ export default {
   },
   computed: {
     toolbarItems() {
-      return Object.keys(SaleStatusId);
+      return Object.keys(SalesStatusId);
     },
     formRules() {
       return {

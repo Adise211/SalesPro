@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { NavigationItems, SaleStatusId } from "@/utilities/consts";
+import { NavigationItems, SalesStatusText } from "@/utilities/consts";
 import { mapState, mapActions } from "pinia";
 import { useSessionStore } from "../../stores/session";
 import { useGeneralStore } from "@/stores/general";
@@ -141,7 +141,7 @@ export default {
           break;
         case NavigationItems.Sales:
           pageName = "SalesPage";
-          paramsObj = { statusId: SaleStatusId.Follow };
+          paramsObj = { statusId: SalesStatusText.Follow };
           break;
         case NavigationItems.Products:
           pageName = "ProductsPage";

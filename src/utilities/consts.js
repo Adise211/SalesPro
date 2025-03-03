@@ -28,13 +28,13 @@ export const CalendarEventColors = {
   Pink: "pink"
 };
 
-export const SaleStatusId = {
+export const SalesStatusId = {
   Follow: 1,
   Leads: 2,
   Closed: 3
 };
 
-export const SaleStatusText = {
+export const SalesStatusText = {
   Follow: "follow",
   Leads: "leads",
   Closed: "closed"
