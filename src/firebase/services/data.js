@@ -3,7 +3,6 @@ import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firest
 import { generatedId } from "@/utilities/utilsFuncs";
 import Axios from "axios";
 import moment from "moment";
-import { ResponseBody } from "../../../public/_config/data_temp";
 
 export async function getUserData() {
   try {
@@ -41,11 +40,10 @@ export async function createCalendarEvent(data) {
     await updateDoc(userRef, {
       CalendarEvents: arrayUnion(data)
     });
-    // Send back the result
-    const result = new ResponseBody();
-    result.Result.ResultCode = 1;
-    result.Data = data;
-    return result;
+
+    // Update time
+    data.LastUpdated = Date.now();
+    return { Result: { ResultCode: 1 }, Data: data };
   } catch (error) {
     console.log("error when creating new event:", error);
   }
@@ -105,20 +103,23 @@ export async function getCalendarEvents() {
   }
 }
 
-export async function createNewCompany(newCompanyObj) {
+export async function createNewCompany(data) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
-    // Add an id
-    const rendonId = "comp" + generatedId();
-    newCompanyObj.companyId = rendonId;
-    // Add last updated time (epoch time)
-    const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
-    newCompanyObj.lastUpdate = currentEpochTime;
+
+    if (!data.Id) {
+      // Add an id
+      const rendonId = "company" + generatedId();
+      data.Id = rendonId;
+    }
 
     await updateDoc(userRef, {
-      userListedCompanies: arrayUnion(newCompanyObj)
+      Companies: arrayUnion(data)
     });
-    return { Result: { Success: true }, Data: newCompanyObj };
+
+    // Update time
+    data.LastUpdated = Date.now();
+    return { Result: { ResultCode: 1 }, Data: data };
   } catch (error) {
     console.log("error when creating new company:", error);
   }
