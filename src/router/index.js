@@ -52,14 +52,14 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/sales/:stageName",
-      // stageName: "followups" || "leads" || "closed"
+      path: "/sales/:statusId",
+      // statusId: "follow" || "leads" || "closed"
       name: "SalesPage",
       component: SalesPage,
       props: (route) => {
         return {
           ...route.params,
-          stageName: route.params.stageName
+          statusId: route.params.statusId
         };
       },
       meta: { layout: "DefaultLayout" }

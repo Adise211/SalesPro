@@ -41,7 +41,7 @@
         <AppCard>
           <template v-slot:card-text>
             <AppSalesDataTable
-              :currentStageName="stageName"
+              :statusId="statusId"
               :searchExp="searchExpression"
               @onEditItem="editItemHandler"
             ></AppSalesDataTable>
@@ -152,14 +152,13 @@ export default {
   name: "SalesPage",
   components: { AppCard, AppSalesDataTable },
   props: {
-    stageName: {
-      type: String,
-      default: ""
+    statusId: {
+      type: Number,
+      default: 1
     }
   },
   data: () => ({
     isDialogOpen: false,
-    currentStageId: 1,
     searchExpression: "",
     itemObject: { ...Config.DataTemplates.CompanyTemp },
     isLoading: false,
@@ -181,7 +180,7 @@ export default {
       this.$router.push({
         name: "SalesPage",
         params: {
-          stageName: item.value
+          statusId: item.value
         }
       });
     },

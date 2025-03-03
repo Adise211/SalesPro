@@ -83,7 +83,7 @@ export default {
   name: "FollowUps",
   components: { AppCard },
   props: {
-    currentStageName: {
+    statusId: {
       type: String,
       default: ""
     },
@@ -165,10 +165,10 @@ export default {
   },
   computed: {
     ...mapState(useGeneralStore, ["companiesList", "userNotesList"]),
-    currentStatusId() {
+    activeStatus() {
       let id;
 
-      switch (this.currentStageName) {
+      switch (this.statusId) {
         case SaleStatuses.FollowUps.value:
           id = SaleStatuses.FollowUps.id;
           break;
@@ -234,7 +234,7 @@ export default {
       let result = [];
       if (this.companiesList.length > 0) {
         result = this.companiesList.filter((comp) => {
-          if (comp.statusId === this.currentStatusId) return comp;
+          if (comp.statusId === this.activeStatus) return comp;
         });
       }
       return result;
@@ -245,7 +245,7 @@ export default {
     filteredStatus() {
       // Get all except from the current status
       return SaleStatuses.filter((item) => {
-        return item.id !== this.currentStatusId;
+        return item.id !== this.activeStatus;
       });
     },
     currentChartXData() {
@@ -284,16 +284,16 @@ export default {
     chartDataColors() {
       // the colors are saved in global.scss
       let colors = ["#008ffb"];
-      // if (this.currentStageName === TrackingStages.Leads) {
+      // if (this.statusId === TrackingStages.Leads) {
       //   colors = ["#eab308"];
-      // } else if (this.currentStageName === TrackingStages.Closed) {
+      // } else if (this.statusId === TrackingStages.Closed) {
       //   colors = ["#f4511e"];
       // }
       return colors;
     }
   },
   watch: {
-    currentStageName(newVal) {
+    statusId(newVal) {
       if (newVal) {
         this.refreshActiveChart();
       }
