@@ -1,7 +1,6 @@
 import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { generatedId } from "@/utilities/utilsFuncs";
-import Axios from "axios";
 import moment from "moment";
 
 export async function getUserData() {
@@ -252,19 +251,5 @@ export async function updateNoteWatchedTime(noteObj) {
     }
   } catch (error) {
     console.log("error when trying to update note watched time:", error);
-  }
-}
-
-export async function getAllCountriesAndCities() {
-  try {
-    // from postman APIs - https://documenter.getpostman.com/view/1134062/T1LJjU52#dd5bd0d9-2602-4161-8c77-3af30cd2f41a
-    const response = await Axios.get("https://countriesnow.space/api/v0.1/countries");
-    if (response.status === 200 && response.data) {
-      return { Result: { Success: true }, Data: response.data };
-    } else {
-      return { Result: { Success: false }, Data: [] };
-    }
-  } catch (error) {
-    console.log("error when trying to get countries:", error);
   }
 }

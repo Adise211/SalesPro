@@ -84,7 +84,7 @@
                 <!-- 4) country -->
                 <v-autocomplete
                   v-model="currentCompany.Location"
-                  label="Country"
+                  label="Location"
                   :items="countriesList"
                   :rules="[formRules.required]"
                 ></v-autocomplete>
@@ -141,11 +141,7 @@ import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { SalesStatusId, ToastMessages } from "@/utilities/consts";
-import {
-  createNewCompany,
-  updateCompanyInfo,
-  getAllCountriesAndCities
-} from "@/firebase/services/data";
+import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 const NEW_COMPANY_OBJECT = {
@@ -173,12 +169,7 @@ export default {
     countriesAndCitiesList: []
   }),
   created() {},
-  async mounted() {
-    const response = await getAllCountriesAndCities();
-    if (response.Result?.Success && response.Data && !response.Data.error) {
-      this.countriesAndCitiesList = response.Data.data;
-    }
-  },
+  async mounted() {},
   methods: {
     ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "setToastMessage"]),
     onToolbarItemClick(item) {
@@ -253,26 +244,6 @@ export default {
       return {
         required: (value) => !!value || "Field is required"
       };
-    },
-    countriesList() {
-      let countries = [];
-      if (this.countriesAndCitiesList.length > 0) {
-        countries = this.countriesAndCitiesList.map((item) => {
-          return item.country;
-        });
-      }
-      return countries;
-    },
-    filteredCities() {
-      // TODO: Option to select a city and auto fill the country
-      let cities = [];
-      if (this.countriesAndCitiesList.length > 0 && this.currentCompany.country) {
-        const selectedCountry = this.countriesAndCitiesList.find((itemInList) => {
-          return itemInList.country === this.currentCompany.country;
-        });
-        cities = selectedCountry?.cities || [];
-      }
-      return cities;
     }
   },
   watch: {}
