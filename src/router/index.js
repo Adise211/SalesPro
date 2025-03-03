@@ -53,13 +53,11 @@ const router = createRouter({
     },
     {
       path: "/sales/:statusId",
-      // statusId: "follow" || "leads" || "closed"
       name: "SalesPage",
       component: SalesPage,
       props: (route) => {
         return {
-          ...route.params,
-          statusId: route.params.statusId
+          ...route.params
         };
       },
       meta: { layout: "DefaultLayout" }
