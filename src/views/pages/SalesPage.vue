@@ -41,7 +41,7 @@
         <AppCard>
           <template v-slot:card-text>
             <AppSalesDataTable
-              :statusId="statusId"
+              :activeStatusId="activeStatusId"
               :searchExp="searchExpression"
               @onEditItem="editItemHandler"
             ></AppSalesDataTable>
@@ -140,7 +140,7 @@ import AppSalesDataTable from "@/components/AppSalesDataTable.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { SalesStatusId, SalesStatusText, ToastMessages } from "@/utilities/consts";
+import { SalesStatusId, ToastMessages } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 import {
   createNewCompany,
@@ -153,12 +153,7 @@ const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 export default {
   name: "SalesPage",
   components: { AppCard, AppSalesDataTable },
-  props: {
-    statusId: {
-      type: Number,
-      default: 1
-    }
-  },
+  props: {},
   data: () => ({
     activeStatusId: DEFAULT_STATUS_ID,
     isDialogOpen: false,
@@ -179,13 +174,6 @@ export default {
     onToolbarItemClick(item) {
       // Update active status (number)
       this.activeStatusId = SalesStatusId[item];
-
-      // Update param in router (text)
-      this.$router.push({
-        params: {
-          statusId: SalesStatusText[item]
-        }
-      });
     },
     async onSaveItem() {
       let currentToastMsgType;

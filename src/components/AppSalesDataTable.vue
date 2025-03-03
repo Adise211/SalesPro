@@ -83,7 +83,7 @@ export default {
   name: "FollowUps",
   components: { AppCard },
   props: {
-    statusId: {
+    activeStatusId: {
       type: String,
       default: ""
     },
@@ -165,25 +165,6 @@ export default {
   },
   computed: {
     ...mapState(useGeneralStore, ["companiesList", "userNotesList"]),
-    activeStatus() {
-      let id;
-
-      switch (this.statusId) {
-        case SaleStatuses.FollowUps.value:
-          id = SaleStatuses.FollowUps.id;
-          break;
-        case SaleStatuses.Leads.value:
-          id = SaleStatuses.Leads.id;
-          break;
-        case SaleStatuses.Closed.value:
-          id = SaleStatuses.Closed.id;
-          break;
-        default:
-          id = 0;
-          break;
-      }
-      return id;
-    },
     tableHeaders() {
       return [
         {
@@ -231,13 +212,12 @@ export default {
       ];
     },
     tableItems() {
-      let result = [];
-      if (this.companiesList.length > 0) {
-        result = this.companiesList.filter((comp) => {
-          if (comp.statusId === this.activeStatus) return comp;
-        });
-      }
-      return result;
+      // Filter by status id
+      const filteredItems = this.companiesList.filter((company) => {
+        return company.StatusId === this.activeStatusId;
+      });
+
+      return filteredItems || [];
     },
     pageCount() {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
