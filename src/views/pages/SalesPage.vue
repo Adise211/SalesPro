@@ -51,7 +51,7 @@
     </v-row>
   </v-container>
   <!-- Create new Company (item) Dialog -->
-  <v-dialog v-model="isDialogOpen" width="70%" height="70%">
+  <v-dialog v-model="isDialogOpen" width="60%" height="85%">
     <AppCard :cardContentOnly="false">
       <template v-slot:card-title>
         <div>Add Company</div>
@@ -64,45 +64,89 @@
               <v-col>
                 <!-- 1) company's name -->
                 <v-text-field
-                  label="Company's Name*"
+                  label="Company Name*"
                   v-model="currentCompany.Name"
                   :rules="[formRules.required]"
+                  append-inner-icon="mdi-domain"
                 ></v-text-field>
               </v-col>
               <v-col>
-                <!-- 2) email -->
-                <v-text-field label="Email" v-model="currentCompany.Email"></v-text-field>
+                <!-- 2) contact person name -->
+                <v-text-field
+                  label="Business Sector"
+                  v-model="currentCompany.BusinessSector"
+                ></v-text-field>
               </v-col>
               <v-col>
-                <!-- 3) phone number -->
-                <v-text-field label="Phone Number" v-model="currentCompany.Phone"></v-text-field>
+                <!-- 2) contact person name -->
+                <v-text-field
+                  label="Contact Person"
+                  v-model="currentCompany.ContactPerson"
+                  append-inner-icon="mdi-account-tie"
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <!-- 2) contact person role -->
+                <v-text-field
+                  label="Contact Person Role"
+                  v-model="currentCompany.ContactPersonRole"
+                ></v-text-field>
               </v-col>
             </v-row>
             <!-- Second Row -->
-            <v-row>
-              <v-col md="5">
-                <!-- 4) country -->
-                <v-autocomplete
-                  v-model="currentCompany.Location"
-                  label="Location"
-                  :items="countriesList"
-                  :rules="[formRules.required]"
-                ></v-autocomplete>
+            <v-row class="mb-2">
+              <v-col>
+                <v-text-field
+                  label="Email"
+                  v-model="currentCompany.Email"
+                  append-inner-icon="mdi-email"
+                ></v-text-field>
               </v-col>
-              <v-col md="5">
-                <!-- 5) city or state -->
-                <!-- <v-combobox
-                  label="State/City"
-                  :items="filteredCities"
-                  v-model="currentCompany.stateOrCity"
-                  no-data-text="Select country"
-                ></v-combobox> -->
+              <v-col>
+                <v-text-field
+                  label="Phone Number"
+                  v-model="currentCompany.Phone"
+                  append-inner-icon="mdi-phone"
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  label="Website Url"
+                  v-model="currentCompany.WebsiteUrl"
+                  append-inner-icon="mdi-web"
+                ></v-text-field>
               </v-col>
             </v-row>
+            <v-divider></v-divider>
             <!-- Third Row -->
+            <v-row class="mt-6">
+              <v-col>
+                <v-text-field label="Address 1" append-inner-icon="mdi-map-marker"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field label="Address 2 (optinal)"></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- Fourth Row -->
             <v-row>
               <v-col>
-                <!-- 4) product -->
+                <v-text-field label="Country"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field label="State"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field label="City"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field label="Zip Code"></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- TODO:Move the next fields to the next step -->
+            <!-- Third Row -->
+            <!-- 4) product -->
+            <!-- <v-row>
+              <v-col>
                 <v-select
                   v-model="currentCompany.ProductId"
                   label="My Product"
@@ -118,17 +162,17 @@
                   item-value="id"
                 ></v-select>
               </v-col>
-            </v-row>
+            </v-row> -->
           </v-container>
         </v-form>
       </template>
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
         <div class="pb-3">
-          <v-btn color="primary" variant="text" @click="onSaveItem" :loading="isLoading"
+          <v-btn color="primary" variant="text" @click="onDialogClose">Cancel</v-btn>
+          <v-btn color="primary" variant="flat" @click="onSaveItem" :loading="isLoading"
             >Save</v-btn
           >
-          <v-btn color="primary" variant="text" @click="onDialogClose">Cancel</v-btn>
         </div>
       </template>
     </AppCard>
@@ -148,6 +192,8 @@ const NEW_COMPANY_OBJECT = {
   Id: null, // String
   Name: null, // String
   StatusId: DEFAULT_STATUS_ID, // Number
+  ContactPerson: null,
+  ContactPersonRole: null,
   Email: null, //String
   Phone: null, //String
   Location: null, // String
@@ -165,8 +211,7 @@ export default {
     searchExpression: "",
     currentCompany: { ...NEW_COMPANY_OBJECT },
     editMode: false,
-    isLoading: false,
-    countriesAndCitiesList: []
+    isLoading: false
   }),
   created() {},
   async mounted() {},
