@@ -31,7 +31,7 @@ steps:
   - task: DownloadSecureFile@1
     displayName: "Download Data Templates File"
     inputs:
-      secureFile: "_dataTemplates.js"
+      secureFile: "data_temp.js"
 
 
   - task: DownloadSecureFile@1
