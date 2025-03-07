@@ -58,7 +58,8 @@
       </template>
       <template v-slot:card-text>
         <v-form ref="form">
-          <v-container>
+          <!-- Step One - Comapny Info -->
+          <v-container v-if="currentFormStep === 1">
             <!-- First Row -->
             <v-row>
               <v-col>
@@ -130,16 +131,16 @@
             <!-- Fourth Row -->
             <v-row>
               <v-col>
-                <v-text-field label="Country"></v-text-field>
+                <v-text-field label="Country" hide-details></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="State"></v-text-field>
+                <v-text-field label="State" hide-details></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="City"></v-text-field>
+                <v-text-field label="City" hide-details></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="Zip Code"></v-text-field>
+                <v-text-field label="Zip Code" hide-details></v-text-field>
               </v-col>
             </v-row>
             <!-- TODO:Move the next fields to the next step -->
@@ -163,6 +164,60 @@
                 ></v-select>
               </v-col>
             </v-row> -->
+          </v-container>
+          <!-- Step Two - Inner Info -->
+          <v-container v-else>
+            <v-row>
+              <v-col>
+                <v-select
+                  v-model="currentCompany.ProductId"
+                  label="Product/Service"
+                  :items="['q-99', 'Q-10']"
+                  append-inner-icon="mdi-package-variant"
+                ></v-select>
+              </v-col>
+              <v-col cols="2">
+                <v-select
+                  v-model="currentCompany.StatusId"
+                  label="Status"
+                  :items="toolbarItems"
+                  item-title="title"
+                  item-value="id"
+                ></v-select>
+              </v-col>
+              <v-col>
+                <v-select
+                  v-model="currentCompany.Teams"
+                  label="Teams"
+                  :items="['Sales', 'Tech']"
+                ></v-select>
+              </v-col>
+              <v-col>
+                <v-select
+                  v-model="currentCompany.FileId"
+                  label="Attach Uploaded File"
+                  :items="['file_1.xl', 'file_2.pdf']"
+                  append-inner-icon="mdi-file-search"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="4">
+                <v-radio-group label="Do you want to set a reminder?" inline>
+                  <v-radio label="Yes" value="Yes"></v-radio>
+                  <v-radio label="No" value="No"></v-radio>
+                </v-radio-group>
+                <!-- <v-select label="Reminder" :items="['Yes', 'No']"> </v-select> -->
+              </v-col>
+              <v-col cols="3">
+                <v-select label="Every" :items="['Day', 'Week', 'Month']"> </v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-textarea label="Note"></v-textarea>
+              </v-col>
+            </v-row>
           </v-container>
         </v-form>
       </template>
@@ -211,7 +266,8 @@ export default {
     searchExpression: "",
     currentCompany: { ...NEW_COMPANY_OBJECT },
     editMode: false,
-    isLoading: false
+    isLoading: false,
+    currentFormStep: 2
   }),
   created() {},
   async mounted() {},
