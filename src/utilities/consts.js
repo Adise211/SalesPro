@@ -73,3 +73,22 @@ export const ToastMessages = {
     Removed: "Failed to remove"
   }
 };
+
+export const BusinessSectors = [
+  "Construction",
+  "Education",
+  "Food Manufacturing",
+  "Transportation",
+  "Business computing specialist",
+  "Human Services",
+  "Real estate",
+  "Metal fabrication",
+  "Insurance",
+  "Energy",
+  "Technology",
+  "Utilities",
+  "Coal",
+  "Investment consultant",
+  "Retail",
+  "Food and beverage"
+];

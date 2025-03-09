@@ -88,10 +88,11 @@
               </v-col>
               <v-col>
                 <!-- 2) contact person name -->
-                <v-text-field
+                <v-select
                   label="Business Sector"
                   v-model="currentCompany.BusinessSector"
-                ></v-text-field>
+                  :items="businessSectorsList"
+                ></v-select>
               </v-col>
               <v-col>
                 <!-- 2) contact person name -->
@@ -245,7 +246,7 @@
             v-if="currentFormStep === formSteps.First"
             color="primary"
             variant="flat"
-            @click="currentFormStep = formSteps.Second"
+            @click="moveToNextFormStep"
             >Next</v-btn
           >
 
@@ -263,7 +264,7 @@ import AppSalesDataTable from "@/components/AppSalesDataTable.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { SalesStatusId, ToastMessages } from "@/utilities/consts";
+import { SalesStatusId, ToastMessages, BusinessSectors } from "@/utilities/consts";
 import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
@@ -317,6 +318,12 @@ export default {
     onToolbarItemClick(item) {
       // Update active status (number)
       this.activeStatusId = SalesStatusId[item];
+    },
+    async moveToNextFormStep() {
+      const { valid } = await this.$refs.form.validate();
+      if (valid) {
+        this.currentFormStep = this.formSteps.Second;
+      }
     },
     async onSaveItem() {
       console.log("CURRENT COMAPNY", this.currentCompany);
@@ -387,6 +394,10 @@ export default {
       return {
         required: (value) => !!value || "Field is required"
       };
+    },
+    businessSectorsList() {
+      // Sorted by abc
+      return BusinessSectors.sort();
     }
   },
   watch: {}
