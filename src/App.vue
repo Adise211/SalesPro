@@ -1,6 +1,6 @@
 <template>
   <component :is="currentLayout" :displayNote="displayNote">
-    <RouterView @onWatchNote="onWatchNote"></RouterView>
+    <RouterView></RouterView>
   </component>
 </template>
 
@@ -45,9 +45,6 @@ export default {
           params: { calendarMode: "view" }
         });
       }
-    },
-    onWatchNote(note) {
-      this.displayNote = note;
     }
   },
   computed: {

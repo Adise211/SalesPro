@@ -85,6 +85,7 @@ import moment from "moment";
 export default {
   name: "FollowUps",
   components: { AppCard },
+  emits: ["onEditItem"],
   props: {
     activeStatusId: {
       type: String,
@@ -158,7 +159,6 @@ export default {
     onItemNoteClick(item) {
       if (this.findAttachedNote(item)) {
         // If there is an attched note - open note fron the parent
-        this.$emit("onWatchNote", this.findAttachedNote(item));
       }
     },
     changedDateFormat(date) {
