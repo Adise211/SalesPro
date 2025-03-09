@@ -203,9 +203,7 @@
                 <v-select
                   v-model="currentCompany.StatusId"
                   label="Status"
-                  :items="toolbarItems"
-                  item-title="title"
-                  item-value="id"
+                  :items="salesStatusSelectList"
                 ></v-select>
               </v-col>
               <v-col>
@@ -226,13 +224,24 @@
             </v-row>
             <v-row>
               <v-col cols="4">
-                <v-radio-group label="Do you want to set a reminder?" inline>
-                  <v-radio label="Yes" value="Yes"></v-radio>
-                  <v-radio label="No" value="No"></v-radio>
+                <v-radio-group
+                  label="Do you want to set a reminder?"
+                  inline
+                  :disabled="currentCompany.StatusId === 3"
+                  v-model="isSetReminder"
+                >
+                  <v-radio label="Yes" :value="true"></v-radio>
+                  <v-radio label="No" :value="false"></v-radio>
                 </v-radio-group>
               </v-col>
               <v-col cols="3">
-                <v-select label="Every" :items="['Day', 'Week', 'Month']"> </v-select>
+                <v-select
+                  label="Every"
+                  v-model="currentCompany.ReminderFrequency"
+                  :disabled="currentCompany.StatusId === 3 || !isSetReminder"
+                  :items="reminderFrequencySelectItems"
+                >
+                </v-select>
               </v-col>
             </v-row>
             <v-row>
@@ -269,7 +278,12 @@ import AppSalesDataTable from "@/components/AppSalesDataTable.vue";
 import AppCard from "@/components/AppCard.vue";
 import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { SalesStatusId, ToastMessages, BusinessSectors } from "@/utilities/consts";
+import {
+  SalesStatusId,
+  ToastMessages,
+  BusinessSectors,
+  SalesReminderFrequency
+} from "@/utilities/consts";
 import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
@@ -280,7 +294,7 @@ const FORM_STEPS = {
 const NEW_COMPANY_OBJECT = {
   Id: null, // String
   Name: null, // String
-  StatusId: 0, // Number
+  StatusId: SalesStatusId.Follow, // Number
   Email: null, //String
   Phone: null, //String
   Location: {
@@ -299,7 +313,7 @@ const NEW_COMPANY_OBJECT = {
   NoteId: null, // String (noteId)
   Teams: [], // String
   FileId: null, // String
-  ReminderFrequency: 0 // Number (Daily-1, Weekly-2, Monthly-3) ,
+  ReminderFrequency: SalesReminderFrequency.Weekly // Number (Daily-1, Weekly-2, Monthly-3) ,
 };
 
 export default {
@@ -314,7 +328,8 @@ export default {
     editMode: false,
     isLoading: false,
     formSteps: FORM_STEPS,
-    currentFormStep: FORM_STEPS.First
+    currentFormStep: FORM_STEPS.First,
+    isSetReminder: false
   }),
   created() {},
   async mounted() {},
@@ -339,6 +354,10 @@ export default {
 
       if (valid) {
         this.isLoading = true;
+        // If a reminder was not set - send value of 0 to API
+        if (!this.isSetReminder) {
+          this.currentCompany.ReminderFrequency = 0;
+        }
         // If not on edit mode - create new
         if (!this.editMode) {
           const createResponse = await createNewCompany(this.currentCompany);
@@ -388,12 +407,20 @@ export default {
       // reset states
       this.currentCompany = { ...NEW_COMPANY_OBJECT };
       this.editMode = false;
+      this.isSetReminder = false;
       this.currentFormStep = this.formSteps.First;
     }
   },
   computed: {
     toolbarItems() {
       return Object.keys(SalesStatusId);
+    },
+    salesStatusSelectList() {
+      return [
+        { title: this.toolbarItems[0], value: SalesStatusId.Follow },
+        { title: this.toolbarItems[1], value: SalesStatusId.Leads },
+        { title: this.toolbarItems[2], value: SalesStatusId.Closed }
+      ];
     },
     formRules() {
       const EMAIL_REGEXP = new RegExp(
@@ -403,13 +430,20 @@ export default {
 
       return {
         required: (value) => !!value || "Field is required",
-        emailMatch: (value) => EMAIL_REGEXP.test(value.trim()) || "Invalid e-mail.",
+        emailMatch: (value) => (!!value && EMAIL_REGEXP.test(value.trim())) || "Invalid e-mail.",
         numbersOnly: (value) => (!!value && NUMBERS_REGEX.test(value)) || "Insert numbers only"
       };
     },
     businessSectorsList() {
       // Sorted by abc
       return BusinessSectors.sort();
+    },
+    reminderFrequencySelectItems() {
+      return [
+        { title: "Day", value: SalesReminderFrequency.Daily },
+        { title: "Week", value: SalesReminderFrequency.Weekly },
+        { title: "Month", value: SalesReminderFrequency.Monthly }
+      ];
     }
   },
   watch: {}
