@@ -117,6 +117,8 @@
                   label="Email"
                   v-model="currentCompany.Email"
                   append-inner-icon="mdi-email"
+                  type="email"
+                  :rules="[formRules.emailMatch]"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -124,6 +126,8 @@
                   label="Phone Number"
                   v-model="currentCompany.Phone"
                   append-inner-icon="mdi-phone"
+                  type="tel"
+                  :rules="[formRules.numbersOnly]"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -131,6 +135,7 @@
                   label="Website Url"
                   v-model="currentCompany.WebsiteUrl"
                   append-inner-icon="mdi-web"
+                  type="url"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -391,8 +396,15 @@ export default {
       return Object.keys(SalesStatusId);
     },
     formRules() {
+      const EMAIL_REGEXP = new RegExp(
+        /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
+      );
+      const NUMBERS_REGEX = new RegExp(/^\d+$/);
+
       return {
-        required: (value) => !!value || "Field is required"
+        required: (value) => !!value || "Field is required",
+        emailMatch: (value) => EMAIL_REGEXP.test(value.trim()) || "Invalid e-mail.",
+        numbersOnly: (value) => (!!value && NUMBERS_REGEX.test(value)) || "Insert numbers only"
       };
     },
     businessSectorsList() {
