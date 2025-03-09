@@ -1,12 +1,10 @@
 import { defineStore } from "pinia";
-import moment from "moment";
+// import moment from "moment";
 
 export const useGeneralStore = defineStore("general", {
   state: () => {
     return {
       companiesList: [],
-      userNotesList: [],
-      notesWithReminder: [],
       toastMessage: {
         type: "",
         message: ""
@@ -14,41 +12,39 @@ export const useGeneralStore = defineStore("general", {
     };
   },
   getters: {
-    noteReminder(state) {
-      // Current time
-      const now = moment(new Date());
-
-      // Find notes with reminder for the next 48 hours
-      const relevantNotes = state.notesWithReminder.filter((note) => {
-        const noteTime = moment(new Date(`${note.SelectedDate} ${note.SelectedTime}`));
-
-        const daysDiff = noteTime.diff(now, "hours");
-        // console.log("notes diff:", daysDiff, note.RemindMe, 0 < daysDiff, daysDiff <= 4, note);
-        if (0 < daysDiff && daysDiff <= 48 && !note.WatchedAt) {
-          return note;
-        }
-      });
-      const soretedNotes = relevantNotes.sort((a, b) => {
-        const noteA = new Date(`${a.SelectedDate} ${a.SelectedTime}`);
-        const noteB = new Date(`${b.SelectedDate} ${b.SelectedTime}`);
-        if (noteA > noteB) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-      // Take allways the first index
-      return soretedNotes[0];
-    }
+    // noteReminder(state) {
+    //   // Current time
+    //   const now = moment(new Date());
+    //   // Find notes with reminder for the next 48 hours
+    //   const relevantNotes = state.notesWithReminder.filter((note) => {
+    //     const noteTime = moment(new Date(`${note.SelectedDate} ${note.SelectedTime}`));
+    //     const daysDiff = noteTime.diff(now, "hours");
+    //     // console.log("notes diff:", daysDiff, note.RemindMe, 0 < daysDiff, daysDiff <= 4, note);
+    //     if (0 < daysDiff && daysDiff <= 48 && !note.WatchedAt) {
+    //       return note;
+    //     }
+    //   });
+    //   const soretedNotes = relevantNotes.sort((a, b) => {
+    //     const noteA = new Date(`${a.SelectedDate} ${a.SelectedTime}`);
+    //     const noteB = new Date(`${b.SelectedDate} ${b.SelectedTime}`);
+    //     if (noteA > noteB) {
+    //       return 1;
+    //     } else {
+    //       return -1;
+    //     }
+    //   });
+    //   // Take allways the first index
+    //   return soretedNotes[0];
+    // }
   },
   actions: {
     setCompaniesList(list) {
       this.companiesList = list;
     },
-    setUserNotesList(data) {
-      this.userNotesList = data;
-      this.updateNotesWithReminderList();
-    },
+    // setUserNotesList(data) {
+    //   this.userNotesList = data;
+    //   this.updateNotesWithReminderList();
+    // },
     setToastMessage(data) {
       const { type, message } = data;
       this.toastMessage.type = type;
@@ -107,43 +103,43 @@ export const useGeneralStore = defineStore("general", {
       if (objIndex > -1) {
         this.companiesList.splice(objIndex, 1); // 2nd parameter means remove one item only
       }
-    },
+    }
     // addEventToStore(noteData) {
     //   this.userNotesList.push(noteData);
     // },
-    updateUserNotesListInStore(noteData) {
-      const currentNoteInList = this.userNotesList.find((note) => {
-        return note.noteId === noteData.noteId;
-      });
-      // If the note exist in the list - replace the note
-      if (currentNoteInList) {
-        const noteIndex = this.userNotesList.indexOf(currentNoteInList);
-        if (noteIndex > -1) {
-          this.userNotesList.splice(noteIndex, 1, noteData);
-        }
-      }
-      this.updateNotesWithReminderList();
-    },
-    removeNoteFromStore(noteObj) {
-      const noteIndex = this.userNotesList.indexOf(noteObj);
+    // updateUserNotesListInStore(noteData) {
+    //   const currentNoteInList = this.userNotesList.find((note) => {
+    //     return note.noteId === noteData.noteId;
+    //   });
+    //   // If the note exist in the list - replace the note
+    //   if (currentNoteInList) {
+    //     const noteIndex = this.userNotesList.indexOf(currentNoteInList);
+    //     if (noteIndex > -1) {
+    //       this.userNotesList.splice(noteIndex, 1, noteData);
+    //     }
+    //   }
+    //   this.updateNotesWithReminderList();
+    // },
+    // removeNoteFromStore(noteObj) {
+    //   const noteIndex = this.userNotesList.indexOf(noteObj);
 
-      // only splice array when item is found
-      if (noteIndex > -1) {
-        this.userNotesList.splice(noteIndex, 1); // 2nd parameter means remove one item only
-      }
-      this.updateNotesWithReminderList();
-    },
-    updateNotesWithReminderList() {
-      // Reset
-      this.notesWithReminder = [];
-      const updatedList = this.userNotesList.filter((note) => {
-        if (note.RemindMe) {
-          return note;
-        }
-      });
-      // Updated list
-      this.notesWithReminder = updatedList;
-    }
+    //   // only splice array when item is found
+    //   if (noteIndex > -1) {
+    //     this.userNotesList.splice(noteIndex, 1); // 2nd parameter means remove one item only
+    //   }
+    //   this.updateNotesWithReminderList();
+    // },
+    // updateNotesWithReminderList() {
+    //   // Reset
+    //   this.notesWithReminder = [];
+    //   const updatedList = this.userNotesList.filter((note) => {
+    //     if (note.RemindMe) {
+    //       return note;
+    //     }
+    //   });
+    //   // Updated list
+    //   this.notesWithReminder = updatedList;
+    // }
   },
   persist: true
 });

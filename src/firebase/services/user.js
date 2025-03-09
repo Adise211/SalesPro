@@ -79,19 +79,18 @@ export async function loginUser(data) {
     if (signInResponse) {
       const user = signInResponse.user;
       const { generalStore, sessionStore } = initStores();
+      const userDataResponse = await getUserData();
+
       // save user auth info
       sessionStore.setUserId(user?.uid);
       sessionStore.setUserLastLoggedInTime(new Date());
       sessionStore.setSessionToken(user?.accessToken);
       sessionStore.setUserFullName(user.displayName);
       sessionStore.setUserEmail(user.email);
-      // get user info and add it to the store
-      const userDataResponse = await getUserData();
-      sessionStore.setUserWorkSpace(userDataResponse.WorkSpace || "");
-      sessionStore.setUserRole(userDataResponse.Role || "");
-      // TODO: Change the data (params)
-      generalStore.setCompaniesList(userDataResponse.userListedCompanies || []);
-      generalStore.setUserNotesList(userDataResponse.userNotes);
+      sessionStore.setUserWorkSpace(userDataResponse.UserInfo?.WorkSpace || "");
+      sessionStore.setUserRole(userDataResponse.UserInfo?.Role || "");
+      // save user general data
+      generalStore.setCompaniesList(userDataResponse.Companies || []);
 
       // Send back the response
       const result = new ResponseBody();

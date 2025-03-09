@@ -10,11 +10,7 @@ export async function getUserData() {
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
       const documentData = docSnap.data();
-      return {
-        userEvents: documentData.userEvents || [],
-        userListedCompanies: documentData.userListedCompanies || [],
-        userNotes: documentData.userNotes || []
-      };
+      return documentData;
     } else {
       // docSnap.data() will be undefined in this case
       console.log("No such document!");
