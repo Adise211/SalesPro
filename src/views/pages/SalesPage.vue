@@ -54,7 +54,22 @@
   <v-dialog v-model="isDialogOpen" width="60%" height="85%">
     <AppCard :cardContentOnly="false">
       <template v-slot:card-title>
-        <div>Add Company</div>
+        <div class="d-flex justify-space-between">
+          <div>Add Company</div>
+          <div class="text-medium-emphasis text-h6">
+            steps:
+            <span
+              class="mx-1"
+              :class="{ 'text-blue font-weight-bold': currentFormStep === formSteps.First }"
+              >1</span
+            >
+            <span
+              class="mx-1"
+              :class="{ 'text-blue font-weight-bold': currentFormStep === formSteps.Second }"
+              >2</span
+            >
+          </div>
+        </div>
       </template>
       <template v-slot:card-text>
         <v-form ref="form">
@@ -122,48 +137,50 @@
             <!-- Third Row -->
             <v-row class="mt-6">
               <v-col>
-                <v-text-field label="Address 1" append-inner-icon="mdi-map-marker"></v-text-field>
+                <v-text-field
+                  v-model="currentCompany.Location.Address1"
+                  label="Address 1"
+                  append-inner-icon="mdi-map-marker"
+                ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="Address 2 (optinal)"></v-text-field>
+                <v-text-field
+                  v-model="currentCompany.Location.Address2"
+                  label="Address 2 (optinal)"
+                ></v-text-field>
               </v-col>
             </v-row>
             <!-- Fourth Row -->
             <v-row>
               <v-col>
-                <v-text-field label="Country" hide-details></v-text-field>
+                <v-text-field
+                  v-model="currentCompany.Location.Country"
+                  label="Country"
+                  hide-details
+                ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="State" hide-details></v-text-field>
+                <v-text-field
+                  v-model="currentCompany.Location.State"
+                  label="State"
+                  hide-details
+                ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="City" hide-details></v-text-field>
+                <v-text-field
+                  v-model="currentCompany.Location.City"
+                  label="City"
+                  hide-details
+                ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field label="Zip Code" hide-details></v-text-field>
+                <v-text-field
+                  v-model="currentCompany.Location.ZipCode"
+                  label="Zip Code"
+                  hide-details
+                ></v-text-field>
               </v-col>
             </v-row>
-            <!-- TODO:Move the next fields to the next step -->
-            <!-- Third Row -->
-            <!-- 4) product -->
-            <!-- <v-row>
-              <v-col>
-                <v-select
-                  v-model="currentCompany.ProductId"
-                  label="My Product"
-                  :items="['q-99', 'Q-10']"
-                ></v-select>
-              </v-col>
-              <v-col>
-                <v-select
-                  v-model="currentCompany.StatusId"
-                  label="Status"
-                  :items="toolbarItems"
-                  item-title="title"
-                  item-value="id"
-                ></v-select>
-              </v-col>
-            </v-row> -->
           </v-container>
           <!-- Step Two - Inner Info -->
           <v-container v-else>
@@ -195,7 +212,7 @@
               <v-col>
                 <v-select
                   v-model="currentCompany.FileId"
-                  label="Attach Uploaded File"
+                  label="Attach File"
                   :items="['file_1.xl', 'file_2.pdf']"
                   append-inner-icon="mdi-file-search"
                 ></v-select>
@@ -207,7 +224,6 @@
                   <v-radio label="Yes" value="Yes"></v-radio>
                   <v-radio label="No" value="No"></v-radio>
                 </v-radio-group>
-                <!-- <v-select label="Reminder" :items="['Yes', 'No']"> </v-select> -->
               </v-col>
               <v-col cols="3">
                 <v-select label="Every" :items="['Day', 'Week', 'Month']"> </v-select>
@@ -225,7 +241,15 @@
         <v-spacer></v-spacer>
         <div class="pb-3">
           <v-btn color="primary" variant="text" @click="onDialogClose">Cancel</v-btn>
-          <v-btn color="primary" variant="flat" @click="onSaveItem" :loading="isLoading"
+          <v-btn
+            v-if="currentFormStep === formSteps.First"
+            color="primary"
+            variant="flat"
+            @click="currentFormStep = formSteps.Second"
+            >Next</v-btn
+          >
+
+          <v-btn v-else color="primary" variant="flat" @click="onSaveItem" :loading="isLoading"
             >Save</v-btn
           >
         </div>
@@ -243,17 +267,33 @@ import { SalesStatusId, ToastMessages } from "@/utilities/consts";
 import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
+const FORM_STEPS = {
+  First: 1,
+  Second: 2
+};
 const NEW_COMPANY_OBJECT = {
   Id: null, // String
   Name: null, // String
-  StatusId: DEFAULT_STATUS_ID, // Number
-  ContactPerson: null,
-  ContactPersonRole: null,
+  StatusId: 0, // Number
   Email: null, //String
   Phone: null, //String
-  Location: null, // String
+  Location: {
+    Address1: null,
+    Address2: null,
+    City: null,
+    State: null,
+    Country: null,
+    ZipCode: null
+  },
+  ContactPerson: null, // String
+  ContactPersonRole: null, // String
+  WebsiteUrl: null, // String
+  BusinessSector: null, // String
   ProductId: null, // String (productId)
-  NoteId: null // String (noteId)
+  NoteId: null, // String (noteId)
+  Teams: [], // String
+  FileId: null, // String
+  ReminderFrequency: 0 // Number (Daily-1, Weekly-2, Monthly-3) ,
 };
 
 export default {
@@ -267,7 +307,8 @@ export default {
     currentCompany: { ...NEW_COMPANY_OBJECT },
     editMode: false,
     isLoading: false,
-    currentFormStep: 2
+    formSteps: FORM_STEPS,
+    currentFormStep: FORM_STEPS.First
   }),
   created() {},
   async mounted() {},
@@ -335,6 +376,7 @@ export default {
       // reset states
       this.currentCompany = { ...NEW_COMPANY_OBJECT };
       this.editMode = false;
+      this.currentFormStep = this.formSteps.First;
     }
   },
   computed: {
