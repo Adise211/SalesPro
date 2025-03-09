@@ -14,7 +14,10 @@
         <td class="text-medium-emphasis app-text-truncate">{{ item.Name }}</td>
         <td class="text-medium-emphasis app-text-truncate">{{ item.Email }}</td>
         <td class="text-medium-emphasis app-text-truncate text-center">{{ item.Phone }}</td>
-        <td class="text-medium-emphasis app-text-truncate">{{ item.Location }}</td>
+        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.WebsiteUrl }}</td>
+        <td class="text-medium-emphasis app-text-truncate text-center">
+          {{ item.ContactPerson }}
+        </td>
         <td class="text-medium-emphasis app-text-truncate text-center">{{ item.ProductId }}</td>
         <td class="text-medium-emphasis text-center">{{ changedDateFormat(item.LastUpdated) }}</td>
         <td class="text-center">
@@ -185,8 +188,15 @@ export default {
           width: "15%"
         },
         {
-          title: "Location",
-          key: "Location",
+          title: "Website",
+          key: "WebsiteUrl",
+          align: "center",
+          sortable: false,
+          width: "15%"
+        },
+        {
+          title: "Contact Person",
+          key: "ContactPerson",
           align: "center",
           width: "15%"
         },
