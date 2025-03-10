@@ -52,7 +52,7 @@ const router = createRouter({
       meta: { layout: "DefaultLayout" }
     },
     {
-      path: "/sales/:statusId",
+      path: "/sales",
       name: "SalesPage",
       component: SalesPage,
       props: (route) => {

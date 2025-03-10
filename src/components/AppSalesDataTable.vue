@@ -74,13 +74,14 @@
 </template>
 
 <script>
-import { ToastMessages, SaleStatuses } from "@/utilities/consts";
+import { ToastMessages, SalesStatusId } from "@/utilities/consts";
 import AppCard from "@/components/AppCard.vue";
 import { convertDate } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { removeCompany } from "@/firebase/services/data";
-import moment from "moment";
+
+const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 
 export default {
   name: "FollowUps",
@@ -88,8 +89,8 @@ export default {
   emits: ["onEditItem"],
   props: {
     activeStatusId: {
-      type: String,
-      default: ""
+      type: Number,
+      default: DEFAULT_STATUS_ID
     },
     searchExp: {
       type: String,
@@ -102,8 +103,7 @@ export default {
     companyName: "",
     isDeleteDialogOpen: false,
     isConfirmDeleteLoading: false,
-    currentItem: {},
-    showChart: true
+    currentItem: {}
   }),
   created() {},
   mounted() {},
@@ -134,20 +134,6 @@ export default {
       this.isConfirmDeleteLoading = false;
       this.currentItem = {};
       this.isDeleteDialogOpen = false;
-    },
-    async changeStatusHandler() {
-      //Params: toStatus, selectedItem
-      // const newStatusKey = toStatus.Status.split(" ").join("");
-      // selectedItem.Status = TrackingStages[newStatusKey];
-      // selectedItem.LastUpdated = moment(new Date()).format("YYYY-MM-DD");
-      // await updateCompanyInfo(selectedItem);
-    },
-    refreshActiveChart() {
-      this.showChart = false;
-
-      setTimeout(() => {
-        this.showChart = true;
-      }, 200);
     },
     findAttachedNote(item) {
       // Check if there is a note for this item
@@ -231,64 +217,9 @@ export default {
     },
     pageCount() {
       return Math.ceil(this.tableItems.length / this.itemsPerPage);
-    },
-    filteredStatus() {
-      // Get all except from the current status
-      return SaleStatuses.filter((item) => {
-        return item.id !== this.activeStatus;
-      });
-    },
-    currentChartXData() {
-      return moment.monthsShort();
-    },
-    currentChartYData() {
-      // create shallow copy
-      const monthsShortCopy = [...this.currentChartXData];
-      const itemsDatesByMonth = {};
-      // divide item dates by months
-      // and insert into "itemsDatesByMonth" object
-      this.tableItems.map((item) => {
-        const itemMonth = moment(item.LastUpdated).month();
-        if (itemsDatesByMonth[itemMonth]) {
-          itemsDatesByMonth[itemMonth].push(item.LastUpdated);
-        } else {
-          itemsDatesByMonth[itemMonth] = [];
-          itemsDatesByMonth[itemMonth].push(item.LastUpdated);
-        }
-      });
-
-      const objKeys = Object.keys(itemsDatesByMonth);
-      // take the 12 months of the year
-      this.currentChartXData.map((_, index) => {
-        // if a month of a year has dates from "itemsDatesByMonth" - replace it with
-        // the amount of dates
-        if (objKeys.includes(`${index}`)) {
-          monthsShortCopy.splice(index, 1, itemsDatesByMonth[index].length);
-        } else {
-          // otherwise - replace it with 0 amount of dates
-          monthsShortCopy.splice(index, 1, 0);
-        }
-      });
-      return monthsShortCopy;
-    },
-    chartDataColors() {
-      // the colors are saved in global.scss
-      let colors = ["#008ffb"];
-      // if (this.statusId === TrackingStages.Leads) {
-      //   colors = ["#eab308"];
-      // } else if (this.statusId === TrackingStages.Closed) {
-      //   colors = ["#f4511e"];
-      // }
-      return colors;
     }
   },
-  watch: {
-    statusId(newVal) {
-      if (newVal) {
-        this.refreshActiveChart();
-      }
-    }
-  }
+  watch: {}
 };
 </script>
 

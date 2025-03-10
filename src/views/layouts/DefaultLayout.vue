@@ -89,12 +89,11 @@
 </template>
 
 <script>
-import { NavigationItems, SalesStatusText } from "@/utilities/consts";
-import { mapState, mapActions } from "pinia";
+import { NavigationItems } from "@/utilities/consts";
+import { mapState } from "pinia";
 import { useSessionStore } from "../../stores/session";
 import { useGeneralStore } from "@/stores/general";
 import { signoutUser } from "@/firebase/services/user";
-import { updateNoteWatchedTime } from "@/firebase/services/data";
 import { Config } from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
 
@@ -103,16 +102,8 @@ let checkUserActivityInterval;
 export default {
   name: "DefaultLayout",
   components: {},
-  props: {
-    displayNote: {
-      type: Object,
-      default: () => null
-    }
-  },
-  data: () => ({
-    isReminderDialogOpen: false,
-    currentNote: null
-  }),
+  props: {},
+  data: () => ({}),
   created() {},
   mounted() {
     // Check if user is still active (interval)
@@ -125,7 +116,6 @@ export default {
     clearInterval(checkUserActivityInterval);
   },
   methods: {
-    ...mapActions(useGeneralStore, ["updateUserNotesListInStore"]),
     onNavItemClick(itemName) {
       let pageName;
       let paramsObj;
@@ -141,7 +131,7 @@ export default {
           break;
         case NavigationItems.Sales:
           pageName = "SalesPage";
-          paramsObj = { statusId: SalesStatusText.Follow };
+          paramsObj = {};
           break;
         case NavigationItems.Products:
           pageName = "ProductsPage";
@@ -190,20 +180,9 @@ export default {
         console.log("logged out auto!!!");
         this.onSignout();
       }
-    },
-    async closeDialog() {
-      this.isReminderDialogOpen = false;
-      if (this.currentNote.NoteId === this.noteReminder?.NoteId) {
-        const response = await updateNoteWatchedTime(this.noteReminder);
-        if (response.success) {
-          this.updateUserNotesListInStore(response.data);
-        }
-      }
-      this.currentNote = null;
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["noteReminder"]),
     ...mapState(useSessionStore, ["userEmail", "userFullName", "isSessionUserActive"]),
     navItems() {
       return [
@@ -271,27 +250,7 @@ export default {
       ];
     }
   },
-  watch: {
-    noteReminder: {
-      handler(newVal) {
-        if (newVal) {
-          this.currentNote = newVal;
-          // If there is a new reminder for popup - open reminder with delay
-          setTimeout(() => {
-            this.isReminderDialogOpen = true;
-          }, 5000);
-        }
-      },
-      immediate: true
-    },
-    displayNote: {
-      handler(newVal) {
-        this.currentNote = newVal;
-        this.isReminderDialogOpen = true;
-      },
-      immediate: true
-    }
-  }
+  watch: {}
 };
 </script>
 
