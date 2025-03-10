@@ -31,7 +31,7 @@ steps:
   - task: DownloadSecureFile@1
     displayName: "Download Data Templates File"
     inputs:
-      secureFile: "_dataTemplates.js"
+      secureFile: "$(TemplatesFile)"
 
 
   - task: DownloadSecureFile@1
@@ -52,7 +52,7 @@ steps:
       SourceFolder: '$(Agent.TempDirectory)'
       Contents: |
         config.json
-        _dataTemplates.js
+        $(TemplatesFile)
       TargetFolder: '$(Build.SourcesDirectory)/public/_config'
 
 
