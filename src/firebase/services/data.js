@@ -1,6 +1,7 @@
 import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { generatedId } from "@/utilities/utilsFuncs";
+import { ResultCodes } from "@/utilities/consts";
 import moment from "moment";
 
 export async function getUserData() {
@@ -18,6 +19,18 @@ export async function getUserData() {
     }
   } catch (error) {
     console.log("error when getting user events:", error);
+  }
+}
+
+export async function getCalendarEvents() {
+  try {
+    const response = await getUserData();
+
+    if (response) {
+      return { Result: { ResultCode: ResultCodes.Success }, Data: response.CalendarEvents };
+    }
+  } catch (error) {
+    console.log("error getting all calendar events:", error);
   }
 }
 
@@ -75,26 +88,6 @@ export async function removeCalendarEvent(data) {
     return { Result: { Success: true } };
   } catch (error) {
     console.log("error when removing calendar event:", error);
-  }
-}
-
-export async function getCalendarEvents() {
-  try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
-
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      const documentData = docSnap.data();
-      return {
-        userEvents: documentData.userEvents || []
-      };
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-      return [];
-    }
-  } catch (error) {
-    console.log("error when getting user events:", error);
   }
 }
 
