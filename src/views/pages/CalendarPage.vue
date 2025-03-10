@@ -65,11 +65,11 @@
 <script>
 import AppCard from "@/components/AppCard.vue";
 import AppEventDialog from "@/components/AppEventDialog.vue";
-import { mapActions, mapState } from "pinia";
+import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { convertDate, changePropertiesToLowerCase } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
-import { removeCalendarEvent } from "@/firebase/services/data";
+import { getCalendarEvents, removeCalendarEvent } from "@/firebase/services/data";
 import moment from "moment";
 const FullCalendar = window.FullCalendar;
 
@@ -79,18 +79,17 @@ export default {
   props: {},
   data: () => ({
     activeCalendar: null,
+    calendarEvents: [],
     isEventDialogOpen: false,
     selectedEvent: null,
     isDeleteLoaderActive: false,
     targetEventEl: "",
     showEventPopup: false
-    // selectedEventPopoverPosition: {
-    //   top: 0,
-    //   left: 0
-    // },
   }),
   created() {},
-  mounted() {
+  async mounted() {
+    await this.getUserCalendarEvents();
+
     const vueInstance = this;
 
     // in timeout for the height prop
@@ -127,6 +126,18 @@ export default {
   },
   methods: {
     ...mapActions(useGeneralStore, ["removeCalendarEventFromStore", "setToastMessage"]),
+    async getUserCalendarEvents() {
+      const response = await getCalendarEvents();
+
+      if (response.Result.ResultCode > 0) {
+        // Convert prop to lowercase
+        const updatedList = response.Data.map((item) => {
+          return changePropertiesToLowerCase(item);
+        });
+        // Set the calendar events
+        this.calendarEvents = updatedList;
+      }
+    },
     calendarEventClickHandler(eventInfo) {
       console.log("EVENT CLICK:", eventInfo);
       // get the clicked el
@@ -185,7 +196,6 @@ export default {
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["calendarEvents"]),
     formattedEventDate() {
       let date = "";
       if (this.selectedEvent) {
