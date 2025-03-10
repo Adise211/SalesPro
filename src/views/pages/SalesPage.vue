@@ -118,7 +118,7 @@
                   v-model="currentCompany.Email"
                   append-inner-icon="mdi-email"
                   type="email"
-                  :rules="[formRules.emailMatch]"
+                  :rules="[formRules.emailMatch, formRules.required]"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -430,8 +430,10 @@ export default {
 
       return {
         required: (value) => !!value || "Field is required",
-        emailMatch: (value) => (!!value && EMAIL_REGEXP.test(value.trim())) || "Invalid e-mail.",
-        numbersOnly: (value) => (!!value && NUMBERS_REGEX.test(value)) || "Insert numbers only"
+        emailMatch: (value) =>
+          !value || (!!value && EMAIL_REGEXP.test(value.trim())) || "Invalid e-mail.",
+        numbersOnly: (value) =>
+          !value || (!!value && NUMBERS_REGEX.test(value)) || "Insert numbers only"
       };
     },
     businessSectorsList() {
