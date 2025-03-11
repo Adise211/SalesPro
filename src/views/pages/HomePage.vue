@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="calendar-page">
+  <v-container fluid class="home-page fill-height d-block">
     <v-row>
       <!-- Closed Deals (last month) -->
       <v-col>
@@ -77,16 +77,20 @@
     </v-row>
 
     <v-row>
+      <!-- Line chart -->
       <v-col cols="8">
         <AppCard>
           <template v-slot:card-text>
-            <div>ttt</div>
+            <div class="text-h6 text-medium-emphasis mb-5">Monthly Recap Statistics</div>
+            <canvas id="line-chart"></canvas>
           </template>
         </AppCard>
       </v-col>
+      <!-- Pie chart -->
       <v-col cols="4">
         <AppCard>
           <template v-slot:card-text>
+            <div class="text-h6 text-medium-emphasis mb-5">Sales By Products</div>
             <canvas id="pie-chart"></canvas>
           </template>
         </AppCard>
@@ -107,25 +111,28 @@ export default {
   components: { AppCard },
   props: {},
   data: () => ({
-    activeChart: null
+    pieChart: null,
+    lineChart: null
   }),
   created() {},
   mounted() {
     this.initChartPie();
+    this.initLineChart();
   },
   methods: {
     initChartPie() {
       const element = document.getElementById("pie-chart");
 
-      this.activeChart = new Chart(element, {
-        type: "bar",
+      this.pieChart = new Chart(element, {
+        type: "pie",
         data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: ["Red", "Blue", "Yellow"],
           datasets: [
             {
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
-              borderWidth: 1
+              label: "My First Dataset",
+              data: [300, 50, 100],
+              backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "rgb(255, 205, 86)"],
+              hoverOffset: 4
             }
           ]
         },
@@ -135,6 +142,25 @@ export default {
               beginAtZero: true
             }
           }
+        }
+      });
+    },
+    initLineChart() {
+      const element = document.getElementById("line-chart");
+
+      this.lineChart = new Chart(element, {
+        type: "line",
+        data: {
+          labels: ["Jan", "Fab", "Mar", "Apr", "May", "Jun", "Jul"],
+          datasets: [
+            {
+              label: "My First Dataset",
+              data: [65, 59, 80, 81, 56, 55, 40],
+              fill: false,
+              borderColor: "rgb(75, 192, 192)",
+              tension: 0.1
+            }
+          ]
         }
       });
     }
