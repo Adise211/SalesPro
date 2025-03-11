@@ -40,7 +40,7 @@
           </template>
         </AppCard>
       </v-col>
-      <!-- Leads? -->
+      <!-- Leads  (last month) -->
       <v-col>
         <AppCard>
           <template v-slot:card-text>
@@ -58,22 +58,70 @@
         </AppCard>
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col cols="8">
+        <AppCard>
+          <template v-slot:card-text>
+            <div>ttt</div>
+          </template>
+        </AppCard>
+      </v-col>
+      <v-col cols="4">
+        <AppCard>
+          <template v-slot:card-text>
+            <canvas id="pie-chart"></canvas>
+          </template>
+        </AppCard>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import AppCard from "@/components/AppCard.vue";
 import { mapState } from "pinia";
-import { useGeneralStore } from "../../stores/general";
+import { useGeneralStore } from "@/stores/general";
+
+const Chart = window.Chart;
 
 export default {
   name: "HomePage",
   components: { AppCard },
   props: {},
-  data: () => ({}),
+  data: () => ({
+    activeChart: null
+  }),
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.initChartPie();
+  },
+  methods: {
+    initChartPie() {
+      const element = document.getElementById("pie-chart");
+
+      this.activeChart = new Chart(element, {
+        type: "bar",
+        data: {
+          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          datasets: [
+            {
+              label: "# of Votes",
+              data: [12, 19, 3, 5, 2, 3],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  },
   computed: {
     ...mapState(useGeneralStore, [
       "totalCountWithStatusFollow",
