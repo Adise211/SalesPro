@@ -31,7 +31,7 @@
                 placeholder="Password"
                 :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
-                :rules="[loginRules.required]"
+                :rules="[loginRules.required, loginRules.passwordLength]"
                 validate-on="blur"
                 variant="outlined"
                 density="comfortable"
@@ -53,6 +53,10 @@
             >
               New here? <span class="text-primary">Sign Up</span>
             </a>
+            <div>
+              <v-alert v-if="isLoginError" type="error" text="User is not exist" class="mt-5">
+              </v-alert>
+            </div>
           </div>
         </div>
       </v-col>
@@ -75,7 +79,8 @@ export default {
     userEmail: "",
     userPassword: "",
     showPassword: false,
-    isLoading: false
+    isLoading: false,
+    isLoginError: false
   }),
   created() {},
   mounted() {},
@@ -90,7 +95,11 @@ export default {
         });
         console.log("client: signin response -", response);
 
-        if (response.Result.ResultCode > 0) {
+        if (!response) {
+          this.isLoading = false;
+          this.isLoginError = true;
+        } else if (response.Result.ResultCode > 0) {
+          this.isLoginError = false;
           this.isLoading = false;
           this.$router.push({
             name: "HomePage"
@@ -115,7 +124,8 @@ export default {
       const emailRegex = new RegExp(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/);
       return {
         required: (value) => !!value || "Required.",
-        emailMatch: (value) => emailRegex.test(value) || "Invalid e-mail."
+        emailMatch: (value) => emailRegex.test(value) || "Invalid e-mail.",
+        passwordLength: (value) => value.length >= 6 || "Insert at at least 6 characters"
       };
     }
   },
