@@ -46,12 +46,29 @@
           <template v-slot:card-text>
             <div class="text-center">
               <div class="card-header">
-                <v-btn color="orange" icon="mdi-briefcase" size="x-small" variant="tonal"></v-btn>
+                <v-btn color="orange" icon="mdi-summit" size="x-small" variant="tonal"></v-btn>
                 <p class="text-medium-emphasis mt-1">Leads</p>
               </div>
               <div class="card-body">
                 <p class="text-h4 my-5">{{ totalCountWithStatusLeads }}</p>
                 <p class="text-orange">Over last month 4.4%</p>
+              </div>
+            </div>
+          </template>
+        </AppCard>
+      </v-col>
+      <!-- Follows (last month) -->
+      <v-col>
+        <AppCard>
+          <template v-slot:card-text>
+            <div class="text-center">
+              <div class="card-header">
+                <v-btn color="indigo" icon="mdi-briefcase" size="x-small" variant="tonal"></v-btn>
+                <p class="text-medium-emphasis mt-1">Follow</p>
+              </div>
+              <div class="card-body">
+                <p class="text-h4 my-5">{{ totalCountWithStatusFollow }}</p>
+                <p class="text-indigo">Over last month 4.4%</p>
               </div>
             </div>
           </template>
