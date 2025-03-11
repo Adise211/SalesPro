@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-// import moment from "moment";
+import { SalesStatusId } from "@/utilities/consts";
 
 export const useGeneralStore = defineStore("general", {
   state: () => {
@@ -11,7 +11,25 @@ export const useGeneralStore = defineStore("general", {
       }
     };
   },
-  getters: {},
+  getters: {
+    totalCountByStatusId(state) {
+      return (id) => {
+        const filteredList = state.companiesList.filter((company) => {
+          return company.StatusId === id;
+        });
+        return filteredList.length;
+      };
+    },
+    totalCountWithStatusFollow() {
+      return this.totalCountByStatusId(SalesStatusId.Follow);
+    },
+    totalCountWithStatusLeads() {
+      return this.totalCountByStatusId(SalesStatusId.Leads);
+    },
+    totalCountWithStatusClosed() {
+      return this.totalCountByStatusId(SalesStatusId.Closed);
+    }
+  },
   actions: {
     setCompaniesList(list) {
       this.companiesList = list;
