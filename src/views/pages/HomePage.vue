@@ -11,7 +11,7 @@
                 <p class="text-medium-emphasis mt-1">Closed</p>
               </div>
               <div class="card-body">
-                <p class="text-h4 my-5">{{ totalCountWithStatusClosed }}</p>
+                <p class="text-h4 my-3">{{ totalCountWithStatusClosed }}</p>
                 <p class="text-blue">Over last month 2.5%</p>
               </div>
             </div>
@@ -33,7 +33,7 @@
                 <p class="text-medium-emphasis mt-1">Products</p>
               </div>
               <div class="card-body">
-                <p class="text-h4 my-5">48</p>
+                <p class="text-h4 my-3">48</p>
                 <p class="text-green">Over last month 4.4%</p>
               </div>
             </div>
@@ -50,7 +50,7 @@
                 <p class="text-medium-emphasis mt-1">Leads</p>
               </div>
               <div class="card-body">
-                <p class="text-h4 my-5">{{ totalCountWithStatusLeads }}</p>
+                <p class="text-h4 my-3">{{ totalCountWithStatusLeads }}</p>
                 <p class="text-orange">Over last month 4.4%</p>
               </div>
             </div>
@@ -67,7 +67,7 @@
                 <p class="text-medium-emphasis mt-1">Follow</p>
               </div>
               <div class="card-body">
-                <p class="text-h4 my-5">{{ totalCountWithStatusFollow }}</p>
+                <p class="text-h4 my-3">{{ totalCountWithStatusFollow }}</p>
                 <p class="text-indigo">Over last month 4.4%</p>
               </div>
             </div>
@@ -76,22 +76,26 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row class="charts-row">
       <!-- Line chart -->
-      <v-col cols="8">
+      <v-col cols="8" class="fill-height pt-2">
         <AppCard>
           <template v-slot:card-text>
             <div class="text-h6 text-medium-emphasis mb-5">Monthly Recap Statistics</div>
-            <canvas id="line-chart"></canvas>
+            <div class="line-chart-container position-relative w-100">
+              <canvas id="line-chart"></canvas>
+            </div>
           </template>
         </AppCard>
       </v-col>
       <!-- Pie chart -->
-      <v-col cols="4">
+      <v-col cols="4" class="fill-height pt-2">
         <AppCard>
           <template v-slot:card-text>
             <div class="text-h6 text-medium-emphasis mb-5">Sales By Products</div>
-            <canvas id="pie-chart"></canvas>
+            <div class="pie-chart-container position-relative w-100">
+              <canvas id="pie-chart"></canvas>
+            </div>
           </template>
         </AppCard>
       </v-col>
@@ -117,7 +121,7 @@ export default {
   created() {},
   mounted() {
     this.initChartPie();
-    this.initLineChart();
+    this.initChartLine();
   },
   methods: {
     initChartPie() {
@@ -141,11 +145,12 @@ export default {
             y: {
               beginAtZero: true
             }
-          }
+          },
+          maintainAspectRatio: false
         }
       });
     },
-    initLineChart() {
+    initChartLine() {
       const element = document.getElementById("line-chart");
 
       this.lineChart = new Chart(element, {
@@ -161,6 +166,9 @@ export default {
               tension: 0.1
             }
           ]
+        },
+        options: {
+          maintainAspectRatio: false
         }
       });
     }
@@ -176,4 +184,16 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.charts-row {
+  height: 70%;
+}
+
+.line-chart-container {
+  height: 85%;
+}
+
+.pie-chart-container {
+  height: 85%;
+}
+</style>
