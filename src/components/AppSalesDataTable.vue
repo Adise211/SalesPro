@@ -135,17 +135,8 @@ export default {
       this.currentItem = {};
       this.isDeleteDialogOpen = false;
     },
-    findAttachedNote(item) {
-      // Check if there is a note for this item
-      const note = this.userNotesList.find((not) => {
-        return not.CompanyName == item.Company;
-      });
-      return note;
-    },
-    onItemNoteClick(item) {
-      if (this.findAttachedNote(item)) {
-        // If there is an attched note - open note fron the parent
-      }
+    onItemNoteClick() {
+      // If there is an attched note - open note fron the parent
     },
     changedDateFormat(date) {
       const fromEpochTime = true;
