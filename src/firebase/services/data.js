@@ -2,7 +2,6 @@ import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { generatedId } from "@/utilities/utilsFuncs";
 import { ResultCodes } from "@/utilities/consts";
-import moment from "moment";
 
 export async function getUserData() {
   try {
@@ -43,15 +42,16 @@ export async function createCalendarEvent(data) {
       data.Id = rendonId;
     }
 
+    // Update time
+    data.LastUpdated = Date.now();
+
     // add event object in "userEvents" array
     // firstore will create automatically if array is not exist
     await updateDoc(userRef, {
       CalendarEvents: arrayUnion(data)
     });
 
-    // Update time
-    data.LastUpdated = Date.now();
-    return { Result: { ResultCode: 1 }, Data: data };
+    return { Result: { ResultCode: ResultCodes.Success }, Data: data };
   } catch (error) {
     console.log("error when creating new event:", error);
   }
@@ -61,17 +61,24 @@ export async function updateCalendarEvent(data) {
   try {
     const userDataRes = await getUserData();
     if (userDataRes) {
-      const { userEvents } = userDataRes;
-      const previousEvent = userEvents.find((ev) => ev.id === data.id);
-
+      const { CalendarEvents } = userDataRes;
+      const previousEvent = CalendarEvents.find((calEvent) => calEvent.Id === data.Id);
+      // If event exist - remove it and add the updated
       if (previousEvent) {
-        // remove previousEvent
-        const removeEventRes = await removeCalendarEvent(previousEvent);
+        // remove previous event
+        await removeCalendarEvent(previousEvent);
+        // update the lastUpdate time
+        data.LastUpdated = Date.now();
         // update the new
-        const createEventRes = await createCalendarEvent(data);
-        if (removeEventRes.Result.Success && createEventRes.Result.Success) {
-          return { Result: { Success: true }, Data: createEventRes.Data };
-        }
+        await createCalendarEvent(data);
+
+        return { Result: { ResultCode: ResultCodes.Success }, Data: data };
+      } else {
+        // If item is not exist (error)
+        return {
+          Result: { ResultCode: ResultCodes.Error, Text: "Could not update item" },
+          Data: {}
+        };
       }
     }
   } catch (error) {
@@ -83,9 +90,9 @@ export async function removeCalendarEvent(data) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
     await updateDoc(userRef, {
-      userEvents: arrayRemove(data)
+      CalendarEvents: arrayRemove(data)
     });
-    return { Result: { Success: true } };
+    return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
   } catch (error) {
     console.log("error when removing calendar event:", error);
   }
@@ -113,132 +120,47 @@ export async function createNewCompany(data) {
   }
 }
 
-export async function removeCompany(companyObj) {
+export async function removeCompany(data) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
     await updateDoc(userRef, {
-      userListedCompanies: arrayRemove(companyObj)
+      Companies: arrayRemove(data)
     });
-    return { Result: { Success: true } };
+    return { Result: { ResultCode: ResultCodes.Success }, Data: data };
   } catch (error) {
-    console.log("error when removing an item:", error);
+    console.log("error when removing company:", error);
   }
 }
 
-export async function updateCompanyInfo(companyObj) {
+export async function updateCompanyInfo(data) {
   try {
     const userRef = doc(db, "users", auth.currentUser.uid);
     const userDataRes = await getUserData();
     if (userDataRes) {
-      // find the previous company object in server by id
-      const { userListedCompanies } = userDataRes;
-      const previousCompanyObj = userListedCompanies.find(
-        (com) => com.companyId === companyObj.companyId
-      );
-      // if previous company object exist - remove it and add the new instead
+      // Check if company is exist - by id
+      const { Companies } = userDataRes;
+      const previousCompanyObj = Companies.find((company) => company.Id === data.Id);
+      // if previous company object exist - remove it and add the updated instead
       if (previousCompanyObj) {
-        const removePreviousRes = await removeCompany(previousCompanyObj);
+        await removeCompany(previousCompanyObj);
 
         // update the lastUpdate time
-        const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
-        companyObj.lastUpdate = currentEpochTime;
-
+        data.LastUpdated = Date.now();
+        // Add updated
         await updateDoc(userRef, {
-          userListedCompanies: arrayUnion(companyObj)
+          Companies: arrayUnion(data)
         });
-        if (removePreviousRes.Result.Success) {
-          return { Result: { Success: true }, Data: companyObj };
-        }
+
+        return { Result: { ResultCode: ResultCodes.Success }, Data: data };
+      } else {
+        // If item is not exist (error)
+        return {
+          Result: { ResultCode: ResultCodes.Error, Text: "Could not update item" },
+          Data: {}
+        };
       }
     }
   } catch (error) {
     console.log("error when trying to update item status:", error);
-  }
-}
-
-export async function createNewNote(noteObj) {
-  try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
-
-    // If note does'nt have and id - add id
-    if (!noteObj.noteId) {
-      const rendonId = "note" + generatedId();
-      noteObj.noteId = rendonId;
-    }
-    // Add last updated time (epoch time)
-    const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
-    noteObj.lastUpdate = currentEpochTime;
-
-    await updateDoc(userRef, {
-      userNotes: arrayUnion(noteObj)
-    });
-    return { Result: { Success: true }, Data: noteObj };
-  } catch (error) {
-    console.log("error when trying to create new note:", error);
-  }
-}
-
-export async function removeNote(noteObj) {
-  try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
-    await updateDoc(userRef, {
-      userNotes: arrayRemove(noteObj)
-    });
-    return { success: true };
-  } catch (error) {
-    console.log("error when trying to remove note:", error);
-  }
-}
-
-export async function updateNote(noteObj) {
-  try {
-    const userDataRes = await getUserData();
-    if (userDataRes) {
-      // find the previous note info in server by id
-      const { userNotes } = userDataRes;
-      const previousNote = userNotes.find((note) => {
-        return note.NoteId === noteObj.NoteId;
-      });
-      // remove prevoius
-      if (previousNote) {
-        await removeNote(previousNote);
-        // create new
-        const createNoteRes = await createNewNote(noteObj);
-        if (createNoteRes.Result.Success) {
-          // return the created note data
-          return { Result: { Success: true }, Data: createNoteRes.Data };
-        }
-      }
-    }
-  } catch (error) {
-    console.log("error when trying to update note:", error);
-  }
-}
-
-export async function updateNoteWatchedTime(noteObj) {
-  try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
-    const userDataRes = await getUserData();
-
-    const { userNotes } = userDataRes;
-    // Get the relevant note by id
-    const currentNote = userNotes.find((note) => {
-      return note.NoteId === noteObj.NoteId;
-    });
-    if (currentNote) {
-      // Update watched time
-      const currentEpochTime = Number.parseInt(moment(new Date()).format("X"));
-      noteObj.WatchedAt = currentEpochTime;
-
-      // Remove old note
-      await removeNote(currentNote);
-      // Create the updated note
-      await updateDoc(userRef, {
-        userNotes: arrayUnion(noteObj)
-      });
-      return { success: true, data: noteObj };
-    }
-  } catch (error) {
-    console.log("error when trying to update note watched time:", error);
   }
 }
