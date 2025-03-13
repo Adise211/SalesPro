@@ -22,54 +22,61 @@
         </td>
         <td class="text-medium-emphasis app-text-truncate text-center">{{ item.ProductId }}</td>
         <td class="text-medium-emphasis">{{ changedDateFormat(item.LastUpdated) }}</td>
-        <!-- <td class="text-center">
-          <v-menu activator="parent">
-            <template v-slot:activator="{ props }">
-              <v-icon v-bind="props"> mdi-dots-vertical</v-icon>
-            </template>
-            <v-list width="100">
-              <v-list-item @click="onEditItem(item)">
-                <v-list-item-title>Edit</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="onItemNoteClick(item)">
-                <v-list-item-title>Note</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="onDeleteItem(item)">
-                <v-list-item-title>Delete</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </td> -->
         <td>
           <v-btn
             :text="isExpanded(internalItem) ? 'Collapse' : 'More info'"
             color="white"
             size="small"
             variant="text"
-            class="bg-secondary"
+            class="bg-primary"
             slim
             @click="toggleExpand(internalItem)"
           >
             <template v-slot:append>
-              <v-icon
+              <v-icon color="white"
                 >{{ isExpanded(internalItem) ? "mdi-chevron-up" : "mdi-chevron-down" }}
               </v-icon>
             </template>
           </v-btn>
-          <!-- <v-icon @click="toggleExpand(internalItem)">{{
-            isExpanded(internalItem) ? "mdi-chevron-up" : "mdi-chevron-down"
-          }}</v-icon> -->
         </td>
       </tr>
     </template>
-
+    <!-- table body - expanded row -->
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length" class="py-2">
-          <div>
-            <p><strong>Additional Info:</strong></p>
-            <p>{{ item.ContactPerson }}</p>
-          </div>
+          <v-sheet rounded="lg" border>
+            <v-table density="compact">
+              <tbody class="bg-grey-lighten-4">
+                <tr>
+                  <th class="expanded-row-th-width-meduim">Business Sector</th>
+                  <th class="expanded-row-th-width-meduim">Location</th>
+                  <th class="expanded-row-th-width-meduim">Contact Person Role</th>
+                  <th>Attached File</th>
+                  <th>Teams</th>
+                  <th class="expanded-row-th-width-large">Note</th>
+                  <th></th>
+                </tr>
+              </tbody>
+
+              <tbody>
+                <tr>
+                  <td>{{ item.BusinessSector }}</td>
+                  <td>{{ item.Location.Country }}</td>
+                  <td>{{ item.ContactPersonRole }}</td>
+                  <td>{{ item.FileId }}</td>
+                  <td>{{ item.Teams.length ? item.Teams.toString() : "" }}</td>
+                  <td>{{ item.Note }}</td>
+                  <td class="text-center">
+                    <v-icon size="small" @click="onEditItem(item)">mdi-pencil</v-icon>
+                    <v-icon size="small" color="error" class="ml-2" @click="onDeleteItem(item)"
+                      >mdi-delete</v-icon
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-sheet>
         </td>
       </tr>
     </template>
@@ -85,22 +92,22 @@
   <v-dialog v-model="isDeleteDialogOpen" width="30%">
     <AppCard :cardContentOnly="false">
       <template v-slot:card-title>
-        <div>Delete item</div>
+        <div>Delete Item</div>
       </template>
       <template v-slot:card-text>
-        <div>Are you sure you want to delete this item?</div>
+        <div>Do you want to delete this item?</div>
       </template>
       <template v-slot:card-actions>
         <v-spacer></v-spacer>
-        <div>
+        <div class="pb-3">
+          <v-btn color="primary" variant="text" @click="isDeleteDialogOpen = false">No</v-btn>
           <v-btn
             color="primary"
-            variant="text"
+            variant="flat"
             @click="deleteConfirmationHandler"
             :loading="isConfirmDeleteLoading"
             >Yes</v-btn
           >
-          <v-btn color="primary" variant="text" @click="isDeleteDialogOpen = false">No</v-btn>
         </div>
       </template>
     </AppCard>
@@ -251,5 +258,17 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.expanded-row-th-width-small {
+  width: 10px;
+}
+
+.expanded-row-th-width-meduim {
+  width: 15%;
+}
+
+.expanded-row-th-width-large {
+  width: 20%;
 }
 </style>
