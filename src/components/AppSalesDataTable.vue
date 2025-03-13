@@ -50,23 +50,23 @@
               <tbody class="bg-grey-lighten-4">
                 <tr>
                   <th class="expanded-row-th-width-meduim">Business Sector</th>
-                  <th class="expanded-row-th-width-meduim">Location</th>
-                  <th class="expanded-row-th-width-meduim">Contact Person Role</th>
-                  <th>Attached File</th>
+                  <th class="expanded-row-th-width-large">Location</th>
+                  <th class="expanded-row-th-width-meduim">Contact Role</th>
+                  <th class="expanded-row-th-width-meduim">Attached File</th>
                   <th>Teams</th>
-                  <th class="expanded-row-th-width-large">Note</th>
-                  <th></th>
+                  <th class="expanded-row-th-width-small">Note</th>
+                  <th class="expanded-row-th-width-small"></th>
                 </tr>
               </tbody>
 
               <tbody>
                 <tr>
                   <td>{{ item.BusinessSector }}</td>
-                  <td>{{ item.Location.Country }}</td>
+                  <td>{{ convertLocationToString(item.Location) }}</td>
                   <td>{{ item.ContactPersonRole }}</td>
-                  <td>{{ item.FileId }}</td>
+                  <td class="text-blue">{{ item.FileId }}</td>
                   <td>{{ item.Teams.length ? item.Teams.toString() : "" }}</td>
-                  <td>{{ item.Note }}</td>
+                  <td class="text-blue">Open note</td>
                   <td class="text-center">
                     <v-icon size="small" @click="onEditItem(item)">mdi-pencil</v-icon>
                     <v-icon size="small" color="error" class="ml-2" @click="onDeleteItem(item)"
@@ -180,10 +180,21 @@ export default {
     changedDateFormat(date) {
       const fromEpochTime = true;
       return convertDate(date, fromEpochTime).MDYFormat;
+    },
+    convertLocationToString(locationObject) {
+      const ORDERED_ARR = [];
+      if (locationObject.Address1) ORDERED_ARR.push(locationObject.Address1);
+      if (locationObject.Address2) ORDERED_ARR.push(locationObject.Address2);
+      if (locationObject.City) ORDERED_ARR.push(locationObject.City);
+      if (locationObject.State) ORDERED_ARR.push(locationObject.State);
+      if (locationObject.Country) ORDERED_ARR.push(locationObject.Country);
+      if (locationObject.ZipeCode) ORDERED_ARR.push(locationObject.ZipeCode);
+
+      return ORDERED_ARR.toString();
     }
   },
   computed: {
-    ...mapState(useGeneralStore, ["companiesList", "userNotesList"]),
+    ...mapState(useGeneralStore, ["companiesList"]),
     tableHeaders() {
       return [
         {
@@ -261,7 +272,7 @@ export default {
 }
 
 .expanded-row-th-width-small {
-  width: 10px;
+  width: 10%;
 }
 
 .expanded-row-th-width-meduim {
