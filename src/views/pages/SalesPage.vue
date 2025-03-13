@@ -334,7 +334,11 @@ export default {
   created() {},
   async mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["updateCompaniesListInStore", "setToastMessage"]),
+    ...mapActions(useGeneralStore, [
+      "setToastMessage",
+      "addCompanyToListInStore",
+      "updateCompanyInStore"
+    ]),
     onToolbarItemClick(item) {
       // Update active status (number)
       this.activeStatusId = SalesStatusId[item];
@@ -364,9 +368,9 @@ export default {
 
           if (createResponse.Result.ResultCode > 0) {
             // Add to store + show success toast message
-            // this.updateCompaniesListInStore(createResponse.Data);
             toastType = "success";
             toastMessage = ToastMessages.SuccessMessages.Created;
+            this.addCompanyToListInStore(this.currentCompany);
           } else {
             // Show error toast message
             toastType = "error";
@@ -377,9 +381,9 @@ export default {
           const updateResponse = await updateCompanyInfo(this.currentCompany);
           if (updateResponse.Result.ResultCode > 0) {
             // Add to store + show success toast message
-            this.updateCompaniesListInStore(updateResponse.Data);
             toastType = "success";
             toastMessage = ToastMessages.SuccessMessages.Updated;
+            this.updateCompanyInStore(updateResponse.Data);
           } else {
             // Show error toast message
             toastType = "error";

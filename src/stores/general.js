@@ -43,33 +43,25 @@ export const useGeneralStore = defineStore("general", {
       this.toastMessage.type = "";
       this.toastMessage.message = "";
     },
-    updateCompaniesListInStore(newCompanyObj) {
-      // 1. If list is not empty + company has an id
-      console.log("store:", newCompanyObj);
-      if (this.companiesList.length > 0 && newCompanyObj.companyId) {
-        // Check if company exist in the list (return index)
-        const companyIndex = this.companiesList.findIndex(
-          (com) => com.companyId === newCompanyObj.companyId
-        );
-        // If exist - replace it! (with the updated company object)
-        if (companyIndex > -1) {
-          console.log("found company index!", companyIndex);
-          this.companiesList.splice(companyIndex, 1, newCompanyObj);
-        } else {
-          // If not exist - add it
-          this.companiesList.push(newCompanyObj);
-        }
-      } else {
-        // 2. If the list is empty - add it
-        this.companiesList.push(newCompanyObj);
+    addCompanyToListInStore(data) {
+      const IS_EXIST = this.companiesList.find((company) => {
+        return company.Id === data.Id;
+      });
+      if (!IS_EXIST) this.companiesList.push(data);
+    },
+    updateCompanyInStore(data) {
+      const COMPANY_INDEX = this.companiesList.findIndex((company) => {
+        return company.Id === data.Id;
+      });
+      if (COMPANY_INDEX > -1) {
+        this.companiesList.splice(COMPANY_INDEX, 1, data);
       }
     },
-    removeCompanyFromStore(companyObj) {
-      const objIndex = this.companiesList.indexOf(companyObj);
-
+    removeCompanyFromStore(data) {
+      const COMPANY_INDEX = this.companiesList.indexOf(data);
       // only splice array when item is found
-      if (objIndex > -1) {
-        this.companiesList.splice(objIndex, 1); // 2nd parameter means remove one item only
+      if (COMPANY_INDEX > -1) {
+        this.companiesList.splice(COMPANY_INDEX, 1); // 2nd parameter means remove one item only
       }
     }
   },
