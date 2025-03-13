@@ -246,7 +246,7 @@
             </v-row>
             <v-row>
               <v-col>
-                <v-textarea label="Note"></v-textarea>
+                <v-textarea label="Note" v-model="currentCompany.Note"></v-textarea>
               </v-col>
             </v-row>
           </v-container>
@@ -310,7 +310,7 @@ const NEW_COMPANY_OBJECT = {
   WebsiteUrl: null, // String
   BusinessSector: null, // String
   ProductId: null, // String (productId)
-  NoteId: null, // String (noteId)
+  Note: null, // String
   Teams: [], // String
   FileId: null, // String
   ReminderFrequency: SalesReminderFrequency.Weekly // Number (Daily-1, Weekly-2, Monthly-3) ,
