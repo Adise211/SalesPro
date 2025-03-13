@@ -2,14 +2,16 @@
   <v-data-table
     :headers="tableHeaders"
     :items="tableItems"
+    item-value="Id"
     :items-per-page="itemsPerPage"
     :height="390"
     :page="page"
     :search="searchExp"
     class="mt-3"
+    show-expand
   >
     <!-- table body (items) -->
-    <template v-slot:item="{ item }">
+    <template v-slot:item="{ item, isExpanded, toggleExpand, internalItem }">
       <tr>
         <td class="text-medium-emphasis app-text-truncate">{{ item.Name }}</td>
         <td class="text-medium-emphasis app-text-truncate">{{ item.Email }}</td>
@@ -19,8 +21,8 @@
           {{ item.ContactPerson }}
         </td>
         <td class="text-medium-emphasis app-text-truncate text-center">{{ item.ProductId }}</td>
-        <td class="text-medium-emphasis text-center">{{ changedDateFormat(item.LastUpdated) }}</td>
-        <td class="text-center">
+        <td class="text-medium-emphasis">{{ changedDateFormat(item.LastUpdated) }}</td>
+        <!-- <td class="text-center">
           <v-menu activator="parent">
             <template v-slot:activator="{ props }">
               <v-icon v-bind="props"> mdi-dots-vertical</v-icon>
@@ -37,9 +39,41 @@
               </v-list-item>
             </v-list>
           </v-menu>
+        </td> -->
+        <td>
+          <v-btn
+            :text="isExpanded(internalItem) ? 'Collapse' : 'More info'"
+            color="white"
+            size="small"
+            variant="text"
+            class="bg-secondary"
+            slim
+            @click="toggleExpand(internalItem)"
+          >
+            <template v-slot:append>
+              <v-icon
+                >{{ isExpanded(internalItem) ? "mdi-chevron-up" : "mdi-chevron-down" }}
+              </v-icon>
+            </template>
+          </v-btn>
+          <!-- <v-icon @click="toggleExpand(internalItem)">{{
+            isExpanded(internalItem) ? "mdi-chevron-up" : "mdi-chevron-down"
+          }}</v-icon> -->
         </td>
       </tr>
     </template>
+
+    <template v-slot:expanded-row="{ columns, item }">
+      <tr>
+        <td :colspan="columns.length" class="py-2">
+          <div>
+            <p><strong>Additional Info:</strong></p>
+            <p>{{ item.ContactPerson }}</p>
+          </div>
+        </td>
+      </tr>
+    </template>
+
     <!-- table footer (paging) -->
     <template v-slot:bottom>
       <div class="text-center pt-2">
@@ -100,7 +134,6 @@ export default {
   data: () => ({
     itemsPerPage: "6",
     page: 1,
-    companyName: "",
     isDeleteDialogOpen: false,
     isConfirmDeleteLoading: false,
     currentItem: {}
@@ -125,7 +158,6 @@ export default {
       if (response.Result.Success) {
         this.removeCompanyFromStore(this.currentItem);
       }
-      this.refreshActiveChart();
       this.setToastMessage({
         type: "success",
         message: ToastMessages.SuccessMessages.Removed
@@ -150,26 +182,27 @@ export default {
         {
           title: "Name",
           key: "Name",
-          width: ""
+          width: "15%"
         },
         {
           title: "Email",
           key: "Email",
-          align: "center"
+          align: "center",
+          width: "20%"
         },
         {
           title: "Phone",
           key: "Phone",
           align: "center",
           sortable: false,
-          width: "15%"
+          width: "10%"
         },
         {
           title: "Website",
           key: "WebsiteUrl",
           align: "center",
           sortable: false,
-          width: "15%"
+          width: "10%"
         },
         {
           title: "Contact Person",
@@ -181,20 +214,18 @@ export default {
           title: "Product/Service",
           key: "ProductId",
           align: "center",
-          width: "20%"
+          width: "15%"
         },
         {
-          title: "LastUpdated",
+          title: "Last Updated",
           key: "LastUpdated",
-          align: "center",
-          sortable: false,
-          width: "10%"
+          width: "15%"
         },
         {
           title: "",
           key: "",
           sortable: false,
-          width: "5%"
+          width: "10%"
         }
       ];
     },
