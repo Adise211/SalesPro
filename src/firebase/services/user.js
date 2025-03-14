@@ -8,7 +8,6 @@ import { initStores } from "../../stores";
 import { doc, setDoc } from "firebase/firestore";
 import { getUserData } from "./data";
 import { ResultCodes } from "@/utilities/consts";
-import { ResponseBody } from "../../../public/_config/data_temp";
 import { Config } from "@/utilities/config";
 
 export async function createNewUser(data) {
@@ -39,9 +38,7 @@ export async function createNewUser(data) {
         }
       });
       // Send back the response
-      const result = new ResponseBody();
-      result.Result.ResultCode = ResultCodes.Success;
-      return result;
+      return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
     }
   } catch (error) {
     console.log("error creating new user", error);
@@ -94,10 +91,7 @@ export async function loginUser(data) {
       generalStore.setCompaniesList(userDataResponse.Companies || []);
 
       // Send back the response
-      const result = new ResponseBody();
-      result.Result.ResultCode = ResultCodes.Success;
-      result.Data = user;
-      return result;
+      return { Result: { ResultCode: ResultCodes.Success }, Data: user };
     }
   } catch (error) {
     console.log("error trying signin", error);
@@ -109,9 +103,7 @@ export async function signoutUser() {
     await auth.signOut();
 
     // Send back the response
-    const result = new ResponseBody();
-    result.Result.ResultCode = ResultCodes.Success;
-    return result;
+    return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
   } catch (error) {
     console.log("error trying to logout", error);
   }
