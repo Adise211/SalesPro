@@ -164,3 +164,25 @@ export async function updateCompanyInfo(data) {
     console.log("error when trying to update item status:", error);
   }
 }
+
+export async function createNewProduct(data) {
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+
+    if (!data.Id) {
+      // Add an id
+      const rendonId = "product" + generatedId();
+      data.Id = rendonId;
+    }
+    // Update time
+    data.LastUpdated = Date.now();
+
+    await updateDoc(userRef, {
+      Products: arrayUnion(data)
+    });
+
+    return { Result: { ResultCode: ResultCodes.Success }, Data: data };
+  } catch (error) {
+    console.log("error when creating new product:", error);
+  }
+}
