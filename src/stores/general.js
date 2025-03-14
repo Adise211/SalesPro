@@ -5,6 +5,7 @@ export const useGeneralStore = defineStore("general", {
   state: () => {
     return {
       companiesList: [],
+      productsList: [],
       toastMessage: {
         type: "",
         message: ""
@@ -63,6 +64,12 @@ export const useGeneralStore = defineStore("general", {
       if (COMPANY_INDEX > -1) {
         this.companiesList.splice(COMPANY_INDEX, 1); // 2nd parameter means remove one item only
       }
+    },
+    addProductToListInStore(data) {
+      const IS_EXIST = this.productsList.find((product) => {
+        return product.Id === data.Id;
+      });
+      if (!IS_EXIST) this.productsList.push(data);
     }
   },
   persist: true
