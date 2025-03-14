@@ -2,10 +2,11 @@ import { auth, db } from "../connection";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { generatedId } from "@/utilities/utilsFuncs";
 import { ResultCodes } from "@/utilities/consts";
+import { Config } from "@/utilities/config";
 
 export async function getUserData() {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
 
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
@@ -35,7 +36,7 @@ export async function getCalendarEvents() {
 
 export async function createCalendarEvent(data) {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
     if (!data.Id) {
       // generate random id
       const rendonId = "event" + generatedId();
@@ -88,7 +89,7 @@ export async function updateCalendarEvent(data) {
 
 export async function removeCalendarEvent(data) {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
     await updateDoc(userRef, {
       CalendarEvents: arrayRemove(data)
     });
@@ -100,7 +101,7 @@ export async function removeCalendarEvent(data) {
 
 export async function createNewCompany(data) {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
 
     if (!data.Id) {
       // Add an id
@@ -122,7 +123,7 @@ export async function createNewCompany(data) {
 
 export async function removeCompany(data) {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
     await updateDoc(userRef, {
       Companies: arrayRemove(data)
     });
@@ -134,7 +135,7 @@ export async function removeCompany(data) {
 
 export async function updateCompanyInfo(data) {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
     const userDataRes = await getUserData();
     if (userDataRes) {
       // Check if company is exist - by id
@@ -167,7 +168,7 @@ export async function updateCompanyInfo(data) {
 
 export async function createNewProduct(data) {
   try {
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = doc(db, Config.database.collections.workspaces, auth.currentUser.uid);
 
     if (!data.Id) {
       // Add an id

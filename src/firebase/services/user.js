@@ -9,6 +9,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getUserData } from "./data";
 import { ResultCodes } from "@/utilities/consts";
 import { ResponseBody } from "../../../public/_config/data_temp";
+import { Config } from "@/utilities/config";
 
 export async function createNewUser(data) {
   try {
@@ -27,7 +28,7 @@ export async function createNewUser(data) {
       // Update user auth profile (Firebase Auth)
       await updateUserProfile({ userFullName, userPhotoUrl: "" });
       // Create new user table
-      await setDoc(doc(db, "users", user.uid), {
+      await setDoc(doc(db, Config.database.collections.users, user.uid), {
         UserInfo: {
           Email: email,
           FullName: userFullName,
