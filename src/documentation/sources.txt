@@ -1,0 +1,2 @@
+Firestore (Firebase) Database structure:
+https://firebase.google.com/docs/firestore/manage-data/structure-data#root-level_collections
