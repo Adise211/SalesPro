@@ -4,44 +4,13 @@
       <v-spacer></v-spacer>
       <v-col md="3" class="my-auto">
         <v-window v-model="currentWindowStep">
-          <!-- FULL NAME FORM-->
+          <!-- EMAIL AND PASSWORD FORM -->
           <v-window-item :value="windowSteps.One">
             <div class="text-h5 text-center mb-5 font-weight-bold">
               Start closing
               <span class="text-success">more deals</span>
             </div>
             <div class="subtitle-1 text-center mb-5">It's for free!</div>
-
-            <v-form ref="fullNameForm" class="d-flex flex-column justify-center align-center">
-              <!-- Fisrt name -->
-              <v-text-field
-                v-model="userFirstName"
-                class="mt-1"
-                placeholder="Name"
-                :rules="[signupRules.required, signupRules.nameMatch]"
-                validate-on="input"
-                variant="outlined"
-                density="comfortable"
-                style="width: 80%"
-                color="primary"
-              ></v-text-field>
-              <!-- Last name -->
-              <v-text-field
-                v-model="userLastName"
-                class="mt-1"
-                placeholder="Last name"
-                :rules="[signupRules.required, signupRules.nameMatch]"
-                variant="outlined"
-                density="comfortable"
-                style="width: 80%"
-                color="primary"
-              ></v-text-field>
-            </v-form>
-          </v-window-item>
-          <!-- EMAIL FORM -->
-          <v-window-item :value="windowSteps.Two">
-            <div class="text-h5 text-center mb-5 font-weight-bold">Email</div>
-            <div class="subtitle-1 text-center mb-5">Signup with your email</div>
             <v-form ref="emailForm" class="d-flex flex-column justify-center align-center">
               <v-text-field
                 v-model="userEmail"
@@ -54,43 +23,6 @@
                 style="width: 80%"
                 color="primary"
               ></v-text-field>
-            </v-form>
-          </v-window-item>
-          <!-- WORK SPACE & ROLE FORM -->
-          <v-window-item :value="windowSteps.Three">
-            <div class="text-h5 text-center mb-5 font-weight-bold">Your Organization</div>
-            <div class="subtitle-1 text-center mb-5">Tell us more about your organization</div>
-            <v-form ref="workspaceForm" class="d-flex flex-column justify-center align-center">
-              <v-text-field
-                v-model="userWorkspace"
-                class="mt-1"
-                placeholder="Organization Name"
-                :rules="[signupRules.required, signupRules.nameMatch]"
-                validate-on="input"
-                variant="outlined"
-                density="comfortable"
-                style="width: 80%"
-                color="primary"
-              ></v-text-field>
-              <v-text-field
-                v-model="userRole"
-                class="mt-1"
-                placeholder="Your Role"
-                :rules="[signupRules.required, signupRules.nameMatch]"
-                validate-on="input"
-                variant="outlined"
-                density="comfortable"
-                style="width: 80%"
-                color="primary"
-              ></v-text-field>
-            </v-form>
-          </v-window-item>
-          <!-- PASSWORD FORM -->
-          <v-window-item :value="windowSteps.Four">
-            <div class="text-h5 text-center mb-5 font-weight-bold">You are almost there...</div>
-
-            <div class="subtitle-1 text-center mb-5">Set your password</div>
-            <v-form ref="passwordForm" class="d-flex flex-column justify-center align-center">
               <!-- Password -->
               <v-text-field
                 v-model="userPassword1"
@@ -127,7 +59,67 @@
               ></v-text-field>
             </v-form>
           </v-window-item>
-          <v-window-item :value="windowSteps.Five">
+          <!-- WORK SPACE & ROLE FORM -->
+          <v-window-item :value="windowSteps.Two">
+            <div class="text-h5 text-center mb-5 font-weight-bold">Your Organization</div>
+            <div class="subtitle-1 text-center mb-5">Tell us more about your organization</div>
+            <v-form ref="workspaceForm" class="d-flex flex-column justify-center align-center">
+              <v-text-field
+                v-model="userWorkspace"
+                class="mt-1"
+                placeholder="Organization Name"
+                :rules="[signupRules.required, signupRules.nameMatch]"
+                validate-on="input"
+                variant="outlined"
+                density="comfortable"
+                style="width: 80%"
+                color="primary"
+              ></v-text-field>
+              <v-text-field
+                v-model="userRole"
+                class="mt-1"
+                placeholder="Your Role"
+                :rules="[signupRules.required, signupRules.nameMatch]"
+                validate-on="input"
+                variant="outlined"
+                density="comfortable"
+                style="width: 80%"
+                color="primary"
+              ></v-text-field>
+            </v-form>
+          </v-window-item>
+          <!-- FULL NAME FORM-->
+          <v-window-item :value="windowSteps.Three">
+            <div class="text-h5 text-center mb-5 font-weight-bold">You are almost there...</div>
+            <div class="subtitle-1 text-center mb-5">Tell us about you</div>
+
+            <v-form ref="fullNameForm" class="d-flex flex-column justify-center align-center">
+              <!-- Fisrt name -->
+              <v-text-field
+                v-model="userFirstName"
+                class="mt-1"
+                placeholder="Name"
+                :rules="[signupRules.required, signupRules.nameMatch]"
+                validate-on="input"
+                variant="outlined"
+                density="comfortable"
+                style="width: 80%"
+                color="primary"
+              ></v-text-field>
+              <!-- Last name -->
+              <v-text-field
+                v-model="userLastName"
+                class="mt-1"
+                placeholder="Last name"
+                :rules="[signupRules.required, signupRules.nameMatch]"
+                variant="outlined"
+                density="comfortable"
+                style="width: 80%"
+                color="primary"
+              ></v-text-field>
+            </v-form>
+          </v-window-item>
+          <v-window-item :value="windowSteps.Four">
             <div class="d-flex flex-column justify-center align-center">
               <div class="text-h5 text-center mb-5 font-weight-bold">Thank you!</div>
               <div class="subtitle-1 text-center mb-5">
@@ -143,9 +135,13 @@
 
         <!-- signup button -->
         <div
-          v-if="currentWindowStep != windowSteps.Five"
-          class="signup-actions d-flex flex-column align-center justify-center mt-5"
+          v-if="currentWindowStep != windowSteps.Four"
+          class="signup-actions d-flex flex-column align-center justify-center"
+          :class="{ 'mt-5': !errorMessage }"
         >
+          <v-alert v-if="errorMessage" type="error" variant="outlined" class="mb-3">{{
+            errorMessage
+          }}</v-alert>
           <v-btn color="primary" variant="flat" @click="onSignupClick" :loading="isLoading">{{
             signupButtonTitle
           }}</v-btn>
@@ -174,7 +170,7 @@
 </template>
 
 <script>
-import { createNewUser } from "@/firebase/services/user";
+import { checkAndSignUpWithEmailAndPass, createNewUser } from "@/firebase/services/user";
 
 export default {
   name: "SignupPage",
@@ -195,10 +191,10 @@ export default {
       One: 1,
       Two: 2,
       Three: 3,
-      Four: 4,
-      Five: 5
+      Four: 4
     },
-    currentWindowStep: 1
+    currentWindowStep: 1,
+    errorMessage: ""
   }),
   created() {},
   mounted() {},
@@ -206,19 +202,34 @@ export default {
     async onSignupClick() {
       switch (this.currentWindowStep) {
         case this.windowSteps.One:
-          if (this.isFormValid("fullNameForm")) this.nextWindowStep();
+          if (this.isFormValid("emailForm")) await this.checkIfUserExistAlready();
           break;
         case this.windowSteps.Two:
-          if (this.isFormValid("emailForm")) this.nextWindowStep();
-          break;
-        case this.windowSteps.Three:
           if (this.isFormValid("workspaceForm")) this.nextWindowStep();
           break;
-        case this.windowSteps.Four:
-          if (this.isFormValid("passwordForm")) await this.signupHandler();
+        case this.windowSteps.Three:
+          if (this.isFormValid("fullNameForm")) this.nextWindowStep();
           break;
         default:
           break;
+      }
+    },
+    async checkIfUserExistAlready() {
+      const response = await checkAndSignUpWithEmailAndPass({
+        Email: this.userEmail,
+        Password: this.userPassword1
+      });
+      console.log("IS USER EXIST?", response);
+
+      if (response.Result.ResultCode > 0) {
+        console.log("NOT EXIST . NEXT");
+        this.errorMessage = "";
+        this.nextWindowStep();
+      } else {
+        console.log("AAA", this.errorMessage);
+
+        this.errorMessage = response?.Result?.ResultMessage || "Sorry! \n Something went wrong";
+        console.log("EXIST . SHOW ERROR MESSAGE", this.errorMessage);
       }
     },
     async signupHandler() {
