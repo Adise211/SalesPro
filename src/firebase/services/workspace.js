@@ -84,34 +84,34 @@ export async function createCalendarEvent(data) {
   }
 }
 
-// export async function updateCalendarEvent(data) {
-//   try {
-//     const userDataRes = await getUserData();
-//     if (userDataRes) {
-//       const { CalendarEvents } = userDataRes;
-//       const previousEvent = CalendarEvents.find((calEvent) => calEvent.Id === data.Id);
-//       // If event exist - remove it and add the updated
-//       if (previousEvent) {
-//         // remove previous event
-//         await removeCalendarEvent(previousEvent);
-//         // update the lastUpdate time
-//         data.LastUpdated = Date.now();
-//         // update the new
-//         await createCalendarEvent(data);
+export async function updateCalendarEvent(data) {
+  try {
+    const userDataRes = await getUserData();
+    if (userDataRes) {
+      const { CalendarEvents } = userDataRes;
+      const previousEvent = CalendarEvents.find((calEvent) => calEvent.Id === data.Id);
+      // If event exist - remove it and add the updated
+      if (previousEvent) {
+        // remove previous event
+        await removeCalendarEvent(previousEvent);
+        // update the lastUpdate time
+        data.LastUpdated = Date.now();
+        // update the new
+        await createCalendarEvent(data);
 
-//         return { Result: { ResultCode: ResultCodes.Success }, Data: data };
-//       } else {
-//         // If item is not exist (error)
-//         return {
-//           Result: { ResultCode: ResultCodes.Error, Text: "Could not update item" },
-//           Data: {}
-//         };
-//       }
-//     }
-//   } catch (error) {
-//     console.log("error when updating calendar event:", error);
-//   }
-// }
+        return { Result: { ResultCode: ResultCodes.Success }, Data: data };
+      } else {
+        // If item is not exist (error)
+        return {
+          Result: { ResultCode: ResultCodes.Error, Text: "Could not update item" },
+          Data: {}
+        };
+      }
+    }
+  } catch (error) {
+    console.log("error when updating calendar event:", error);
+  }
+}
 
 export async function removeCalendarEvent(data) {
   try {
