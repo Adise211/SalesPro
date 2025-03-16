@@ -58,7 +58,7 @@
           </v-menu>
           <!-- User Info + Signout -->
           <v-avatar class="mx-3 app-cursor-pointer">
-            <v-img alt="John" src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+            <v-img alt="profile_photo" :src="userProfilePhotoDisplay" class="bg-white"></v-img>
             <v-menu activator="parent" location="bottom">
               <v-card width="250">
                 <v-card-text class="text-center">
@@ -96,6 +96,7 @@ import { useGeneralStore } from "@/stores/general";
 import { signoutUser } from "@/firebase/services/user";
 import { Config } from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
+// import defaultProfilePhoto from "../../../public/images/user_photo_default.jfif";
 
 let checkUserActivityInterval;
 
@@ -188,7 +189,8 @@ export default {
       "userFullName",
       "isSessionUserActive",
       "userWorkSpace",
-      "userRole"
+      "userRole",
+      "userPhotoUrl"
     ]),
     navItems() {
       return [
@@ -247,6 +249,9 @@ export default {
       const LAST_NAME_INDEX = this.userFullName.indexOf(LAST_NAME);
 
       return this.userFullName.slice(0, LAST_NAME_INDEX + 1) + ".";
+    },
+    userProfilePhotoDisplay() {
+      return this.userPhotoUrl || "https://avatar.iran.liara.run/public/boy?username=Ash";
     },
     notificationsList() {
       return [

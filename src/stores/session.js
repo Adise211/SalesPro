@@ -12,7 +12,8 @@ export const useSessionStore = defineStore("session", {
       userFullName: "",
       userEmail: "",
       userWorkSpace: "",
-      userRole: ""
+      userRole: "",
+      userPhotoUrl: ""
     };
   },
   getters: {
@@ -49,6 +50,9 @@ export const useSessionStore = defineStore("session", {
     },
     setUserRole(role) {
       this.userRole = role;
+    },
+    updateUserProfilePhotoUrl(url) {
+      this.userPhotoUrl = url;
     }
   },
   persist: true
