@@ -66,7 +66,7 @@ export async function checkAndSignUpWithEmailAndPass(data) {
     let resultMessage;
 
     if (error.code === EMAIL_ALREADY_IN_USE) {
-      resultMessage = "Email is already exist";
+      resultMessage = "Email is already in use";
     }
     return {
       Result: { ResultCode: ResultCodes.Error, ResultMessage: resultMessage }
