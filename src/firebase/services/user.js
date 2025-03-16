@@ -125,7 +125,9 @@ export async function loginUser(data) {
         sessionStore.setUserWorkSpace(userDataResponse.UserInfo?.WorkSpace || "");
         sessionStore.setUserRole(userDataResponse.UserInfo?.Role || "");
         // save user workspace data
-        const workspaceDataRes = await getWorkspaceData(userDataResponse.UserInfo?.WorkSpace.Id);
+        const workspaceDataRes = await getWorkspaceData(
+          userDataResponse.Data?.UserInfo?.WorkSpace.Id
+        );
         if (workspaceDataRes.Result.ResultCode > 0) {
           generalStore.setCompaniesList(userDataResponse.Companies || []);
         }
