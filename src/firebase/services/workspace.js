@@ -1,8 +1,9 @@
 import { auth, db } from "../connection";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, setDoc } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, arrayRemove, setDoc, getDoc } from "firebase/firestore";
 import { generatedId } from "@/utilities/utilsFuncs";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
+import { getUserData } from "./user";
 
 export async function createNewWorkspace(workspaceId, workspaceName, userInfo) {
   try {
@@ -22,18 +23,22 @@ export async function createNewWorkspace(workspaceId, workspaceName, userInfo) {
     console.log("error when creating new work space:", error);
   }
 }
-export async function getUserData() {
-  try {
-    const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
 
-    const docSnap = await getDoc(userRef);
+export async function getWorkspaceData(workspaceId) {
+  try {
+    const workspaceRef = doc(db, Config.database.collections.workspaces, workspaceId);
+
+    const docSnap = await getDoc(workspaceRef);
     if (docSnap.exists()) {
       const documentData = docSnap.data();
-      return documentData;
+
+      return { Result: { ResultCode: ResultCodes.Success }, Data: documentData };
     } else {
       // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-      return [];
+      return {
+        Result: { ResultCode: ResultCodes.Error, ResultMessage: "No such document!" },
+        Data: {}
+      };
     }
   } catch (error) {
     console.log("error when getting user events:", error);
@@ -44,8 +49,11 @@ export async function getCalendarEvents() {
   try {
     const response = await getUserData();
 
-    if (response) {
+    if (response.Result.ResultCode > 0) {
       return { Result: { ResultCode: ResultCodes.Success }, Data: response.CalendarEvents };
+    } else {
+      // Has error message (ResultMessage)
+      return response;
     }
   } catch (error) {
     console.log("error getting all calendar events:", error);
@@ -76,34 +84,34 @@ export async function createCalendarEvent(data) {
   }
 }
 
-export async function updateCalendarEvent(data) {
-  try {
-    const userDataRes = await getUserData();
-    if (userDataRes) {
-      const { CalendarEvents } = userDataRes;
-      const previousEvent = CalendarEvents.find((calEvent) => calEvent.Id === data.Id);
-      // If event exist - remove it and add the updated
-      if (previousEvent) {
-        // remove previous event
-        await removeCalendarEvent(previousEvent);
-        // update the lastUpdate time
-        data.LastUpdated = Date.now();
-        // update the new
-        await createCalendarEvent(data);
+// export async function updateCalendarEvent(data) {
+//   try {
+//     const userDataRes = await getUserData();
+//     if (userDataRes) {
+//       const { CalendarEvents } = userDataRes;
+//       const previousEvent = CalendarEvents.find((calEvent) => calEvent.Id === data.Id);
+//       // If event exist - remove it and add the updated
+//       if (previousEvent) {
+//         // remove previous event
+//         await removeCalendarEvent(previousEvent);
+//         // update the lastUpdate time
+//         data.LastUpdated = Date.now();
+//         // update the new
+//         await createCalendarEvent(data);
 
-        return { Result: { ResultCode: ResultCodes.Success }, Data: data };
-      } else {
-        // If item is not exist (error)
-        return {
-          Result: { ResultCode: ResultCodes.Error, Text: "Could not update item" },
-          Data: {}
-        };
-      }
-    }
-  } catch (error) {
-    console.log("error when updating calendar event:", error);
-  }
-}
+//         return { Result: { ResultCode: ResultCodes.Success }, Data: data };
+//       } else {
+//         // If item is not exist (error)
+//         return {
+//           Result: { ResultCode: ResultCodes.Error, Text: "Could not update item" },
+//           Data: {}
+//         };
+//       }
+//     }
+//   } catch (error) {
+//     console.log("error when updating calendar event:", error);
+//   }
+// }
 
 export async function removeCalendarEvent(data) {
   try {
@@ -155,7 +163,7 @@ export async function updateCompanyInfo(data) {
   try {
     const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);
     const userDataRes = await getUserData();
-    if (userDataRes) {
+    if (userDataRes.Result.ResultCode > 0) {
       // Check if company is exist - by id
       const { Companies } = userDataRes;
       const previousCompanyObj = Companies.find((company) => company.Id === data.Id);
@@ -178,6 +186,9 @@ export async function updateCompanyInfo(data) {
           Data: {}
         };
       }
+    } else {
+      // Has error message (ResultCode)
+      return userDataRes;
     }
   } catch (error) {
     console.log("error when trying to update item status:", error);
