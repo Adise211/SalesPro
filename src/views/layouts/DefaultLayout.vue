@@ -3,7 +3,7 @@
     <v-layout class="rounded rounded-md">
       <v-navigation-drawer color="primary" persistent width="200">
         <v-list>
-          <v-list-item class="py-5" title="My Work Space" subtitle="My Role"></v-list-item>
+          <v-list-item class="py-5" :title="userWorkSpace.Name" :subtitle="userRole"></v-list-item>
           <v-divider></v-divider>
           <v-list-item
             v-for="(item, index) in navItems"
@@ -183,7 +183,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(useSessionStore, ["userEmail", "userFullName", "isSessionUserActive"]),
+    ...mapState(useSessionStore, [
+      "userEmail",
+      "userFullName",
+      "isSessionUserActive",
+      "userWorkSpace",
+      "userRole"
+    ]),
     navItems() {
       return [
         {
