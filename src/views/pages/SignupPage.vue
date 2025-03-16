@@ -208,7 +208,7 @@ export default {
           if (this.isFormValid("workspaceForm")) this.nextWindowStep();
           break;
         case this.windowSteps.Three:
-          if (this.isFormValid("fullNameForm")) this.nextWindowStep();
+          if (this.isFormValid("fullNameForm")) this.signupHandler();
           break;
         default:
           break;
@@ -219,24 +219,18 @@ export default {
         Email: this.userEmail,
         Password: this.userPassword1
       });
-      console.log("IS USER EXIST?", response);
 
       if (response.Result.ResultCode > 0) {
-        console.log("NOT EXIST . NEXT");
         this.errorMessage = "";
         this.nextWindowStep();
       } else {
-        console.log("AAA", this.errorMessage);
-
         this.errorMessage = response?.Result?.ResultMessage || "Sorry! \n Something went wrong";
-        console.log("EXIST . SHOW ERROR MESSAGE", this.errorMessage);
       }
     },
     async signupHandler() {
       this.isLoading = true;
       const newUserData = {
         Email: this.userEmail,
-        Password: this.userPassword1,
         FirstName: this.userFirstName,
         LastName: this.userLastName,
         WorkSpaceName: this.userWorkspace,
@@ -288,7 +282,7 @@ export default {
           title = "Signup";
           break;
         case this.windowSteps.Two:
-          title = "Verify";
+          title = "Next";
           break;
         case this.windowSteps.Three:
           title = "Next";
