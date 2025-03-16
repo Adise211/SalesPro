@@ -54,7 +54,13 @@
               New here? <span class="text-primary">Sign Up</span>
             </a>
             <div>
-              <v-alert v-if="isLoginError" type="error" text="User is not exist" class="mt-5">
+              <v-alert
+                v-if="isLoginError"
+                type="error"
+                variant="outlined"
+                text="User is not exist"
+                class="mt-5"
+              >
               </v-alert>
             </div>
           </div>
