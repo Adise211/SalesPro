@@ -69,7 +69,7 @@ import { mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { convertDate, changePropertiesToLowerCase } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
-import { getCalendarEvents, removeCalendarEvent } from "@/firebase/services/data";
+import { getCalendarEvents, removeCalendarEvent } from "@/firebase/services/workspace";
 import moment from "moment";
 const FullCalendar = window.FullCalendar;
 

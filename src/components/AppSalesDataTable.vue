@@ -120,7 +120,7 @@ import AppCard from "@/components/AppCard.vue";
 import { convertDate } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
-import { removeCompany } from "@/firebase/services/data";
+import { removeCompany } from "@/firebase/services/workspace";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 

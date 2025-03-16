@@ -178,7 +178,7 @@ import AppCard from "./AppCard.vue";
 import { useDate } from "vuetify";
 import { convertDate, convertTime } from "@/utilities/utilsFuncs";
 import { ToastMessages } from "@/utilities/consts";
-import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/data";
+import { createCalendarEvent, updateCalendarEvent } from "@/firebase/services/workspace";
 import { mapActions, mapState } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 

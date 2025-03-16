@@ -6,7 +6,7 @@ import {
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc } from "firebase/firestore";
-import { getUserData } from "./data";
+import { getUserData } from "./workspace";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 

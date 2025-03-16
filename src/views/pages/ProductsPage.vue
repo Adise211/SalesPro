@@ -96,7 +96,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import AppCard from "@/components/AppCard.vue";
-import { createNewProduct } from "@/firebase/services/data";
+import { createNewProduct } from "@/firebase/services/workspace";
 import { useGeneralStore } from "@/stores/general";
 import { ToastMessages } from "@/utilities/consts";
 import { convertDate } from "@/utilities/utilsFuncs";

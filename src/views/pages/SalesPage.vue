@@ -284,7 +284,7 @@ import {
   BusinessSectors,
   SalesReminderFrequency
 } from "@/utilities/consts";
-import { createNewCompany, updateCompanyInfo } from "@/firebase/services/data";
+import { createNewCompany, updateCompanyInfo } from "@/firebase/services/workspace";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 const FORM_STEPS = {
