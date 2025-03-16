@@ -88,12 +88,12 @@ export default {
   }),
   created() {},
   async mounted() {
-    await this.getUserCalendarEvents();
-
     const vueInstance = this;
 
     // in timeout for the height prop
     setTimeout(() => {
+      this.getUserCalendarEvents();
+
       var calendarEl = document.getElementById("full-calendar");
       this.activeCalendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "dayGridMonth",
