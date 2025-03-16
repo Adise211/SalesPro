@@ -57,7 +57,7 @@
       </template>
     </AppCard>
   </v-container>
-  <v-dialog v-model="isDialogOpen">
+  <v-dialog v-model="isDialogOpen" id="product-dialog">
     <AppCard :cardContentOnly="false" width="30%" height="85%">
       <template v-slot:card-title>
         <div>Add Product</div>
