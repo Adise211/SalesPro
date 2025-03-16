@@ -62,6 +62,7 @@
             <div class="subtitle-1 text-center mb-5">Tell us more about your organization</div>
             <v-form ref="workspaceForm" class="d-flex flex-column justify-center align-center">
               <v-text-field
+                v-model="userWorkspace"
                 class="mt-1"
                 placeholder="Organization Name"
                 :rules="[signupRules.required, signupRules.nameMatch]"
@@ -72,6 +73,7 @@
                 color="primary"
               ></v-text-field>
               <v-text-field
+                v-model="userRole"
                 class="mt-1"
                 placeholder="Your Role"
                 :rules="[signupRules.required, signupRules.nameMatch]"
@@ -195,16 +197,13 @@ export default {
           break;
         case this.windowSteps.Two:
           if (this.isFormValid("emailForm")) this.nextWindowStep();
-
           break;
         case this.windowSteps.Three:
           if (this.isFormValid("workspaceForm")) this.nextWindowStep();
-
           break;
         case this.windowSteps.Four:
           if (this.isFormValid("passwordForm")) await this.signupHandler();
           break;
-
         default:
           break;
       }
@@ -215,7 +214,9 @@ export default {
         Email: this.userEmail,
         Password: this.userPassword1,
         FirstName: this.userFirstName,
-        LastName: this.userLastName
+        LastName: this.userLastName,
+        WorkSpace: this.userWorkspace,
+        Role: this.userRole
       };
       const response = await createNewUser(newUserData);
       console.log("create new user response:", response);
