@@ -136,12 +136,8 @@
         <!-- signup button -->
         <div
           v-if="currentWindowStep != windowSteps.Four"
-          class="signup-actions d-flex flex-column align-center justify-center"
-          :class="{ 'mt-5': !errorMessage }"
+          class="signup-actions d-flex flex-column align-center justify-center mt-5"
         >
-          <v-alert v-if="errorMessage" type="error" variant="outlined" class="mb-3">{{
-            errorMessage
-          }}</v-alert>
           <v-btn color="primary" variant="flat" @click="onSignupClick" :loading="isLoading">{{
             signupButtonTitle
           }}</v-btn>
@@ -153,6 +149,10 @@
           >
             Have an account already? <span class="text-primary">click here</span>
           </a>
+
+          <v-alert v-if="errorMessage" type="error" variant="outlined" class="mt-3">{{
+            errorMessage
+          }}</v-alert>
         </div>
       </v-col>
       <v-spacer></v-spacer>
