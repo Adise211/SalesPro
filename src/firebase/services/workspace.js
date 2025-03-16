@@ -1,9 +1,27 @@
 import { auth, db } from "../connection";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, setDoc } from "firebase/firestore";
 import { generatedId } from "@/utilities/utilsFuncs";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 
+export async function createNewWorkspace(workspaceId, workspaceName, userInfo) {
+  try {
+    const newWorkspace = {
+      Id: workspaceId,
+      Name: workspaceName,
+      Users: [userInfo],
+      Teams: [],
+      Products: [],
+      Companies: [],
+      Customers: []
+    };
+    await setDoc(doc(db, Config.database.collections.workspaces, workspaceId), newWorkspace);
+
+    return { Result: { ResultCode: ResultCodes.Success }, Data: newWorkspace };
+  } catch (error) {
+    console.log("error when creating new work space:", error);
+  }
+}
 export async function getUserData() {
   try {
     const userRef = doc(db, Config.database.collections.users, auth.currentUser.uid);

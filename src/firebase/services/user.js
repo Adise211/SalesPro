@@ -6,39 +6,50 @@ import {
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc } from "firebase/firestore";
-import { getUserData } from "./workspace";
+import { createNewWorkspace, getUserData } from "./workspace";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
+import { generatedId } from "@/utilities/utilsFuncs";
 
 export async function createNewUser(data) {
   try {
-    // Fix name (first letter as capital letter)
-    const fixedFirstName =
-      data.FirstName.charAt(0).toUpperCase() + data.FirstName.slice(1).toLowerCase();
-    const fixedLastName =
-      data.LastName.charAt(0).toUpperCase() + data.LastName.slice(1).toLowerCase();
+    const { Email, Password, FirstName, LastName, WorkSpaceName, Role } = data;
 
-    const email = data.Email;
-    const password = data.Password;
-    const response = await createUserWithEmailAndPassword(auth, email, password);
+    // Fix names (first letter as capital letter)
+    const fixedFirstName = FirstName.charAt(0).toUpperCase() + FirstName.slice(1).toLowerCase();
+    const fixedLastName = LastName.charAt(0).toUpperCase() + LastName.slice(1).toLowerCase();
+
+    const response = await createUserWithEmailAndPassword(auth, Email, Password);
     if (response) {
-      const user = response.user;
+      const { user } = response;
       const userFullName = `${fixedFirstName} ${fixedLastName}`;
+      const workspaceRandomId = "workspace" + generatedId();
+      const newUser = {
+        Email,
+        FullName: userFullName,
+        WorkSpace: {
+          Id: workspaceRandomId,
+          Name: WorkSpaceName
+        },
+        Role,
+        LastLogin: 0,
+        LastUpdated: Date.now()
+      };
+
       // Update user auth profile (Firebase Auth)
       await updateUserProfile({ userFullName, userPhotoUrl: "" });
       // Create new user table
       await setDoc(doc(db, Config.database.collections.users, user.uid), {
-        UserInfo: {
-          Email: email,
-          FullName: userFullName,
-          WorkSpace: "",
-          Role: "",
-          LastLogin: 0,
-          LastUpdated: Date.now()
-        }
+        UserInfo: newUser
       });
+      // Create new workspace document
+      const newWorkspace = await createNewWorkspace(workspaceRandomId, WorkSpaceName, newUser);
+
       // Send back the response
-      return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
+      return {
+        Result: { ResultCode: ResultCodes.Success },
+        Data: { User: newUser, Workspace: newWorkspace }
+      };
     }
   } catch (error) {
     console.log("error creating new user", error);
@@ -77,6 +88,7 @@ export async function loginUser(data) {
     if (signInResponse) {
       const user = signInResponse.user;
       const { generalStore, sessionStore } = initStores();
+      // TODO: Check if data resturn - set an error message if not!
       const userDataResponse = await getUserData();
 
       // save user auth info
