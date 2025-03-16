@@ -127,10 +127,25 @@
               ></v-text-field>
             </v-form>
           </v-window-item>
+          <v-window-item :value="windowSteps.Five">
+            <div class="d-flex flex-column justify-center align-center">
+              <div class="text-h5 text-center mb-5 font-weight-bold">Thank you!</div>
+              <div class="subtitle-1 text-center mb-5">
+                Now you can enjoy been the best in what you do
+              </div>
+
+              <div class="subtitle-1 text-center mb-5">
+                <v-btn variant="flat" color="primary" @click="signinAnchorHandler">Signin</v-btn>
+              </div>
+            </div>
+          </v-window-item>
         </v-window>
 
         <!-- signup button -->
-        <div class="signup-actions d-flex flex-column align-center justify-center mt-5">
+        <div
+          v-if="currentWindowStep != windowSteps.Five"
+          class="signup-actions d-flex flex-column align-center justify-center mt-5"
+        >
           <v-btn color="primary" variant="flat" @click="onSignupClick" :loading="isLoading">{{
             signupButtonTitle
           }}</v-btn>
@@ -159,9 +174,7 @@
 </template>
 
 <script>
-import { createNewUser } from "../../firebase/services/user";
-import { mapActions } from "pinia";
-import { useGeneralStore } from "@/stores/general";
+import { createNewUser } from "@/firebase/services/user";
 
 export default {
   name: "SignupPage",
@@ -182,14 +195,14 @@ export default {
       One: 1,
       Two: 2,
       Three: 3,
-      Four: 4
+      Four: 4,
+      Five: 5
     },
     currentWindowStep: 1
   }),
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["setToastMessage"]),
     async onSignupClick() {
       switch (this.currentWindowStep) {
         case this.windowSteps.One:
@@ -215,18 +228,14 @@ export default {
         Password: this.userPassword1,
         FirstName: this.userFirstName,
         LastName: this.userLastName,
-        WorkSpace: this.userWorkspace,
+        WorkSpaceName: this.userWorkspace,
         Role: this.userRole
       };
       const response = await createNewUser(newUserData);
       console.log("create new user response:", response);
       if (response.Result.ResultCode > 0) {
         this.isLoading = false;
-        // Toast message
-        this.setToastMessage({
-          type: "success",
-          message: "Signed up successfully!"
-        });
+        this.nextWindowStep();
       }
     },
     nextWindowStep() {
