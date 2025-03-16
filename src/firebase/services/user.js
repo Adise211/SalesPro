@@ -6,6 +6,7 @@ import {
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc } from "firebase/firestore";
+import { EMAIL_ALREADY_IN_USE } from "../errorCodes";
 import { createNewWorkspace, getUserData } from "./workspace";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
@@ -13,46 +14,63 @@ import { generatedId } from "@/utilities/utilsFuncs";
 
 export async function createNewUser(data) {
   try {
-    const { Email, Password, FirstName, LastName, WorkSpaceName, Role } = data;
+    const { Email, FirstName, LastName, WorkSpaceName, Role } = data;
 
     // Fix names (first letter as capital letter)
     const fixedFirstName = FirstName.charAt(0).toUpperCase() + FirstName.slice(1).toLowerCase();
     const fixedLastName = LastName.charAt(0).toUpperCase() + LastName.slice(1).toLowerCase();
 
-    const response = await createUserWithEmailAndPassword(auth, Email, Password);
-    if (response) {
-      const { user } = response;
-      const userFullName = `${fixedFirstName} ${fixedLastName}`;
-      const workspaceRandomId = "workspace" + generatedId();
-      const newUser = {
-        Email,
-        FullName: userFullName,
-        WorkSpace: {
-          Id: workspaceRandomId,
-          Name: WorkSpaceName
-        },
-        Role,
-        LastLogin: 0,
-        LastUpdated: Date.now()
-      };
+    const userFullName = `${fixedFirstName} ${fixedLastName}`;
+    const workspaceRandomId = "workspace" + generatedId();
+    const newUserInfo = {
+      Email,
+      FullName: userFullName,
+      WorkSpace: {
+        Id: workspaceRandomId,
+        Name: WorkSpaceName
+      },
+      Role,
+      LastLogin: 0,
+      LastUpdated: Date.now()
+    };
 
-      // Update user auth profile (Firebase Auth)
-      await updateUserProfile({ userFullName, userPhotoUrl: "" });
-      // Create new user table
-      await setDoc(doc(db, Config.database.collections.users, user.uid), {
-        UserInfo: newUser
-      });
-      // Create new workspace document
-      const newWorkspace = await createNewWorkspace(workspaceRandomId, WorkSpaceName, newUser);
+    // Update user auth profile (Firebase Auth)
+    await updateUserProfile({ userFullName, userPhotoUrl: "" });
+    // Create new user table
+    await setDoc(doc(db, Config.database.collections.users, auth.currentUser.uid), {
+      UserInfo: newUserInfo
+    });
+    // Create new workspace document
+    const newWorkspace = await createNewWorkspace(workspaceRandomId, WorkSpaceName, newUserInfo);
 
-      // Send back the response
-      return {
-        Result: { ResultCode: ResultCodes.Success },
-        Data: { User: newUser, Workspace: newWorkspace }
-      };
-    }
+    // Send back the response
+    return {
+      Result: { ResultCode: ResultCodes.Success },
+      Data: { User: newUserInfo, Workspace: newWorkspace }
+    };
   } catch (error) {
     console.log("error creating new user", error);
+  }
+}
+
+export async function checkAndSignUpWithEmailAndPass(data) {
+  try {
+    const { Email, Password } = data;
+    const response = await createUserWithEmailAndPassword(auth, Email, Password);
+    if (response) {
+      return { Result: { ResultCode: ResultCodes.Success }, Data: response.user };
+    }
+    return response;
+  } catch (error) {
+    console.log("error checking if user exist", error);
+    let resultMessage;
+
+    if (error.code === EMAIL_ALREADY_IN_USE) {
+      resultMessage = "Email is already exist";
+    }
+    return {
+      Result: { ResultCode: ResultCodes.Error, ResultMessage: resultMessage }
+    };
   }
 }
 
