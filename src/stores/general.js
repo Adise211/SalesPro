@@ -47,6 +47,32 @@ export const useGeneralStore = defineStore("general", {
       this.toastMessage.type = "";
       this.toastMessage.message = "";
     },
+    addItemToListInStore(listName, newItem) {
+      // Check if item is exist in the given list
+      const IS_EXIST = this[listName].find((item) => {
+        return item.Id === newItem.Id;
+      });
+      // If not exist - add it
+      if (!IS_EXIST) this[listName].push(newItem);
+    },
+    updateItemFromListInStore(listName, newItem) {
+      // Find previous item index in the given list
+      const PREV_ITEM_INDEX = this[listName].findIndex((item) => {
+        return item.Id === newItem.Id;
+      });
+      // If prev item exist - replace it with the new one
+      if (PREV_ITEM_INDEX > -1) {
+        this[listName].splice(PREV_ITEM_INDEX, 1, newItem);
+      }
+    },
+    removeItemFromListInStore(listName, item) {
+      // Find item index
+      const ITEM_INDEX = this[listName].indexOf(item);
+      // If exist - remove it
+      if (ITEM_INDEX > -1) {
+        this[listName].splice(ITEM_INDEX, 1); // 2nd parameter means remove one item only
+      }
+    },
     addCompanyToListInStore(data) {
       const IS_EXIST = this.companiesList.find((company) => {
         return company.Id === data.Id;
@@ -66,27 +92,6 @@ export const useGeneralStore = defineStore("general", {
       // only splice array when item is found
       if (COMPANY_INDEX > -1) {
         this.companiesList.splice(COMPANY_INDEX, 1); // 2nd parameter means remove one item only
-      }
-    },
-    addProductToListInStore(data) {
-      const IS_EXIST = this.productsList.find((product) => {
-        return product.Id === data.Id;
-      });
-      if (!IS_EXIST) this.productsList.push(data);
-    },
-    updateProductInStore(data) {
-      const PRODUCT_INDEX = this.productsList.findIndex((product) => {
-        return product.Id === data.Id;
-      });
-      if (PRODUCT_INDEX > -1) {
-        this.productsList.splice(PRODUCT_INDEX, 1, data);
-      }
-    },
-    removeProductFromStore(data) {
-      const PRODUCT_INDEX = this.productsList.indexOf(data);
-      // only splice array when item is found
-      if (PRODUCT_INDEX > -1) {
-        this.productsList.splice(PRODUCT_INDEX, 1); // 2nd parameter means remove one item only
       }
     }
   },
