@@ -125,9 +125,9 @@ export default {
   methods: {
     ...mapActions(useGeneralStore, [
       "setToastMessage",
-      "addProductToListInStore",
-      "updateProductInStore",
-      "removeProductFromStore"
+      "addItemToListInStore",
+      "updateItemFromListInStore",
+      "removeItemFromListInStore"
     ]),
     async onSaveItem() {
       let toastType;
@@ -151,8 +151,8 @@ export default {
           toastType = "success";
           toastMessage = ToastMessages.SuccessMessages[actionType];
           !this.isEditMode
-            ? this.addProductToListInStore(response.Data)
-            : this.updateProductInStore(response.Data);
+            ? this.addItemToListInStore("productsList", response.Data)
+            : this.updateItemFromListInStore("productsList", response.Data);
         } else {
           toastType = "error";
           toastMessage = ToastMessages.ErrorMessages[actionType];
@@ -189,7 +189,7 @@ export default {
       if (response.Result.ResultCode > 0) {
         toastType = "success";
         toastMessage = ToastMessages.SuccessMessages.Removed;
-        this.removeProductFromStore(item);
+        this.removeItemFromListInStore("productsList", item);
       } else {
         toastType = "error";
         toastMessage = ToastMessages.ErrorMessages.Removed;
