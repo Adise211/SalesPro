@@ -132,6 +132,8 @@ export default {
       if (valid) {
         this.isLoading = true;
         const response = await createNewProduct(this.currentProduct);
+        console.log("NEW PRODUCT:", response);
+
         // Add to store + show success toast message
         if (response.Result.ResultCode > 0) {
           toastType = "success";

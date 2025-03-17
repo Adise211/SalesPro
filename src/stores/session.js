@@ -11,7 +11,7 @@ export const useSessionStore = defineStore("session", {
       userLastLoggedInTime: 0,
       userFullName: "",
       userEmail: "",
-      userWorkSpace: "",
+      userWorkSpace: {},
       userRole: "",
       userPhotoUrl: ""
     };

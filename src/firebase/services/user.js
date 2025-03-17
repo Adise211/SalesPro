@@ -122,8 +122,8 @@ export async function loginUser(data) {
         sessionStore.setSessionToken(user?.accessToken);
         sessionStore.setUserFullName(user.displayName);
         sessionStore.setUserEmail(user.email);
-        sessionStore.setUserWorkSpace(userDataResponse.UserInfo?.WorkSpace || "");
-        sessionStore.setUserRole(userDataResponse.UserInfo?.Role || "");
+        sessionStore.setUserWorkSpace(userDataResponse.Data?.UserInfo?.WorkSpace || "");
+        sessionStore.setUserRole(userDataResponse.Data?.UserInfo?.Role || "");
         // save user workspace data
         const workspaceDataRes = await getWorkspaceData(
           userDataResponse.Data?.UserInfo?.WorkSpace.Id

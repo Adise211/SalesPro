@@ -4,6 +4,7 @@ import { generatedId } from "@/utilities/utilsFuncs";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 import { getUserData } from "./user";
+import { initStores } from "../../stores";
 
 export async function createNewWorkspace(workspaceId, workspaceName, userInfo) {
   try {
@@ -41,7 +42,7 @@ export async function getWorkspaceData(workspaceId) {
       };
     }
   } catch (error) {
-    console.log("error when getting user events:", error);
+    console.log("error when getting workspace data:", error);
   }
 }
 
@@ -197,14 +198,16 @@ export async function updateCompanyInfo(data) {
 
 export async function createNewProduct(data) {
   try {
-    const userRef = doc(db, Config.database.collections.workspaces, auth.currentUser.uid);
+    const { sessionStore } = initStores();
+    const userRef = doc(db, Config.database.collections.workspaces, sessionStore.userWorkSpace.Id);
 
     if (!data.Id) {
       // Add an id
       const rendonId = "product" + generatedId();
       data.Id = rendonId;
     }
-    // Update time
+    // Update name and time
+    data.UpdatedBy = sessionStore.userFullName;
     data.LastUpdated = Date.now();
 
     await updateDoc(userRef, {
