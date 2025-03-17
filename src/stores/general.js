@@ -35,6 +35,9 @@ export const useGeneralStore = defineStore("general", {
     setCompaniesList(list) {
       this.companiesList = list;
     },
+    setProductsList(list) {
+      this.productsList = list;
+    },
     setToastMessage(data) {
       const { type, message } = data;
       this.toastMessage.type = type;
@@ -70,6 +73,14 @@ export const useGeneralStore = defineStore("general", {
         return product.Id === data.Id;
       });
       if (!IS_EXIST) this.productsList.push(data);
+    },
+    updateProductInStore(data) {
+      const PRODUCT_INDEX = this.productsList.findIndex((product) => {
+        return product.Id === data.Id;
+      });
+      if (PRODUCT_INDEX > -1) {
+        this.companiesList.splice(PRODUCT_INDEX, 1, data);
+      }
     }
   },
   persist: true

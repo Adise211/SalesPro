@@ -130,6 +130,7 @@ export async function loginUser(data) {
         );
         if (workspaceDataRes.Result.ResultCode > 0) {
           generalStore.setCompaniesList(userDataResponse.Companies || []);
+          generalStore.setProductsList(workspaceDataRes.Data?.Products || []);
         }
 
         // Send back the response
