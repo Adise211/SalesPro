@@ -199,7 +199,11 @@ export async function updateCompanyInfo(data) {
 export async function createNewProduct(data) {
   try {
     const { sessionStore } = initStores();
-    const userRef = doc(db, Config.database.collections.workspaces, sessionStore.userWorkSpace.Id);
+    const workspaceRef = doc(
+      db,
+      Config.database.collections.workspaces,
+      sessionStore.userWorkSpace.Id
+    );
 
     if (!data.Id) {
       // Add an id
@@ -210,12 +214,64 @@ export async function createNewProduct(data) {
     data.UpdatedBy = sessionStore.userFullName;
     data.LastUpdated = Date.now();
 
-    await updateDoc(userRef, {
+    await updateDoc(workspaceRef, {
       Products: arrayUnion(data)
     });
 
     return { Result: { ResultCode: ResultCodes.Success }, Data: data };
   } catch (error) {
     console.log("error when creating new product:", error);
+  }
+}
+
+export async function updateProduct(data) {
+  try {
+    const { sessionStore } = initStores();
+    const workspaceRef = doc(
+      db,
+      Config.database.collections.workspaces,
+      sessionStore.userWorkSpace.Id
+    );
+    const docSnap = await getDoc(workspaceRef);
+    const productsArr = await docSnap.get("Products");
+    const prevItem = productsArr.find((item) => {
+      return item.Id == data.Id;
+    });
+
+    if (prevItem) {
+      // If previus item exist - remove it and add the new + update time
+      await removeProduct(prevItem);
+
+      data.LastUpdated = Date.now();
+      await createNewProduct(data);
+    } else {
+      throw new Error();
+    }
+
+    return { Result: { ResultCode: ResultCodes.Success }, Data: data };
+  } catch (error) {
+    console.log("error when trying to update item:", error);
+    return {
+      Result: { ResultCode: ResultCodes.Error, Text: "Could not update item" },
+      Data: {}
+    };
+  }
+}
+
+export async function removeProduct(data) {
+  try {
+    const { sessionStore } = initStores();
+    const workspaceRef = doc(
+      db,
+      Config.database.collections.workspaces,
+      sessionStore.userWorkSpace.Id
+    );
+    await updateDoc(workspaceRef, {
+      Products: arrayRemove(data)
+    });
+    return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
+  } catch (error) {
+    console.log("error when removing product:", error);
+    return { Result: { ResultCode: ResultCodes.Error }, Data: {} };
   }
 }
