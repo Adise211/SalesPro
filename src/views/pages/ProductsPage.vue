@@ -41,8 +41,8 @@
               <td>{{ item.UpdatedBy || "" }}</td>
               <td>{{ changedDateFormat(item.LastUpdated) }}</td>
               <td>
-                <v-icon>mdi-pencil</v-icon>
-                <v-icon color="error" class="ml-2">mdi-delete</v-icon>
+                <v-icon @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon color="error" class="ml-2" @click="deleteItem(item)">mdi-delete</v-icon>
               </td>
             </tr>
           </template>
@@ -96,7 +96,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import AppCard from "@/components/AppCard.vue";
-import { createNewProduct } from "@/firebase/services/workspace";
+import { createNewProduct, updateProduct, removeProduct } from "@/firebase/services/workspace";
 import { useGeneralStore } from "@/stores/general";
 import { ToastMessages } from "@/utilities/consts";
 import { convertDate } from "@/utilities/utilsFuncs";
@@ -123,22 +123,39 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(useGeneralStore, ["setToastMessage", "addProductToListInStore"]),
+    ...mapActions(useGeneralStore, [
+      "setToastMessage",
+      "addProductToListInStore",
+      "updateProductInStore",
+      "removeProductFromStore"
+    ]),
     async onSaveItem() {
       let toastType;
       let toastMessage;
+      let actionType;
+      let response;
 
       const { valid } = await this.$refs.form.validate();
       if (valid) {
         this.isLoading = true;
-        const response = await createNewProduct(this.currentProduct);
-        console.log("NEW PRODUCT:", response);
+        if (!this.isEditMode) {
+          response = await createNewProduct(this.currentProduct);
+          actionType = "Created";
+        } else {
+          response = await updateProduct(this.currentProduct);
+          actionType = "Updated";
+        }
 
         // Add to store + show success toast message
         if (response.Result.ResultCode > 0) {
           toastType = "success";
-          toastMessage = ToastMessages.SuccessMessages.Created;
-          this.addProductToListInStore(response.Data);
+          toastMessage = ToastMessages.SuccessMessages[actionType];
+          !this.isEditMode
+            ? this.addProductToListInStore(response.Data)
+            : this.updateProductInStore(response.Data);
+        } else {
+          toastType = "error";
+          toastMessage = ToastMessages.ErrorMessages[actionType];
         }
 
         // End loading and close dialog
@@ -157,6 +174,31 @@ export default {
     changedDateFormat(date) {
       const fromEpochTime = true;
       return convertDate(date, fromEpochTime).MDYFormat;
+    },
+    editItem(item) {
+      this.isEditMode = true;
+      this.isDialogOpen = true;
+      this.currentProduct = item;
+    },
+    async deleteItem(item) {
+      let toastType;
+      let toastMessage;
+
+      const response = await removeProduct(item);
+
+      if (response.Result.ResultCode > 0) {
+        toastType = "success";
+        toastMessage = ToastMessages.SuccessMessages.Removed;
+        this.removeProductFromStore(item);
+      } else {
+        toastType = "error";
+        toastMessage = ToastMessages.ErrorMessages.Removed;
+      }
+
+      this.setToastMessage({
+        type: toastType,
+        message: toastMessage
+      });
     }
   },
   computed: {
@@ -166,7 +208,7 @@ export default {
         {
           title: "Index",
           key: "Index",
-          width: "15%"
+          width: "10%"
         },
         {
           title: "Name",
