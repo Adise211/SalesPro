@@ -79,7 +79,14 @@ export const useGeneralStore = defineStore("general", {
         return product.Id === data.Id;
       });
       if (PRODUCT_INDEX > -1) {
-        this.companiesList.splice(PRODUCT_INDEX, 1, data);
+        this.productsList.splice(PRODUCT_INDEX, 1, data);
+      }
+    },
+    removeProductFromStore(data) {
+      const PRODUCT_INDEX = this.productsList.indexOf(data);
+      // only splice array when item is found
+      if (PRODUCT_INDEX > -1) {
+        this.productsList.splice(PRODUCT_INDEX, 1); // 2nd parameter means remove one item only
       }
     }
   },
