@@ -58,7 +58,7 @@
                 v-if="isLoginError"
                 type="error"
                 variant="outlined"
-                text="User is not exist"
+                text="Email or password are incorrect"
                 class="mt-5"
               >
               </v-alert>

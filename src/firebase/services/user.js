@@ -1,35 +1,26 @@
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile
-} from "firebase/auth";
+import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { EMAIL_ALREADY_IN_USE } from "../errorCodes";
 import { createNewWorkspace, getWorkspaceData } from "./workspace";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 import { generatedId } from "@/utilities/utilsFuncs";
 
-export async function checkAndSignUpWithEmailAndPass(data) {
+export async function checkIfUserExistWithEmailAndPass(data) {
+  const { Email, Password } = data;
   try {
-    const { Email, Password } = data;
-    const response = await createUserWithEmailAndPassword(auth, Email, Password);
+    const response = await signInWithEmailAndPassword(auth, Email, Password);
     if (response) {
-      return { Result: { ResultCode: ResultCodes.Success }, Data: response.user };
+      await signoutUser();
+      return {
+        Result: { ResultCode: ResultCodes.Error, ResultMessage: "Email is already in use" },
+        Data: {}
+      };
     }
-    return response;
   } catch (error) {
     console.log("error checking if user exist", error);
-    let resultMessage;
-
-    if (error.code === EMAIL_ALREADY_IN_USE) {
-      resultMessage = "Email is already in use";
-    }
-    return {
-      Result: { ResultCode: ResultCodes.Error, ResultMessage: resultMessage }
-    };
+    return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
   }
 }
 
@@ -110,6 +101,8 @@ export async function loginUser(data) {
   try {
     const { Email, Password } = data;
     const signInResponse = await signInWithEmailAndPassword(auth, Email, Password);
+    console.log("PPP", signInResponse);
+
     if (signInResponse) {
       const { user } = signInResponse;
       const { generalStore, sessionStore } = initStores();

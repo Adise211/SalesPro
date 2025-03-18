@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { checkAndSignUpWithEmailAndPass, createNewUser } from "@/firebase/services/user";
+import { checkIfUserExistWithEmailAndPass, createNewUser } from "@/firebase/services/user";
 
 export default {
   name: "SignupPage",
@@ -202,7 +202,7 @@ export default {
     async onSignupClick() {
       switch (this.currentWindowStep) {
         case this.windowSteps.One:
-          if (this.isFormValid("emailForm")) await this.checkIfUserExistAlready();
+          if (this.isFormValid("emailForm")) this.checkIfUserExist();
           break;
         case this.windowSteps.Two:
           if (this.isFormValid("workspaceForm")) this.nextWindowStep();
@@ -214,8 +214,8 @@ export default {
           break;
       }
     },
-    async checkIfUserExistAlready() {
-      const response = await checkAndSignUpWithEmailAndPass({
+    async checkIfUserExist() {
+      const response = await checkIfUserExistWithEmailAndPass({
         Email: this.userEmail,
         Password: this.userPassword1
       });
@@ -224,7 +224,7 @@ export default {
         this.errorMessage = "";
         this.nextWindowStep();
       } else {
-        this.errorMessage = response?.Result?.ResultMessage || "Sorry! \n Something went wrong";
+        this.errorMessage = response?.Result?.ResultMessage || "Something went wrong";
       }
     },
     async signupHandler() {
