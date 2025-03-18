@@ -202,13 +202,13 @@ export default {
     async onSignupClick() {
       switch (this.currentWindowStep) {
         case this.windowSteps.One:
-          if (this.isFormValid("emailForm")) this.checkIfUserExist();
+          if (await this.isFormValid("emailForm")) this.checkIfUserExist();
           break;
         case this.windowSteps.Two:
-          if (this.isFormValid("workspaceForm")) this.nextWindowStep();
+          if (await this.isFormValid("workspaceForm")) this.nextWindowStep();
           break;
         case this.windowSteps.Three:
-          if (this.isFormValid("fullNameForm")) this.signupHandler();
+          if (await this.isFormValid("fullNameForm")) this.signupHandler();
           break;
         default:
           break;
