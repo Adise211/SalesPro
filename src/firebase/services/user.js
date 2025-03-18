@@ -1,4 +1,8 @@
-import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  updateProfile,
+  createUserWithEmailAndPassword
+} from "firebase/auth";
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
 import { doc, setDoc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
@@ -29,14 +33,14 @@ export async function checkIfUserExistWByEmail(data) {
 
 export async function createNewUser(data) {
   try {
-    const { Email, FirstName, LastName, WorkSpaceName, Role } = data;
+    const { Email, Password, FirstName, LastName, WorkSpaceName, Role } = data;
 
     // Fix names (first letter as capital letter)
     const fixedFirstName = FirstName.charAt(0).toUpperCase() + FirstName.slice(1).toLowerCase();
     const fixedLastName = LastName.charAt(0).toUpperCase() + LastName.slice(1).toLowerCase();
-
     const userFullName = `${fixedFirstName} ${fixedLastName}`;
     const workspaceRandomId = "workspace" + generatedId();
+
     const newUserInfo = {
       Email,
       FullName: userFullName,
@@ -49,20 +53,23 @@ export async function createNewUser(data) {
       LastUpdated: Date.now()
     };
 
-    // Update user auth profile (Firebase Auth)
-    await updateUserProfile({ userFullName, userPhotoUrl: "" });
-    // Create new user table
-    await setDoc(doc(db, Config.database.collections.users, auth.currentUser.uid), {
-      UserInfo: newUserInfo
-    });
-    // Create new workspace document
-    const newWorkspace = await createNewWorkspace(workspaceRandomId, WorkSpaceName, newUserInfo);
+    const response = await createUserWithEmailAndPassword(auth, Email, Password);
+    if (response) {
+      // Update user auth profile (Firebase Auth)
+      await updateUserProfile({ userFullName, userPhotoUrl: "" });
+      // Create new user table
+      await setDoc(doc(db, Config.database.collections.users, auth.currentUser.uid), {
+        UserInfo: newUserInfo
+      });
+      // Create new workspace document
+      const newWorkspace = await createNewWorkspace(workspaceRandomId, WorkSpaceName, newUserInfo);
 
-    // Send back the response
-    return {
-      Result: { ResultCode: ResultCodes.Success },
-      Data: { User: newUserInfo, Workspace: newWorkspace }
-    };
+      // Send back the response
+      return {
+        Result: { ResultCode: ResultCodes.Success },
+        Data: { User: newUserInfo, Workspace: newWorkspace }
+      };
+    }
   } catch (error) {
     console.log("error creating new user", error);
   }

@@ -230,6 +230,7 @@ export default {
       this.isLoading = true;
       const newUserData = {
         Email: this.userEmail,
+        Password: this.userPassword1,
         FirstName: this.userFirstName,
         LastName: this.userLastName,
         WorkSpaceName: this.userWorkspace,
