@@ -130,7 +130,7 @@ export default {
       this.pieChart = new Chart(element, {
         type: "pie",
         data: {
-          labels: ["Red", "Blue", "Yellow"],
+          labels: ["SCam-Z-30", "SCam-Q-40", "SCam-H-75"],
           datasets: [
             {
               label: "My First Dataset",
@@ -159,7 +159,7 @@ export default {
           labels: ["Jan", "Fab", "Mar", "Apr", "May", "Jun", "Jul"],
           datasets: [
             {
-              label: "My First Dataset",
+              label: "Closed",
               data: [65, 59, 80, 81, 56, 55, 40],
               fill: false,
               borderColor: "rgb(75, 192, 192)",

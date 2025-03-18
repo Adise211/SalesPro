@@ -195,7 +195,7 @@
                 <v-select
                   v-model="currentCompany.ProductId"
                   label="Product/Service"
-                  :items="['q-99', 'Q-10']"
+                  :items="['SCam-Z-30', 'SCam-Q-40', 'SCam-H-75']"
                   append-inner-icon="mdi-package-variant"
                 ></v-select>
               </v-col>
