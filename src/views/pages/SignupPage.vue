@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { checkIfUserExistWithEmailAndPass, createNewUser } from "@/firebase/services/user";
+import { checkIfUserExistWByEmail, createNewUser } from "@/firebase/services/user";
 
 export default {
   name: "SignupPage",
@@ -215,9 +215,8 @@ export default {
       }
     },
     async checkIfUserExist() {
-      const response = await checkIfUserExistWithEmailAndPass({
-        Email: this.userEmail,
-        Password: this.userPassword1
+      const response = await checkIfUserExistWByEmail({
+        Email: this.userEmail
       });
 
       if (response.Result.ResultCode > 0) {

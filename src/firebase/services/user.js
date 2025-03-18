@@ -1,26 +1,29 @@
 import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "../connection";
 import { initStores } from "../../stores";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { createNewWorkspace, getWorkspaceData } from "./workspace";
 import { ResultCodes } from "@/utilities/consts";
 import { Config } from "@/utilities/config";
 import { generatedId } from "@/utilities/utilsFuncs";
 
-export async function checkIfUserExistWithEmailAndPass(data) {
-  const { Email, Password } = data;
+export async function checkIfUserExistWByEmail(data) {
+  const { Email } = data;
   try {
-    const response = await signInWithEmailAndPassword(auth, Email, Password);
-    if (response) {
-      await signoutUser();
+    const usersRef = collection(db, Config.database.collections.users);
+    const q = query(usersRef, where(Config.database.secrets.checkEmail, "==", Email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.size > 0) {
       return {
         Result: { ResultCode: ResultCodes.Error, ResultMessage: "Email is already in use" },
         Data: {}
       };
+    } else {
+      return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
     }
   } catch (error) {
     console.log("error checking if user exist", error);
-    return { Result: { ResultCode: ResultCodes.Success }, Data: {} };
   }
 }
 
