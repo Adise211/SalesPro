@@ -27,7 +27,6 @@ export function generatedId() {
 
 export function convertDate(value) {
   const currentValue = new Date(value);
-
   const ISOFormat = moment(currentValue).format("YYYY-MM-DD");
   const MDYFormat = moment(currentValue).format("MM/DD/YYYY");
   const MDYWith24H = moment(currentValue).format("MM/DD/YYYY HH:mm");
@@ -41,6 +40,10 @@ export function convertDate(value) {
     MDYWith12H,
     MilliTimestamp
   };
+}
+
+export function convertEpochMilliToDate(value) {
+  return moment(value, "x").format("MM/DD/YYYY");
 }
 
 export function changePropertiesToLowerCase(obj) {

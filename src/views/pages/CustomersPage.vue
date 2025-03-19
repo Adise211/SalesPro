@@ -2,7 +2,12 @@
   <v-container fluid class="customers-page h-100 pa-3" style="max-height: 100%">
     <AppCard>
       <template v-slot:card-text>
-        <v-data-table>
+        <v-data-table-virtual
+          :headers="tableHeaders"
+          :items="tableItems"
+          fixed-header
+          :height="490"
+        >
           <!-- table top -->
           <template v-slot:top>
             <v-row class="mb-5">
@@ -29,14 +34,11 @@
               </v-col>
             </v-row>
           </template>
-
-          <!-- table footer (paging) -->
-          <template v-slot:bottom>
-            <div class="text-center pt-2">
-              <v-pagination v-model="page" :length="pageCount"></v-pagination>
-            </div>
+          <!-- table body -->
+          <template v-slot:[`item.LastUpdated`]="{ item }">
+            <td>{{ convertEpochToDateFormat(item.LastUpdated) }}</td>
           </template>
-        </v-data-table>
+        </v-data-table-virtual>
       </template>
     </AppCard>
   </v-container>
@@ -44,20 +46,69 @@
 
 <script>
 import AppCard from "@/components/AppCard.vue";
+import { TableColumnsWidthValue } from "@/utilities/consts.js";
+import { convertEpochMilliToDate } from "@/utilities/utilsFuncs";
 
 export default {
   name: "CustomersPage",
   components: { AppCard },
   props: {},
   data: () => ({
-    searchExpression: "",
-    page: 1,
-    itemsPerPage: "6"
+    searchExpression: ""
   }),
   created() {},
   mounted() {},
-  methods: {},
-  computed: {},
+  methods: {
+    convertEpochToDateFormat(value) {
+      return convertEpochMilliToDate(value);
+    }
+  },
+  computed: {
+    tableHeaders() {
+      return [
+        {
+          title: "Company",
+          key: "Company",
+          width: TableColumnsWidthValue.Small
+        },
+        {
+          title: "Email",
+          key: "Email",
+          width: TableColumnsWidthValue.Medium
+        },
+        {
+          title: "Phone",
+          key: "Phone",
+          width: TableColumnsWidthValue.Small
+        },
+        {
+          title: "Business Sector",
+          key: "BusinessSector",
+          width: TableColumnsWidthValue.Medium
+        },
+        {
+          title: "Updated By",
+          key: "UpdatedBy",
+          width: TableColumnsWidthValue.Small
+        },
+        {
+          title: "Updated Time",
+          key: "LastUpdated",
+          width: TableColumnsWidthValue.Small
+        },
+        {
+          title: "Actions",
+          key: "",
+          align: "center",
+          width: TableColumnsWidthValue.Small,
+          sortable: false
+        }
+      ];
+    },
+    tableItems() {
+      return [];
+    }
+  },
   watch: {}
 };
 </script>

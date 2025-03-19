@@ -98,3 +98,9 @@ export const SalesReminderFrequency = {
   Weekly: 2,
   Monthly: 3
 };
+
+export const TableColumnsWidthValue = {
+  Small: "10%",
+  Medium: "15%",
+  Large: "20%"
+};
