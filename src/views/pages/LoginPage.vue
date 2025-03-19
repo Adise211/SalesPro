@@ -2,7 +2,7 @@
   <v-container fluid class="fill-height pb-0">
     <v-row class="fill-height">
       <v-spacer></v-spacer>
-      <v-col md="3 my-auto">
+      <v-col cols="12" md="3 my-auto">
         <div class="login-container">
           <!-- Logo -->
           <!-- <v-img :src="logoURL" class="mb-10" /> -->
