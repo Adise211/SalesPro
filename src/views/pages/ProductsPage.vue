@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="fill-height d-block">
+  <v-container fluid class="products-page h-100 pa-3" style="max-height: 100%">
     <AppCard>
       <template v-slot:card-text>
         <v-data-table
@@ -8,12 +8,11 @@
           :page="page"
           :items-per-page="itemsPerPage"
           :search="searchExpression"
-          :height="390"
         >
           <!-- table top -->
           <template v-slot:top>
             <v-row class="mb-5">
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-text-field
                   v-model="searchExpression"
                   hide-details
@@ -36,6 +35,7 @@
               </v-col>
             </v-row>
           </template>
+
           <!-- table body -->
           <template v-slot:item="{ item, index }">
             <tr>
@@ -61,6 +61,8 @@
       </template>
     </AppCard>
   </v-container>
+
+  <!-- Product dialog -->
   <v-dialog v-model="isDialogOpen" id="product-dialog">
     <AppCard :cardContentOnly="false" width="30%" height="85%">
       <template v-slot:card-title>
