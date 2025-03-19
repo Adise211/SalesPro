@@ -100,6 +100,7 @@ export const SalesReminderFrequency = {
 };
 
 export const TableColumnsWidthValue = {
+  XSmall: "5%",
   Small: "10%",
   Medium: "15%",
   Large: "20%"

@@ -36,7 +36,19 @@
           </template>
           <!-- table body -->
           <template v-slot:[`item.LastUpdated`]="{ item }">
-            <td>{{ convertEpochToDateFormat(item.LastUpdated) }}</td>
+            <td>
+              <span class="ml-2">{{ convertEpochToDateFormat(item.LastUpdated) }}</span>
+            </td>
+          </template>
+          <template v-slot:[`item.Actions`]="{ item }">
+            <td>
+              <div class="ml-3">
+                <v-icon size="small" @click="onEditItem(item)">mdi-pencil</v-icon>
+                <v-icon size="small" color="error" class="ml-2" @click="onDeleteItem(item)"
+                  >mdi-delete</v-icon
+                >
+              </div>
+            </td>
           </template>
         </v-data-table-virtual>
       </template>
@@ -59,6 +71,12 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    onEditItem(item) {
+      console.log("edit item:", item);
+    },
+    onDeleteItem(item) {
+      console.log("delete item:", item);
+    },
     convertEpochToDateFormat(value) {
       return convertEpochMilliToDate(value);
     }
@@ -92,15 +110,15 @@ export default {
           width: TableColumnsWidthValue.Small
         },
         {
-          title: "Updated Time",
+          title: "Updated Date",
           key: "LastUpdated",
           width: TableColumnsWidthValue.Small
         },
         {
           title: "Actions",
-          key: "",
+          key: "Actions",
           align: "center",
-          width: TableColumnsWidthValue.Small,
+          width: TableColumnsWidthValue.XSmall,
           sortable: false
         }
       ];
