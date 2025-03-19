@@ -35,6 +35,19 @@
             </v-row>
           </template>
           <!-- table body -->
+          <template v-slot:[`item.Company`]="{ item }">
+            <td>
+              <v-hover v-slot="{ isHovering, props }">
+                <span
+                  class="app-cursor-pointer"
+                  :class="{ 'text-decoration-underline text-blue': isHovering }"
+                  @click="openItemMoreInfo(item)"
+                  v-bind="props"
+                  >{{ item.Company }}</span
+                >
+              </v-hover>
+            </td>
+          </template>
           <template v-slot:[`item.LastUpdated`]="{ item }">
             <td>
               <span class="ml-2">{{ convertEpochToDateFormat(item.LastUpdated) }}</span>
@@ -71,6 +84,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    openItemMoreInfo(item) {
+      console.log("open more info", item);
+    },
     onEditItem(item) {
       console.log("edit item:", item);
     },
