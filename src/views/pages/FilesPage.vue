@@ -2,7 +2,41 @@
   <v-container fluid class="files-page h-100 pa-3" style="max-height: 100%">
     <AppCard>
       <template v-slot:card-text>
-        <v-data-table> </v-data-table>
+        <v-data-table>
+          <!-- table top -->
+          <template v-slot:top>
+            <v-row class="mb-5">
+              <v-col cols="4">
+                <v-text-field
+                  v-model="searchExpression"
+                  hide-details
+                  single-line
+                  density="compact"
+                  variant="solo-filled"
+                  flat
+                  placeholder="Search here..."
+                  append-inner-icon="mdi-magnify"
+                ></v-text-field>
+              </v-col>
+              <v-col class="text-end">
+                <v-btn
+                  color="primary"
+                  variant="text"
+                  prepend-icon="mdi-plus"
+                  @click="isDialogOpen = true"
+                  >Add File</v-btn
+                >
+              </v-col>
+            </v-row>
+          </template>
+
+          <!-- table footer (paging) -->
+          <template v-slot:bottom>
+            <div class="text-center pt-2">
+              <v-pagination v-model="page" :length="pageCount"></v-pagination>
+            </div>
+          </template>
+        </v-data-table>
       </template>
     </AppCard>
   </v-container>
