@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="fill-height d-block">
     <AppCard>
       <template v-slot:card-text>
         <v-data-table
@@ -8,6 +8,7 @@
           :page="page"
           :items-per-page="itemsPerPage"
           :search="searchExpression"
+          :height="390"
         >
           <!-- table top -->
           <template v-slot:top>
@@ -15,10 +16,13 @@
               <v-col cols="3">
                 <v-text-field
                   v-model="searchExpression"
-                  placeholder="Search here..."
-                  append-inner-icon="mdi-magnify"
                   hide-details
                   single-line
+                  density="compact"
+                  variant="solo-filled"
+                  flat
+                  placeholder="Search here..."
+                  append-inner-icon="mdi-magnify"
                 ></v-text-field>
               </v-col>
               <v-col class="text-end">

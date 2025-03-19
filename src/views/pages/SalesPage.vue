@@ -9,6 +9,9 @@
                 v-model="searchExpression"
                 hide-details
                 single-line
+                density="compact"
+                variant="solo-filled"
+                flat
                 placeholder="Search here..."
                 append-inner-icon="mdi-magnify"
               ></v-text-field>
