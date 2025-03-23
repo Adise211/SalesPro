@@ -50,7 +50,8 @@ const vuetify = createVuetify({
         dark: false,
         colors: {
           primary: colors.blueGrey.darken4,
-          secondary: colors.blueGrey.lighten4
+          secondary: colors.blueGrey.lighten4,
+          base: "#111827"
         }
       }
     }

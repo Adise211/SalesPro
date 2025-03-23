@@ -1,7 +1,7 @@
 <template>
   <div class="default-layout">
     <v-layout class="rounded rounded-md">
-      <v-navigation-drawer color="primary" persistent width="200">
+      <v-navigation-drawer color="base" persistent width="200">
         <v-list>
           <v-list-item class="py-5" :title="userWorkSpace.Name" :subtitle="userRole"></v-list-item>
           <v-divider></v-divider>
@@ -13,6 +13,7 @@
             :title="item.title"
             :append-icon="item.icon"
             @click="onNavItemClick(item.value)"
+            height="60px"
           ></v-list-item>
         </v-list>
       </v-navigation-drawer>
