@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="3" :max-width="cardMaxWidth" max-height="100%" :height="cardHeight">
+  <v-card elevation="0" :max-width="cardMaxWidth" max-height="100%" :height="cardHeight">
     <!-- Card Title -->
     <v-card-title v-if="!cardContentOnly" class="mt-3 text-h5 font-weight-medium">
       <slot name="card-title"></slot>
