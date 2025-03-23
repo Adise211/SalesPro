@@ -1,12 +1,11 @@
 <template>
   <v-container fluid class="fill-height pb-0">
-    <v-row class="fill-height">
-      <v-spacer></v-spacer>
-      <v-col cols="12" md="3 my-auto">
+    <v-row class="fill-height d-flex align-center justify-center">
+      <v-col cols="12" md="3">
         <div class="login-container">
           <!-- Logo -->
           <!-- <v-img :src="logoURL" class="mb-10" /> -->
-          <div class="text-h3 text-primary text-center font-italic mb-5 font-weight-medium">
+          <div class="text-h3 text-primary text-center font-italic mb-12 font-weight-medium">
             SalesPro
           </div>
           <div class="login-form-wrapper">
@@ -65,11 +64,6 @@
             </div>
           </div>
         </div>
-      </v-col>
-      <v-spacer></v-spacer>
-      <v-col md="7" class="login-background-image pa-0">
-        <!-- BG Image -->
-        <v-img :src="loginBackgroundURL" width="300%" height="300%" cover></v-img>
       </v-col>
     </v-row>
   </v-container>
