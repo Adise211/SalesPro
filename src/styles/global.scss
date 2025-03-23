@@ -14,7 +14,7 @@ a {
 
 :root {
   --app-font-size: 16px;
-  --app-font-family: "Rubik", sans-serif;
+  --app-font-family: "Archivo", sans-serif;
   --app-main-bg-color: #f5f5f5;
   --app-orange: #f4511e;
   --app-yellow: #eab308;
@@ -35,10 +35,10 @@ a {
   align-items: center;
 }
 
-.v-table .v-table__wrapper thead tr th {
-  background-color: #f5f5f5 !important;
-  color: #000000 !important;
-}
+// .v-table .v-table__wrapper thead tr th {
+//   background-color: #f5f5f5 !important;
+//   color: #000000 !important;
+// }
 
 .v-table .v-table__wrapper .v-data-table__th {
   font-weight: bold;
