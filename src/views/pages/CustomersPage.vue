@@ -1,12 +1,15 @@
 <template>
   <v-container fluid class="customers-page h-100 pa-3" style="max-height: 100%">
-    <AppCard>
+    <AppCard v-if="!isMoreInfoOpen">
       <template v-slot:card-text>
         <v-data-table-virtual
           :headers="tableHeaders"
           :items="tableItems"
           fixed-header
           :height="490"
+          :search="searchExpression"
+          hover
+          show-select
         >
           <!-- table top -->
           <template v-slot:top>
@@ -48,6 +51,14 @@
               </v-hover>
             </td>
           </template>
+          <template v-slot:[`item.PaymentStatus`]="{ value }">
+            <v-chip
+              :border="`orange thin opacity-25`"
+              color="orange"
+              :text="value === 0 ? 'Pending' : 'Paid'"
+              size="x-small"
+            ></v-chip>
+          </template>
           <template v-slot:[`item.LastUpdated`]="{ item }">
             <td>
               <span class="ml-2">{{ convertEpochToDateFormat(item.LastUpdated) }}</span>
@@ -66,26 +77,38 @@
         </v-data-table-virtual>
       </template>
     </AppCard>
+    <v-dialog v-model="isContactDialogOpen" width="35%">
+      <CustomerInfoCard
+        :selectedItem="selectedItem"
+        @onCloseContactDialog="closeContactDialogHandler"
+      ></CustomerInfoCard>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import AppCard from "@/components/AppCard.vue";
+import CustomerInfoCard from "@/components/CustomerInfoCard.vue";
 import { TableColumnsWidthValue } from "@/utilities/consts.js";
 import { convertEpochMilliToDate } from "@/utilities/utilsFuncs";
+import customers from "/public/_config/dummyDate/customers.json";
 
 export default {
   name: "CustomersPage",
-  components: { AppCard },
+  components: { AppCard, CustomerInfoCard },
   props: {},
   data: () => ({
-    searchExpression: ""
+    searchExpression: "",
+    isContactDialogOpen: false,
+    selectedItem: null
   }),
   created() {},
   mounted() {},
   methods: {
     openItemMoreInfo(item) {
       console.log("open more info", item);
+      this.isContactDialogOpen = true;
+      this.selectedItem = item;
     },
     onEditItem(item) {
       console.log("edit item:", item);
@@ -95,6 +118,9 @@ export default {
     },
     convertEpochToDateFormat(value) {
       return convertEpochMilliToDate(value);
+    },
+    closeContactDialogHandler() {
+      this.isContactDialogOpen = false;
     }
   },
   computed: {
@@ -103,23 +129,30 @@ export default {
         {
           title: "Company",
           key: "Company",
-          width: TableColumnsWidthValue.Small
-        },
-        {
-          title: "Email",
-          key: "Email",
+          align: "start",
           width: TableColumnsWidthValue.Medium
-        },
-        {
-          title: "Phone",
-          key: "Phone",
-          width: TableColumnsWidthValue.Small
         },
         {
           title: "Business Sector",
           key: "BusinessSector",
           width: TableColumnsWidthValue.Medium
         },
+        {
+          title: "Email",
+          key: "Email",
+          width: TableColumnsWidthValue.Large
+        },
+        {
+          title: "Last Bill",
+          key: "LastBill",
+          width: TableColumnsWidthValue.Small
+        },
+        {
+          title: "Status",
+          key: "PaymentStatus",
+          width: TableColumnsWidthValue.Small
+        },
+
         {
           title: "Updated By",
           key: "UpdatedBy",
@@ -140,7 +173,7 @@ export default {
       ];
     },
     tableItems() {
-      return [];
+      return customers;
     }
   },
   watch: {}
