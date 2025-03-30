@@ -49,7 +49,7 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-          primary: "rgb(126, 78, 230)",
+          primary: "rgb(167, 138, 229)",
           secondary: colors.blueGrey.lighten4,
           base: "#111827",
           background: "rgb(244, 245, 250)"
