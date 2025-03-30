@@ -55,3 +55,15 @@ export function changePropertiesToLowerCase(obj) {
 
   return updatedObj;
 }
+
+export function convertLocationToString(locationObject) {
+  const ORDERED_ARR = [];
+  if (locationObject.Address1) ORDERED_ARR.push(locationObject.Address1);
+  if (locationObject.Address2) ORDERED_ARR.push(locationObject.Address2);
+  if (locationObject.City) ORDERED_ARR.push(locationObject.City);
+  if (locationObject.State) ORDERED_ARR.push(locationObject.State);
+  if (locationObject.Country) ORDERED_ARR.push(locationObject.Country);
+  if (locationObject.ZipeCode) ORDERED_ARR.push(locationObject.ZipeCode);
+
+  return ORDERED_ARR.toString();
+}

@@ -1,10 +1,11 @@
 <template>
-  <v-container fluid class="customers-page h-100 pa-3" style="max-height: 100%">
-    <AppCard v-if="!isMoreInfoOpen">
+  <v-container fluid class="customers-page h-100 pa-5" style="max-height: 100%">
+    <AppCard>
       <template v-slot:card-text>
         <v-data-table-virtual
           :headers="tableHeaders"
           :items="tableItems"
+          item-value="Id"
           fixed-header
           :height="490"
           :search="searchExpression"

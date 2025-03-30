@@ -1,93 +1,13 @@
 <template>
-  <v-data-table
+  <v-data-table-virtual
     :headers="tableHeaders"
     :items="tableItems"
     item-value="Id"
-    :items-per-page="itemsPerPage"
     :height="390"
-    :page="page"
     :search="searchExp"
     class="mt-3"
-    show-expand
   >
-    <!-- table body (items) -->
-    <template v-slot:item="{ item, isExpanded, toggleExpand, internalItem }">
-      <tr>
-        <td class="text-medium-emphasis app-text-truncate">{{ item.Name }}</td>
-        <td class="text-medium-emphasis app-text-truncate">{{ item.Email }}</td>
-        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.Phone }}</td>
-        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.WebsiteUrl }}</td>
-        <td class="text-medium-emphasis app-text-truncate text-center">
-          {{ item.ContactPerson }}
-        </td>
-        <td class="text-medium-emphasis app-text-truncate text-center">{{ item.ProductId }}</td>
-        <td class="text-medium-emphasis">{{ changedDateFormat(item.LastUpdated) }}</td>
-        <td>
-          <v-btn
-            :text="isExpanded(internalItem) ? 'Collapse' : 'More info'"
-            color="white"
-            size="small"
-            variant="text"
-            class="bg-primary"
-            slim
-            @click="toggleExpand(internalItem)"
-          >
-            <template v-slot:append>
-              <v-icon color="white"
-                >{{ isExpanded(internalItem) ? "mdi-chevron-up" : "mdi-chevron-down" }}
-              </v-icon>
-            </template>
-          </v-btn>
-        </td>
-      </tr>
-    </template>
-    <!-- table body - expanded row -->
-    <template v-slot:expanded-row="{ columns, item }">
-      <tr>
-        <td :colspan="columns.length" class="py-2">
-          <v-sheet rounded="lg" border>
-            <v-table density="compact">
-              <tbody class="bg-grey-lighten-4">
-                <tr>
-                  <th class="expanded-row-th-width-meduim">Business Sector</th>
-                  <th class="expanded-row-th-width-large">Location</th>
-                  <th class="expanded-row-th-width-meduim">Contact Role</th>
-                  <th class="expanded-row-th-width-meduim">Attached File</th>
-                  <th>Teams</th>
-                  <th class="expanded-row-th-width-small">Note</th>
-                  <th class="expanded-row-th-width-small"></th>
-                </tr>
-              </tbody>
-
-              <tbody>
-                <tr>
-                  <td>{{ item.BusinessSector }}</td>
-                  <td>{{ convertLocationToString(item.Location) }}</td>
-                  <td>{{ item.ContactPersonRole }}</td>
-                  <td class="text-blue">{{ item.FileId }}</td>
-                  <td>{{ item.Teams.length ? item.Teams.toString() : "" }}</td>
-                  <td class="text-blue">Open note</td>
-                  <td class="text-center">
-                    <v-icon size="small" @click="onEditItem(item)">mdi-pencil</v-icon>
-                    <v-icon size="small" color="error" class="ml-2" @click="onDeleteItem(item)"
-                      >mdi-delete</v-icon
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </v-table>
-          </v-sheet>
-        </td>
-      </tr>
-    </template>
-
-    <!-- table footer (paging) -->
-    <template v-slot:bottom>
-      <div class="text-center pt-2">
-        <v-pagination v-model="page" :length="pageCount"></v-pagination>
-      </div>
-    </template>
-  </v-data-table>
+  </v-data-table-virtual>
   <!-- confirm delete dialog -->
   <v-dialog v-model="isDeleteDialogOpen" width="30%">
     <AppCard :cardContentOnly="false">
@@ -115,12 +35,13 @@
 </template>
 
 <script>
-import { ToastMessages, SalesStatusId } from "@/utilities/consts";
+import { ToastMessages, SalesStatusId, TableColumnsWidthValue } from "@/utilities/consts";
 import AppCard from "@/components/AppCard.vue";
-import { convertDate } from "@/utilities/utilsFuncs";
+import { convertDate, convertLocationToString } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { removeCompany } from "@/firebase/services/workspace";
+import companies from "../../public/_config/dummyDate/sales.json";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 
@@ -139,8 +60,6 @@ export default {
     }
   },
   data: () => ({
-    itemsPerPage: "6",
-    page: 1,
     isDeleteDialogOpen: false,
     isConfirmDeleteLoading: false,
     currentItem: {}
@@ -181,16 +100,8 @@ export default {
       const fromEpochTime = true;
       return convertDate(date, fromEpochTime).MDYFormat;
     },
-    convertLocationToString(locationObject) {
-      const ORDERED_ARR = [];
-      if (locationObject.Address1) ORDERED_ARR.push(locationObject.Address1);
-      if (locationObject.Address2) ORDERED_ARR.push(locationObject.Address2);
-      if (locationObject.City) ORDERED_ARR.push(locationObject.City);
-      if (locationObject.State) ORDERED_ARR.push(locationObject.State);
-      if (locationObject.Country) ORDERED_ARR.push(locationObject.Country);
-      if (locationObject.ZipeCode) ORDERED_ARR.push(locationObject.ZipeCode);
-
-      return ORDERED_ARR.toString();
+    convertLocation(locationObject) {
+      return convertLocationToString(locationObject);
     }
   },
   computed: {
@@ -198,65 +109,55 @@ export default {
     tableHeaders() {
       return [
         {
-          title: "Name",
-          key: "Name",
-          width: "15%"
+          title: "Company",
+          key: "Company",
+          width: TableColumnsWidthValue.Medium
+        },
+        {
+          title: "Business Sector",
+          key: "Email",
+          align: "center",
+          width: TableColumnsWidthValue.Medium
         },
         {
           title: "Email",
-          key: "Email",
-          align: "center",
-          width: "20%"
-        },
-        {
-          title: "Phone",
           key: "Phone",
           align: "center",
           sortable: false,
-          width: "10%"
+          width: TableColumnsWidthValue.Large
         },
         {
-          title: "Website",
-          key: "WebsiteUrl",
-          align: "center",
-          sortable: false,
-          width: "10%"
-        },
-        {
-          title: "Contact Person",
-          key: "ContactPerson",
-          align: "center",
-          width: "15%"
-        },
-        {
-          title: "Product/Service",
+          title: "Product",
           key: "ProductId",
           align: "center",
-          width: "15%"
+          width: TableColumnsWidthValue.Medium
         },
         {
-          title: "Last Updated",
+          title: "Updated By",
+          key: "UpdatedBy",
+          width: TableColumnsWidthValue.Medium
+        },
+        {
+          title: "LastUpdated",
           key: "LastUpdated",
-          width: "15%"
+          width: TableColumnsWidthValue.Medium
         },
         {
-          title: "",
+          title: "Actions",
           key: "",
           sortable: false,
-          width: "10%"
+          width: TableColumnsWidthValue.XSmall
         }
       ];
     },
     tableItems() {
       // Filter by status id
-      const filteredItems = this.companiesList.filter((company) => {
-        return company.StatusId === this.activeStatusId;
-      });
+      // const filteredItems = this.companiesList.filter((company) => {
+      //   return company.StatusId === this.activeStatusId;
+      // });
 
-      return filteredItems || [];
-    },
-    pageCount() {
-      return Math.ceil(this.tableItems.length / this.itemsPerPage);
+      // return filteredItems || [];
+      return companies;
     }
   },
   watch: {}

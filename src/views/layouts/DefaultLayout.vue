@@ -201,12 +201,12 @@ export default {
           icon: "mdi-home",
           isShownNow: false
         },
-        {
-          title: NavigationItems.Calendar,
-          value: NavigationItems.Calendar,
-          icon: "mdi-calendar",
-          isShownNow: false
-        },
+        // {
+        //   title: NavigationItems.Calendar,
+        //   value: NavigationItems.Calendar,
+        //   icon: "mdi-calendar",
+        //   isShownNow: false
+        // },
         {
           title: NavigationItems.Sales,
           value: NavigationItems.Sales,
@@ -231,12 +231,12 @@ export default {
           icon: "mdi-account-multiple",
           isShownNow: false
         },
-        {
-          title: NavigationItems.Files,
-          value: NavigationItems.Files,
-          icon: "mdi-file-document",
-          isShownNow: false
-        },
+        // {
+        //   title: NavigationItems.Files,
+        //   value: NavigationItems.Files,
+        //   icon: "mdi-file-document",
+        //   isShownNow: false
+        // },
         {
           title: "My Account",
           value: NavigationItems.MyAccount,
