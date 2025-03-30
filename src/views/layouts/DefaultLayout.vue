@@ -1,91 +1,98 @@
 <template>
   <div class="default-layout">
-    <v-layout class="rounded rounded-md">
-      <v-navigation-drawer color="base" persistent width="200">
-        <v-list>
-          <v-list-item class="py-5" :title="userWorkSpace.Name" :subtitle="userRole"></v-list-item>
-          <v-divider></v-divider>
-          <v-list-item
-            v-for="(item, index) in navItems"
-            :key="index"
-            :value="item.value"
-            link
-            :title="item.title"
-            :append-icon="item.icon"
-            @click="onNavItemClick(item.value)"
-            height="60px"
-          ></v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-      <v-app-bar color="secondary" flat>
-        <v-app-bar-title class="text-h5 font-weight-bold">SalesPro</v-app-bar-title>
-        <template v-slot:append>
-          <!-- Edit User Info  -->
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-cog"> </v-btn>
-            </template>
-            <v-list class="text-center">
-              <v-list-item>
-                <v-list-item-title>Edit Profile</v-list-item-title>
-              </v-list-item>
-              <v-divider></v-divider>
-              <v-list-item>
-                <v-list-item-title>Change Password</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <!-- Notification -->
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" icon="mdi-bell"> </v-btn>
-            </template>
-            <v-list width="250">
-              <v-list-item v-for="item in notificationsList" :key="item.id">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-                <v-list-item-subtitle class="text-high-emphasis">
-                  {{ item.subtitle }}
-                </v-list-item-subtitle>
-                <v-spacer></v-spacer>
-                <template v-slot:append>
-                  <v-list-item-action class="flex-column align-end">
-                    <small class="mb-4 text-high-emphasis opacity-60">{{ item.date }}</small>
-                    <v-spacer></v-spacer>
-                    <small class="mb-4 text-high-emphasis opacity-60">{{ item.time }}</small>
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <!-- User Info + Signout -->
-          <v-avatar class="mx-3 app-cursor-pointer">
-            <v-img alt="profile_photo" :src="userProfilePhotoDisplay" class="bg-white"></v-img>
-            <v-menu activator="parent" location="bottom">
-              <v-card width="250">
-                <v-card-text class="text-center">
-                  <v-list class="pb-0">
-                    <v-list-item>
-                      <p class="text-h6 text-truncate">{{ userNameDisplay }}</p>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item>
-                      <p class="text-truncate">{{ userEmail }}</p>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-btn block color="primary" @click="onSignout"> Signout </v-btn>
-                    </v-list-item>
-                  </v-list>
-                </v-card-text>
-              </v-card>
+    <v-app>
+      <v-layout class="rounded rounded-md">
+        <v-navigation-drawer color="base" persistent width="200">
+          <v-list>
+            <v-list-item
+              class="py-5"
+              :title="userWorkSpace.Name"
+              :subtitle="userRole"
+            ></v-list-item>
+            <v-divider></v-divider>
+            <v-list-item
+              v-for="(item, index) in navItems"
+              :key="index"
+              :value="item.value"
+              link
+              :title="item.title"
+              :append-icon="item.icon"
+              @click="onNavItemClick(item.value)"
+              height="60px"
+            ></v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+        <v-app-bar color="secondary" flat>
+          <v-app-bar-title class="text-h5 font-weight-bold">SalesPro</v-app-bar-title>
+          <template v-slot:append>
+            <!-- Edit User Info  -->
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-cog"> </v-btn>
+              </template>
+              <v-list class="text-center">
+                <v-list-item>
+                  <v-list-item-title>Edit Profile</v-list-item-title>
+                </v-list-item>
+                <v-divider></v-divider>
+                <v-list-item>
+                  <v-list-item-title>Change Password</v-list-item-title>
+                </v-list-item>
+              </v-list>
             </v-menu>
-          </v-avatar>
-        </template>
-      </v-app-bar>
+            <!-- Notification -->
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-bell"> </v-btn>
+              </template>
+              <v-list width="250">
+                <v-list-item v-for="item in notificationsList" :key="item.id">
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="text-high-emphasis">
+                    {{ item.subtitle }}
+                  </v-list-item-subtitle>
+                  <v-spacer></v-spacer>
+                  <template v-slot:append>
+                    <v-list-item-action class="flex-column align-end">
+                      <small class="mb-4 text-high-emphasis opacity-60">{{ item.date }}</small>
+                      <v-spacer></v-spacer>
+                      <small class="mb-4 text-high-emphasis opacity-60">{{ item.time }}</small>
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <!-- User Info + Signout -->
+            <v-avatar class="mx-3 app-cursor-pointer">
+              <v-img alt="profile_photo" :src="userProfilePhotoDisplay" class="bg-white"></v-img>
+              <v-menu activator="parent" location="bottom">
+                <v-card width="250">
+                  <v-card-text class="text-center">
+                    <v-list class="pb-0">
+                      <v-list-item>
+                        <p class="text-h6 text-truncate">{{ userNameDisplay }}</p>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item>
+                        <p class="text-truncate">{{ userEmail }}</p>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-btn block color="primary" @click="onSignout"> Signout </v-btn>
+                      </v-list-item>
+                    </v-list>
+                  </v-card-text>
+                </v-card>
+              </v-menu>
+            </v-avatar>
+          </template>
+        </v-app-bar>
 
-      <v-main class="main-content">
-        <slot></slot>
-      </v-main>
-    </v-layout>
+        <v-main class="main-content">
+          <slot></slot>
+        </v-main>
+        <AppFooter></AppFooter>
+      </v-layout>
+    </v-app>
   </div>
 </template>
 
@@ -97,13 +104,14 @@ import { useGeneralStore } from "@/stores/general";
 import { signoutUser } from "@/firebase/services/user";
 import { Config } from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
+import AppFooter from "./components/AppFooter.vue";
 // import defaultProfilePhoto from "../../../public/images/user_photo_default.jfif";
 
 let checkUserActivityInterval;
 
 export default {
   name: "DefaultLayout",
-  components: {},
+  components: { AppFooter },
   props: {},
   data: () => ({}),
   created() {},
