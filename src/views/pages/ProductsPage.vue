@@ -2,62 +2,7 @@
   <v-container fluid class="products-page h-100 pa-3" style="max-height: 100%">
     <AppCard>
       <template v-slot:card-text>
-        <v-data-table
-          :headers="tableHeaders"
-          :items="tableItems"
-          :page="page"
-          :items-per-page="itemsPerPage"
-          :search="searchExpression"
-        >
-          <!-- table top -->
-          <template v-slot:top>
-            <v-row class="mb-5">
-              <v-col cols="4">
-                <v-text-field
-                  v-model="searchExpression"
-                  hide-details
-                  single-line
-                  density="compact"
-                  variant="solo-filled"
-                  flat
-                  placeholder="Search here..."
-                  append-inner-icon="mdi-magnify"
-                ></v-text-field>
-              </v-col>
-              <v-col class="text-end">
-                <v-btn
-                  color="primary"
-                  variant="text"
-                  prepend-icon="mdi-plus"
-                  @click="isDialogOpen = true"
-                  >Add Product</v-btn
-                >
-              </v-col>
-            </v-row>
-          </template>
-
-          <!-- table body -->
-          <template v-slot:item="{ item, index }">
-            <tr>
-              <td>{{ index + 1 }}</td>
-              <td>{{ item.Name }}</td>
-              <td>{{ item.Description }}</td>
-              <td>{{ item.UpdatedBy || "" }}</td>
-              <td>{{ changedDateFormat(item.LastUpdated) }}</td>
-              <td>
-                <v-icon @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon color="error" class="ml-2" @click="deleteItem(item)">mdi-delete</v-icon>
-              </td>
-            </tr>
-          </template>
-
-          <!-- table footer (paging) -->
-          <template v-slot:bottom>
-            <div class="text-center pt-2">
-              <v-pagination v-model="page" :length="pageCount"></v-pagination>
-            </div>
-          </template>
-        </v-data-table>
+        <AppTable :headers="tableHeaders" :items="tableItems"></AppTable>
       </template>
     </AppCard>
   </v-container>
@@ -106,6 +51,7 @@ import { createNewProduct, updateProduct, removeProduct } from "@/firebase/servi
 import { useGeneralStore } from "@/stores/general";
 import { ToastMessages } from "@/utilities/consts";
 import { convertDate } from "@/utilities/utilsFuncs";
+import AppTable from "@/components/core/AppTable.vue";
 
 const NEW_PRODUCT_OPBJECT = {
   Name: null,
@@ -116,7 +62,7 @@ const NEW_PRODUCT_OPBJECT = {
 
 export default {
   name: "ProductsPage",
-  components: { AppCard },
+  components: { AppCard, AppTable },
   props: {},
   data: () => ({
     page: 1,
