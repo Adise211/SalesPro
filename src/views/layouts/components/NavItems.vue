@@ -1,6 +1,11 @@
 <template v-if="items.length">
   <template v-for="(item, index) in items" :key="index">
-    <v-list-item v-if="item.type === navTypes.Link" link active-class="bg-primary" :to="item.path">
+    <v-list-item
+      v-if="item.type === navTypes.Link"
+      link
+      active-class="active-nav-style"
+      :to="item.path"
+    >
       {{ item.title }}
     </v-list-item>
     <v-list-group v-if="item.type === navTypes.Group" :value="item.title">
@@ -8,7 +13,7 @@
         <v-list-item v-bind="props" :title="item.title"></v-list-item>
       </template>
       <template v-for="(child, i) in item.children" :key="i">
-        <v-list-item link active-class="bg-primary" :to="child.path">
+        <v-list-item link active-class="active-nav-style" :to="child.path">
           {{ child.title }}
         </v-list-item>
       </template>
