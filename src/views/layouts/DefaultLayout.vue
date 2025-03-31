@@ -48,27 +48,7 @@
               </v-list>
             </v-menu>
             <!-- User Info + Signout -->
-            <v-avatar class="mx-3 app-cursor-pointer">
-              <v-img alt="profile_photo" :src="userProfilePhotoDisplay" class="bg-white"></v-img>
-              <v-menu activator="parent" location="bottom">
-                <v-card width="250">
-                  <v-card-text class="text-center">
-                    <v-list class="pb-0">
-                      <v-list-item>
-                        <p class="text-h6 text-truncate">{{ userNameDisplay }}</p>
-                      </v-list-item>
-                      <v-divider></v-divider>
-                      <v-list-item>
-                        <p class="text-truncate">{{ userEmail }}</p>
-                      </v-list-item>
-                      <v-list-item>
-                        <v-btn block color="primary" @click="onSignout"> Signout </v-btn>
-                      </v-list-item>
-                    </v-list>
-                  </v-card-text>
-                </v-card>
-              </v-menu>
-            </v-avatar>
+            <UserMenu @onItemClick="userMenuClickHandler" />
           </template>
         </v-app-bar>
 
@@ -91,13 +71,19 @@ import { Config } from "@/utilities/config";
 import { convertTime } from "@/utilities/utilsFuncs";
 import AppFooter from "./components/AppFooter.vue";
 import VerticalNavLayout from "./components/VerticalNavLayout.vue";
-// import defaultProfilePhoto from "../../../public/images/user_photo_default.jfif";
+import UserMenu from "./components/UserMenu.vue";
 
+const USER_MENU_ACTION_TYPES = {
+  Profile: "profile",
+  Settings: "settings",
+  Help: "help",
+  Logout: "logout"
+};
 let checkUserActivityInterval;
 
 export default {
   name: "DefaultLayout",
-  components: { VerticalNavLayout, AppFooter },
+  components: { VerticalNavLayout, UserMenu, AppFooter },
   props: {},
   data: () => ({}),
   created() {},
@@ -157,7 +143,25 @@ export default {
         params: paramsObj
       });
     },
-    async onSignout() {
+    userMenuClickHandler(action) {
+      switch (action) {
+        case USER_MENU_ACTION_TYPES.Profile:
+          //
+          break;
+        case USER_MENU_ACTION_TYPES.Settings:
+          //
+          break;
+        case USER_MENU_ACTION_TYPES.Help:
+          //
+          break;
+        case USER_MENU_ACTION_TYPES.Logout:
+          this.logout();
+          break;
+        default:
+          break;
+      }
+    },
+    async logout() {
       const response = await signoutUser();
 
       if (response.Result.ResultCode > 0) {
@@ -174,7 +178,7 @@ export default {
     sessionExparationHandler() {
       if (!this.isSessionUserActive) {
         console.log("logged out auto!!!");
-        this.onSignout();
+        this.logout();
       }
     }
   },
@@ -244,9 +248,6 @@ export default {
       const LAST_NAME_INDEX = this.userFullName.indexOf(LAST_NAME);
 
       return this.userFullName.slice(0, LAST_NAME_INDEX + 1) + ".";
-    },
-    userProfilePhotoDisplay() {
-      return this.userPhotoUrl || "https://avatar.iran.liara.run/public/boy?username=Ash";
     },
     notificationsList() {
       return [
