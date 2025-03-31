@@ -15,9 +15,11 @@ a {
 :root {
   --app-font-size: 16px;
   --app-font-family: "Archivo", sans-serif;
-  --app-primary: rgb(140, 87, 255);
-  --app-primary-darken-1: rgb(126, 78, 230);
-  --app-bg-light-theme: rgb(244, 245, 250);
+  --app-primary: 140, 87, 255;
+  --app-primary-darken-1: 126, 78, 230;
+  --app-opacity-1: 0.1;
+  --app-opacity-7: 0.7;
+  --app-bg-light-theme: 244, 245, 250;
   --app-orange: #f4511e;
   --app-yellow: #eab308;
   --app-light-blue: #008ffb;
@@ -46,10 +48,19 @@ a {
   background-color: rgb(246, 247, 251) !important;
 }
 
-.active-nav-style {
+.nav-item {
   border-radius: 0 3.125rem 3.125rem 0;
-  background-color: var(--app-primary);
+}
+
+.active-nav-group-style {
+  background: rgba(var(--app-primary), var(--app-opacity-1));
+}
+
+.active-nav-link-style {
   color: white;
-  // transition: margin-inline 0.15s ease-in-out !important;
-  // background: linear-gradient(to right, var(--app-primary), var(--app-primary-opactity)) !important;
+  background: linear-gradient(
+    -72.47deg,
+    rgb(var(--app-primary)) 22.16%,
+    rgba(var(--app-primary), var(--app-opacity-7)) 76.47%
+  ) !important;
 }
