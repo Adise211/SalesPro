@@ -3,8 +3,12 @@
     <v-app>
       <v-layout class="rounded rounded-md">
         <VerticalNavLayout></VerticalNavLayout>
-        <v-app-bar color="secondary" flat>
-          <v-app-bar-title class="text-h5 font-weight-bold">SalesPro</v-app-bar-title>
+        <v-app-bar color="background" flat>
+          <div class="search-trigger w-25 d-flex justify-center align-center">
+            <v-icon>mdi-magnify</v-icon>
+            <span class="mx-2 text-medium-emphasis">Search</span>
+            <span class="meta-key text-medium-emphasis">&#8984;K</span>
+          </div>
           <template v-slot:append>
             <!-- Edit User Info  -->
             <v-menu>
@@ -256,4 +260,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.meta-key {
+  border: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 6px;
+  block-size: 1.5625rem;
+  line-height: 1.3125rem;
+  padding-block: 0.125rem;
+  padding-inline: 0.25rem;
+}
+</style>
