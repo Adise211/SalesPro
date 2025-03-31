@@ -26,27 +26,7 @@
               </v-list>
             </v-menu>
             <!-- Notification -->
-            <v-menu>
-              <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" icon="mdi-bell"> </v-btn>
-              </template>
-              <v-list width="250">
-                <v-list-item v-for="item in notificationsList" :key="item.id">
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  <v-list-item-subtitle class="text-high-emphasis">
-                    {{ item.subtitle }}
-                  </v-list-item-subtitle>
-                  <v-spacer></v-spacer>
-                  <template v-slot:append>
-                    <v-list-item-action class="flex-column align-end">
-                      <small class="mb-4 text-high-emphasis opacity-60">{{ item.date }}</small>
-                      <v-spacer></v-spacer>
-                      <small class="mb-4 text-high-emphasis opacity-60">{{ item.time }}</small>
-                    </v-list-item-action>
-                  </template>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+            <AppNotifications />
             <!-- User Info + Signout -->
             <UserMenu @onItemClick="userMenuClickHandler" />
           </template>
@@ -71,6 +51,7 @@ import { convertTime } from "@/utilities/utilsFuncs";
 import AppFooter from "./components/AppFooter.vue";
 import VerticalNavLayout from "./components/VerticalNavLayout.vue";
 import UserMenu from "./components/UserMenu.vue";
+import AppNotifications from "./components/AppNotifications.vue";
 
 let checkUserActivityInterval;
 const USER_MENU_ACTION_TYPES = {
@@ -82,7 +63,7 @@ const USER_MENU_ACTION_TYPES = {
 
 export default {
   name: "DefaultLayout",
-  components: { VerticalNavLayout, UserMenu, AppFooter },
+  components: { VerticalNavLayout, UserMenu, AppNotifications, AppFooter },
   props: {},
   data: () => ({}),
   created() {},
@@ -144,14 +125,7 @@ export default {
       "userWorkSpace",
       "userRole",
       "userPhotoUrl"
-    ]),
-    notificationsList() {
-      return [
-        { id: 1, title: "test 1", subtitle: "Some text for test", date: "21/01/24", time: "12:45" },
-        { id: 2, title: "test 1", subtitle: "Some text for test", date: "19/05/24", time: "13:00" },
-        { id: 3, title: "test 1", subtitle: "Some text for test", date: "31/12/24", time: "19:20" }
-      ];
-    }
+    ])
   },
   watch: {}
 };

@@ -46,6 +46,11 @@ export function convertEpochMilliToDate(value) {
   return moment(value, "x").format("MM/DD/YYYY");
 }
 
+export function convertEpochMilliToTimeFromNow(value) {
+  //TODO: Convert the result (string) to short text ("seconds": "sec")
+  return moment(value, "x").fromNow(true);
+}
+
 export function changePropertiesToLowerCase(obj) {
   const updatedObj = Object.keys(obj).reduce((acc, key) => {
     const newKey = key.charAt(0).toLowerCase() + key.slice(1);
