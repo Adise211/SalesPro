@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer color="background" persistent width="300">
+  <v-navigation-drawer color="background" persistent width="300" class="border-0">
     <div class="w-100 d-flex flex-row my-5 align-center justify-center text-h5">
       <v-icon color="primary">mdi-lighthouse-on</v-icon>
       <div>LightSale</div>
