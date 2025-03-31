@@ -1,6 +1,6 @@
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
-import colors from "vuetify/util/colors";
+// import colors from "vuetify/util/colors";
 
 const vuetify = createVuetify({
   icons: {
@@ -49,9 +49,8 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-          primary: "rgb(167, 138, 229)",
-          secondary: colors.blueGrey.lighten4,
-          base: "#111827",
+          primary: "rgb(140, 87, 255)",
+          "primary-darken-1": "rgb(126, 78, 230)",
           background: "rgb(244, 245, 250)"
         }
       }
