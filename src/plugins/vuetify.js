@@ -51,10 +51,12 @@ const vuetify = createVuetify({
         colors: {
           primary: "rgb(140, 87, 255)",
           "primary-darken-1": "rgb(126, 78, 230)",
-          background: "rgb(244, 245, 250)"
+          background: "rgb(244, 245, 250)",
+          "on-background": "rgb(46, 38, 61)"
         }
       }
-    }
+    },
+    options: { customProperties: true }
   }
 });
 
