@@ -11,9 +11,10 @@
         </div>
         <template v-slot:append>
           <!-- 👉 Theme Toggle  -->
-          <v-icon @click="isDarkMode = !isDarkMode">
-            {{ isDarkMode ? "mdi-weather-sunny" : "mdi-weather-night" }}
-          </v-icon>
+          <v-btn
+            :icon="isDarkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'"
+            @click="isDarkMode = !isDarkMode"
+          ></v-btn>
           <!-- 👉 Notification -->
           <AppNotifications />
           <!-- 👉 User Info + Signout -->
