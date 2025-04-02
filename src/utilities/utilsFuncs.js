@@ -46,9 +46,35 @@ export function convertEpochMilliToDate(value) {
   return moment(value, "x").format("MM/DD/YYYY");
 }
 
+// Function to convert full time string to a shortened version
+export function shortenTimeString(timeString) {
+  const conversions = {
+    minute: "min",
+    minutes: "min",
+    hour: "hr",
+    hours: "hrs",
+    day: "d",
+    days: "d",
+    month: "mo",
+    months: "mos",
+    year: "yr",
+    years: "yrs"
+  };
+
+  // Loop through the conversions and replace full words with short forms
+  Object.keys(conversions).forEach((key) => {
+    const regex = new RegExp(`\\b${key}\\b`, "g"); // To match full words
+    timeString = timeString.replace(regex, conversions[key]);
+  });
+
+  return timeString;
+}
+
 export function convertEpochMilliToTimeFromNow(value) {
-  //TODO: Convert the result (string) to short text ("seconds": "sec")
-  return moment(value, "x").fromNow(true);
+  const timeFromNow = moment(value, "x").fromNow(true);
+  const shortenedResult = shortenTimeString(timeFromNow).replace(/a|an/, "1");
+
+  return shortenedResult;
 }
 
 export function changePropertiesToLowerCase(obj) {
