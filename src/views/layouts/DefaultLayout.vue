@@ -6,6 +6,7 @@
         <div class="search-trigger w-25 d-flex justify-start align-center ml-3">
           <v-icon>mdi-magnify</v-icon>
           <span class="mx-2 text-medium-emphasis">Search</span>
+          <!-- TODO: Match the keyboard keys based on the current OS  -->
           <span class="meta-key text-medium-emphasis">&#8984;K</span>
         </div>
         <template v-slot:append>
