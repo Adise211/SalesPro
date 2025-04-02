@@ -1,34 +1,32 @@
 <template>
-  <div class="default-layout">
-    <v-app :theme="isDarkMode ? 'dark' : 'light'">
-      <v-layout class="rounded rounded-md">
-        <VerticalNavLayout></VerticalNavLayout>
-        <v-app-bar color="background" flat>
-          <div class="search-trigger w-25 d-flex justify-start align-center ml-3">
-            <v-icon>mdi-magnify</v-icon>
-            <span class="mx-2 text-medium-emphasis">Search</span>
-            <span class="meta-key text-medium-emphasis">&#8984;K</span>
-          </div>
-          <template v-slot:append>
-            <!-- 👉 Theme Toggle  -->
-            <v-icon @click="isDarkMode = !isDarkMode">
-              {{ isDarkMode ? "mdi-weather-sunny" : "mdi-weather-night" }}
-            </v-icon>
-            <!-- 👉 Notification -->
-            <AppNotifications />
-            <!-- 👉 User Info + Signout -->
-            <UserMenu @onItemClick="userMenuClickHandler" />
-          </template>
-        </v-app-bar>
+  <v-app :theme="isDarkMode ? 'dark' : 'light'" class="default-layout">
+    <v-layout class="rounded rounded-md">
+      <VerticalNavLayout></VerticalNavLayout>
+      <v-app-bar color="background" flat>
+        <div class="search-trigger w-25 d-flex justify-start align-center ml-3">
+          <v-icon>mdi-magnify</v-icon>
+          <span class="mx-2 text-medium-emphasis">Search</span>
+          <span class="meta-key text-medium-emphasis">&#8984;K</span>
+        </div>
+        <template v-slot:append>
+          <!-- 👉 Theme Toggle  -->
+          <v-icon @click="isDarkMode = !isDarkMode">
+            {{ isDarkMode ? "mdi-weather-sunny" : "mdi-weather-night" }}
+          </v-icon>
+          <!-- 👉 Notification -->
+          <AppNotifications />
+          <!-- 👉 User Info + Signout -->
+          <UserMenu @onItemClick="userMenuClickHandler" />
+        </template>
+      </v-app-bar>
 
-        <v-main class="main-content">
-          <slot></slot>
-        </v-main>
-        <!-- 👉 Footer -->
-        <AppFooter></AppFooter>
-      </v-layout>
-    </v-app>
-  </div>
+      <v-main class="main-content">
+        <slot></slot>
+      </v-main>
+      <!-- 👉 Footer -->
+      <AppFooter></AppFooter>
+    </v-layout>
+  </v-app>
 </template>
 
 <script>
