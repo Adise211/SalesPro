@@ -1,6 +1,6 @@
 <template>
   <div class="default-layout">
-    <v-app>
+    <v-app :theme="isDarkMode ? 'dark' : 'light'">
       <v-layout class="rounded rounded-md">
         <VerticalNavLayout></VerticalNavLayout>
         <v-app-bar color="background" flat>
@@ -10,24 +10,13 @@
             <span class="meta-key text-medium-emphasis">&#8984;K</span>
           </div>
           <template v-slot:append>
-            <!-- Edit User Info  -->
-            <v-menu>
-              <template v-slot:activator="{ props }">
-                <v-btn v-bind="props" icon="mdi-cog"> </v-btn>
-              </template>
-              <v-list class="text-center">
-                <v-list-item>
-                  <v-list-item-title>Edit Profile</v-list-item-title>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list-item>
-                  <v-list-item-title>Change Password</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-            <!-- Notification -->
+            <!-- 👉 Theme Toggle  -->
+            <v-icon @click="isDarkMode = !isDarkMode">
+              {{ isDarkMode ? "mdi-weather-sunny" : "mdi-weather-night" }}
+            </v-icon>
+            <!-- 👉 Notification -->
             <AppNotifications />
-            <!-- User Info + Signout -->
+            <!-- 👉 User Info + Signout -->
             <UserMenu @onItemClick="userMenuClickHandler" />
           </template>
         </v-app-bar>
@@ -35,6 +24,7 @@
         <v-main class="main-content">
           <slot></slot>
         </v-main>
+        <!-- 👉 Footer -->
         <AppFooter></AppFooter>
       </v-layout>
     </v-app>
@@ -65,7 +55,9 @@ export default {
   name: "DefaultLayout",
   components: { VerticalNavLayout, UserMenu, AppNotifications, AppFooter },
   props: {},
-  data: () => ({}),
+  data: () => ({
+    isDarkMode: false
+  }),
   created() {},
   mounted() {
     // Check if user is still active (interval)
