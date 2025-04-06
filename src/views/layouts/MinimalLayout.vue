@@ -1,11 +1,9 @@
 <template>
-  <div class="minimal-layout">
-    <v-layout class="rounded rounded-md">
-      <v-main class="main-content">
-        <slot></slot>
-      </v-main>
-    </v-layout>
-  </div>
+  <v-layout class="minimal-layout rounded rounded-md bg-background">
+    <v-main class="main-content">
+      <slot></slot>
+    </v-main>
+  </v-layout>
 </template>
 
 <script>
