@@ -4,9 +4,9 @@
       <v-col class="d-flex justify-center" cols="12">
         <v-card width="30%" elevation="3">
           <v-card-item>
-            <div class="logo d-flex mt-10 justify-center">
-              <v-icon color="primary">mdi-lighthouse-on</v-icon>
-              <div class="font-weight-bold text-high-emphasis text-h5 text-uppercase">
+            <div class="logo d-flex mt-10 justify-center align-center">
+              <v-icon color="primary" size="36">mdi-flash-outline</v-icon>
+              <div class="text-h5 font-weight-bold text-high-emphasis text-uppercase">
                 LightSale
               </div>
             </div>

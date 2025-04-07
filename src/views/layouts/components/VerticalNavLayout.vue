@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer color="background" persistent width="250" floating>
     <div class="w-100 d-flex flex-row my-5 align-center justify-center text-h5">
-      <v-icon color="primary">mdi-lighthouse-on</v-icon>
+      <v-icon color="primary">mdi-flash-outline</v-icon>
       <div>LightSale</div>
     </div>
     <v-list>
