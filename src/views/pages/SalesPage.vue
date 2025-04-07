@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="customers-page h-100 pa-5" style="max-height: 100%">
+  <v-container class="customers-page h-100 pa-5" style="max-height: 100%">
     <v-row>
       <v-col md="12" class="pa-3">
         <AppCard :cardTextClass="'py-0'">

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="account-page h-100 pa-3" style="max-height: 100%">
+  <v-container class="account-page h-100 pa-3" style="max-height: 100%">
     <AppCard> </AppCard>
   </v-container>
 </template>

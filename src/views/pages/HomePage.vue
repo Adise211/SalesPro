@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="home-page fill-height d-block">
+  <v-container class="home-page fill-height d-block">
     <v-row>
       <!-- Closed Deals (last month) -->
       <v-col>

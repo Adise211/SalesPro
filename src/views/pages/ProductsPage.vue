@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="products-page h-100 pa-3" style="max-height: 100%">
+  <v-container class="products-page h-100 pa-3" style="max-height: 100%">
     <AppCard>
       <template v-slot:card-text>
         <AppTable :headers="tableHeaders" :items="tableItems"></AppTable>

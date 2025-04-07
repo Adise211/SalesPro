@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="files-page h-100 pa-3" style="max-height: 100%">
+  <v-container class="files-page h-100 pa-3" style="max-height: 100%">
     <AppCard>
       <template v-slot:card-text>
         <v-data-table-virtual>
