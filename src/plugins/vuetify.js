@@ -2,6 +2,13 @@ import "vuetify/styles";
 import { createVuetify } from "vuetify";
 // import colors from "vuetify/util/colors";
 
+const CUSTOM_COLORS = {
+  primary: "rgb(140, 87, 255)",
+  primaryDarken1: "rgb(126, 78, 230)",
+  background: "rgb(244, 245, 250)",
+  onBackground: "rgb(46, 38, 61)"
+};
+
 const vuetify = createVuetify({
   icons: {
     defaultSet: "mdi"
@@ -49,10 +56,10 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-          primary: "rgb(140, 87, 255)",
-          "primary-darken-1": "rgb(126, 78, 230)",
-          background: "rgb(244, 245, 250)",
-          "on-background": "rgb(46, 38, 61)"
+          primary: CUSTOM_COLORS.primary,
+          "primary-darken-1": CUSTOM_COLORS.primaryDarken1,
+          background: CUSTOM_COLORS.background,
+          "on-background": CUSTOM_COLORS.onBackground
         }
       }
     },
