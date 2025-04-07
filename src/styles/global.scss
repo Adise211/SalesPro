@@ -1,6 +1,6 @@
 html,
 body {
-  font-family: var(--app-font-family);
+  font-family: var(--app-font-family) !important;
   font-size: var(--app-font-size);
 }
 
@@ -10,7 +10,7 @@ a {
 
 :root {
   --app-font-size: 16px;
-  --app-font-family: "Archivo", sans-serif;
+  --app-font-family: "Inter", "Archivo", sans-serif;
   --app-primary: 140, 87, 255;
   --app-primary-darken-1: 126, 78, 230;
   --app-opacity-1: 0.1;
