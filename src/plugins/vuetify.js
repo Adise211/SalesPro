@@ -18,7 +18,8 @@ const vuetify = createVuetify({
       variant: "outlined",
       density: "comfortable",
       color: "primary",
-      validateOn: "submit"
+      validateOn: "submit",
+      style: "border-radius: 6px"
     },
     VSelect: {
       variant: "outlined",
@@ -49,6 +50,12 @@ const vuetify = createVuetify({
     },
     VPagination: {
       activeColor: "primary"
+    },
+    VCheckboxBtn: {
+      color: "primary"
+    },
+    VCard: {
+      style: "border-radius: 6px"
     }
   },
   theme: {
