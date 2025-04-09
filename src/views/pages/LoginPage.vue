@@ -1,6 +1,6 @@
 <template>
   <AuthLayout>
-    <AuthCardHeader />
+    <AuthCardHeader login />
     <v-card-text class="mx-4">
       <v-form>
         <v-text-field
@@ -15,7 +15,7 @@
           placeholder="*******"
           type="password"
         ></v-text-field>
-        <AuthCardFooter />
+        <AuthCardFooter login />
       </v-form>
     </v-card-text>
   </AuthLayout>
