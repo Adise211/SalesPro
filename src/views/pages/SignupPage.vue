@@ -1,80 +1,41 @@
 <template>
-  <v-container fluid class="pa-0 fill-height d-flex justify-center">
-    <v-row>
-      <v-col class="d-flex justify-center" cols="12">
-        <v-card width="30%" elevation="3">
-          <v-card-item>
-            <div class="logo d-flex mt-10 justify-center align-center">
-              <v-icon color="primary" size="36">mdi-flash-outline</v-icon>
-              <div class="text-h5 font-weight-bold text-high-emphasis text-uppercase">
-                LightSale
-              </div>
-            </div>
-          </v-card-item>
-          <v-card-text class="pt-4 mx-4">
-            <h4 class="text-h5 mb-1 text-high-emphasis">Adventure starts here 🚀</h4>
-            <p class="mb-0 font-weight-meduim text-high-emphasis">
-              Make your sale management easy and fun!
-            </p>
-          </v-card-text>
-          <v-card-text class="mx-4">
-            <v-form>
-              <v-text-field
-                variant="outlined"
-                label="Username"
-                placeholder="John Doe"
-                type="text"
-              ></v-text-field>
-              <v-text-field
-                variant="outlined"
-                label="Email"
-                placeholder="Example@some.com"
-                type="email"
-              ></v-text-field>
-              <v-text-field
-                variant="outlined"
-                label="Password"
-                placeholder="*******"
-                type="password"
-              ></v-text-field>
-              <v-checkbox label="Remember me"></v-checkbox>
-              <v-btn color="primary" block>Signup</v-btn>
-              <div class="mt-5 text-center">
-                <span class="font-weight-meduim text-high-emphasis">Already have an account? </span>
-                <a class="text-primary">Sign in instead</a>
-              </div>
-              <div class="v-col v-col-12 d-flex align-center">
-                <hr
-                  class="v-divider v-theme--light"
-                  aria-orientation="horizontal"
-                  role="separator"
-                />
-                <span class="mx-4">or</span>
-                <hr
-                  class="v-divider v-theme--light"
-                  aria-orientation="horizontal"
-                  role="separator"
-                />
-              </div>
-              <div class="v-col v-col-12 text-center">
-                <v-icon color="blue" class="mx-1">mdi-facebook</v-icon>
-                <v-icon color="red" class="mx-1">mdi-gmail</v-icon>
-                <v-icon color="purple" class="mx-1">mdi-yahoo</v-icon>
-              </div>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <AuthLayout>
+    <AuthCardHeader signup />
+    <v-card-text class="mx-4">
+      <v-form>
+        <v-text-field
+          variant="outlined"
+          label="Username"
+          placeholder="John Doe"
+          type="text"
+        ></v-text-field>
+        <v-text-field
+          variant="outlined"
+          label="Email"
+          placeholder="Example@some.com"
+          type="email"
+        ></v-text-field>
+        <v-text-field
+          variant="outlined"
+          label="Password"
+          placeholder="*******"
+          type="password"
+        ></v-text-field>
+        <AuthCardFooter signup />
+      </v-form>
+    </v-card-text>
+  </AuthLayout>
 </template>
 
 <script>
+import AuthLayout from "../pages/components/auth/AuthLayout.vue";
+import AuthCardHeader from "./components/auth/AuthCardHeader.vue";
+import AuthCardFooter from "./components/auth/AuthCardFooter.vue";
 import { checkIfUserExistWByEmail, createNewUser } from "@/firebase/services/user";
 
 export default {
   name: "SignupPage",
-  components: {},
+  components: { AuthLayout, AuthCardHeader, AuthCardFooter },
   props: {},
   data: () => ({
     showPassword1: false,

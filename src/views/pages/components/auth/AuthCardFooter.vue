@@ -28,7 +28,7 @@ export default {
   props: {
     login: {
       type: Boolean,
-      default: true
+      default: false
     },
     signup: {
       type: Boolean,
