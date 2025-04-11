@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex align-center mb-3">
+  <!-- <div class="d-flex align-center mb-3">
     <v-checkbox-btn label="Remember me" hide-details></v-checkbox-btn>
     <a class="text-primary" v-if="login">Forgot Password?</a>
   </div>
-  <v-btn color="primary" block>{{ login ? "Login" : "Signup" }}</v-btn>
+  <v-btn color="primary" block>{{ login ? "Login" : "Signup" }}</v-btn> -->
   <div class="mt-5 text-center">
     <span class="font-weight-meduim text-high-emphasis"
       >{{ login ? "New on our platform?" : "Already have an account?" }}

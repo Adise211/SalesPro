@@ -33,22 +33,22 @@ export async function checkIfUserExistWByEmail(data) {
 
 export async function createNewUser(data) {
   try {
-    const { Email, Password, FirstName, LastName, WorkSpaceName, Role } = data;
+    const { UserName, Email, Password } = data;
 
     // Fix names (first letter as capital letter)
-    const fixedFirstName = FirstName.charAt(0).toUpperCase() + FirstName.slice(1).toLowerCase();
-    const fixedLastName = LastName.charAt(0).toUpperCase() + LastName.slice(1).toLowerCase();
-    const userFullName = `${fixedFirstName} ${fixedLastName}`;
+    // const fixedFirstName = FirstName.charAt(0).toUpperCase() + FirstName.slice(1).toLowerCase();
+    // const fixedLastName = LastName.charAt(0).toUpperCase() + LastName.slice(1).toLowerCase();
+    // const userFullName = `${fixedFirstName} ${fixedLastName}`;
     const workspaceRandomId = "workspace" + generatedId();
 
     const newUserInfo = {
       Email,
-      FullName: userFullName,
+      FullName: UserName,
       WorkSpace: {
         Id: workspaceRandomId,
-        Name: WorkSpaceName
+        Name: null
       },
-      Role,
+      Role: null,
       LastLogin: 0,
       LastUpdated: Date.now()
     };
@@ -56,18 +56,22 @@ export async function createNewUser(data) {
     const response = await createUserWithEmailAndPassword(auth, Email, Password);
     if (response) {
       // Update user auth profile (Firebase Auth)
-      await updateUserProfile({ userFullName, userPhotoUrl: "" });
+      await updateUserProfile({ userFullName: UserName, userPhotoUrl: "" });
       // Create new user table
       await setDoc(doc(db, Config.database.collections.users, auth.currentUser.uid), {
         UserInfo: newUserInfo
       });
       // Create new workspace document
-      const newWorkspace = await createNewWorkspace(workspaceRandomId, WorkSpaceName, newUserInfo);
+      const newWorkspace = await createNewWorkspace(
+        workspaceRandomId,
+        newUserInfo.WorkSpace.Name,
+        newUserInfo
+      );
 
       // Send back the response
       return {
         Result: { ResultCode: ResultCodes.Success },
-        Data: { User: newUserInfo, Workspace: newWorkspace }
+        Data: { User: newUserInfo, Workspace: newWorkspace.Data }
       };
     }
   } catch (error) {

@@ -2,25 +2,36 @@
   <AuthLayout>
     <AuthCardHeader signup />
     <v-card-text class="mx-4">
-      <v-form>
+      <v-form ref="signupForm">
         <v-text-field
+          v-model="userName"
           variant="outlined"
           label="Username"
           placeholder="John Doe"
           type="text"
+          :rules="[signupRules.required, signupRules.nameMatch]"
         ></v-text-field>
         <v-text-field
+          v-model="userEmail"
           variant="outlined"
           label="Email"
           placeholder="Example@some.com"
           type="email"
+          :rules="[signupRules.required, signupRules.emailMatch]"
         ></v-text-field>
         <v-text-field
+          v-model="userPassword"
           variant="outlined"
           label="Password"
           placeholder="*******"
           type="password"
+          :rules="[signupRules.required, signupRules.passwordLength]"
         ></v-text-field>
+        <div class="d-flex align-center mb-3">
+          <v-checkbox-btn label="Remember me" hide-details></v-checkbox-btn>
+          <a class="text-primary">Forgot Password?</a>
+        </div>
+        <v-btn color="primary" block @click="signupHandler" :loading="isLoading">Signup</v-btn>
         <AuthCardFooter signup />
       </v-form>
     </v-card-text>
@@ -38,79 +49,46 @@ export default {
   components: { AuthLayout, AuthCardHeader, AuthCardFooter },
   props: {},
   data: () => ({
-    showPassword1: false,
-    showPassword2: false,
+    userName: "",
     userEmail: "",
-    userPassword1: "",
-    userPassword2: "",
-    userFirstName: "",
-    userLastName: "",
-    userWorkspace: "",
-    userRole: "",
+    userPassword: "",
+    showPassword: false,
+    // userFirstName: "",
+    // userLastName: "",
+    // userWorkspace: "",
+    // userRole: "",
     isLoading: false,
-    windowSteps: {
-      One: 1,
-      Two: 2,
-      Three: 3,
-      Four: 4
-    },
-    currentWindowStep: 1,
     errorMessage: ""
   }),
   created() {},
   mounted() {},
   methods: {
-    async onSignupClick() {
-      switch (this.currentWindowStep) {
-        case this.windowSteps.One:
-          if (await this.isFormValid("emailForm")) this.checkIfUserExist();
-          break;
-        case this.windowSteps.Two:
-          if (await this.isFormValid("workspaceForm")) this.nextWindowStep();
-          break;
-        case this.windowSteps.Three:
-          if (await this.isFormValid("fullNameForm")) this.signupHandler();
-          break;
-        default:
-          break;
-      }
-    },
-    async checkIfUserExist() {
+    async isUserAlreadyExist() {
       const response = await checkIfUserExistWByEmail({
         Email: this.userEmail
       });
 
-      if (response.Result.ResultCode > 0) {
-        this.errorMessage = "";
-        this.nextWindowStep();
-      } else {
-        this.errorMessage = response?.Result?.ResultMessage || "Something went wrong";
-      }
+      return response.Result.ResultCode > 0 ? false : true;
     },
     async signupHandler() {
-      this.isLoading = true;
-      const newUserData = {
-        Email: this.userEmail,
-        Password: this.userPassword1,
-        FirstName: this.userFirstName,
-        LastName: this.userLastName,
-        WorkSpaceName: this.userWorkspace,
-        Role: this.userRole
-      };
-      const response = await createNewUser(newUserData);
-      console.log("create new user response:", response);
-      if (response.Result.ResultCode > 0) {
-        this.isLoading = false;
-        this.nextWindowStep();
+      const { valid } = await this.$refs.signupForm.validate();
+      const isUserExist = await this.isUserAlreadyExist();
+      // If form is valid + is new user
+      if (valid && !isUserExist) {
+        this.isLoading = true;
+        const newUserData = {
+          UserName: this.userName,
+          Email: this.userEmail,
+          Password: this.userPassword
+        };
+        const response = await createNewUser(newUserData);
+        console.log("create new user response:", response);
+        if (response.Result.ResultCode > 0) {
+          this.isLoading = false;
+        }
       }
     },
-    nextWindowStep() {
-      this.currentWindowStep = this.currentWindowStep + 1;
-    },
-    async isFormValid(formName) {
-      const { valid } = await this.$refs[formName].validate();
-      return valid;
-    },
+
     signinAnchorHandler() {
       this.$router.push({
         name: "LoginPage"
@@ -132,30 +110,9 @@ export default {
         required: (value) => !!value || "Required.",
         emailMatch: (value) => EMAIL_REGEXP.test(value.trim()) || "Invalid e-mail.",
         nameMatch: (value) => NAME_REGEXP.test(value.trim()) || "Insert letters only",
-        verifyPassword: (value) => value === this.userPassword1 || "Password do not match",
+        // verifyPassword: (value) => value === this.userPassword1 || "Password do not match",
         passwordLength: (value) => value.length >= 6 || "Insert at at least 6 characters"
       };
-    },
-    signupButtonTitle() {
-      let title;
-      switch (this.currentWindowStep) {
-        case this.windowSteps.One:
-          title = "Signup";
-          break;
-        case this.windowSteps.Two:
-          title = "Next";
-          break;
-        case this.windowSteps.Three:
-          title = "Next";
-          break;
-        case this.windowSteps.Four:
-          title = "Signup";
-          break;
-        default:
-          title = "Next";
-          break;
-      }
-      return title;
     }
   },
   watch: {}
@@ -163,11 +120,6 @@ export default {
 </script>
 
 <style scoped>
-/* .logo-img {
-  position: relative;
-  bottom: 14vh;
-} */
-
 .side-line {
   border: 1px solid black;
   background-color: rgb(38, 50, 56);
