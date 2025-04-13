@@ -41,7 +41,7 @@ import { convertDate, convertLocationToString } from "@/utilities/utilsFuncs";
 import { mapState, mapActions } from "pinia";
 import { useGeneralStore } from "@/stores/general";
 import { removeCompany } from "@/firebase/services/workspace";
-import companies from "../../public/_config/dummyDate/sales.json";
+// import companies from "../../public/_config/dummyDate/sales.json";
 
 const DEFAULT_STATUS_ID = SalesStatusId.Follow;
 
@@ -157,7 +157,7 @@ export default {
       // });
 
       // return filteredItems || [];
-      return companies;
+      return [];
     }
   },
   watch: {}
