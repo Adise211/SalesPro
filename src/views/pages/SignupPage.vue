@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { mapActions } from "pinia";
+import { useGeneralStore } from "@/stores/general";
 import AuthLayout from "../pages/components/auth/AuthLayout.vue";
 import AuthCardHeader from "./components/auth/AuthCardHeader.vue";
 import AuthCardFooter from "./components/auth/AuthCardFooter.vue";
@@ -63,6 +65,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapActions(useGeneralStore, ["setToastMessage"]),
     async isUserAlreadyExist() {
       const response = await checkIfUserExistWByEmail({
         Email: this.userEmail
@@ -84,8 +87,18 @@ export default {
         const response = await createNewUser(newUserData);
         console.log("create new user response:", response);
         if (response.Result.ResultCode > 0) {
-          this.isLoading = false;
+          this.setToastMessage({
+            type: "success",
+            message: "Signed up successfully!"
+          });
+
+          setTimeout(() => {
+            this.$router.push({
+              name: "LoginPage"
+            });
+          }, 500);
         }
+        this.isLoading = false;
       }
     },
 
