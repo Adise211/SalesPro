@@ -2,7 +2,7 @@
   <AuthLayout>
     <AuthCardHeader login />
     <v-card-text class="mx-4">
-      <v-form>
+      <v-form ref="loginForm">
         <v-text-field
           v-model="userEmail"
           variant="outlined"
@@ -19,9 +19,9 @@
         ></v-text-field>
         <div class="d-flex align-center mb-3">
           <v-checkbox-btn label="Remember me" hide-details></v-checkbox-btn>
-          <a class="text-primary" v-if="login">Forgot Password?</a>
+          <a class="text-primary">Forgot Password?</a>
         </div>
-        <v-btn color="primary" block @click="onLoginClick">Login</v-btn>
+        <v-btn color="primary" block @click="onLoginClick" :loading="isLoading">Login</v-btn>
         <AuthCardFooter login />
       </v-form>
     </v-card-text>
