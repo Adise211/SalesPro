@@ -92,7 +92,7 @@ import AppCard from "@/components/AppCard.vue";
 import CustomerInfoCard from "@/components/CustomerInfoCard.vue";
 import { TableColumnsWidthValue } from "@/utilities/consts.js";
 import { convertEpochMilliToDate } from "@/utilities/utilsFuncs";
-import customers from "/public/_config/dummyDate/customers.json";
+// import customers from "/public/_config/dummyDate/customers.json";
 
 export default {
   name: "CustomersPage",
@@ -174,7 +174,7 @@ export default {
       ];
     },
     tableItems() {
-      return customers;
+      return [];
     }
   },
   watch: {}
