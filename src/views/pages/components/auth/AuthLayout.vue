@@ -1,8 +1,8 @@
 <template>
   <v-container fluid class="pa-0 fill-height d-flex justify-center">
-    <v-row class="fill-height">
+    <v-row>
       <v-col class="d-flex justify-center" cols="12">
-        <v-card width="30%" elevation="3">
+        <v-card width="30%" elevation="3" class="my-6">
           <slot />
         </v-card>
       </v-col>

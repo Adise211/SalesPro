@@ -7,7 +7,7 @@
   </div>
   <div class="v-col v-col-12 d-flex align-center">
     <hr class="v-divider v-theme--light" aria-orientation="horizontal" role="separator" />
-    <span class="mx-4">or</span>
+    <span class="mx-4 text-medium-emphasis">or</span>
     <hr class="v-divider v-theme--light" aria-orientation="horizontal" role="separator" />
   </div>
   <div class="v-col v-col-12 text-center">

@@ -1,5 +1,7 @@
 @use "vuetify/settings" with (
   $button-height: 40px,
-  $font-size-root: 16px,
-  $button-text-transform: "capitalize"
+  $font-size-root: var(--app-font-size),
+  $button-text-transform: "capitalize",
+  $body-font-family: var(--app-font-family),
+  $border-radius-root: 6px
 );

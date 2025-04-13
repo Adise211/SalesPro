@@ -3,25 +3,29 @@
     <AuthCardHeader login />
     <v-card-text class="mx-4">
       <v-form ref="loginForm">
-        <v-text-field
-          v-model="userEmail"
-          variant="outlined"
-          label="Email"
-          placeholder="Example@some.com"
-          type="email"
-        ></v-text-field>
-        <v-text-field
-          v-model="userPassword"
-          variant="outlined"
-          label="Password"
-          placeholder="*******"
-          type="password"
-        ></v-text-field>
+        <div class="v-col v-col-12">
+          <v-text-field
+            v-model="userEmail"
+            variant="outlined"
+            label="Email"
+            placeholder="Example@some.com"
+            type="email"
+          ></v-text-field>
+          <v-text-field
+            v-model="userPassword"
+            variant="outlined"
+            label="Password"
+            placeholder="*******"
+            type="password"
+          ></v-text-field>
+        </div>
         <div class="d-flex align-center mb-3">
           <v-checkbox-btn label="Remember me" hide-details></v-checkbox-btn>
           <a class="text-primary">Forgot Password?</a>
         </div>
-        <v-btn color="primary" block @click="onLoginClick" :loading="isLoading">Login</v-btn>
+        <div class="v-col v-col-12">
+          <v-btn color="primary" block @click="onLoginClick" :loading="isLoading">Login</v-btn>
+        </div>
         <AuthCardFooter login />
       </v-form>
     </v-card-text>
