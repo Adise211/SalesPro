@@ -49,14 +49,14 @@ a {
 }
 
 .active-nav-group-style {
-  background: rgba(var(--app-primary), var(--app-opacity-1));
+  background: rgba(var(--v-theme-primary), var(--app-opacity-1));
 }
 
 .active-nav-link-style {
   color: white;
   background: linear-gradient(
     -72.47deg,
-    rgb(var(--app-primary)) 22.16%,
-    rgba(var(--app-primary), var(--app-opacity-7)) 76.47%
+    rgb(var(--v-theme-primary)) 22.16%,
+    rgba(var(--v-theme-primary), var(--app-opacity-7)) 76.47%
   ) !important;
 }
