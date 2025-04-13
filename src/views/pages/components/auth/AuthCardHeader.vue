@@ -2,7 +2,7 @@
   <v-card-item class="v-col v-col-12">
     <div class="logo d-flex mt-10 justify-center align-end">
       <v-icon color="primary" size="36">mdi-flash-outline</v-icon>
-      <div class="text-h5 font-weight-medium text-high-emphasis text-uppercase">LightSale</div>
+      <div class="text-h5 font-weight-medium text-high-emphasis text-uppercase">SalesPro</div>
     </div>
   </v-card-item>
   <v-card-text class="v-col v-col-12 pt-4 mx-8">
@@ -32,7 +32,7 @@ export default {
   methods: {},
   computed: {
     headerTitle() {
-      return this.login ? "Welcome to LightSale! 👋🏻" : "Adventure starts here 🚀";
+      return this.login ? "Welcome to SalesPro! 👋🏻" : "Adventure starts here 🚀";
     },
     headerSubTitle() {
       return this.login
