@@ -4,17 +4,24 @@
     <v-card-text class="mx-4">
       <v-form>
         <v-text-field
+          v-model="userEmail"
           variant="outlined"
           label="Email"
           placeholder="Example@some.com"
           type="email"
         ></v-text-field>
         <v-text-field
+          v-model="userPassword"
           variant="outlined"
           label="Password"
           placeholder="*******"
           type="password"
         ></v-text-field>
+        <div class="d-flex align-center mb-3">
+          <v-checkbox-btn label="Remember me" hide-details></v-checkbox-btn>
+          <a class="text-primary" v-if="login">Forgot Password?</a>
+        </div>
+        <v-btn color="primary" block @click="onLoginClick">Login</v-btn>
         <AuthCardFooter login />
       </v-form>
     </v-card-text>
