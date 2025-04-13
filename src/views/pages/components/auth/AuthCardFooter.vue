@@ -1,14 +1,9 @@
 <template>
-  <!-- <div class="d-flex align-center mb-3">
-    <v-checkbox-btn label="Remember me" hide-details></v-checkbox-btn>
-    <a class="text-primary" v-if="login">Forgot Password?</a>
-  </div>
-  <v-btn color="primary" block>{{ login ? "Login" : "Signup" }}</v-btn> -->
-  <div class="mt-5 text-center">
+  <div class="v-col v-col-12 mt-5 text-center">
     <span class="font-weight-meduim text-high-emphasis"
       >{{ login ? "New on our platform?" : "Already have an account?" }}
     </span>
-    <a class="text-primary">{{ login ? "Create an account" : "Sign in instead" }}</a>
+    <a class="text-primary">{{ login ? " Create an account" : " Sign in instead" }}</a>
   </div>
   <div class="v-col v-col-12 d-flex align-center">
     <hr class="v-divider v-theme--light" aria-orientation="horizontal" role="separator" />
