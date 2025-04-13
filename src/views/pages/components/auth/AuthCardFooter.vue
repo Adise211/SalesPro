@@ -3,7 +3,9 @@
     <span class="font-weight-meduim text-high-emphasis"
       >{{ login ? "New on our platform?" : "Already have an account?" }}
     </span>
-    <a class="text-primary">{{ login ? " Create an account" : " Sign in instead" }}</a>
+    <a class="text-primary" :href="login ? '/signup' : '/login'">{{
+      login ? " Create an account" : " Sign in instead"
+    }}</a>
   </div>
   <div class="v-col v-col-12 d-flex align-center">
     <hr class="v-divider v-theme--light" aria-orientation="horizontal" role="separator" />
